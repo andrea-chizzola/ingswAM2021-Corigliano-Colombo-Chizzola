@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import java.util.Objects;
+
 /**
  * This class extends Resource
  * It represents the resource stone
@@ -18,5 +20,18 @@ public class Stone extends Resource {
     @Override
     public ResourceColor getColor() {
         return color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Stone)) return false;
+        Stone stone = (Stone) o;
+        return color == stone.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color);
     }
 }

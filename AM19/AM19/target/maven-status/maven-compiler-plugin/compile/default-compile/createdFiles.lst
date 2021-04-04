@@ -1,6 +1,6 @@
 it\polimi\ingsw\Requirements.class
-it\polimi\ingsw\DevelopmentCard.class
 it\polimi\ingsw\DevColor.class
-it\polimi\ingsw\CardColor.class
 it\polimi\ingsw\LeaderCard.class
+it\polimi\ingsw\DevelopmentCard.class
+it\polimi\ingsw\CardColor.class
 it\polimi\ingsw\SpecialEffect.class

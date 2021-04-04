@@ -48,4 +48,12 @@ public class ResQuantity {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    /**
+     * This method allows to add an integer to the capacity
+     * @param number the integer which is added to the capacity, it is up to the caller to set this parameter correctly
+     */
+    public void add(int number){
+        quantity+=number;
+    }
 }

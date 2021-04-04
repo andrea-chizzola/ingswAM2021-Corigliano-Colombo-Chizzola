@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 
+import java.util.Objects;
+
 /**
  * This class extends Resource
  * It represents the resource coin
@@ -19,5 +21,18 @@ public class Coin extends Resource {
     @Override
     public ResourceColor getColor() {
         return color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Coin)) return false;
+        Coin coin = (Coin) o;
+        return color == coin.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color);
     }
 }
