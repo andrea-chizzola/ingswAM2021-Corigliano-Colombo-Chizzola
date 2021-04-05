@@ -63,4 +63,13 @@ public class StrongBox {
 
     }
 
+    /**
+     * @return returns th victory points related to the resources in the strongbox, 1 point every 5 resources
+     */
+    public int calculateVictoryPoints(){
+
+        return (resources.values().stream().mapToInt(Integer::intValue).sum() / 5);
+
+    }
+
 }

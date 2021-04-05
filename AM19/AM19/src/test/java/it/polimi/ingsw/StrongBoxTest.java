@@ -151,4 +151,30 @@ class StrongBoxTest {
         assertEquals(strongBox.getQuantity(stone), 0);
 
     }
+
+    @Test
+    void calculateVictoryPoints(){
+
+        assertEquals(0, strongBox.calculateVictoryPoints());
+
+        strongBox.addResource(coin, 2);
+        strongBox.addResource(servant, 2);
+
+        assertEquals(0, strongBox.calculateVictoryPoints());
+
+        strongBox.addResource(shield, 1);
+
+        assertEquals(1, strongBox.calculateVictoryPoints());
+
+        strongBox.takeResource(coin, 2);
+        strongBox.takeResource(servant, 2);
+        strongBox.takeResource(shield, 1);
+
+        assertEquals(0, strongBox.calculateVictoryPoints());
+
+        strongBox.addResource(stone, 10);
+
+        assertEquals(2, strongBox.calculateVictoryPoints());
+
+    }
 }
