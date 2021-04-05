@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import java.util.Objects;
+
 /**
  * This class extends Resource
  * It represents the resource servant
@@ -25,5 +27,10 @@ public class Servant extends Resource {
         if (!(o instanceof Servant)) return false;
         Servant servant = (Servant) o;
         return color == servant.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color);
     }
 }

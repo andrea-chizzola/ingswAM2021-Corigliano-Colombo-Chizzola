@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 
+import java.util.Objects;
+
 /**
  * This class extends Resource
  * It represents the resource shield
@@ -26,5 +28,10 @@ public class Shield extends Resource {
         if (!(o instanceof Shield)) return false;
         Shield shield = (Shield) o;
         return color == shield.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color);
     }
 }
