@@ -64,5 +64,4 @@ public class ResQuantity {
         ResQuantity res= (ResQuantity) o;
         return (this.quantity != res.quantity || this.resource.equals(res.resource));
     }
-
 }
