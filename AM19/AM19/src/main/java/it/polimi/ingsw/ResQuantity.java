@@ -48,4 +48,13 @@ public class ResQuantity {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ResQuantity)) return false;
+        ResQuantity res= (ResQuantity) o;
+        return (this.quantity != res.quantity || this.resource.equals(res.resource));
+    }
+
 }

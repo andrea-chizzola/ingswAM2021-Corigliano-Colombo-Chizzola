@@ -19,4 +19,12 @@ public class Faith extends Resource {
     public ResourceColor getColor() {
         return color;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Faith)) return false;
+        Faith faith = (Faith) o;
+        return color == faith.color;
+    }
 }

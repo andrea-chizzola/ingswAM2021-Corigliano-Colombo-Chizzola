@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import java.util.Objects;
+
 /**
  * abstract class representing the common features of both Leader cards and Development cards
  */
@@ -33,6 +35,21 @@ public abstract class Card{
      */
     public int getVictoryPoint(){
         return victoryPoint;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return victoryPoint == card.victoryPoint &&
+                specialEffect.equals(card.specialEffect) &&
+                requirements.equals(card.requirements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(victoryPoint, specialEffect, requirements);
     }
 
     //checkReq() method missing

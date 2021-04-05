@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import java.util.Objects;
+
 /**
  * public class representing development cards and inheriting from abstract class Card
  */
@@ -39,5 +41,31 @@ public class DevelopmentCard extends Card{
      */
     public int getCardLevel(){
         return level;
+    }
+
+    /**
+     * This method is a overloading of equals
+     * @param card is a DevelopmentCard
+     * @return true if the card that invokes the method and the parameter have the same characteristics
+     */
+    public boolean equals(DevelopmentCard card){
+        return super.equals(card) &&
+                color.equals(card.color) &&
+                level == card.level;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        DevelopmentCard that = (DevelopmentCard) o;
+        return level == that.level &&
+                color == that.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, level);
     }
 }

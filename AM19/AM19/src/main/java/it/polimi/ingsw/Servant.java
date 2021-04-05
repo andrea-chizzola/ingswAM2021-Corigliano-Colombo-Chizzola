@@ -18,4 +18,12 @@ public class Servant extends Resource {
     public ResourceColor getColor() {
         return color;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Servant)) return false;
+        Servant servant = (Servant) o;
+        return color == servant.color;
+    }
 }
