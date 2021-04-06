@@ -27,8 +27,11 @@ public class FaithTrack {
      */
     public FaithTrack(ArrayList<Integer> trackPoints, ArrayList<VaticanReportSection> sections) {
 
-        this.trackPoints = trackPoints;
-        this.sections = sections;
+        this.trackPoints = new ArrayList<>(25);
+        this.trackPoints.addAll(trackPoints);
+        this.sections = new ArrayList<>(3);
+        this.sections.addAll(sections);
+
         position  = 0;
 
     }
