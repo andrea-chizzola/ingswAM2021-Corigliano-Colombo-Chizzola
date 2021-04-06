@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- test: first leader card -->
+<!DOCTYPE leaderCards SYSTEM
+        "C:\Users\Davide\Desktop\ingswAM2021-Corigliano-Colombo-Chizzola\AM19\AM19\src\main\resources\XML\leaderCards.dtd">
+<leaderCards>
+    <leader points = "2">
+        <requirements>
+            <cardRequirement>
+                <card color="YELLOW" level="1" amount="1"/>
+                <card color="GREEN" level="1" amount="1"/>
+            </cardRequirement>
+        </requirements>
+        <effect>
+            <discount resource = "SERVANTS"/>
+        </effect>
+    </leader>
+    <!-- -->
+    <leader points = "3">
+        <requirements>
+            <resourceRequirement>
+                <resquantity amount="5" resource="COINS"/>
+            </resourceRequirement>
+        </requirements>
+        <effect>
+            <extraSlot>
+                <resquantity amount="2" resource="STONES"/>
+            </extraSlot>
+        </effect>
+    </leader>
+    <!-- -->
+    <leader points = "5">
+        <requirements>
+            <cardRequirement>
+                <card amount="2" color="YELLOW" level="1"/>
+                <card amount="1" color="BLUE" level="1"/>
+            </cardRequirement>
+        </requirements>
+        <effect>
+            <whiteMarble resource="SERVANTS"/>
+        </effect>
+    </leader>
+    <!-- -->
+    <leader points = "4">
+        <requirements>
+            <cardRequirement>
+                <card amount="1" color="YELLOW" level="2"/>
+            </cardRequirement>
+        </requirements>
+        <effect>
+            <production>
+                <materials>
+                    <resquantity amount="1" resource="SHIELDS"/>
+                </materials>
+                <products>
+                    <resquantity amount="1" resource="FAITH"/>
+                </products>
+            </production>
+        </effect>
+    </leader>
+</leaderCards>

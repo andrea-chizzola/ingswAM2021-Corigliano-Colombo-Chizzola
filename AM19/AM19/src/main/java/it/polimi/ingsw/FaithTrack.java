@@ -18,48 +18,21 @@ public class FaithTrack {
     private int position;
 
     /**
-     * represents the vatican report section associated to the pope's favor tile containing 2 victory points
+     * contains the 3 sections associated to the faith track
      */
-    private VaticanReportSection vaticanReportSection2;
+    private ArrayList<VaticanReportSection> sections;
 
     /**
-     * represents the vatican report section associated to the pope's favor tile containing 3 victory points
+     * creates a new faith track
      */
-    private VaticanReportSection vaticanReportSection3;
+    public FaithTrack(ArrayList<Integer> trackPoints, ArrayList<VaticanReportSection> sections) {
 
-    /**
-     * represents the vatican report section associated to the pope's favor tile containing 4 victory points
-     */
-    private VaticanReportSection vaticanReportSection4;
+        this.trackPoints = new ArrayList<>(25);
+        this.trackPoints.addAll(trackPoints);
+        this.sections = new ArrayList<>(3);
+        this.sections.addAll(sections);
 
-    /**
-     * creates a new faith track initialising each spot with the related victory points
-     */
-    public FaithTrack() {
-
-        trackPoints = new ArrayList<Integer>(25);
-        for(int i = 0; i < 25; i++){
-            trackPoints.add(i, 0);
-            if(i % 3 == 0){
-                if(i <= 6){
-                    trackPoints.set(i, i / 3);
-                }
-                else if(i <= 12){
-                    trackPoints.set(i, i / 2);
-                }else if(i <= 18){
-                    trackPoints.set(i, i - 6);
-                }else if(i == 21){
-                    trackPoints.set(i, 16);
-                }else {
-                    trackPoints.set(i, 20);
-                }
-            }
-        }
-
-        position = 0;
-        vaticanReportSection2 = new VaticanReportSection(5, 8, 2);
-        vaticanReportSection3 = new VaticanReportSection(12, 16, 3);
-        vaticanReportSection4 = new VaticanReportSection(19, 24, 4);
+        position  = 0;
 
     }
 
@@ -75,11 +48,11 @@ public class FaithTrack {
      */
     public int getSection(){
 
-        if(position >= 5 && position <= 8){
+        if(position >= sections.get(0).getStart() && position <= sections.get(0).getEnd()){
             return 1;
-        }else if(position >= 12 && position <= 16){
+        }else if(position >= sections.get(1).getStart() && position <= sections.get(1).getEnd()){
             return 2;
-        }else if(position >= 19 && position <= 24){
+        }else if(position >= sections.get(2).getStart() && position <= sections.get(2).getEnd()){
             return 3;
         }else return 0;
 
@@ -91,13 +64,7 @@ public class FaithTrack {
      */
     public void activateFavor(int section){
 
-        if(section == 1){
-            vaticanReportSection2.activateFavor();
-        }else if(section == 2){
-            vaticanReportSection3.activateFavor();
-        }else if(section == 3){
-            vaticanReportSection4.activateFavor();
-        }
+        sections.get(section - 1).activateFavor();
     }
 
     /**
@@ -106,13 +73,7 @@ public class FaithTrack {
      */
     public void discardFavor(int section){
 
-        if(section == 1){
-            vaticanReportSection2.discard();
-        }else if(section == 2){
-            vaticanReportSection3.discard();
-        }else if(section == 3){
-            vaticanReportSection4.discard();
-        }
+        sections.get(section - 1).discard();
 
     }
 
@@ -122,11 +83,7 @@ public class FaithTrack {
      */
     public boolean isInsideSection(int section){
 
-        if(section == 1 && getSection() == 1){
-            return true;
-        }else if(section == 2 && getSection() == 2){
-            return true;
-        }else if(section == 3 && getSection() == 3){
+        if(section == getSection()){
             return true;
         }else return false;
 
@@ -138,11 +95,7 @@ public class FaithTrack {
      */
     public boolean isBeforeSection(int section){
 
-        if(section == 1 && position < 5){
-            return true;
-        }else if(section == 2 && position < 12){
-            return true;
-        }else if(section == 3 && position < 19){
+        if(position < sections.get(section - 1).getStart()){
             return true;
         }else return false;
 
@@ -155,11 +108,7 @@ public class FaithTrack {
      */
     public boolean isEndSection(int section){
 
-        if(section == 1 && position == 8){
-            return true;
-        }else if(section == 2 && position == 16){
-            return true;
-        }else if(section == 3 && position == 24){
+        if(position == sections.get(section - 1).getEnd()){
             return true;
         }else return false;
 
@@ -193,27 +142,15 @@ public class FaithTrack {
     public int calculatePoints(){
 
         int victoryPoints;
+        int pos = getPosition();
 
-        victoryPoints = vaticanReportSection2.getPopeFavorVictoryPoints() + vaticanReportSection3.getPopeFavorVictoryPoints() + vaticanReportSection4.getPopeFavorVictoryPoints();
+        victoryPoints = sections.get(0).getPopeFavorVictoryPoints() + sections.get(1).getPopeFavorVictoryPoints() + sections.get(2).getPopeFavorVictoryPoints();
 
-        if(position <= 2){
-            return victoryPoints;
+        while(pos > 0 && trackPoints.get(pos) == 0){
+            pos--;
         }
-        if(position <= 5){
-            return victoryPoints + 1;
-        }else if(position <= 8){
-            return victoryPoints + 2;
-        }else if(position <= 11){
-            return victoryPoints + 4;
-        }else if(position <= 14){
-            return victoryPoints + 6;
-        }else if(position <= 17){
-            return victoryPoints + 9;
-        }else if(position <= 20){
-            return victoryPoints + 12;
-        }else if(position <= 23){
-            return victoryPoints + 16;
-        }else return victoryPoints + 20;
+
+        return victoryPoints + trackPoints.get(pos);
 
     }
 

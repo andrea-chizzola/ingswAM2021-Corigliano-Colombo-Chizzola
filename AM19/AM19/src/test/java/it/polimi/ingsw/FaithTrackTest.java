@@ -5,23 +5,49 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class FaithTrackTest {
 
     private FaithTrack faithTrack;
-    private FaithTrack faithTrack1;
 
     @BeforeEach
     void setUp(){
-        faithTrack = new FaithTrack();
-        faithTrack1 = new FaithTrack();
+
+        ArrayList<Integer> trackPoints = new ArrayList<Integer>(25);
+        for(int i = 0; i < 25; i++){
+            trackPoints.add(i, 0);
+            if(i % 3 == 0){
+                if(i <= 6){
+                    trackPoints.set(i, i / 3);
+                }
+                else if(i <= 12){
+                    trackPoints.set(i, i / 2);
+                }else if(i <= 18){
+                    trackPoints.set(i, i - 6);
+                }else if(i == 21){
+                    trackPoints.set(i, 16);
+                }else {
+                    trackPoints.set(i, 20);
+                }
+            }
+        }
+
+        ArrayList<VaticanReportSection> sections = new ArrayList<VaticanReportSection>(3);
+
+        sections.add(0, new VaticanReportSection(5, 8, 2));
+        sections.add(1, new VaticanReportSection(12, 16, 3));
+        sections.add(2, new VaticanReportSection(19, 24, 4));
+
+        faithTrack = new FaithTrack(trackPoints, sections);
+
     }
 
     @AfterEach
     void tearDown(){
         faithTrack = null;
-        faithTrack1 = null;
     }
 
     /**
@@ -45,7 +71,69 @@ class FaithTrackTest {
         assertEquals(0, faithTrack.getSection());
 
     }
-    
+
+    /**
+     * tests the correct behavior of the calculatePoints method when all the pope's favor tile is activated
+     */
+    @Test
+    void calculatePointsActivated(){
+
+        faithTrack.addFaith(6); //6
+        faithTrack.activateFavor(1);
+
+        assertEquals(4, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(1); //7
+
+        assertEquals(4, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(2); //9
+
+        assertEquals(6, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(1); //10
+
+        assertEquals(6, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(2); //12
+        faithTrack.activateFavor(2);
+
+        assertEquals(11, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(1); //13
+
+        assertEquals(11, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(2); //15
+
+        assertEquals(14, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(1); //16
+
+        assertEquals(14, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(2); //18
+
+        assertEquals(17, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(1); //19
+        faithTrack.activateFavor(3);
+
+        assertEquals(21, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(2); //21
+
+        assertEquals(25, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(1); //22
+
+        assertEquals(25, faithTrack.calculatePoints());
+
+        faithTrack.addFaith(2); //24
+        assertEquals(29, faithTrack.calculatePoints());
+    }
+
+
     /**
      * tests the correct behavior of the calculatePoints method applied to the slots containing some victory points and the following slot
      */
@@ -64,85 +152,56 @@ class FaithTrackTest {
         assertEquals(1, faithTrack.calculatePoints());
 
         faithTrack.addFaith(2); //6
-        faithTrack1.addFaith(6); //6
-        faithTrack1.activateFavor(1);
 
         assertEquals(2, faithTrack.calculatePoints());
-        assertEquals(4, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(1); //7
-        faithTrack1.addFaith(1); //7
 
         assertEquals(2, faithTrack.calculatePoints());
-        assertEquals(4, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(2); //9
-        faithTrack1.addFaith(2); //9
 
         assertEquals(4, faithTrack.calculatePoints());
-        assertEquals(6, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(1); //10
-        faithTrack1.addFaith(1); //10
 
         assertEquals(4, faithTrack.calculatePoints());
-        assertEquals(6, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(2); //12
-        faithTrack1.addFaith(2); //12
-        faithTrack1.activateFavor(2);
 
         assertEquals(6, faithTrack.calculatePoints());
-        assertEquals(11, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(1); //13
-        faithTrack1.addFaith(1); //13
 
         assertEquals(6, faithTrack.calculatePoints());
-        assertEquals(11, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(2); //15
-        faithTrack1.addFaith(2); //15
 
         assertEquals(9, faithTrack.calculatePoints());
-        assertEquals(14, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(1); //16
-        faithTrack1.addFaith(1); //16
 
         assertEquals(9, faithTrack.calculatePoints());
-        assertEquals(14, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(2); //18
-        faithTrack1.addFaith(2); //18
 
         assertEquals(12, faithTrack.calculatePoints());
-        assertEquals(17, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(1); //19
-        faithTrack1.addFaith(1); //19
-        faithTrack1.activateFavor(3);
 
         assertEquals(12, faithTrack.calculatePoints());
-        assertEquals(21, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(2); //21
-        faithTrack1.addFaith(2); //21
 
         assertEquals(16, faithTrack.calculatePoints());
-        assertEquals(25, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(1); //22
-        faithTrack1.addFaith(1); //22
 
         assertEquals(16, faithTrack.calculatePoints());
-        assertEquals(25, faithTrack1.calculatePoints());
 
         faithTrack.addFaith(2); //24
-        faithTrack1.addFaith(2); //24
 
         assertEquals(20, faithTrack.calculatePoints());
-        assertEquals(29, faithTrack1.calculatePoints());
 
     }
 
