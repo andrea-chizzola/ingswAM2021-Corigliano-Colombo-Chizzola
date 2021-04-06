@@ -12,15 +12,11 @@ public class StrongBox {
     private HashMap<ResourceColor, Integer> resources;
 
     /**
-     * creates a new StrongBox with each resource set to 0
+     * creates a new  empty StrongBox
      */
     public StrongBox(){
         
         resources = new HashMap<ResourceColor, Integer>();
-        resources.put(ResourceColor.BLUE, 0);
-        resources.put(ResourceColor.GRAY, 0);
-        resources.put(ResourceColor.YELLOW, 0);
-        resources.put(ResourceColor.PURPLE, 0);
 
     }
 
@@ -33,12 +29,13 @@ public class StrongBox {
 
         ResourceColor color = resource.getColor();
 
-        resources.put(color, (resources.get(color) + quantity));
-
+        if(resources.containsKey(color)) {
+            resources.put(color, (resources.get(color) + quantity));
+        }else resources.put(color, quantity);
     }
 
     /**
-     * removes a specific (POSITIVE) quantity of a resource from the strongbox
+     * removes a specific (POSITIVE) quantity of a resource from the strongbox. The caller has to check if there are enough resources
      * @param resource represents the resource we want to remove from the strongbox
      * @param quantity represents how much of that resource we want to remove
      */
@@ -46,8 +43,9 @@ public class StrongBox {
 
         ResourceColor color = resource.getColor();
 
-        resources.put(color, resources.get(color) - quantity);
-
+        if(resources.containsKey(color)) {
+            resources.put(color, (resources.get(color) - quantity));
+        }
     }
 
     /**
@@ -59,16 +57,17 @@ public class StrongBox {
 
         ResourceColor color = resource.getColor();
 
-        return resources.get(color);
-
+        if(resources.containsKey(color)) {
+            return resources.get(color);
+        }else return 0;
     }
 
     /**
-     * @return returns th victory points related to the resources in the strongbox, 1 point every 5 resources
+     * @return returns the total resources left in the strongbox
      */
-    public int calculateVictoryPoints(){
+    public int calculateTotalResources(){
 
-        return (resources.values().stream().mapToInt(Integer::intValue).sum() / 5);
+        return resources.values().stream().mapToInt(Integer::intValue).sum();
 
     }
 

@@ -152,29 +152,32 @@ class StrongBoxTest {
 
     }
 
+    /**
+     * tests the correct sum of the resources left in the strongbox
+     */
     @Test
-    void calculateVictoryPoints(){
+    void calculateTotalResources(){
 
-        assertEquals(0, strongBox.calculateVictoryPoints());
+        assertEquals(0, strongBox.calculateTotalResources());
 
         strongBox.addResource(coin, 2);
         strongBox.addResource(servant, 2);
 
-        assertEquals(0, strongBox.calculateVictoryPoints());
+        assertEquals(4, strongBox.calculateTotalResources());
 
         strongBox.addResource(shield, 1);
 
-        assertEquals(1, strongBox.calculateVictoryPoints());
+        assertEquals(5, strongBox.calculateTotalResources());
 
         strongBox.takeResource(coin, 2);
         strongBox.takeResource(servant, 2);
         strongBox.takeResource(shield, 1);
 
-        assertEquals(0, strongBox.calculateVictoryPoints());
+        assertEquals(0, strongBox.calculateTotalResources());
 
         strongBox.addResource(stone, 10);
 
-        assertEquals(2, strongBox.calculateVictoryPoints());
+        assertEquals(10, strongBox.calculateTotalResources());
 
     }
 }
