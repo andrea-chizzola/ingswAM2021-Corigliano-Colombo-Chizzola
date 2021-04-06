@@ -62,6 +62,71 @@ class FaithTrackTest {
     }
 
     /**
+     * tests the exception is thrown in case of nonexistent section
+     */
+    @Test
+    @DisplayName("Activate Favor exception")
+    void activateFavorException(){
+
+        Exception exception;
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> {faithTrack.activateFavor(5);});
+        assertEquals(exception.getMessage(), "Nonexistent Vatican Report Section");
+
+    }
+
+    /**
+     * tests the exception is thrown in case of nonexistent section
+     */
+    @Test
+    @DisplayName("Discard Favor exception")
+    void discardFavorException(){
+
+        Exception exception;
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> {faithTrack.discardFavor(5);});
+        assertEquals(exception.getMessage(), "Nonexistent Vatican Report Section");
+
+    }
+
+    /**
+     * tests the exception is thrown in case of nonexistent section
+     */
+    @Test
+    @DisplayName("Is inside section exception")
+    void isInsideSectionException(){
+
+        Exception exception;
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> {faithTrack.isInsideSection(5);});
+        assertEquals(exception.getMessage(), "Nonexistent Vatican Report Section");
+
+    }
+
+    /**
+     * tests the exception is thrown in case of nonexistent section
+     */
+    @Test
+    @DisplayName("Is before section exception")
+    void isBeforeSectionException(){
+
+        Exception exception;
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> {faithTrack.isBeforeSection(5);});
+        assertEquals(exception.getMessage(), "Nonexistent Vatican Report Section");
+
+    }
+
+    /**
+     * tests the exception is thrown in case of nonexistent section
+     */
+    @Test
+    @DisplayName("Is end section exception")
+    void isEndSectionException(){
+
+        Exception exception;
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> {faithTrack.isEndSection(5);});
+        assertEquals(exception.getMessage(), "Nonexistent Vatican Report Section");
+
+    }
+
+    /**
      * tests the correct initialization of the faith track sections
      */
     @Test
@@ -131,6 +196,7 @@ class FaithTrackTest {
 
         faithTrack.addFaith(2); //24
         assertEquals(29, faithTrack.calculatePoints());
+
     }
 
 

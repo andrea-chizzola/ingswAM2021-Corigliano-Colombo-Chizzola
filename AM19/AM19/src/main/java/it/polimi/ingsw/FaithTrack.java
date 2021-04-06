@@ -13,12 +13,12 @@ public class FaithTrack {
     private ArrayList<Integer> trackPoints;
 
     /**
-     * keeps track of the current position in the faith track, an integer between 0 and 24
+     * keeps track of the current position in the faith track
      */
     private int position;
 
     /**
-     * contains the 3 sections associated to the faith track
+     * contains the sections associated to the faith track
      */
     private ArrayList<VaticanReportSection> sections;
 
@@ -27,9 +27,9 @@ public class FaithTrack {
      */
     public FaithTrack(ArrayList<Integer> trackPoints, ArrayList<VaticanReportSection> sections) {
 
-        this.trackPoints = new ArrayList<>(25);
+        this.trackPoints = new ArrayList<>();
         this.trackPoints.addAll(trackPoints);
-        this.sections = new ArrayList<>(3);
+        this.sections = new ArrayList<>();
         this.sections.addAll(sections);
 
         position  = 0;
@@ -44,73 +44,94 @@ public class FaithTrack {
     }
 
     /**
-     * @return return the section related to the current position, 0 if the faith marker is currently not inside a section
+     * @return returns the section related to the current position, 0 if the faith marker is currently not inside a section
      */
     public int getSection(){
 
-        if(position >= sections.get(0).getStart() && position <= sections.get(0).getEnd()){
-            return 1;
-        }else if(position >= sections.get(1).getStart() && position <= sections.get(1).getEnd()){
-            return 2;
-        }else if(position >= sections.get(2).getStart() && position <= sections.get(2).getEnd()){
-            return 3;
-        }else return 0;
+
+        for(VaticanReportSection section : sections){
+            if(position >= section.getStart() && position <= section.getEnd()){
+                return sections.indexOf(section) + 1;
+            }
+        }
+
+        return 0;
 
     }
 
     /**
      * activates the pope's favor tile associated to the section
-     * @param section represents the section where we want to activate the pope's favor tile (1, 2 or 3)
+     * @param section represents the section where we want to activate the pope's favor tile
+     * @throws IndexOutOfBoundsException if the section related to the parameter doesn't exist
      */
-    public void activateFavor(int section){
+    public void activateFavor(int section) throws IndexOutOfBoundsException {
 
-        sections.get(section - 1).activateFavor();
+        if (section > 0 && section <= sections.size()) {
+
+            sections.get(section - 1).activateFavor();
+
+        }else throw new IndexOutOfBoundsException("Nonexistent Vatican Report Section");
     }
 
     /**
      * discards the pope's favor tile related to the section
      * @param section represents the section containing the pope's favor tile
+     * @throws IndexOutOfBoundsException if the section related to the parameter doesn't exist
      */
-    public void discardFavor(int section){
+    public void discardFavor(int section) throws IndexOutOfBoundsException{
 
-        sections.get(section - 1).discard();
+        if (section > 0 && section <= sections.size()) {
+
+            sections.get(section - 1).discard();
+
+        }else throw new IndexOutOfBoundsException("Nonexistent Vatican Report Section");
 
     }
 
     /**
-     * @param section represents the section of the faith track (1, 2 or 3)
+     * @param section represents the section of the faith track
      * @return returns true if the current position is inside the section
+     * @throws IndexOutOfBoundsException if the section related to the parameter doesn't exist
      */
-    public boolean isInsideSection(int section){
+    public boolean isInsideSection(int section) throws IndexOutOfBoundsException{
 
-        if(section == getSection()){
-            return true;
-        }else return false;
+        if (section > 0 && section <= sections.size()) {
+
+            return section == getSection();
+
+        }else throw new IndexOutOfBoundsException("Nonexistent Vatican Report Section");
 
     }
 
     /**
-     * @param section represents the section of the faith track (1, 2 or 3)
+     * @param section represents the section of the faith track
      * @return returns true if the current position is before the section
+     * @throws IndexOutOfBoundsException if the section related to the parameter doesn't exist
      */
-    public boolean isBeforeSection(int section){
+    public boolean isBeforeSection(int section) throws IndexOutOfBoundsException{
 
-        if(position < sections.get(section - 1).getStart()){
-            return true;
-        }else return false;
+        if (section > 0 && section <= sections.size()) {
+
+            return position < sections.get(section - 1).getStart();
+
+        }else throw new IndexOutOfBoundsException("Nonexistent Vatican Report Section");
 
     }
 
 
     /**
-     * @param section represents the section of the faith track (1, 2 or 3)
+     * @param section represents the section of the faith track
      * @return true if the player has reached the pope's space of the related section
+     * @throws IndexOutOfBoundsException if the section related to the parameter doesn't exist
      */
-    public boolean isEndSection(int section){
+    public boolean isEndSection(int section) throws IndexOutOfBoundsException{
 
-        if(position == sections.get(section - 1).getEnd()){
-            return true;
-        }else return false;
+        if (section > 0 && section <= sections.size()) {
+
+            return position == sections.get(section - 1).getEnd();
+
+        }else throw new IndexOutOfBoundsException("Nonexistent Vatican Report Section");
+
 
     }
 
@@ -118,20 +139,22 @@ public class FaithTrack {
      * @return true only if the player has reached the last spot of the track
      */
     public boolean isEndTrack(){
-        return getPosition() == 24;
+
+        return getPosition() == sections.get(sections.size() - 1).getEnd();
+
     }
 
 
     /**
-     * moves the faith marker ahead
+     * moves the faith marker ahead of 'amount' positions
      * @param amount represents how many positions we want to add to the faith marker
      */
     public void addFaith(int amount){
 
         if(!isEndTrack()){
-            if(position + amount <= 24){
+            if(position + amount <= sections.get(sections.size() - 1).getEnd()){
                 position = position + amount;
-            }else position = 24;
+            }else position = sections.get(sections.size() - 1).getEnd();
         }
 
     }
@@ -141,10 +164,12 @@ public class FaithTrack {
      */
     public int calculatePoints(){
 
-        int victoryPoints;
+        int victoryPoints = 0;
         int pos = getPosition();
 
-        victoryPoints = sections.get(0).getPopeFavorVictoryPoints() + sections.get(1).getPopeFavorVictoryPoints() + sections.get(2).getPopeFavorVictoryPoints();
+        for(VaticanReportSection section : sections) {
+            victoryPoints = victoryPoints + section.getPopeFavorVictoryPoints();
+        }
 
         while(pos > 0 && trackPoints.get(pos) == 0){
             pos--;
