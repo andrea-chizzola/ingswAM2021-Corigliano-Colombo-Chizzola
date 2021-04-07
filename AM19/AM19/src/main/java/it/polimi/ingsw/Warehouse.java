@@ -265,4 +265,17 @@ public class Warehouse {
         extraShelfKey++;
     }
 
+    /**
+     * This method calculates the number of resources remaining in the strongbox
+     * @return the number of resources remaining in the strongbox
+     */
+    public int calculateTotalResources(){
+
+        int i = defaultShelf.values().stream().mapToInt(ResQuantity::getQuantity).sum();
+        int j = extraShelf.values().stream().mapToInt(ResQuantity::getQuantity).sum();
+
+        return i + j;
+
+    }
+
 }

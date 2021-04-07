@@ -498,4 +498,14 @@ class WarehouseTest {
         assertEquals(resource, new Coin());
     }
 
+    @Test
+    void calculateTotalResources(){
+
+        Warehouse warehouse = new Warehouse();
+
+        System.out.println(warehouse.calculateTotalResources());
+
+
+    }
+
 }
