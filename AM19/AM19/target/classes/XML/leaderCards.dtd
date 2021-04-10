@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+        <!ELEMENT leaderCards (leader)*>
+        <!ELEMENT leader (requirements, effect)>
+
+        <!-- leader card requirements -->
+        <!ELEMENT requirements ((cardRequirement)|(resourceRequirement))>
+        <!-- requirement of type 1 -->
+        <!ELEMENT cardRequirement (card)+>
+        <!ELEMENT card EMPTY>
+        <!-- requirement of type 2 -->
+        <!ELEMENT resourceRequirement (resquantity)+>
+        <!ELEMENT resquantity EMPTY>
+
+        <!-- leader card effects -->
+        <!ELEMENT effect (discount|whiteMarble|production|extraSlot)>
+        <!-- effect of type 1 -->
+        <!ELEMENT discount (resquantity)>
+        <!-- effect of type 2 -->
+        <!ELEMENT whiteMarble EMPTY>
+        <!-- effect of type 3 -->
+        <!ELEMENT production (materials, products)>
+        <!ELEMENT materials (resquantity)+>
+        <!ELEMENT products (resquantity)+>
+        <!-- effect of type 4 -->
+        <!ELEMENT extraSlot (resquantity)>
+
+        <!-- attributes of the elements -->
+        <!ATTLIST leader points CDATA #REQUIRED>
+        <!ATTLIST card color (GREEN|BLUE|YELLOW|PURPLE) #REQUIRED>
+        <!ATTLIST card level CDATA #REQUIRED>
+        <!ATTLIST card amount CDATA #REQUIRED>
+        <!ATTLIST resquantity resource (COINS|SERVANTS|STONES|FAITH|SHIELDS) #REQUIRED>
+        <!ATTLIST resquantity amount CDATA #REQUIRED>
+        <!ATTLIST whiteMarble resource (COINS|SERVANTS|STONES|FAITH|SHIELDS) #REQUIRED>
