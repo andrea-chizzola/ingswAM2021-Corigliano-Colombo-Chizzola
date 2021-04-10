@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- test: first leader card -->
-<!--<!DOCTYPE leaderCards SYSTEM
-        "C:\Users\Davide\Desktop\ingswAM2021-Corigliano-Colombo-Chizzola\AM19\AM19\src\main\resources\XML\leaderCards.dtd">
-        -->
 <leaderCards>
     <leader points = "2">
         <requirements>

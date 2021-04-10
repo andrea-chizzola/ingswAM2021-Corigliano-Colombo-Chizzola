@@ -13,8 +13,8 @@ import java.util.List;
  * this class is used to test the implemented method of the abstract class Card
  */
 public class CardTest {
-    String DevTest = "src\\test\\java\\it\\polimi\\ingsw\\DevCardsTest.xml";
-    String LeaderTest = "src\\test\\java\\it\\polimi\\ingsw\\LeaderCardsTest.xml";
+    String DevTest = "src\\test\\java\\it\\polimi\\ingsw\\XMLSourcesTest\\DevCardsTest.xml";
+    String LeaderTest = "src\\test\\java\\it\\polimi\\ingsw\\XMLSourcesTest\\LeaderCardsTest.xml";
 
     CardParser parser;
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DevelopmentDeckTest {
     private DevelopmentDeck deck;
-    private final String file = "src\\test\\java\\it\\polimi\\ingsw\\DevCardsTest.xml";
+    private final String file = "src\\test\\java\\it\\polimi\\ingsw\\XMLSourcesTest\\DevCardsTest.xml";
 
     @BeforeEach
     public void setUp(){

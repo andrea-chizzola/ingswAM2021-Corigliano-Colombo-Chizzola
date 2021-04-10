@@ -9,7 +9,7 @@ import java.util.List;
 
 public class LeaderDeckTest {
     private LeaderDeck deck;
-    private final String file = "src\\test\\java\\it\\polimi\\ingsw\\LeaderCardsTest.xml";
+    private final String file = "src\\test\\java\\it\\polimi\\ingsw\\XMLSourcesTest\\LeaderCardsTest.xml";
 
     @BeforeEach
     public void setUp(){
