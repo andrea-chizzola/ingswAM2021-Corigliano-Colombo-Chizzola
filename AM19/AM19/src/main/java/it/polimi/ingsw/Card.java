@@ -37,6 +37,13 @@ public abstract class Card{
         return victoryPoint;
     }
 
+    /**
+     * @return the special effect of the target card.
+     */
+    public SpecialEffect getSpecialEffect(){
+        return specialEffect;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

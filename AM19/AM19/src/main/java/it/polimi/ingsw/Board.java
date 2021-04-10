@@ -42,6 +42,10 @@ public class Board {
      */
     private Warehouse warehouse;
 
+    /**
+     * represents the active discounts and possible transformations of the white marble.
+     */
+    private Modifications modification;
     //modifications and turn attributes/methods missing
 
 
@@ -50,11 +54,12 @@ public class Board {
         this.nickname = nickname;
         this.gameBoard = gameBoard;
 
-        leaders = new ArrayList<LeaderCard>();
+        leaders = new ArrayList<>();
         faithTrack = new FaithTrack(trackPoints, sections);
-        slots = new ArrayList<Slot>();
+        slots = new ArrayList<>();
         strongBox = new StrongBox();
         warehouse = new Warehouse();
+        modification = new Modifications();
     }
 
 
@@ -138,6 +143,12 @@ public class Board {
     public StrongBox getStrongBox() {
         return strongBox;
     }
+
+    /**
+     *
+     * @return returns the modification associated to the current player
+     */
+    public Modifications getModifications() { return modification; }
 
 
 }

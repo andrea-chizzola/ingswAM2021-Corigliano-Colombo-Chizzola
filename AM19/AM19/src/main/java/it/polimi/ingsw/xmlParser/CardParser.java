@@ -298,7 +298,8 @@ public class CardParser {
      * @return an object Discount with the given characteristics
      */
     private Discount buildDiscount(Element discount){
-        return new Discount(getRes(discount));
+        Element resQuantity = (Element) discount.getElementsByTagName("resquantity").item(0);
+        return new Discount(buildResQuantity(resQuantity));
     }
 
     /**

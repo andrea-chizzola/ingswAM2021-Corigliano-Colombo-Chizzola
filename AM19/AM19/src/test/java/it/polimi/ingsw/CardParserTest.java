@@ -10,6 +10,7 @@ import java.util.List;
 public class CardParserTest {
     String DevTest = "src\\test\\java\\it\\polimi\\ingsw\\DevCardsTest.xml";
     String LeaderTest = "src\\test\\java\\it\\polimi\\ingsw\\LeaderCardsTest.xml";
+
     CardParser parser;
 
     @BeforeEach
@@ -46,7 +47,7 @@ public class CardParserTest {
         LeaderCard card = cards.get(0);
 
         //construction of card special effect
-        SpecialEffect effect = new Discount(new Servant());
+        SpecialEffect effect = new Discount(new ResQuantity(new Servant(),1));
 
         //construction of card requirements
         LinkedList<CardQuantity> req = new LinkedList<>();

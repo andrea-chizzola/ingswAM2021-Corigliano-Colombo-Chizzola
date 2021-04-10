@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * this class represents the effect 'change the color of a white marble' of a LeaderCard
  */
-public class WhiteMarble implements SpecialEffect{
+public class WhiteMarble extends SpecialEffect{
     /**
      * this attribute represent the resource corresponding to the new color of the marble
      */
@@ -14,9 +14,15 @@ public class WhiteMarble implements SpecialEffect{
     public WhiteMarble(Resource resource){
         this.resource=resource;
     }
+
+    /**
+     * this method add a modification to a player's board, allowing them to turn
+     * white marbles into a target resource
+     * @param board represents the board associated to a player
+     */
     @Override
     public void applyEffect(Board board) {
-
+        board.getModifications().addMarbleTo(resource);
     }
 
     @Override

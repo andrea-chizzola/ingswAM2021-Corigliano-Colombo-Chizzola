@@ -7,7 +7,7 @@ import java.util.Objects;
  * public class that represents a production effect
  */
 
-public class Production implements SpecialEffect{
+public class Production extends SpecialEffect{
     /**
      * this attribute represents the list of required materials
      */
@@ -29,9 +29,16 @@ public class Production implements SpecialEffect{
         this.products = new LinkedList<>();
         this.products.addAll(products);
     }
-    @Override
-    public void applyEffect(Board board) {
 
+    /**
+     *
+     * @return the production of the card
+     */
+    @Override
+    public Production getProduction(){
+        LinkedList<ResQuantity> mat = new LinkedList<>(materials);
+        LinkedList<ResQuantity> prod = new LinkedList<>(products);
+        return new Production(mat, prod);
     }
 
     @Override

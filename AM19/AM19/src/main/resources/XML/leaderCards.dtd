@@ -15,7 +15,7 @@
         <!-- leader card effects -->
         <!ELEMENT effect (discount|whiteMarble|production|extraSlot)>
         <!-- effect of type 1 -->
-        <!ELEMENT discount EMPTY>
+        <!ELEMENT discount (resquantity)>
         <!-- effect of type 2 -->
         <!ELEMENT whiteMarble EMPTY>
         <!-- effect of type 3 -->
@@ -33,4 +33,3 @@
         <!ATTLIST resquantity resource (COINS|SERVANTS|STONES|FAITH|SHIELDS) #REQUIRED>
         <!ATTLIST resquantity amount CDATA #REQUIRED>
         <!ATTLIST whiteMarble resource (COINS|SERVANTS|STONES|FAITH|SHIELDS) #REQUIRED>
-        <!ATTLIST discount resource (COINS|SERVANTS|STONES|FAITH|SHIELDS) #REQUIRED>

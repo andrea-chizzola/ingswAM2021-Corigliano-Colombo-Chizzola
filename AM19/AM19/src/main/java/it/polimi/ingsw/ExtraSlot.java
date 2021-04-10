@@ -4,7 +4,7 @@ import java.util.Objects;
 /**
  * this class represents the effect 'extra slots' of a LeaderCard
  */
-public class ExtraSlot implements SpecialEffect{
+public class ExtraSlot extends SpecialEffect{
 
     /**
      * this attribute represent the size of the extra slot and
@@ -13,12 +13,16 @@ public class ExtraSlot implements SpecialEffect{
     private ResQuantity resQuantity;
 
     public ExtraSlot(ResQuantity resQuantity){
-        
         this.resQuantity = new ResQuantity(resQuantity.getResource(), resQuantity.getQuantity());
     }
+
+    /**
+     * this method adds an extra-slot to a player's wharehouse
+     * @param board represents the board associated to a player
+     */
     @Override
     public void applyEffect(Board board) {
-
+        board.getWarehouse().addShelf(new ResQuantity(resQuantity.getResource(), resQuantity.getQuantity()));
     }
 
     @Override

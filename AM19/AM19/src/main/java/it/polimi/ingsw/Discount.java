@@ -5,19 +5,24 @@ import java.util.Objects;
 /**
  * this class represents the effect 'discount on a resource' of a LeaderCard
  */
-public class Discount implements SpecialEffect {
+public class Discount extends SpecialEffect {
     /**
      * this attribute represents the kind of resource to be discounted
      */
-    private Resource resource;
+    private ResQuantity resQuantity;
 
 
-    public Discount(Resource resource){
-        this.resource = resource;
+    public Discount(ResQuantity resQuantity){
+        this.resQuantity = new ResQuantity(resQuantity.getResource(), resQuantity.getQuantity());
     }
+
+    /**
+     * this method applies the discount effect to the player board
+     * @param board represents the board associated to a player
+     */
     @Override
     public void applyEffect(Board board) {
-
+        board.getModifications().addDiscount(resQuantity.getResource(), resQuantity.getQuantity());
     }
 
     @Override
@@ -25,11 +30,11 @@ public class Discount implements SpecialEffect {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Discount discount = (Discount) o;
-        return Objects.equals(resource, discount.resource);
+        return Objects.equals(resQuantity, discount.resQuantity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(resource);
+        return Objects.hash(resQuantity);
     }
 }
