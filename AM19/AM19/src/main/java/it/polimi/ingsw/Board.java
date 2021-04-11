@@ -130,6 +130,72 @@ public class Board {
 
     }
 
+
+    /**
+     * @return returns the total victory points once the game is ended according to the cards and resources left
+     */
+    public int getTotalPoints(){
+
+        int resourcePoints = (strongBox.calculateTotalResources() + warehouse.calculateTotalResources()) / 5;
+        int trackPoints = faithTrack.calculatePoints();
+
+        int devPoints = 0;
+
+        for(Slot slot : slots){
+
+            devPoints = devPoints + slot.countPoints();
+
+        }
+
+        int leadPoints = 0;
+
+        for(LeaderCard leaderCard : leaders){
+
+            leadPoints = leadPoints + leaderCard.getVictoryPoint();
+
+        }
+
+        return resourcePoints + trackPoints + devPoints + leadPoints;
+
+    }
+
+    /**
+     * moves the faith marker ahead in the faith track and starts a vatican report if a player reached or passed the end of a section
+     * @param amount indicates how many positions have to be added to the faith marker
+     */
+    public void addFaith(int amount){
+
+        faithTrack.addFaith(amount);
+
+        for(VaticanReportSection section : faithTrack.getSections()){
+
+            if((!faithTrack.isBeforeSection(faithTrack.getSections().indexOf(section) + 1) && !faithTrack.isInsideSection(faithTrack.getSections().indexOf(section) + 1)) || (faithTrack.isEndSection(faithTrack.getSections().indexOf(section) + 1))){
+                if(!section.isDiscarded() && !section.getStatus()){
+                    gameBoard.startVaticanReport(faithTrack.getSections().indexOf(section) + 1, faithTrack);
+                }
+            }
+
+        }
+
+    }
+
+    /**
+     * calls the GameBoard's method that adds faith to other plyers
+     * @param amount equals the amount of resources discarded
+     */
+    public void addFaithToOthers(int amount){
+
+        gameBoard.addFaithToOthers(amount, this);
+
+    }
+
+    /**
+     * @return returns the faith track related to the board
+     */
+    public FaithTrack getFaithTrack(){
+        return  faithTrack;
+    }
+
     /**
      * @return returns the warehouse associated to the current player
      */

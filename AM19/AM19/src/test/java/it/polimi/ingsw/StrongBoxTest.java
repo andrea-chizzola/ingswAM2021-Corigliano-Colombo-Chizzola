@@ -52,7 +52,9 @@ class StrongBoxTest {
         strongBox.addResource(shield, 0);
 
         assertEquals(5, strongBox.getQuantity(servant));
+        assertEquals(5, strongBox.getResources().get(servant));
         assertEquals(0, strongBox.getQuantity(shield));
+        assertEquals(0, strongBox.getResources().get(shield));
 
     }
 
@@ -66,7 +68,8 @@ class StrongBoxTest {
         strongBox.addResource(stone, 5);
         strongBox.addResource(stone, 9);
 
-        assertSame(14, strongBox.getQuantity(stone));
+        assertEquals(14, strongBox.getQuantity(stone));
+        assertEquals(14, strongBox.getResources().get(stone));
 
     }
 
@@ -82,6 +85,7 @@ class StrongBoxTest {
         strongBox.addResource(shield, 2);
 
         assertEquals(5, strongBox.getQuantity(shield));
+        assertEquals(5, strongBox.getResources().get(shield));
 
     }
 
@@ -96,6 +100,7 @@ class StrongBoxTest {
         strongBox.takeResource(shield, 0);
 
         assertEquals(10, strongBox.getQuantity(shield));
+        assertEquals(10, strongBox.getResources().get(shield));
 
     }
 
@@ -111,6 +116,7 @@ class StrongBoxTest {
         strongBox.takeResource(coin, 0);
 
         assertEquals(12, strongBox.getQuantity(stone));
+        assertEquals(12, strongBox.getResources().get(stone));
         assertEquals(0, strongBox.getQuantity(coin));
 
     }
@@ -134,8 +140,11 @@ class StrongBoxTest {
         strongBox.takeResource(stone, 0);
 
         assertEquals(3, strongBox.getQuantity(shield));
+        assertEquals(3, strongBox.getResources().get(shield));
         assertEquals(0, strongBox.getQuantity(coin));
+        assertEquals(0, strongBox.getResources().get(coin));
         assertEquals(0, strongBox.getQuantity(stone));
+        assertEquals(0, strongBox.getResources().get(stone));
     }
 
     /**
