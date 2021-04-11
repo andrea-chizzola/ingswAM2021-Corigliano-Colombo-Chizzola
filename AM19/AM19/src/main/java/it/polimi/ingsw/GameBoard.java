@@ -60,7 +60,7 @@ public class GameBoard {
 
         if(nicknames.size() > 1){
             customMode = new MultiplePlayer();
-        }else customMode = new SinglePlayer();
+        }else customMode = new SinglePlayer(this, trackPoints, sections.get(0));
 
         //decks missing
 
@@ -134,6 +134,23 @@ public class GameBoard {
                     }
                 } else board.getFaithTrack().getSection(section).discard();
             }
+        }
+
+    }
+
+    /**
+     * adds faith to the other players when a resource is discarded
+     * @param amount equals the amount of resources discarded
+     * @param currentBoard indicates the board of the player who discarded the resources
+     */
+    public void addFaithToOthers(int amount, Board currentBoard){
+
+        for(Board board : players){
+
+            if(board != currentBoard){
+                board.addFaith(amount);
+            }
+
         }
 
     }

@@ -180,6 +180,16 @@ public class Board {
     }
 
     /**
+     * calls the GameBoard's method that adds faith to other plyers
+     * @param amount equals the amount of resources discarded
+     */
+    public void addFaithToOthers(int amount){
+
+        gameBoard.addFaithToOthers(amount, this);
+
+    }
+
+    /**
      * @return returns the faith track related to the board
      */
     public FaithTrack getFaithTrack(){
