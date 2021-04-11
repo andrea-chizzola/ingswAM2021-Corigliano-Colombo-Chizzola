@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
 
-    private Board board;
+    private GameBoard gameBoard;
 
     @BeforeEach
     void setUp() {
@@ -34,22 +35,127 @@ class BoardTest {
             }
         }
 
-        ArrayList<VaticanReportSection> sections = new ArrayList<VaticanReportSection>(3);
+        ArrayList<VaticanReportSection> sections1 = new ArrayList<VaticanReportSection>(3);
+        ArrayList<VaticanReportSection> sections2 = new ArrayList<VaticanReportSection>(3);
+        ArrayList<VaticanReportSection> sections3 = new ArrayList<VaticanReportSection>(3);
 
-        sections.add(0, new VaticanReportSection(5, 8, 2));
-        sections.add(1, new VaticanReportSection(12, 16, 3));
-        sections.add(2, new VaticanReportSection(19, 24, 4));
+        sections1.add(0, new VaticanReportSection(5, 8, 2));
+        sections1.add(1, new VaticanReportSection(12, 16, 3));
+        sections1.add(2, new VaticanReportSection(19, 24, 4));
 
-        GameBoard gameBoard = new GameBoard();
+        sections2.add(0, new VaticanReportSection(5, 8, 2));
+        sections2.add(1, new VaticanReportSection(12, 16, 3));
+        sections2.add(2, new VaticanReportSection(19, 24, 4));
 
-        board = new Board("firstPlayer", gameBoard, trackPoints, sections);
+        sections3.add(0, new VaticanReportSection(5, 8, 2));
+        sections3.add(1, new VaticanReportSection(12, 16, 3));
+        sections3.add(2, new VaticanReportSection(19, 24, 4));
+
+        ArrayList<String> names = new ArrayList<>();
+        names.add("firstPlayer");
+        names.add("secondPlayer");
+        names.add("thirdPlayer");
+
+        ArrayList<ArrayList<VaticanReportSection>> allSections = new ArrayList<ArrayList<VaticanReportSection>>();
+
+        allSections.add(sections1);
+        allSections.add(sections2);
+        allSections.add(sections3);
+
+        gameBoard = new GameBoard(names, trackPoints, allSections);
 
     }
 
     @AfterEach
     void tearDown() {
 
-        board = null;
+        gameBoard = null;
+
+    }
+
+    /**
+     * tests the correct activation of the vatican report
+     */
+    @Test
+    @DisplayName("Add faith activation")
+    void addFaithActivation(){
+
+        gameBoard.getPlayers().get(0).addFaith(7); //1>7
+        gameBoard.getPlayers().get(1).addFaith(6); //2>6
+        gameBoard.getPlayers().get(2).addFaith(4); //3>4
+
+        assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).getStatus());
+
+        gameBoard.getPlayers().get(0).addFaith(1); //1>8
+
+        assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).isDiscarded() && gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).getStatus());
+        assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).getStatus());
+
+        gameBoard.getPlayers().get(0).addFaith(7); //1>15
+        gameBoard.getPlayers().get(1).addFaith(6); //2>12
+        gameBoard.getPlayers().get(2).addFaith(4); //3>8
+
+        assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).getStatus());
+
+        gameBoard.getPlayers().get(0).addFaith(1); //1>16
+
+        assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).isDiscarded() && gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).getStatus());
+        assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).getStatus());
+        assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).getStatus());
+
+        gameBoard.getPlayers().get(2).addFaith(9); //3>17
+
+        assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).isDiscarded() && gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).getStatus());
+        assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).getStatus());
+        assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).getStatus());
+
+        assertEquals(14, gameBoard.getPlayers().get(0).getTotalPoints());
+        assertEquals(11, gameBoard.getPlayers().get(1).getTotalPoints());
+        assertEquals(9, gameBoard.getPlayers().get(2).getTotalPoints());
+
+    }
+
+    /**
+     * tests the correct behavior of the addFaith method in case a player passes more than one section
+     */
+    @Test
+    @DisplayName("Multiple activation")
+    void addFaithMultipleActivation(){
+
+        gameBoard.getPlayers().get(0).addFaith(7); //1>7
+        gameBoard.getPlayers().get(1).addFaith(6); //2>6
+        gameBoard.getPlayers().get(2).addFaith(4); //3>4
+
+        assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).getStatus());
+
+        gameBoard.getPlayers().get(0).addFaith(9); //1>16
+
+        assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).isDiscarded() && gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).getStatus());
+        assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).getStatus());
+
+        assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).getStatus());
+        assertTrue(gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).getStatus());
+        assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).getStatus());
+
+        gameBoard.getPlayers().get(2).addFaith(13); //3>17
+
+        assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).getStatus());
+        assertTrue(!gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).isDiscarded() && gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).getStatus());
+        assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).getStatus());
+
+        assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).getStatus());
+        assertTrue(gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).getStatus());
+        assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).getStatus());
 
     }
 
@@ -59,7 +165,7 @@ class BoardTest {
     @Test
     void getNickname() {
 
-        assertEquals("firstPlayer", board.getNickname());
+        assertEquals("firstPlayer", gameBoard.getPlayers().get(0).getNickname());
 
     }
 
@@ -69,8 +175,8 @@ class BoardTest {
     @Test
     void setNickname() {
 
-        board.setNickname("newNickname");
-        assertEquals("newNickname", board.getNickname());
+        gameBoard.getPlayers().get(0).setNickname("newNickname");
+        assertEquals("newNickname", gameBoard.getPlayers().get(0).getNickname());
 
     }
 
@@ -81,7 +187,7 @@ class BoardTest {
     void getDevelopmentCardBoundsException() {
 
         Exception exception;
-        exception = assertThrows(IndexOutOfBoundsException.class, () -> {board.getDevelopmentCard(4);});
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> {gameBoard.getPlayers().get(0).getDevelopmentCard(4);});
         assertEquals(exception.getMessage(), "This slot doesn't exist");
 
     }
@@ -93,7 +199,7 @@ class BoardTest {
     void getLeaderCardException() {
 
         Exception exception;
-        exception = assertThrows(IndexOutOfBoundsException.class, () -> {board.getLeaderCard(4);});
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> {gameBoard.getPlayers().get(0).getLeaderCard(4);});
         assertEquals(exception.getMessage(), "Nonexistent Leader card");
 
     }
@@ -105,9 +211,10 @@ class BoardTest {
     void removeLeaderCardException() {
 
         Exception exception;
-        exception = assertThrows(IndexOutOfBoundsException.class, () -> {board.removeLeaderCard(4);});
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> {gameBoard.getPlayers().get(0).removeLeaderCard(4);});
         assertEquals(exception.getMessage(), "Nonexistent Leader card");
 
     }
+
 
 }
