@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- test: first development card -->
-<!--
-<!DOCTYPE developmentCards SYSTEM
-        "C:\Users\Davide\Desktop\ingswAM2021-Corigliano-Colombo-Chizzola\AM19\AM19\src\main\resources\XML\devCards.dtd">
-        -->
 <developmentCards>
     <card points="1" color="GREEN" level="1">
         <requirements>
