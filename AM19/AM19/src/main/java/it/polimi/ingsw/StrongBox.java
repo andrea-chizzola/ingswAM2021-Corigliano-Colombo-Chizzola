@@ -9,15 +9,22 @@ public class StrongBox {
     /**
      * resources associates a resource, identified with its color, to the related quantity
      */
-    private HashMap<ResourceColor, Integer> resources;
+    private HashMap<Resource, Integer> resources;
 
     /**
      * creates a new  empty StrongBox
      */
     public StrongBox(){
         
-        resources = new HashMap<ResourceColor, Integer>();
+        resources = new HashMap<Resource, Integer>();
 
+    }
+
+    /**
+     * @return returns a map containing the resources currently in the strongbox with their quantity
+     */
+    public HashMap<Resource, Integer> getResources() {
+        return resources;
     }
 
     /**
@@ -27,11 +34,9 @@ public class StrongBox {
      */
     public void addResource(Resource resource, int quantity) {
 
-        ResourceColor color = resource.getColor();
-
-        if(resources.containsKey(color)) {
-            resources.put(color, (resources.get(color) + quantity));
-        }else resources.put(color, quantity);
+        if(resources.containsKey(resource)) {
+            resources.put(resource, (resources.get(resource) + quantity));
+        }else resources.put(resource, quantity);
     }
 
     /**
@@ -41,11 +46,9 @@ public class StrongBox {
      */
     public void takeResource(Resource resource, int quantity){
 
-        ResourceColor color = resource.getColor();
-
-        if(resources.containsKey(color)) {
-            resources.put(color, (resources.get(color) - quantity));
-        }
+        if(resources.containsKey(resource) && quantity <= resources.get(resource)) {
+            resources.put(resource, (resources.get(resource) - quantity));
+        }else resources.put(resource, 0);
     }
 
     /**
@@ -55,10 +58,8 @@ public class StrongBox {
      */
     public int getQuantity(Resource resource){
 
-        ResourceColor color = resource.getColor();
-
-        if(resources.containsKey(color)) {
-            return resources.get(color);
+        if(resources.containsKey(resource)) {
+            return resources.get(resource);
         }else return 0;
     }
 
