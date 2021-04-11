@@ -62,6 +62,21 @@ class FaithTrackTest {
     }
 
     /**
+     * tests the correct initialization of the sections
+     */
+    @Test
+    @DisplayName("Get sections test")
+    void getSections(){
+
+        for(VaticanReportSection section : faithTrack.getSections()){
+
+            assertSame(section, faithTrack.getSection(faithTrack.getSections().indexOf(section) + 1));
+
+        }
+
+    }
+
+    /**
      * tests the exception is thrown in case of nonexistent section
      */
     @Test
@@ -130,10 +145,10 @@ class FaithTrackTest {
      * tests the correct initialization of the faith track sections
      */
     @Test
-    @DisplayName("Get section")
-    void getSection() {
+    @DisplayName("Get section number")
+    void getSectionNumber() {
 
-        assertEquals(0, faithTrack.getSection());
+        assertEquals(0, faithTrack.getSectionNumber());
 
     }
 
@@ -279,70 +294,76 @@ class FaithTrackTest {
     void addFaith() {
 
         assertEquals(0, faithTrack.getPosition());
-        assertEquals(0, faithTrack.getSection());
+        assertEquals(0, faithTrack.getSectionNumber());
 
         faithTrack.addFaith(4); //4
 
         assertEquals(4, faithTrack.getPosition());
-        assertEquals(0, faithTrack.getSection());
+        assertEquals(0, faithTrack.getSectionNumber());
 
         faithTrack.addFaith(1); //5
 
         assertEquals(5, faithTrack.getPosition());
-        assertEquals(1, faithTrack.getSection());
+        assertEquals(1, faithTrack.getSectionNumber());
+        assertSame(faithTrack.getSection(1), faithTrack.getSection(faithTrack.getSectionNumber()));
 
         faithTrack.addFaith(3); //8
 
         assertEquals(8, faithTrack.getPosition());
-        assertEquals(1, faithTrack.getSection());
+        assertEquals(1, faithTrack.getSectionNumber());
+        assertSame(faithTrack.getSection(1), faithTrack.getSection(faithTrack.getSectionNumber()));
 
 
         faithTrack.addFaith(1); //9
 
         assertEquals(9, faithTrack.getPosition());
-        assertEquals(0, faithTrack.getSection());
+        assertEquals(0, faithTrack.getSectionNumber());
 
 
         faithTrack.addFaith(2); //11
 
         assertEquals(11, faithTrack.getPosition());
-        assertEquals(0, faithTrack.getSection());
+        assertEquals(0, faithTrack.getSectionNumber());
 
 
         faithTrack.addFaith(1); //12
 
         assertEquals(12, faithTrack.getPosition());
-        assertEquals(2, faithTrack.getSection());
+        assertEquals(2, faithTrack.getSectionNumber());
+        assertSame(faithTrack.getSection(2), faithTrack.getSection(faithTrack.getSectionNumber()));
 
 
         faithTrack.addFaith(4); //16
 
         assertEquals(16, faithTrack.getPosition());
-        assertEquals(2, faithTrack.getSection());
+        assertEquals(2, faithTrack.getSectionNumber());
+        assertSame(faithTrack.getSection(2), faithTrack.getSection(faithTrack.getSectionNumber()));
 
 
         faithTrack.addFaith(1); //17
 
         assertEquals(17, faithTrack.getPosition());
-        assertEquals(0, faithTrack.getSection());
+        assertEquals(0, faithTrack.getSectionNumber());
 
 
         faithTrack.addFaith(1); //18
 
         assertEquals(18, faithTrack.getPosition());
-        assertEquals(0, faithTrack.getSection());
+        assertEquals(0, faithTrack.getSectionNumber());
 
 
         faithTrack.addFaith(1); //19
 
         assertEquals(19, faithTrack.getPosition());
-        assertEquals(3, faithTrack.getSection());
+        assertEquals(3, faithTrack.getSectionNumber());
+        assertSame(faithTrack.getSection(3), faithTrack.getSection(faithTrack.getSectionNumber()));
 
 
         faithTrack.addFaith(5); //24
 
         assertEquals(24, faithTrack.getPosition());
-        assertEquals(3, faithTrack.getSection());
+        assertEquals(3, faithTrack.getSectionNumber());
+        assertSame(faithTrack.getSection(3), faithTrack.getSection(faithTrack.getSectionNumber()));
 
     }
 

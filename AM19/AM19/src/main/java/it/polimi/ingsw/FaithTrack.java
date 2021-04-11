@@ -46,7 +46,7 @@ public class FaithTrack {
     /**
      * @return returns the section related to the current position, 0 if the faith marker is currently not inside a section
      */
-    public int getSection(){
+    public int getSectionNumber(){
 
 
         for(VaticanReportSection section : sections){
@@ -57,6 +57,28 @@ public class FaithTrack {
 
         return 0;
 
+    }
+
+    /**
+     * @param section represents the number of the section required
+     * @return returns the section required
+     */
+    public VaticanReportSection getSection(int section) throws IndexOutOfBoundsException{
+
+
+        if (section > 0 && section <= sections.size()) {
+
+            return sections.get(section - 1);
+
+        }else throw new IndexOutOfBoundsException("Nonexistent Vatican Report Section");
+
+    }
+
+    /**
+     * @return returns an ArrayList containing the sections associated to the faith track
+     */
+    public ArrayList<VaticanReportSection> getSections() {
+        return sections;
     }
 
     /**
@@ -97,7 +119,7 @@ public class FaithTrack {
 
         if (section > 0 && section <= sections.size()) {
 
-            return section == getSection();
+            return section == getSectionNumber();
 
         }else throw new IndexOutOfBoundsException("Nonexistent Vatican Report Section");
 
