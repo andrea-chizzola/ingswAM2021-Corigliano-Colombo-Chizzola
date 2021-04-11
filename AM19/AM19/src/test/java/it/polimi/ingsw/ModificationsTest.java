@@ -1,8 +1,7 @@
 package it.polimi.ingsw;
-import org.junit.jupiter.api.*;
-
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ModificationsTest {

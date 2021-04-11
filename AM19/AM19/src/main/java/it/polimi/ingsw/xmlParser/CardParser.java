@@ -21,7 +21,7 @@ import static java.lang.Integer.parseInt;
  * This class uses the Singleton design pattern
  */
 
-public class CardParser {
+public class CardParser extends Parser{
     /**
      * this attribute is the map of resources
      */
@@ -79,7 +79,7 @@ public class CardParser {
         List<DevelopmentCard> newCards = new ArrayList<>();
 
         try {
-            NodeList cards = getCards(file);
+            NodeList cards = getNodes(file);
 
             for (int i = 0; i < cards.getLength(); i++) {
                 Node card = cards.item(i);
@@ -102,7 +102,7 @@ public class CardParser {
 
         int victoryPoint = getPoints(card);
         int level = getLevel(card);
-        DevColor color = getCardColor(card).getColor();
+        CardColor color = getCardColor(card);
 
         ResourceReqDev requirement = buildRequirementDev((Element) card.getElementsByTagName("requirements").item(0));
         Production effect = buildProduction((Element) card.getElementsByTagName("production").item(0));
@@ -206,23 +206,6 @@ public class CardParser {
     }
 
     /**
-     *
-     * this method opens a file and creates a nodeList containing the cards that we want to parse.
-     * @param file is the name of the file that contains the cards
-     * @return the NodeList of cards
-     * @throws ParserConfigurationException if a DocumentBuild cannot be created
-     * @throws SAXException if any parse errors occur
-     * @throws IOException if any IO errors occur
-     */
-    private NodeList getCards(String file) throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document document = dBuilder.parse(new File(file));
-        Element root = document.getDocumentElement();
-        return root.getChildNodes();
-    }
-
-    /**
      * this function is used to create a set of LeaderCards from a given file
      *
      * @param file the source XML file
@@ -233,7 +216,7 @@ public class CardParser {
         List<LeaderCard> newCards = new ArrayList<>();
 
         try {
-            NodeList cards = getCards(file);
+            NodeList cards = getNodes(file);
 
             for (int i = 0; i < cards.getLength(); i++) {
                 Node card = cards.item(i);

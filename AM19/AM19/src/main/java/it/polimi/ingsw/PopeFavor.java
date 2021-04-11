@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import java.util.Objects;
+
 /**
  * public class representing the pope's favor tiles
  */
@@ -52,5 +54,19 @@ public class PopeFavor {
 
         this.status = status;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PopeFavor popeFavor = (PopeFavor) o;
+        return victoryPoints == popeFavor.victoryPoints &&
+                status == popeFavor.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(victoryPoints, status);
     }
 }

@@ -38,7 +38,7 @@ public class CardParserTest {
         Requirements requirements = new ResourceReqDev(req);
 
         //test of the content of the two cards
-        assertEquals(card, new DevelopmentCard(1,effect, requirements ,DevColor.GREEN, 1 ));
+        assertEquals(card, new DevelopmentCard(1,effect, requirements ,new Green(), 1 ));
     }
 
     @Test
