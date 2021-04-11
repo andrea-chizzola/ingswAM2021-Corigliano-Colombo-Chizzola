@@ -11,7 +11,7 @@ public class ModificationsTest {
     @BeforeEach
     public void setUp(){
         board = new Board("test",
-                new GameBoard(),
+                new GameBoard(new ArrayList<String>(), new ArrayList<Integer>(), new ArrayList<ArrayList<VaticanReportSection>>()),
                 new ArrayList<>(),
                 new ArrayList<>()
                 );
