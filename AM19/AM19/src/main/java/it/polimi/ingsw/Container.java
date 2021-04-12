@@ -23,9 +23,18 @@ public class Container<T> {
     /**
      *
      * this function add all the items of a list inside the container
+     * @param elements is the list to be inserted
      */
     public void addAll(List<T> elements){
         rep.addAll(elements);
+    }
+
+    /**
+     * this method insert an item to the beginning of the deck
+     * @param element is the item to be inserted
+     */
+    public void add(T element){
+        rep.addFirst(element);
     }
 
     /**

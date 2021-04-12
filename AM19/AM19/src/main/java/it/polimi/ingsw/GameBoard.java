@@ -27,10 +27,10 @@ public class GameBoard {
      */
     private MarketBoard marketBoard;
 
-    /**
+    /*
      * represents the current game mode (single player or multiplayer)
      */
-    private CustomMode customMode;
+    //private CustomMode customMode;
 
     /**
      * contains all the development cards, divided by level and color is smaller decks
@@ -47,7 +47,7 @@ public class GameBoard {
 
         nPlayers = nicknames.size();
 
-        players = new ArrayList<Board>(nicknames.size());
+        players = new ArrayList<>(nicknames.size());
 
         for(int i = 0; i < nicknames.size(); i++){
 
@@ -58,9 +58,9 @@ public class GameBoard {
         currentPlayer = players.get(0);
         marketBoard = new MarketBoard();
 
-        if(nicknames.size() > 1){
+        /*if(nicknames.size() > 1){
             customMode = new MultiplePlayer();
-        }else customMode = new SinglePlayer(this, trackPoints, sections.get(0));
+        }else customMode = new SinglePlayer(this, trackPoints, sections.get(0));*/
 
         //decks missing
 
@@ -86,7 +86,7 @@ public class GameBoard {
      */
     public void endTurnMove(){        //invece di next player
 
-        customMode.endTurnAction(this);
+        //customMode.endTurnAction(this);
 
     }
 
