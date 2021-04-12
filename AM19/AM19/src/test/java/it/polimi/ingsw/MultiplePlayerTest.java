@@ -79,7 +79,7 @@ class MultiplePlayerTest {
      */
     @Test
     @DisplayName("Current player switch")
-    void endTurnAction() {
+    void endTurnAction() throws LorenzoWonException {
 
         assertEquals("firstPlayer", gameBoard.getCurrentPlayer().getNickname());
 

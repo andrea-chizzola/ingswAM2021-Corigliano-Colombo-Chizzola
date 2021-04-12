@@ -9,13 +9,13 @@ public interface CustomMode {
      * changes the current player in a multiplayer match or manages Lorenzo's actions in a single player match
      * @param gameBoard represents the game board
      */
-    public void endTurnAction(GameBoard gameBoard);
+    public void endTurnAction(GameBoard gameBoard) throws LorenzoWonException;
 
     /**
      * adds faith to the other players (or to Lorenzo in a single player match) when a resource is discarded
      * @param amount indicates how many faith points have to be added
      * @param gameBoard represents the game board
      */
-    public void addFaithToOthers(int amount, GameBoard gameBoard);
+    public void addFaithToOthers(int amount, GameBoard gameBoard) throws LorenzoWonException;
 
 }

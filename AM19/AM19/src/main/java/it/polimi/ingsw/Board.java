@@ -189,17 +189,17 @@ public class Board {
      * calls the GameBoard's method that adds faith to other players
      * @param amount equals the amount of resources discarded
      */
-    public void addFaithToOthers(int amount)  {
+    public void addFaithToOthers(int amount) throws LorenzoWonException {
 
-        //try {
+        try {
 
             gameBoard.addFaithToOthers(amount);
 
-        //}catch (LorenzoWonException e){
+        }catch (LorenzoWonException e){
 
-        //    throw new LorenzoWonException(e.getMessage());
+            throw new LorenzoWonException(e.getMessage());
 
-        //}
+        }
     }
 
     /**

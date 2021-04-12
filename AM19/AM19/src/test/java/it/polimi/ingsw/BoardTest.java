@@ -163,7 +163,7 @@ class BoardTest {
      * tests the correct behavior of the addFaithToOthers method
      */
     @Test
-    void addFaithToOthers(){
+    void addFaithToOthers() throws LorenzoWonException {
 
         gameBoard.getPlayers().get(0).addFaithToOthers(1);
 

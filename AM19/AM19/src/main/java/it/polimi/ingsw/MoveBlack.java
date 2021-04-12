@@ -23,9 +23,16 @@ public class MoveBlack implements  Action{
      * @param singlePlayer
      */
     @Override
-    public void doAction(SinglePlayer singlePlayer) {
+    public void doAction(SinglePlayer singlePlayer) throws LorenzoWonException{
 
-        singlePlayer.moveBlackCross(quantity);
+        try {
 
+            singlePlayer.moveBlackCross(quantity);
+
+        }catch(LorenzoWonException e){
+
+            throw new LorenzoWonException(e.getMessage());
+
+        }
     }
 }

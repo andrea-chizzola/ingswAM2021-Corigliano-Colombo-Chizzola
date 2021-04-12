@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-public class Discard implements Action{
+public class Discard implements Action {
 
     /**
      * represents the color of the cards that have to be discarded
@@ -19,16 +19,23 @@ public class Discard implements Action{
 
     /**
      * performs the action related to the action token picked
+     *
      * @param singlePlayer
      */
     @Override
-    public void doAction(SinglePlayer singlePlayer) {
+    public void doAction(SinglePlayer singlePlayer) throws LorenzoWonException {
 
+        try {
 
+            singlePlayer.getGameBoard().getDevelopmentDeck().extract(quantity, cardColor);
 
+        } catch (LorenzoWonException e) {
 
+            throw new LorenzoWonException(e.getMessage());
 
         }
 
     }
+
+}
 

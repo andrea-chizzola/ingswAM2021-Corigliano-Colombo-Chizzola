@@ -95,10 +95,17 @@ public class GameBoard {
     /**
      * decides what to do at the end of the turn
      */
-    public void endTurnMove(){        //invece di next player
+    public void endTurnMove() throws LorenzoWonException {        //invece di next player
 
-        customMode.endTurnAction(this);
+        try {
 
+            customMode.endTurnAction(this);
+
+        }catch(LorenzoWonException e){
+
+            throw new LorenzoWonException(e.getMessage());
+
+        }
     }
 
     /**
@@ -165,9 +172,15 @@ public class GameBoard {
      * adds faith to the other players when a resource is discarded
      * @param amount equals the amount of resources discarded
      */
-    public void addFaithToOthers(int amount){
+    public void addFaithToOthers(int amount) throws LorenzoWonException {
 
-        customMode.addFaithToOthers(amount, this);
+        try {
+            customMode.addFaithToOthers(amount, this);
+        }catch(LorenzoWonException e){
+
+            throw new LorenzoWonException(e.getMessage());
+
+        }
 
     }
 

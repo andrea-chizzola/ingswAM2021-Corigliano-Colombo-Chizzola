@@ -55,9 +55,15 @@ public class SinglePlayer implements CustomMode{
      * moves Lorenzo's black cross ahead in the faith track
      * @param amount indicates how many positions the black cross has to be moved ahead
      */
-    public void moveBlackCross(int amount){
+    public void moveBlackCross(int amount) throws LorenzoWonException{
 
         lorenzoTrack.addFaith(amount);
+
+        if(lorenzoTrack.isEndTrack()){
+
+            throw new LorenzoWonException();
+
+        }
 
         gameBoard.checkStartVaticanReport(lorenzoTrack);
 
@@ -69,9 +75,17 @@ public class SinglePlayer implements CustomMode{
      * @param gameBoard represents the game board
      */
     @Override
-    public void endTurnAction(GameBoard gameBoard) {
+    public void endTurnAction(GameBoard gameBoard) throws LorenzoWonException {
 
-        actionTokenDeck.getTop().doAction(this);
+        try {
+
+            actionTokenDeck.getTop().doAction(this);
+
+        }catch(LorenzoWonException e){
+
+            throw new LorenzoWonException(e.getMessage());
+
+        }
         actionTokenDeck.changeList();
 
     }
@@ -82,9 +96,17 @@ public class SinglePlayer implements CustomMode{
      * @param gameBoard represents the game board
      */
     @Override
-    public void addFaithToOthers(int amount, GameBoard gameBoard) {
+    public void addFaithToOthers(int amount, GameBoard gameBoard) throws LorenzoWonException {
 
-        moveBlackCross(amount);
+        try {
+
+            moveBlackCross(amount);
+
+        }catch(LorenzoWonException e){
+
+            throw new LorenzoWonException(e.getMessage());
+
+        }
 
     }
 

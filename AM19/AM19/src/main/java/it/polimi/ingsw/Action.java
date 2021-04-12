@@ -9,7 +9,7 @@ public interface Action {
      * performs the action related to the action token picked
      * @param singlePlayer
      */
-    public void doAction(SinglePlayer singlePlayer);
+    public void doAction(SinglePlayer singlePlayer) throws LorenzoWonException;
 
 
 }
