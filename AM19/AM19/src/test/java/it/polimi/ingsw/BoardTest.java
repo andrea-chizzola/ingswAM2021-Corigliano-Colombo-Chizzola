@@ -62,7 +62,7 @@ class BoardTest {
         allSections.add(sections2);
         allSections.add(sections3);
 
-        gameBoard = new GameBoard(names, trackPoints, allSections);
+        gameBoard = new GameBoard(names, trackPoints, allSections, new ArrayList<Action>());
 
     }
 
@@ -156,6 +156,36 @@ class BoardTest {
         assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(2).getStatus());
         assertTrue(gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(1).getFaithTrack().getSection(2).getStatus());
         assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(2).getStatus());
+
+    }
+
+    /**
+     * tests the correct behavior of the addFaithToOthers method
+     */
+    @Test
+    void addFaithToOthers(){
+
+        gameBoard.getPlayers().get(0).addFaithToOthers(1);
+
+        assertEquals(0, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
+        assertEquals(1, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
+        assertEquals(1, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+
+        gameBoard.endTurnMove();
+
+        gameBoard.getPlayers().get(1).addFaithToOthers(1);
+
+        assertEquals(1, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
+        assertEquals(1, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
+        assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+
+        gameBoard.endTurnMove();
+
+        gameBoard.getPlayers().get(2).addFaithToOthers(1);
+
+        assertEquals(2, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
+        assertEquals(2, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
+        assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
 
     }
 

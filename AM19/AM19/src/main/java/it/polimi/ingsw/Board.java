@@ -63,6 +63,7 @@ public class Board {
     }
 
 
+
     /**
      * @return returns the nickname associated to the player
      */
@@ -167,15 +168,7 @@ public class Board {
 
         faithTrack.addFaith(amount);
 
-        for(VaticanReportSection section : faithTrack.getSections()){
-
-            if((!faithTrack.isBeforeSection(faithTrack.getSections().indexOf(section) + 1) && !faithTrack.isInsideSection(faithTrack.getSections().indexOf(section) + 1)) || (faithTrack.isEndSection(faithTrack.getSections().indexOf(section) + 1))){
-                if(!section.isDiscarded() && !section.getStatus()){
-                    gameBoard.startVaticanReport(faithTrack.getSections().indexOf(section) + 1, faithTrack);
-                }
-            }
-
-        }
+        gameBoard.checkStartVaticanReport(faithTrack);
 
     }
 
@@ -185,7 +178,7 @@ public class Board {
      */
     public void addFaithToOthers(int amount){
 
-        gameBoard.addFaithToOthers(amount, this);
+        gameBoard.addFaithToOthers(amount);
 
     }
 

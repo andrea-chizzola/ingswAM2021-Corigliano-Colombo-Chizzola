@@ -27,27 +27,27 @@ public class GameBoard {
      */
     private MarketBoard marketBoard;
 
-    /*
+    /**
      * represents the current game mode (single player or multiplayer)
      */
-    //private CustomMode customMode;
+    private CustomMode customMode;
 
     /**
      * contains all the development cards, divided by level and color is smaller decks
      */
-    private ArrayList<DevelopmentDeck> developmentDecks;
+    private DevelopmentDeck developmentDeck;
 
     /**
      * contains the leader cards chosen by each player
      */
-    private ArrayList<LeaderDeck> leaderDecks;
+    private LeaderDeck leaderDeck;
 
     //TEMPORARY CONSTRUCTOR
-    public GameBoard(ArrayList<String> nicknames, ArrayList<Integer> trackPoints, ArrayList<ArrayList<VaticanReportSection>> sections) {  //fix board test
+    public GameBoard(ArrayList<String> nicknames, ArrayList<Integer> trackPoints, ArrayList<ArrayList<VaticanReportSection>> sections, ArrayList<Action> actions) {  //fix board test
 
         nPlayers = nicknames.size();
 
-        players = new ArrayList<>(nicknames.size());
+        players = new ArrayList<Board>(nicknames.size());
 
         for(int i = 0; i < nicknames.size(); i++){
 
@@ -58,9 +58,13 @@ public class GameBoard {
         currentPlayer = players.get(0);
         marketBoard = new MarketBoard();
 
-        /*if(nicknames.size() > 1){
+        if(nicknames.size() > 1){
             customMode = new MultiplePlayer();
-        }else customMode = new SinglePlayer(this, trackPoints, sections.get(0));*/
+        }else {
+
+            customMode = new SinglePlayer(this, trackPoints, sections.get(1), actions);
+
+        }
 
         //decks missing
 
@@ -86,7 +90,7 @@ public class GameBoard {
      */
     public void endTurnMove(){        //invece di next player
 
-        //customMode.endTurnAction(this);
+        customMode.endTurnAction(this);
 
     }
 
@@ -138,20 +142,25 @@ public class GameBoard {
 
     }
 
+    public void checkStartVaticanReport(FaithTrack currentTrack){
+
+        for(VaticanReportSection section : currentTrack.getSections()){
+            if(currentTrack.isEndSection(currentTrack.getSections().indexOf(section) + 1) || (!currentTrack.isBeforeSection(currentTrack.getSections().indexOf(section) + 1) && !currentTrack.isInsideSection(currentTrack.getSections().indexOf(section) + 1))){
+                if(!currentTrack.getSections().get(currentTrack.getSections().indexOf(section) + 1).isDiscarded() && !currentTrack.getSections().get(currentTrack.getSections().indexOf(section) + 1).getStatus()){
+                    startVaticanReport(currentTrack.getSections().indexOf(section) + 1, currentTrack);
+                }
+            }
+        }
+
+    }
+
     /**
      * adds faith to the other players when a resource is discarded
      * @param amount equals the amount of resources discarded
-     * @param currentBoard indicates the board of the player who discarded the resources
      */
-    public void addFaithToOthers(int amount, Board currentBoard){
+    public void addFaithToOthers(int amount){
 
-        for(Board board : players){
-
-            if(board != currentBoard){
-                board.addFaith(amount);
-            }
-
-        }
+        customMode.addFaithToOthers(amount, this);
 
     }
 
