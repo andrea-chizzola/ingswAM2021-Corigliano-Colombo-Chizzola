@@ -63,6 +63,14 @@ public class Board {
     }
 
     /**
+     * adds the picked leader cards to the list
+     * @param leaders contains the leaders picked
+     */
+    public void setLeaders(ArrayList<LeaderCard> leaders) {
+        this.leaders = leaders;
+    }
+
+    /**
      * @return returns the game board
      */
     public GameBoard getGameBoard() {
@@ -178,13 +186,20 @@ public class Board {
     }
 
     /**
-     * calls the GameBoard's method that adds faith to other plyers
+     * calls the GameBoard's method that adds faith to other players
      * @param amount equals the amount of resources discarded
      */
-    public void addFaithToOthers(int amount){
+    public void addFaithToOthers(int amount)  {
 
-        gameBoard.addFaithToOthers(amount);
+        //try {
 
+            gameBoard.addFaithToOthers(amount);
+
+        //}catch (LorenzoWonException e){
+
+        //    throw new LorenzoWonException(e.getMessage());
+
+        //}
     }
 
     /**
