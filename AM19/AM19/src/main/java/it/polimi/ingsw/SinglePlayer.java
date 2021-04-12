@@ -38,6 +38,13 @@ public class SinglePlayer implements CustomMode{
     }
 
     /**
+     * @return returns the game board
+     */
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    /**
      * @return returns the action token deck
      */
     public ActionTokenDeck getActionTokenDeck() {

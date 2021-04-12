@@ -71,6 +71,13 @@ public class GameBoard {
     }
 
     /**
+     * @return returns the development cards deck
+     */
+    public DevelopmentDeck getDevelopmentDeck() {
+        return developmentDeck;
+    }
+
+    /**
      * sets a new current player
      * @param currentPlayer represents the new current player
      */
