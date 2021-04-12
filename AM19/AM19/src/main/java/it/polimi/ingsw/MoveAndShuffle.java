@@ -25,7 +25,7 @@ public class MoveAndShuffle implements Action{
     @Override
     public void doAction(SinglePlayer singlePlayer) {
 
-        singlePlayer.moveBlackCross(1);
+        singlePlayer.moveBlackCross(quantity);
 
         singlePlayer.getActionTokenDeck().mergeAndShuffle();
 
