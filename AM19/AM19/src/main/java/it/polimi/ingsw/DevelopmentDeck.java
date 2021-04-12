@@ -74,11 +74,12 @@ public class DevelopmentDeck {
             throws LorenzoWonException, IllegalArgumentException{
         LinkedList<DevelopmentCard> extracted = new LinkedList<>();
         int n = num;
-        for(int level=1; level<4 && n>0; level++){
+
+        for(int level=1; level<4; level++){
             try{
                 extracted.addAll(decks
                         .get(new ColorLevelKey(color, level))
-                        .extractTop(num));
+                        .extractTop(n));
                 n=num-extracted.size();
             }
             //If a IllegalArgumentException is thrown, the target deck is empty.
@@ -90,7 +91,7 @@ public class DevelopmentDeck {
                 throw new IllegalArgumentException("The deck does not exist");
             }
         }
-        if(decks.get(new ColorLevelKey(color,2)).size() ==0 ) throw new LorenzoWonException();
+        if(decks.get(new ColorLevelKey(color,3)).size() == 0 ) throw new LorenzoWonException();
         return extracted;
     }
 
