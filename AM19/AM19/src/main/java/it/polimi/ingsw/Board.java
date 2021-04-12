@@ -62,7 +62,12 @@ public class Board {
         modification = new Modifications();
     }
 
-
+    /**
+     * @return returns the game board
+     */
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
 
     /**
      * @return returns the nickname associated to the player

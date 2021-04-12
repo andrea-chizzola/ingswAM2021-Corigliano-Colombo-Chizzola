@@ -5,6 +5,10 @@ package it.polimi.ingsw;
  */
 public interface CustomMode {
 
+    /**
+     * changes the current player in a multiplayer match or manages Lorenzo's actions in a single player match
+     * @param gameBoard represents the game board
+     */
     public void endTurnAction(GameBoard gameBoard);
 
     /**
