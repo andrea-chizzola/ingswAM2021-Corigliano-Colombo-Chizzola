@@ -38,6 +38,13 @@ public class SinglePlayer implements CustomMode{
     }
 
     /**
+     * @return returns Lorenzo's faith track
+     */
+    public FaithTrack getLorenzoTrack() {
+        return lorenzoTrack;
+    }
+
+    /**
      * @return returns the game board
      */
     public GameBoard getGameBoard() {
@@ -86,7 +93,6 @@ public class SinglePlayer implements CustomMode{
             throw new LorenzoWonException(e.getMessage());
 
         }
-        actionTokenDeck.changeList();
 
     }
 

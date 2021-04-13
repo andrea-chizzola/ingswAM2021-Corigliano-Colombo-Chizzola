@@ -34,6 +34,7 @@ public class Discard implements Action {
             throw new LorenzoWonException(e.getMessage());
 
         }
+        singlePlayer.getActionTokenDeck().changeList();
 
     }
 

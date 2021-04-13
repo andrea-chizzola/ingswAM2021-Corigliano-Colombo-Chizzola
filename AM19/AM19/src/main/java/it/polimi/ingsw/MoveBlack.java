@@ -34,5 +34,6 @@ public class MoveBlack implements  Action{
             throw new LorenzoWonException(e.getMessage());
 
         }
+        singlePlayer.getActionTokenDeck().changeList();
     }
 }
