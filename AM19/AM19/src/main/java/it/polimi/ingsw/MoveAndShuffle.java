@@ -11,21 +11,12 @@ public class MoveAndShuffle implements Action{
      */
     int amount;
 
-    public MoveAndShuffle(int amount){
-        this.amount=amount;
-    }
-
-    /**
-     * indicates how many positions the black cross has to be moved
-     */
-    public int quantity;
-
     /**
      * creates a new move black and shuffle token
-     * @param quantity indicates how many positions the black cross has to be moved
+     * @param amount indicates how many positions the black cross has to be moved
      */
-    public MoveAndShuffle(int quantity) {
-        this.quantity = quantity;
+    public MoveAndShuffle(int amount){
+        this.amount=amount;
     }
 
     /**
@@ -35,7 +26,7 @@ public class MoveAndShuffle implements Action{
     @Override
     public void doAction(SinglePlayer singlePlayer) {
 
-        singlePlayer.moveBlackCross(quantity);
+        singlePlayer.moveBlackCross(amount);
 
         singlePlayer.getActionTokenDeck().mergeAndShuffle();
 

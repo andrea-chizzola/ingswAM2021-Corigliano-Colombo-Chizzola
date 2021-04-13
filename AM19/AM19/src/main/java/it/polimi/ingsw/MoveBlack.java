@@ -16,26 +16,13 @@ public class MoveBlack implements  Action{
     }
 
     /**
-     * indicates how many positions the black cross has to be moved
-     */
-    public int quantity;
-
-    /**
-     * creates a new move black token
-     * @param quantity indicates how many positions the black cross has to be moved
-     */
-    public MoveBlack(int quantity) {
-        this.quantity = quantity;
-    }
-
-    /**
      * moves Lorenzo's black cross ahead of two positions
      * @param singlePlayer is the board of Lorenzo il Magnifico
      */
     @Override
     public void doAction(SinglePlayer singlePlayer) {
 
-        singlePlayer.moveBlackCross(quantity);
+        singlePlayer.moveBlackCross(amount);
 
     }
 
