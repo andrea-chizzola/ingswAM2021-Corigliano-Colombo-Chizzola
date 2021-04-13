@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -7,16 +8,20 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MarketBoardTest {
+    private final String file = "defaultConfiguration.xml";
+    private MarketBoard market;
 
+    @BeforeEach
+    public void setUp(){
+        market = new MarketBoard(file);
+    }
     @Test
     public void testConstructor(){
-        MarketBoard market = new MarketBoard();
         market.getTray().stream().forEach(System.out::println);
     }
 
     @Test
     public void testConstructor1(){
-        MarketBoard market = new MarketBoard();
         ArrayList<Marble> tray;
         tray = market.getTray();
         int i,j;
@@ -31,7 +36,6 @@ class MarketBoardTest {
 
     @Test
     public void testGetColumn(){
-        MarketBoard market = new MarketBoard();
         ArrayList<Marble> tray;
         ArrayList<Marble> col = null;
         tray = market.getTray();
@@ -53,7 +57,6 @@ class MarketBoardTest {
 
     @Test
     public void testTakeColumn(){
-        MarketBoard market = new MarketBoard();
         ArrayList<Marble> tray;
         ArrayList<Marble> col = null;
         tray = market.getTray();
@@ -88,7 +91,6 @@ class MarketBoardTest {
 
     @Test
     public void testGetRow() {
-        MarketBoard market = new MarketBoard();
         ArrayList<Marble> tray;
         ArrayList<Marble> row = null;
         tray = market.getTray();
@@ -114,7 +116,6 @@ class MarketBoardTest {
 
         @Test
         public void testTakeRow(){
-            MarketBoard market = new MarketBoard();
             ArrayList<Marble> tray;
             ArrayList<Marble> row = null;
             tray = market.getTray();
@@ -145,5 +146,4 @@ class MarketBoardTest {
             System.out.println(market.getSlide());
             System.out.println();
     }
-
 }

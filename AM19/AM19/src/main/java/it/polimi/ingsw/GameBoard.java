@@ -1,5 +1,9 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.xmlParser.ActionTokenParser;
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
+import it.polimi.ingsw.xmlParser.FaithTrackParser;
+
 import java.util.ArrayList;
 
 /**
@@ -42,28 +46,30 @@ public class GameBoard {
      */
     private LeaderDeck leaderDeck;
 
-    //TEMPORARY CONSTRUCTOR
-    public GameBoard(ArrayList<String> nicknames, ArrayList<Integer> trackPoints, ArrayList<ArrayList<VaticanReportSection>> sections, ArrayList<Action> actions) {  //fix board test
+    public GameBoard(ArrayList<String> nicknames, String file) {  //fix board test
+
+        developmentDeck = new DevelopmentDeck(file);
+        leaderDeck = new LeaderDeck(file);
+        marketBoard = new MarketBoard(file);
 
         nPlayers = nicknames.size();
-
-        players = new ArrayList<Board>(nicknames.size());
+        players = new ArrayList<>(nicknames.size());
 
         for(int i = 0; i < nicknames.size(); i++){
-
-            players.add(new Board(nicknames.get(i), this, trackPoints, sections.get(i)));
-
+            players.add(new Board(nicknames.get(i),
+                    this,
+                    file));
         }
 
         currentPlayer = players.get(0);
-        marketBoard = new MarketBoard();
 
-        if(nicknames.size() > 1){
-            customMode = new MultiplePlayer();
-        }else {
-
-            customMode = new SinglePlayer(this, trackPoints, sections.get(1), actions);
-
+        if(nicknames.size() > 1) customMode = new MultiplePlayer() ;
+        else {
+            ActionTokenParser parser = ActionTokenParser.instance();
+            customMode = new SinglePlayer(this,
+                    ConfigurationParser.getTrackPath(file),
+                    ConfigurationParser.getActionTokensPath(file)
+                    );
         }
 
         //decks missing

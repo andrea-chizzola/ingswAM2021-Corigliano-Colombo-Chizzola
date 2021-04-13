@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <faithTrack file ="defaultFaithTrack.xml"/>
+    <developmentCards file = "defaultDevCards.xml"/>
+    <leaderCards file = "defaultLeaderCards.xml" />
+    <actionTokens file = "defaultActionTokens.xml"/>
+    <marketBoard file = "defaultMarketBoard.xml"/>
+
+    <cardsLevel max = "3"/>
+
+    <slot num = "3"/>
+
+    <warehouse>
+        <slot num = "1" capacity = "1"/>
+        <slot num = "2" capacity = "2"/>
+        <slot num = "3" capacity = "3"/>
+    </warehouse>
+
+</configuration>

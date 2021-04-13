@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.xmlParser.CardParser;
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
 import java.util.LinkedList;
 
@@ -20,8 +21,7 @@ public class LeaderDeck {
      */
     public LeaderDeck(String file){
         deck = new Container<>();
-        CardParser parser = CardParser.instance();
-        deck.addAll(parser.parseLeaderCard(file));
+        deck.addAll(ConfigurationParser.parseLeaderCard(file));
         deck.shuffle();
     }
 

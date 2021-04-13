@@ -21,7 +21,7 @@ import static java.lang.Integer.parseInt;
  * This class uses the Singleton design pattern
  */
 
-public class CardParser extends Parser{
+public class CardParser{
     /**
      * this attribute is the map of resources
      */
@@ -68,7 +68,7 @@ public class CardParser extends Parser{
     }
 
     /**
-     * this function is used to create a set of DevelopmentCards from a given file
+     * this function is used to create a set of DevelopmentCards from a given file (full path is needed)
      *
      * @param file the source XML file
      * @return the LinkedList of DevelopmentCards created using the file
@@ -79,7 +79,7 @@ public class CardParser extends Parser{
         List<DevelopmentCard> newCards = new ArrayList<>();
 
         try {
-            NodeList cards = getNodes(file);
+            NodeList cards = ConfigurationParser.getRoot(file).getChildNodes();
 
             for (int i = 0; i < cards.getLength(); i++) {
                 Node card = cards.item(i);
@@ -206,7 +206,7 @@ public class CardParser extends Parser{
     }
 
     /**
-     * this function is used to create a set of LeaderCards from a given file
+     * this function is used to create a set of LeaderCards from a given file (full path is needed)
      *
      * @param file the source XML file
      * @return the LinkedList of LeaderCards created using the file
@@ -216,7 +216,7 @@ public class CardParser extends Parser{
         List<LeaderCard> newCards = new ArrayList<>();
 
         try {
-            NodeList cards = getNodes(file);
+            NodeList cards = ConfigurationParser.getRoot(file).getChildNodes();
 
             for (int i = 0; i < cards.getLength(); i++) {
                 Node card = cards.item(i);

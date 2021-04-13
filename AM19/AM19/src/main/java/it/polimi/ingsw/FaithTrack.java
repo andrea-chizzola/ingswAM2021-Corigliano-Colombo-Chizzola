@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * public class representing the faith track, one for each player
@@ -201,4 +202,18 @@ public class FaithTrack {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FaithTrack that = (FaithTrack) o;
+        return position == that.position &&
+                Objects.equals(trackPoints, that.trackPoints) &&
+                Objects.equals(sections, that.sections);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(trackPoints, position, sections);
+    }
 }

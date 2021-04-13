@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
+import it.polimi.ingsw.xmlParser.FaithTrackParser;
+
 import java.util.ArrayList;
 
 /**
@@ -50,16 +53,16 @@ public class Board {
     //turn attribute/methods missing
 
 
-    public Board(String nickname, GameBoard gameBoard, ArrayList<Integer> trackPoints, ArrayList<VaticanReportSection> sections) {
+    public Board(String nickname, GameBoard gameBoard, String file) {
 
         this.nickname = nickname;
         this.gameBoard = gameBoard;
+        faithTrack = ConfigurationParser.parseFaithTrack(file);
 
         leaders = new ArrayList<>();
-        faithTrack = new FaithTrack(trackPoints, sections);
         slots = new ArrayList<>();
         strongBox = new StrongBox();
-        warehouse = new Warehouse();
+        warehouse = new Warehouse(file);
         modification = new Modifications();
     }
 

@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.xmlParser.CardParser;
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
+
 import java.util.*;
 
 /**
@@ -45,8 +47,7 @@ public class DevelopmentDeck {
      * @param file is the name of the file that contains the characteristics of the DevelopmentCards
      */
     public DevelopmentDeck(String file){
-        CardParser parser = CardParser.instance();
-        List<DevelopmentCard> cards = parser.parseDevelopmentCard(file);
+        List<DevelopmentCard> cards = ConfigurationParser.parseDevelopmentCard(file);
         Collections.shuffle(cards);
 
         decks = new HashMap<>();
