@@ -31,6 +31,20 @@ public class ActionTokenDeck {
     }
 
     /**
+     * @return returns a container which contains the unused tokens
+     */
+    public Container<Action> getUnusedActionTokens() {
+        return unusedActionTokens;
+    }
+
+    /**
+     * @return returns a list containing the unused tokens
+     */
+    public ArrayList<Action> getUsedActionTokens() {
+        return usedActionTokens;
+    }
+
+    /**
      * merges the used action tokens to the unused in a single deck end then shuffles it
      */
     public void mergeAndShuffle(){
