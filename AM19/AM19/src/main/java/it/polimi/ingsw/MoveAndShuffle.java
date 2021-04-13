@@ -16,13 +16,26 @@ public class MoveAndShuffle implements Action{
     }
 
     /**
+     * indicates how many positions the black cross has to be moved
+     */
+    public int quantity;
+
+    /**
+     * creates a new move black and shuffle token
+     * @param quantity indicates how many positions the black cross has to be moved
+     */
+    public MoveAndShuffle(int quantity) {
+        this.quantity = quantity;
+    }
+
+    /**
      * moves Lorenzo's black cross ahead of one position and shuffles the action token deck (the used tokens and the unused ones together)
      * @param singlePlayer is the board of Lorenzo il Magnifico
      */
     @Override
     public void doAction(SinglePlayer singlePlayer) {
 
-        singlePlayer.moveBlackCross(1);
+        singlePlayer.moveBlackCross(quantity);
 
         singlePlayer.getActionTokenDeck().mergeAndShuffle();
 
