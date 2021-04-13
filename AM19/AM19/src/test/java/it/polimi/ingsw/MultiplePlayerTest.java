@@ -96,4 +96,34 @@ class MultiplePlayerTest {
         assertEquals("firstPlayer", gameBoard.getCurrentPlayer().getNickname());
 
     }
+
+    /**
+     * tests the correct behavior of the addFaithToOthers method
+     */
+    @Test
+    void addFaithToOthers() throws LorenzoWonException, PlayerWonException {
+
+        gameBoard.getPlayers().get(0).addFaithToOthers(1);
+
+        assertEquals(0, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
+        assertEquals(1, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
+        assertEquals(1, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+
+        gameBoard.endTurnMove();
+
+        gameBoard.getPlayers().get(1).addFaithToOthers(1);
+
+        assertEquals(1, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
+        assertEquals(1, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
+        assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+
+        gameBoard.endTurnMove();
+
+        gameBoard.getPlayers().get(2).addFaithToOthers(1);
+
+        assertEquals(2, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
+        assertEquals(2, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
+        assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+
+    }
 }

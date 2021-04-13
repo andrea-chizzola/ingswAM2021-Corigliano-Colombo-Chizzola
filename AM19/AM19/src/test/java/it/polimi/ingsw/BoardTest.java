@@ -78,7 +78,7 @@ class BoardTest {
      */
     @Test
     @DisplayName("Add faith activation")
-    void addFaithActivation(){
+    void addFaithActivation() throws PlayerWonException {
 
         gameBoard.getPlayers().get(0).addFaith(7); //1>7
         gameBoard.getPlayers().get(1).addFaith(6); //2>6
@@ -127,7 +127,7 @@ class BoardTest {
      */
     @Test
     @DisplayName("Multiple activation")
-    void addFaithMultipleActivation(){
+    void addFaithMultipleActivation() throws PlayerWonException {
 
         gameBoard.getPlayers().get(0).addFaith(7); //1>7
         gameBoard.getPlayers().get(1).addFaith(6); //2>6
@@ -160,10 +160,43 @@ class BoardTest {
     }
 
     /**
+     * tests the game ends correctly, throwing a PlayerWon exception
+     * @throws PlayerWonException
+     */
+    @Test
+    @DisplayName("Instant end")
+    void addFaithEndGame() throws PlayerWonException {
+
+        try {
+            gameBoard.getPlayers().get(0).addFaith(24);
+        }catch(PlayerWonException e){
+
+            assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).getStatus());
+            assertTrue(gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).getStatus());
+            assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).getStatus());
+
+            assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).getStatus());
+            assertTrue(gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).getStatus());
+            assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).getStatus());
+
+            assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).isDiscarded() && gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).getStatus());
+            assertTrue(gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).getStatus());
+            assertTrue(gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(2).getFaithTrack().getSection(1).getStatus());
+
+
+            System.out.println(e.getMessage());
+        }
+
+
+
+
+    }
+
+    /**
      * tests the correct behavior of the addFaithToOthers method
      */
     @Test
-    void addFaithToOthers() throws LorenzoWonException {
+    void addFaithToOthers() throws LorenzoWonException, PlayerWonException {
 
         gameBoard.getPlayers().get(0).addFaithToOthers(1);
 
@@ -246,5 +279,16 @@ class BoardTest {
 
     }
 
+    /**
+     * tests the PlayerWon exception is thrown when the game is over
+     */
+    @Test
+    void playerWonException(){
+
+        Exception exception;
+        exception = assertThrows(PlayerWonException.class, () -> {gameBoard.getPlayers().get(0).addFaith(24);});
+        assertEquals(exception.getMessage(), "A player won. The game is over");
+
+    }
 
 }

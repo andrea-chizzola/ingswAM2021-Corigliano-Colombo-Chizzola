@@ -177,11 +177,17 @@ public class Board {
      * moves the faith marker ahead in the faith track and starts a vatican report if a player reached or passed the end of a section
      * @param amount indicates how many positions have to be added to the faith marker
      */
-    public void addFaith(int amount){
+    public void addFaith(int amount) throws PlayerWonException {
 
         faithTrack.addFaith(amount);
 
         gameBoard.checkStartVaticanReport(faithTrack);
+
+        if(faithTrack.isEndTrack()) {
+
+            throw new PlayerWonException();
+
+        }
 
     }
 
@@ -189,7 +195,7 @@ public class Board {
      * calls the GameBoard's method that adds faith to other players
      * @param amount equals the amount of resources discarded
      */
-    public void addFaithToOthers(int amount) throws LorenzoWonException {
+    public void addFaithToOthers(int amount) throws LorenzoWonException, PlayerWonException {
 
         try {
 
@@ -198,6 +204,10 @@ public class Board {
         }catch (LorenzoWonException e){
 
             throw new LorenzoWonException(e.getMessage());
+
+        }catch (PlayerWonException e){
+
+            throw new PlayerWonException(e.getMessage());
 
         }
     }

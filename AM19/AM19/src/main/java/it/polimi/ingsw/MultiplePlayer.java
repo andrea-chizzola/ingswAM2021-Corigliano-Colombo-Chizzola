@@ -26,7 +26,7 @@ public class MultiplePlayer implements CustomMode{
      * @param gameBoard represents the game board
      */
     @Override
-    public void addFaithToOthers(int amount, GameBoard gameBoard) {
+    public void addFaithToOthers(int amount, GameBoard gameBoard) throws PlayerWonException {
 
         for(Board board : gameBoard.getPlayers()){
 

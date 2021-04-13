@@ -160,7 +160,7 @@ public class GameBoard {
 
         for(VaticanReportSection section : currentTrack.getSections()){
             if(currentTrack.isEndSection(currentTrack.getSections().indexOf(section) + 1) || (!currentTrack.isBeforeSection(currentTrack.getSections().indexOf(section) + 1) && !currentTrack.isInsideSection(currentTrack.getSections().indexOf(section) + 1))){
-                if(!currentTrack.getSections().get(currentTrack.getSections().indexOf(section) + 1).isDiscarded() && !currentTrack.getSections().get(currentTrack.getSections().indexOf(section) + 1).getStatus()){
+                if(!currentTrack.getSections().get(currentTrack.getSections().indexOf(section)).isDiscarded() && !currentTrack.getSections().get(currentTrack.getSections().indexOf(section)).getStatus()){
                     startVaticanReport(currentTrack.getSections().indexOf(section) + 1, currentTrack);
                 }
             }
@@ -172,13 +172,17 @@ public class GameBoard {
      * adds faith to the other players when a resource is discarded
      * @param amount equals the amount of resources discarded
      */
-    public void addFaithToOthers(int amount) throws LorenzoWonException {
+    public void addFaithToOthers(int amount) throws LorenzoWonException, PlayerWonException {
 
         try {
             customMode.addFaithToOthers(amount, this);
         }catch(LorenzoWonException e){
 
             throw new LorenzoWonException(e.getMessage());
+
+        }catch(PlayerWonException e){
+
+            throw new PlayerWonException(e.getMessage());
 
         }
 

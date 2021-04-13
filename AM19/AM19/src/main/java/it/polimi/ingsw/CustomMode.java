@@ -16,6 +16,6 @@ public interface CustomMode {
      * @param amount indicates how many faith points have to be added
      * @param gameBoard represents the game board
      */
-    public void addFaithToOthers(int amount, GameBoard gameBoard) throws LorenzoWonException;
+    public void addFaithToOthers(int amount, GameBoard gameBoard) throws LorenzoWonException, PlayerWonException;
 
 }
