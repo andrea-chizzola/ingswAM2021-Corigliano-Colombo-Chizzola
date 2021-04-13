@@ -46,7 +46,8 @@ public class Board {
      * represents the active discounts and possible transformations of the white marble.
      */
     private Modifications modification;
-    //modifications and turn attributes/methods missing
+
+    //turn attribute/methods missing
 
 
     public Board(String nickname, GameBoard gameBoard, ArrayList<Integer> trackPoints, ArrayList<VaticanReportSection> sections) {

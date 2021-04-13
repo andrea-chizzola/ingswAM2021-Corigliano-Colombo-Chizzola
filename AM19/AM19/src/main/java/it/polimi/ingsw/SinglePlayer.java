@@ -59,13 +59,13 @@ public class SinglePlayer implements CustomMode{
 
         lorenzoTrack.addFaith(amount);
 
+        gameBoard.checkStartVaticanReport(lorenzoTrack);
+
         if(lorenzoTrack.isEndTrack()){
 
             throw new LorenzoWonException();
 
         }
-
-        gameBoard.checkStartVaticanReport(lorenzoTrack);
 
     }
 
