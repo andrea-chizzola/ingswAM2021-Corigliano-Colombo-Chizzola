@@ -7,9 +7,9 @@ public interface Action {
 
     /**
      * performs the action related to the action token picked
-     * @param singlePlayer
+     * @param singlePlayer is the board of Lorenzo il Magnifico
      */
-    public void doAction(SinglePlayer singlePlayer);
+    void doAction(SinglePlayer singlePlayer);
 
 
 }

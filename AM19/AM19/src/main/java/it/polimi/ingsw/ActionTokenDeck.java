@@ -1,5 +1,9 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.xmlParser.ActionTokenParser;
+import it.polimi.ingsw.xmlParser.CardParser;
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
+
 import java.util.*;
 
 /**
@@ -19,15 +23,15 @@ public class ActionTokenDeck {
 
     /**
      * creates a new action token deck, given a List of action tokens
-     * @param actions contains the action tokens
+     * @param file is the name of the file that contains the characteristics of the Actions
      */
-    public ActionTokenDeck(List<Action> actions){
+    public ActionTokenDeck(String file){
 
-        unusedActionTokens = new Container<Action>();
-        unusedActionTokens.addAll(actions);
+        unusedActionTokens = new Container<>();
+        usedActionTokens = new ArrayList<>();
 
-        usedActionTokens = new ArrayList<Action>();
-
+        unusedActionTokens.addAll(ConfigurationParser.parseActionTokens(file));
+        unusedActionTokens.shuffle();
     }
 
     /**

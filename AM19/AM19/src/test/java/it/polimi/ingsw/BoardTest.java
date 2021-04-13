@@ -10,59 +10,18 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
-
     private GameBoard gameBoard;
+    private final String file = "defaultConfiguration.xml";
 
     @BeforeEach
     void setUp() {
-
-        ArrayList<Integer> trackPoints = new ArrayList<Integer>(25);
-        for(int i = 0; i < 25; i++){
-            trackPoints.add(i, 0);
-            if(i % 3 == 0){
-                if(i <= 6){
-                    trackPoints.set(i, i / 3);
-                }
-                else if(i <= 12){
-                    trackPoints.set(i, i / 2);
-                }else if(i <= 18){
-                    trackPoints.set(i, i - 6);
-                }else if(i == 21){
-                    trackPoints.set(i, 16);
-                }else {
-                    trackPoints.set(i, 20);
-                }
-            }
-        }
-
-        ArrayList<VaticanReportSection> sections1 = new ArrayList<VaticanReportSection>(3);
-        ArrayList<VaticanReportSection> sections2 = new ArrayList<VaticanReportSection>(3);
-        ArrayList<VaticanReportSection> sections3 = new ArrayList<VaticanReportSection>(3);
-
-        sections1.add(0, new VaticanReportSection(5, 8, 2));
-        sections1.add(1, new VaticanReportSection(12, 16, 3));
-        sections1.add(2, new VaticanReportSection(19, 24, 4));
-
-        sections2.add(0, new VaticanReportSection(5, 8, 2));
-        sections2.add(1, new VaticanReportSection(12, 16, 3));
-        sections2.add(2, new VaticanReportSection(19, 24, 4));
-
-        sections3.add(0, new VaticanReportSection(5, 8, 2));
-        sections3.add(1, new VaticanReportSection(12, 16, 3));
-        sections3.add(2, new VaticanReportSection(19, 24, 4));
 
         ArrayList<String> names = new ArrayList<>();
         names.add("firstPlayer");
         names.add("secondPlayer");
         names.add("thirdPlayer");
 
-        ArrayList<ArrayList<VaticanReportSection>> allSections = new ArrayList<ArrayList<VaticanReportSection>>();
-
-        allSections.add(sections1);
-        allSections.add(sections2);
-        allSections.add(sections3);
-
-        gameBoard = new GameBoard(names, trackPoints, allSections, new ArrayList<Action>());
+        gameBoard = new GameBoard(names, file);
 
     }
 
@@ -76,6 +35,7 @@ class BoardTest {
     /**
      * tests the correct activation of the vatican report
      */
+
     @Test
     @DisplayName("Add faith activation")
     void addFaithActivation(){
@@ -125,6 +85,7 @@ class BoardTest {
     /**
      * tests the correct behavior of the addFaith method in case a player passes more than one section
      */
+
     @Test
     @DisplayName("Multiple activation")
     void addFaithMultipleActivation(){
@@ -162,6 +123,7 @@ class BoardTest {
     /**
      * tests the correct behavior of the addFaithToOthers method
      */
+
     @Test
     void addFaithToOthers(){
 
@@ -217,7 +179,7 @@ class BoardTest {
     void getDevelopmentCardBoundsException() {
 
         Exception exception;
-        exception = assertThrows(IndexOutOfBoundsException.class, () -> {gameBoard.getPlayers().get(0).getDevelopmentCard(4);});
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> gameBoard.getPlayers().get(0).getDevelopmentCard(4));
         assertEquals(exception.getMessage(), "This slot doesn't exist");
 
     }
@@ -229,7 +191,7 @@ class BoardTest {
     void getLeaderCardException() {
 
         Exception exception;
-        exception = assertThrows(IndexOutOfBoundsException.class, () -> {gameBoard.getPlayers().get(0).getLeaderCard(4);});
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> gameBoard.getPlayers().get(0).getLeaderCard(4));
         assertEquals(exception.getMessage(), "Nonexistent Leader card");
 
     }
@@ -241,10 +203,9 @@ class BoardTest {
     void removeLeaderCardException() {
 
         Exception exception;
-        exception = assertThrows(IndexOutOfBoundsException.class, () -> {gameBoard.getPlayers().get(0).removeLeaderCard(4);});
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> gameBoard.getPlayers().get(0).removeLeaderCard(4));
         assertEquals(exception.getMessage(), "Nonexistent Leader card");
 
     }
-
 
 }

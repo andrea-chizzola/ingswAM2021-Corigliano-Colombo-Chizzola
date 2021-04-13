@@ -11,11 +11,12 @@ import java.util.Map;
 
 public class DevelopmentDeckTest {
     private DevelopmentDeck deck;
-    private final String file = "src\\test\\java\\it\\polimi\\ingsw\\XMLSourcesTest\\DevCardsTest.xml";
+    private final String configurationFile = "defaultConfiguration.xml";
+    private final String fullPathFile = "src\\main\\resources\\XML\\defaultDevCards.xml";
 
     @BeforeEach
     public void setUp(){
-        deck = new DevelopmentDeck(file);
+        deck = new DevelopmentDeck(configurationFile);
     }
 
     @Test
@@ -24,7 +25,7 @@ public class DevelopmentDeckTest {
             LinkedList<DevelopmentCard> cardsDeck = deck.extract(4, new Green());
             CardParser parser = CardParser.instance();
 
-            List<DevelopmentCard> parsed = parser.parseDevelopmentCard(file);
+            List<DevelopmentCard> parsed = parser.parseDevelopmentCard(fullPathFile);
             Map<Integer, DevelopmentCard> firstFour = new HashMap<>();
             firstFour.put(parsed.get(0).getVictoryPoint(), parsed.get(0));
             firstFour.put(parsed.get(1).getVictoryPoint(), parsed.get(1));
@@ -42,13 +43,13 @@ public class DevelopmentDeckTest {
         }
     }
 
-    @Test
+   @Test
     public void extractFromMultipleDecksTest() {
         try {
             LinkedList<DevelopmentCard> cardsDeck = deck.extract(5, new Green());
             CardParser parser = CardParser.instance();
 
-            List<DevelopmentCard> parsed = parser.parseDevelopmentCard(file);
+            List<DevelopmentCard> parsed = parser.parseDevelopmentCard(fullPathFile);
             Map<Integer, DevelopmentCard> firstEight = new HashMap<>();
             firstEight.put(parsed.get(0).getVictoryPoint(), parsed.get(0));
             firstEight.put(parsed.get(1).getVictoryPoint(), parsed.get(1));
@@ -82,17 +83,23 @@ public class DevelopmentDeckTest {
         assertThrows(LorenzoWonException.class, () -> deck.extract(50, new Green()));
     }
 
-    @Test
-    public void extractNonExistentDeck(){
-        assertThrows(IllegalArgumentException.class, () -> deck.extract(50, new Purple()));
+    //definition of an unexpected color to test if DevelopmentDeck throws IllegalArgumentException
+    private class Unidentified extends CardColor {
+        public Unidentified() {
+            super(DevColor.PURPLE);
+        }
     }
 
+    @Test
+    public void extractNonExistentDeck(){
+        assertThrows(IllegalArgumentException.class, () -> deck.extract(50, new Unidentified()));
+    }
 
     @Test
     public void getCardTest(){
         DevelopmentCard card = deck.getTop(new Green(), 1);
         CardParser parser = CardParser.instance();
-        List<DevelopmentCard> cardsParser = parser.parseDevelopmentCard(file);
+        List<DevelopmentCard> cardsParser = parser.parseDevelopmentCard(fullPathFile);
         assertTrue(card.equals(cardsParser.get(0))||
                 card.equals(cardsParser.get(1))||
                 card.equals(cardsParser.get(2))||
@@ -101,7 +108,7 @@ public class DevelopmentDeckTest {
 
     @Test
     public void getNonExistentDeck(){
-        assertThrows(IllegalArgumentException.class, () -> deck.getTop(new Purple(),1));
+        assertThrows(IllegalArgumentException.class, () -> deck.getTop(new Unidentified(),1));
     }
 
     @Test
@@ -117,7 +124,7 @@ public class DevelopmentDeckTest {
     public void readCardTest(){
         DevelopmentCard card = deck.readTop(new Green(),1);
         CardParser parser = CardParser.instance();
-        List<DevelopmentCard> cardsParser = parser.parseDevelopmentCard(file);
+        List<DevelopmentCard> cardsParser = parser.parseDevelopmentCard(fullPathFile);
         assertTrue(card.equals(cardsParser.get(0))||
                 card.equals(cardsParser.get(1))||
                 card.equals(cardsParser.get(2))||
@@ -126,7 +133,7 @@ public class DevelopmentDeckTest {
 
     @Test
     public void readNonExistentDeck(){
-        assertThrows(IllegalArgumentException.class, () -> deck.readTop(new Purple(),1));
+        assertThrows(IllegalArgumentException.class, () -> deck.readTop(new Unidentified(),1));
     }
 
     @Test
@@ -138,5 +145,4 @@ public class DevelopmentDeckTest {
         }
         assertThrows(IllegalArgumentException.class, () -> deck.readTop(new Green(), 1));
     }
-
 }

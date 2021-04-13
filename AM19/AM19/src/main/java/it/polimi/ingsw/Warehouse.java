@@ -1,6 +1,9 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
+
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -36,14 +39,16 @@ public class Warehouse {
     /**
      * This is the constructor of this class.
      */
-    public Warehouse() {
+    public Warehouse(String file) {
         defaultShelf = new HashMap<>();
         defaultCapacity = new HashMap<>();
         extraShelf = new HashMap<>();
         extraCapacity = new HashMap<>();
-        defaultCapacity.put(1,1);
-        defaultCapacity.put(2,2);
-        defaultCapacity.put(3,3);
+
+        LinkedList<Integer> capacity = ConfigurationParser.getCapacityWarehouse(file);
+        for(int i=0; i<capacity.size(); i++){
+            defaultCapacity.put(i+1, capacity.get(i));
+        }
         extraShelfKey = defaultCapacity.size() + 1;
     }
 
@@ -52,7 +57,7 @@ public class Warehouse {
      * An IllegalShelfException is thrown if: the shelf does not exists, it has not a resource.
      * @param shelf the number of the shelf
      * @return Resource present in the shelf with number 'shelf'
-     * @throws IllegalShelfException
+     * @throws IllegalShelfException if the shelf is empty or does not exists
      */
     public Resource getResource(int shelf) throws IllegalShelfException{
         if(shelf > 0 && shelf <= defaultCapacity.size() && !defaultShelf.containsKey(shelf))
@@ -69,7 +74,7 @@ public class Warehouse {
      * An IllegalShelfException is thrown if: the shelf does not exists, it has not a resource.
      * @param shelf the number of the shelf
      * @return quantity of resources present in the shelf with number 'shelf'
-     * @throws IllegalShelfException
+     * @throws IllegalShelfException if the shelf is empty or does not exists
      */
     public int getQuantity(int shelf) throws IllegalShelfException{
 
@@ -87,7 +92,7 @@ public class Warehouse {
      * An IllegalShelfException is thrown if the shelf does not exists.
      * @param shelf the number of the shelf
      * @return capacity of the shelf with number 'shelf'
-     * @throws IllegalShelfException
+     * @throws IllegalShelfException if the shelf does not exists
      */
     public int getCapacity(int shelf) throws IllegalShelfException{
         if(defaultCapacity.containsKey(shelf))
@@ -101,7 +106,7 @@ public class Warehouse {
      * This method subtracts one unit from the quantity of resources present in the shelf with number 'shelf'.
      * An IllegalShelfException is thrown if: the shelf does not exists, it has not a resource, it is empty.
      * @param shelf the number of the shelf
-     * @throws IllegalShelfException
+     * @throws IllegalShelfException if the shelf is empty
      */
     public void subtract(int shelf) throws IllegalShelfException{
         if(shelf > 0 && shelf <= defaultCapacity.size() && !defaultShelf.containsKey(shelf))
@@ -132,7 +137,7 @@ public class Warehouse {
      * the resource present int the shelf with number 'shelf' is different from the resource you want to add, the shelf is full.
      * @param shelf the number of the shelf
      * @param resource the resource you want to add
-     * @throws IllegalShelfException
+     * @throws IllegalShelfException if the shelf does not exists
      */
     public void addResource(int shelf, Resource resource) throws IllegalShelfException{
         if(shelf <= 0)
@@ -157,7 +162,8 @@ public class Warehouse {
      * the resource present int the shelf with number 'shelf' is different from the resource you want to add, the shelf is full.
      * @param shelf the number of the shelf
      * @param resource the resource you want to add
-     * @throws IllegalShelfException
+     * @throws IllegalShelfException if a shelf with this resource already exists, the shelf is full
+     * or the resource is different from the one of the shelf
      */
     private void addResourceDefault(int shelf, Resource resource) throws IllegalShelfException{
 
@@ -180,7 +186,8 @@ public class Warehouse {
      * An IllegalShelfException is thrown if: the resource present int the shelf with number 'shelf' is different from the resource you want to add, the shelf is full.
      * @param shelf the number of the shelf
      * @param resource the resource you want to add
-     * @throws IllegalShelfException
+     * @throws IllegalShelfException if the shelf does not exists, the resource is different from the one
+     * of the shelf or the shelf is full
      */
     private void addResourceExtra(int shelf, Resource resource) throws IllegalShelfException{
 
@@ -198,7 +205,7 @@ public class Warehouse {
      * An IllegalShelfException is thrown if the swap can't be done due to incompatibility of quantities and capacities
      * @param source the number of the first shelf
      * @param target the number of the second shelf
-     * @throws IllegalShelfException
+     * @throws IllegalShelfException if the swap is not possible
      */
     public void swap(int source, int target) throws IllegalShelfException{
 

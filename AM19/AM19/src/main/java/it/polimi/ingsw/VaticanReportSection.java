@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import java.util.Objects;
+
 /**
  * public class representing the vatican report section
  */
@@ -110,4 +112,19 @@ public class VaticanReportSection {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VaticanReportSection that = (VaticanReportSection) o;
+        return start == that.start &&
+                end == that.end &&
+                discarded == that.discarded &&
+                Objects.equals(popeFavor, that.popeFavor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end, discarded, popeFavor);
+    }
 }

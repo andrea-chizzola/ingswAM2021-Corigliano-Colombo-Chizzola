@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
+import it.polimi.ingsw.xmlParser.MarketBoardParser;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -29,30 +32,13 @@ public class MarketBoard {
     /**
      * This the constructor of this class, no parameters are needed.
      * It crates the tray and the slide and it randomizes the position of the marbles
+     * this method asserts that the dimensions of the rows, columns, and the tray size are coherent.
+     * The coherence check is made by the parser
      */
-    public MarketBoard() {
-        nRows = 3;
-        nColumns = 4;
-        tray = new ArrayList<>((nRows*nColumns)+1);
-        int i;
-        for(i=0; i<2; i++){
-            tray.add(new MarbleBlue());
-        }
-        for(i=0; i<2; i++){
-            tray.add(new MarbleGray());
-        }
-        for(i=0; i<2; i++){
-            tray.add(new MarblePurple());
-        }
-        for(i=0; i<2; i++){
-            tray.add(new MarbleYellow());
-        }
-        for(i=0; i<1; i++){
-            tray.add(new MarbleRed());
-        }
-        for(i=0; i<4; i++){
-            tray.add(new MarbleWhite());
-        }
+    public MarketBoard(String file) {
+        nRows = ConfigurationParser.parseMarketRows(file);
+        nColumns = ConfigurationParser.parseMarketColumns(file);
+        tray = ConfigurationParser.parseMarketTray(file);
         Collections.shuffle(tray);
         slide = tray.remove(nRows*nColumns);
     }
@@ -70,7 +56,7 @@ public class MarketBoard {
      * An IllegalMarketException is thrown if the row with index 'row' does not exist.
      * @param row the index of the row
      * @return an ArrayList which contains the row
-     * @throws IllegalMarketException
+     * @throws IllegalMarketException if the row does not exists
      */
     public ArrayList<Marble> getRow(int row) throws IllegalMarketException{
 
@@ -93,7 +79,7 @@ public class MarketBoard {
      * An IllegalMarketException is thrown if the row with index 'row' does not exist.
      * @param row the index of the row
      * @return an ArrayList which contains the row
-     * @throws IllegalMarketException
+     * @throws IllegalMarketException if the row does not exist
      */
     public ArrayList<Marble> takeRow(int row) throws IllegalMarketException{
 
@@ -121,7 +107,7 @@ public class MarketBoard {
      *An IllegalMarketException is thrown if the column with index 'column' does not exist.
      * @param column the index of the column
      * @return an ArrayList which contains the column
-     * @throws IllegalMarketException
+     * @throws IllegalMarketException if the column does not exist
      */
     public ArrayList<Marble> getColumn(int column) throws IllegalMarketException{
 
@@ -142,7 +128,7 @@ public class MarketBoard {
      * An IllegalMarketException is thrown if the column with index 'column' does not exist.
      * @param column the index of the column
      * @return an ArrayList which contains the column
-     * @throws IllegalMarketException
+     * @throws IllegalMarketException if the column does not exist
      */
     public ArrayList<Marble> takeColumn(int column) throws IllegalMarketException{
 

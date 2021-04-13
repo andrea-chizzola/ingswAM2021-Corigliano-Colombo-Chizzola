@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<marketBoard rows = "3" columns = "4">
+    <marble color = "WHITE"/>
+    <marble color = "WHITE"/>
+    <marble color = "WHITE"/>
+    <marble color = "WHITE"/>
+    <marble color = "BLUE"/>
+    <marble color = "BLUE"/>
+    <marble color = "PURPLE"/>
+    <marble color = "PURPLE"/>
+    <marble color = "RED"/>
+    <marble color = "YELLOW"/>
+    <marble color = "YELLOW"/>
+    <marble color = "GRAY"/>
+    <marble color = "GRAY"/>
+</marketBoard>
