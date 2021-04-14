@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.xmlParser.ActionTokenParser;
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
 import it.polimi.ingsw.xmlParser.FaithTrackParser;
 
 import java.util.ArrayList;
@@ -28,13 +29,12 @@ public class SinglePlayer implements CustomMode{
     /**
      * creates all the necessary attributes for a single player match
      * @param gameBoard represents the game board
-     * @param faithTrackFile is the file that contains the characteristics of Lorenzo's FaithTrack
-     * @param actionsFile is the file that contains Lorenzo's ActionTokens
+     * @param file is the file that contains the configurations
      */
-    public SinglePlayer(GameBoard gameBoard, String faithTrackFile, String actionsFile) {
+    public SinglePlayer(GameBoard gameBoard, String file) {
 
-        lorenzoTrack = FaithTrackParser.buildFaithTrack(faithTrackFile);
-        actionTokenDeck = new ActionTokenDeck(actionsFile);
+        lorenzoTrack = ConfigurationParser.parseFaithTrack(file);
+        actionTokenDeck = new ActionTokenDeck(file);
         this.gameBoard = gameBoard;
 
     }

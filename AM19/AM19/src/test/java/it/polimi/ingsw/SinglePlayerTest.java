@@ -12,66 +12,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class SinglePlayerTest {
 
     private GameBoard gameBoard;
+    private final String file = "defaultConfiguration.xml";
 
     @BeforeEach
     void setUp() {
 
-        ArrayList<Action> actions = new ArrayList<>();
-
-        MoveBlack moveBlack = new MoveBlack(2);
-        MoveAndShuffle moveAndShuffle = new MoveAndShuffle(1);
-        Discard discardBlue = new Discard(new Blue(), 2);
-        Discard discardGreen = new Discard(new Green(), 2);
-        Discard discardPurple = new Discard(new Purple(), 2);
-        Discard discardYellow = new Discard(new Yellow(), 2);
-
-        actions.add(moveBlack);
-        actions.add(moveAndShuffle);
-        actions.add(discardBlue);
-        actions.add(discardPurple);
-        actions.add(discardGreen);
-        actions.add(discardYellow);
-
-        ArrayList<Integer> trackPoints = new ArrayList<Integer>(25);
-        for(int i = 0; i < 25; i++){
-            trackPoints.add(i, 0);
-            if(i % 3 == 0){
-                if(i <= 6){
-                    trackPoints.set(i, i / 3);
-                }
-                else if(i <= 12){
-                    trackPoints.set(i, i / 2);
-                }else if(i <= 18){
-                    trackPoints.set(i, i - 6);
-                }else if(i == 21){
-                    trackPoints.set(i, 16);
-                }else {
-                    trackPoints.set(i, 20);
-                }
-            }
-        }
-
-        ArrayList<VaticanReportSection> sections1 = new ArrayList<VaticanReportSection>(3);
-        ArrayList<VaticanReportSection> sections2 = new ArrayList<VaticanReportSection>(3);
-
-        sections1.add(0, new VaticanReportSection(5, 8, 2));
-        sections1.add(1, new VaticanReportSection(12, 16, 3));
-        sections1.add(2, new VaticanReportSection(19, 24, 4));
-
-        sections2.add(0, new VaticanReportSection(5, 8, 2));
-        sections2.add(1, new VaticanReportSection(12, 16, 3));
-        sections2.add(2, new VaticanReportSection(19, 24, 4));
-
         ArrayList<String> names = new ArrayList<>();
         names.add("firstPlayer");
 
-        ArrayList<ArrayList<VaticanReportSection>> allSections = new ArrayList<ArrayList<VaticanReportSection>>();
 
-        allSections.add(sections1);
-        allSections.add(sections2);
-
-        gameBoard = new GameBoard(names, trackPoints, allSections, actions);
-
+        gameBoard = new GameBoard(names, file);
 
     }
 
@@ -82,9 +32,7 @@ class SinglePlayerTest {
 
     }
 
-    @Test
-    void EndTurnAction() {
-    }
+    //endTurnAction and getters tested inside the Action Tokens tests
 
     @Test
     @DisplayName("MoveBlackCross and addFaithToOthers test")
@@ -169,7 +117,6 @@ class SinglePlayerTest {
             assertFalse(gameBoard.getPlayers().get(0).getFaithTrack().getSection(3).getStatus());
             assertTrue(gameBoard.getPlayers().get(0).getFaithTrack().getSection(3).isDiscarded());
 
-            System.out.println(e.getMessage());
         }
 
     }
