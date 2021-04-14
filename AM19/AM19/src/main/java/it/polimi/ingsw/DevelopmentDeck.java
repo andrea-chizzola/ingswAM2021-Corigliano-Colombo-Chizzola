@@ -133,4 +133,21 @@ public class DevelopmentDeck {
             throw new IllegalArgumentException("The deck does not exist");
         }
     }
+
+    /**
+     * Given a color and a level, this method returns the number of cards corresponding
+     * @param color is the color of the cards in the deck
+     * @param level is the level of the cards in the deck
+     * @return returns the number of cards corresponding to the color and level specified
+     */
+    public int getNumber(CardColor color, int level){
+
+        ColorLevelKey colorLevelKey = new ColorLevelKey(color, level);
+
+        if(decks.containsKey(colorLevelKey)) {
+
+            return decks.get(colorLevelKey).size();
+
+        }else return 0;
+    }
 }
