@@ -2,6 +2,8 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -285,4 +287,23 @@ public class Warehouse {
 
     }
 
+
+    /**
+     * This method creates a map with key Resource and value Integer which contains a summary of all the resources present in the warehouse.
+     * @return a Map with key Resource and value Integer
+     */
+    public Map<Resource,Integer> getAllResources(){
+        Map<Resource,Integer> map = new HashMap<>();
+        Collection<ResQuantity> list = defaultShelf.values();
+        for(ResQuantity resQuantity : list){
+            map.put(resQuantity.getResource(),resQuantity.getQuantity());
+        }
+        list = extraShelf.values();
+        for(ResQuantity resQuantity : list){
+            if(map.containsKey(resQuantity.getResource())){
+                map.put(resQuantity.getResource(), map.get(resQuantity.getResource()) + resQuantity.getQuantity());}
+            else{map.put(resQuantity.getResource(), resQuantity.getQuantity());}
+        }
+        return map;
+    }
 }

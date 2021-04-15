@@ -19,7 +19,7 @@ public class ActionTokenParserTest {
     }
 
     @Test
-    public void builActionTokensTest(){
+    public void buildActionTokensTest(){
         LinkedList<Action> actionTokens = parser.buildActionTokens(file);
 
         //creation of Action Tokens using constructors

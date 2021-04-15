@@ -10,4 +10,5 @@ public class Blue extends CardColor{
     public Blue() {
         super(DevColor.BLUE);
     }
+
 }

@@ -21,7 +21,7 @@ public class LeaderDeckTest {
 
     @Test
     public void extractTest(){
-       LinkedList<LeaderCard> cardsDeck = deck.extract(4);
+       LinkedList<LeaderCard> cardsDeck = deck.extract(16);
        CardParser parser = CardParser.instance();
 
         List<LeaderCard> cardsParser = parser.parseLeaderCard(fullPathFile);

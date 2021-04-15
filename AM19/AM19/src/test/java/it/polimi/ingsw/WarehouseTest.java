@@ -3,6 +3,9 @@ package it.polimi.ingsw;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class WarehouseTest {
@@ -475,4 +478,29 @@ class WarehouseTest {
         System.out.println(warehouse.calculateTotalResources());
     }
 
+    @Test
+
+    public void getAllResourcesTest(){
+        try{
+            warehouse.addResource(1, new Coin());
+            warehouse.addResource(2, new Stone());
+            warehouse.addResource(3, new Servant());
+            warehouse.addResource(3, new Servant());
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+
+        Map<Resource, Integer> map = warehouse.getAllResources();
+        Map<Resource, Integer> copy = new HashMap<>();
+        copy.put(new Coin(), 1);
+        copy.put(new Stone(), 1);
+        copy.put(new Servant(), 2);
+
+        for(Resource r : map.keySet()){
+            assertEquals(map.get(r), copy.get(r));
+        }
+
+
+    }
 }

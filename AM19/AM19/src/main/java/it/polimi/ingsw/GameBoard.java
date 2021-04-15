@@ -46,7 +46,7 @@ public class GameBoard {
      */
     private LeaderDeck leaderDeck;
 
-    public GameBoard(ArrayList<String> nicknames, String file) {  //fix board test
+    public GameBoard(ArrayList<String> nicknames, String file) {
 
         developmentDeck = new DevelopmentDeck(file);
         leaderDeck = new LeaderDeck(file);
@@ -66,10 +66,7 @@ public class GameBoard {
         if(nicknames.size() > 1) customMode = new MultiplePlayer() ;
         else {
             ActionTokenParser parser = ActionTokenParser.instance();
-            customMode = new SinglePlayer(this,
-                    ConfigurationParser.getTrackPath(file),
-                    ConfigurationParser.getActionTokensPath(file)
-                    );
+            customMode = new SinglePlayer(this, file);
         }
 
         //decks missing
@@ -118,7 +115,7 @@ public class GameBoard {
      * @return returns an ArrayList containing all the players
      */
     public ArrayList<Board> getPlayers(){
-        return players;
+        return new ArrayList<Board>(players);
     }
 
     /**
@@ -192,6 +189,17 @@ public class GameBoard {
 
         }
 
+    }
+
+    /**
+     * this method gives a number of leader cards to each player
+     * @param file is the name of the XML file that contains the number of initial leader cards of each player
+     */
+    public void giveLeaderCards(String file){
+        int num = ConfigurationParser.getNumLeader(file);
+        for(Board board : players){
+            board.setLeaders(leaderDeck.extract(num));
+        }
     }
 
 

@@ -26,6 +26,30 @@ public class CardQuantity {
         this.level = level;
     }
 
+    /**
+     * This method gets the CardColor
+     * @return CardColor
+     */
+    public CardColor getCardColor() {
+        return cardColor;
+    }
+
+    /**
+     * This method gets the level
+     * @return the level
+     */
+    public int getLevel() {
+        return level;
+    }
+
+    /**
+     * This method gets the quantity
+     * @return quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

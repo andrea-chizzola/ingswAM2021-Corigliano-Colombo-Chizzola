@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -41,6 +42,21 @@ public class DevelopmentCard extends Card{
      */
     public int getCardLevel(){
         return level;
+    }
+
+
+    /**
+     * This method checks if the requirements of the card are met, otherwise an InvalidActionException is thrown.
+     * @param board
+     * @param shelves
+     * @param quantity
+     * @param strongbox
+     * @return true if the player related to the parameter board has the necessary requirements to buy the card
+     * @throws InvalidActionException
+     */
+    @Override
+    public boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException {
+        return super.checkReq(board, shelves, quantity, strongbox);
     }
 
     @Override

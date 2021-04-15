@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -39,6 +40,30 @@ public class Production extends SpecialEffect{
         LinkedList<ResQuantity> mat = new LinkedList<>(materials);
         LinkedList<ResQuantity> prod = new LinkedList<>(products);
         return new Production(mat, prod);
+    }
+
+
+    /**
+     *  This method checks if there are enough resources (in the Map passed as parameter) to activate the production.
+     *  If the resources in the Map are enough it modifies the Map and subtract those resources, otherwise it throws an InvalidActionException
+     * @param resourceStatus
+     * @return true if there are enough resources in the map
+     * @throws InvalidActionException if there aren't enough resources in the map
+     */
+    public boolean checkProduction(Map<Resource,Integer> resourceStatus) throws InvalidActionException{
+        for(ResQuantity resQuantity : materials)
+            resQuantity.checkProduction(resourceStatus);
+        return true;
+    }
+
+    /**
+     *This method adds to the resources of the player all the resources contained in the products.
+     * @param board the board of the player
+     */
+    public void addProducts(Board board) throws PlayerWonException, LorenzoWonException {
+
+        for(ResQuantity resQuantity : products)
+            resQuantity.addResourceStrongbox(board);
     }
 
     @Override

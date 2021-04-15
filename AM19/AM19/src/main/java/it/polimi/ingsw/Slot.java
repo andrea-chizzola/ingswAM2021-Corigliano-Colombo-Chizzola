@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a slot which contains the purchased development cards
@@ -92,5 +94,14 @@ public class Slot {
      */
     public int getNumberOfCards(){
         return cards.size();
+    }
+
+
+    /**
+     * This method gets all the cards present in the slot.
+     * @return an ArrayList which contains the cards
+     */
+    public LinkedList<DevelopmentCard> getCards(){
+        return new LinkedList<>(cards.stream().collect(Collectors.toList()));
     }
 }

@@ -21,12 +21,12 @@ public class MarketBoardParserTest {
 
     @Test
     public void getMarketRowsTest(){
-        assertEquals(parser.getMarketRows(file), 3);
+        assertEquals(parser.getMarketRows(file), 4);
     }
 
     @Test
     public void getMarketColumnsTest(){
-        assertEquals(parser.getMarketColumns(file), 4);
+        assertEquals(parser.getMarketColumns(file), 2);
     }
 
     @Test

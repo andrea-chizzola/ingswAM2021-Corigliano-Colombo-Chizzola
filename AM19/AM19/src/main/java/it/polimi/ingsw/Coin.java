@@ -1,7 +1,8 @@
 package it.polimi.ingsw;
 
-
+import java.util.ArrayList;
 import java.util.Objects;
+
 
 /**
  * This class extends Resource
@@ -22,6 +23,18 @@ public class Coin extends Resource {
     public ResourceColor getColor() {
         return color;
     }
+
+    /**
+     * This method adds to the strongbox a number of resources 'Coin' equal to 'quantity'
+     * @param board the board of the player
+     * @param quantity the quantity of resources to add
+     */
+    @Override
+    public void addResourceStrongbox(Board board, int quantity) {
+        board.getStrongBox().addResource(this, quantity);
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

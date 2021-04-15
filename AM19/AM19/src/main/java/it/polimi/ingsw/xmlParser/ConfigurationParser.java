@@ -143,6 +143,22 @@ public class ConfigurationParser{
     }
 
     /**
+     * this method return the number of LeaderCards assigned to each player
+     * @param file is the name of the XML that contains the configuration files
+     * @return the number of slots
+     */
+    public static int getNumLeader(String file){
+        int num=0;
+        try {
+            Element max = (Element) getRoot(path + file).getElementsByTagName("leader").item(0);
+            num = parseInt(max.getAttribute("num"));
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        return num;
+    }
+
+    /**
      * this method returns the number of Warehouse slots
      * @param file is the name of the XML that contains the configuration files
      * @return the number of slots

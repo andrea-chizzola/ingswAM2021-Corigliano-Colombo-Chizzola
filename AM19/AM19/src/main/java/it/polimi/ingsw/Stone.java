@@ -22,6 +22,18 @@ public class Stone extends Resource {
         return color;
     }
 
+    /**
+     * This method adds to the strongbox a number of resources 'Stone' equal to 'quantity'
+     * @param board the board of the player
+     * @param quantity the quantity of resources to add
+     */
+    @Override
+    public void addResourceStrongbox(Board board, int quantity) {
+        board.getStrongBox().addResource(this, quantity);
+    }
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

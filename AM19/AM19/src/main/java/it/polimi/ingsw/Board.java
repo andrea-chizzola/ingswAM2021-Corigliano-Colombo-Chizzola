@@ -4,6 +4,11 @@ import it.polimi.ingsw.xmlParser.ConfigurationParser;
 import it.polimi.ingsw.xmlParser.FaithTrackParser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * public class representing the personal board associated to a player
@@ -23,7 +28,7 @@ public class Board {
     /**
      * contains the Leader Cards owned by the player
      */
-    private ArrayList<LeaderCard> leaders;
+    private LinkedList<LeaderCard> leaders;
 
     /**
      * represents the Faith Track associated to the player
@@ -59,8 +64,13 @@ public class Board {
         this.gameBoard = gameBoard;
         faithTrack = ConfigurationParser.parseFaithTrack(file);
 
-        leaders = new ArrayList<>();
+        int nSlots = ConfigurationParser.getNumSlots(file);
         slots = new ArrayList<>();
+        for(int i=0; i<nSlots; i++){
+            slots.add(new Slot());
+        }
+
+        leaders = new LinkedList<>();
         strongBox = new StrongBox();
         warehouse = new Warehouse(file);
         modification = new Modifications();
@@ -70,8 +80,8 @@ public class Board {
      * adds the picked leader cards to the list
      * @param leaders contains the leaders picked
      */
-    public void setLeaders(ArrayList<LeaderCard> leaders) {
-        this.leaders = leaders;
+    public void setLeaders(LinkedList<LeaderCard> leaders) {
+        this.leaders = new LinkedList<>(leaders);
     }
 
     /**
@@ -97,25 +107,15 @@ public class Board {
     }
 
     /**
-     * @param slot indicates the selected slot
-     * @return returns the card currently at the top of the slot
-     * @throws IndexOutOfBoundsException if the slot doesn't exist
-     * @throws IllegalSlotException if the slot is currently empty
+     * This method gets the slot with number 'slot'
+     * @param slot the number of the slot
+     * @return the slot with number slot
+     * @throws IllegalSlotException
      */
-    public DevelopmentCard getDevelopmentCard(int slot) throws IndexOutOfBoundsException, IllegalSlotException {
-
-        try{
-
-            if(slot > 0 && slot <= slots.size()) {
-                return slots.get(slot - 1).getTop();
-            }else throw new IndexOutOfBoundsException("This slot doesn't exist");
-
-        } catch (IllegalSlotException e) {
-
-            throw new IllegalSlotException(e.getMessage());
-
-        }
-
+    public Slot getSlot(int slot) throws IllegalSlotException{
+        if(slot > 0 && slot <= slots.size()) {
+            return slots.get(slot - 1);
+        }else throw new IllegalSlotException("This slot doesn't exist");
     }
 
     /**
@@ -138,11 +138,15 @@ public class Board {
      * @param position indicates the position of the card that has to be removed
      * @throws IndexOutOfBoundsException if if the leader card doesn't exist
      */
-    public void removeLeaderCard(int position) throws IndexOutOfBoundsException{
+    public void removeLeaderCard(int position) throws IndexOutOfBoundsException, PlayerWonException{
 
         if(position > 0 && position <= leaders.size()){
 
             leaders.remove(position - 1);
+
+
+            this.addFaith(1);
+
 
         }else throw new IndexOutOfBoundsException("Nonexistent Leader card");
 
@@ -244,4 +248,38 @@ public class Board {
     public Modifications getModifications() { return modification; }
 
 
+    /**
+     * This method returns a Map which contains information about all the resources present in strongbox and warehouse.
+     * @return Map<Resource,Integer>, Integer represents the amount of the resource (the key)
+     */
+    public Map<Resource,Integer> getResourceStatus(){
+        Map<Resource,Integer> warehouse = this.warehouse.getAllResources();
+        Map<Resource,Integer> strongBox = this.strongBox.getResources();
+        Map<Resource, Integer> resourceStatus = Stream.concat(warehouse.entrySet().stream(), strongBox.entrySet().stream())
+                .collect(Collectors.groupingBy(Map.Entry::getKey,
+                        Collectors.summingInt(Map.Entry::getValue)));
+        return resourceStatus;
+    }
+
+
+    /**
+     * This method checks if there are at least 'quantity' development cards which have color equals to 'cardColor' and level equals to 'level'.
+     * An InvalidActionException is thrown if the requirements are not met.
+     * @param cardColor the color of the cards searched
+     * @param level the level of the cards searched
+     * @param quantity the quantity required
+     * @return true if the requirements are met
+     * @throws InvalidActionException
+     */
+    public boolean checkCards(CardColor cardColor, int level, int quantity) throws InvalidActionException{
+       int match = 0;
+        for(Slot slot : slots)
+            for(DevelopmentCard card : slot.getCards()){
+                if(card.getCardColor().equals(cardColor) && card.getCardLevel() == level)
+                    match++;
+            }
+        if(match < quantity)
+            throw new InvalidActionException("Card requirements not met!");
+        return true;
+    }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * public class representing the strongbox associated to a player
@@ -24,7 +25,9 @@ public class StrongBox {
      * @return returns a map containing the resources currently in the strongbox with their quantity
      */
     public HashMap<Resource, Integer> getResources() {
-        return resources;
+        HashMap<Resource,Integer> map = new HashMap<>();
+        map.putAll(resources);
+        return map;
     }
 
     /**

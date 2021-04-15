@@ -22,6 +22,16 @@ public class Faith extends Resource {
         return color;
     }
 
+
+    /**
+     * This method does nothing because resource faith can't be added to strongbox
+     */
+    @Override
+    public void addResourceStrongbox(Board board, int quantity) throws PlayerWonException {
+        board.addFaith(quantity);
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

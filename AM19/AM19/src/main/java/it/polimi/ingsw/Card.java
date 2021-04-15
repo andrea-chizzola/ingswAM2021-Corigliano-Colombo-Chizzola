@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -13,7 +14,7 @@ public abstract class Card{
      * requirements represents the necessary requirements to buy a card
      */
     private int victoryPoint;
-    private  SpecialEffect specialEffect;
+    private SpecialEffect specialEffect;
     private Requirements requirements;
 
     /**
@@ -43,6 +44,37 @@ public abstract class Card{
     public SpecialEffect getSpecialEffect(){
         return specialEffect;
     }
+
+    /**
+     *
+     * @param board
+     * @return
+     * @throws InvalidActionException
+     * @throws ResourcesExpectedException
+     */
+    public boolean checkReq(Board board) throws InvalidActionException, ResourcesExpectedException{
+
+        requirements.checkReq(board);
+        return true;
+    }
+    /**
+     * This method checks if the requirements of the card are met, otherwise an InvalidActionException is thrown.
+     * @param board
+     * @param shelves
+     * @param quantity
+     * @param strongbox
+     * @return true if the player related to the parameter board has the necessary requirements to buy the card
+     * @throws InvalidActionException
+     */
+     public boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException{
+
+         try {
+             requirements.checkReq(board,shelves,quantity,strongbox);
+         }
+         catch (InvalidActionException e){throw e;}
+         return true;
+     }
+
 
     @Override
     public boolean equals(Object o) {

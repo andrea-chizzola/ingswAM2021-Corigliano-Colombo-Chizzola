@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -18,14 +19,24 @@ public class CardRequirements implements Requirements{
         this.cards.addAll(cards);
     }
 
+    /**
+     * This method checks if the cards owned by the player meet the requirements to activate the Leader Card.
+     * An InvalidActionException is thrown if the requirements are not met.
+     * @param board represents the board associated to a player
+     * @return true if the check is successful
+     * @throws InvalidActionException if the number of owned cards is not sufficient
+     */
     @Override
-    public boolean checkReq(Board board) {
-        return false;
+    public boolean checkReq(Board board) throws InvalidActionException{
+
+        for(CardQuantity cardQuantity : cards)
+            board.checkCards(cardQuantity.getCardColor(),cardQuantity.getLevel(),cardQuantity.getQuantity());
+        return true;
     }
 
     @Override
-    public void buyCard(Board board) {
-
+    public boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException {
+        return checkReq(board);
     }
 
     @Override
