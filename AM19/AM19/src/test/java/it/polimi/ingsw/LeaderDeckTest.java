@@ -26,7 +26,6 @@ public class LeaderDeckTest {
 
         List<LeaderCard> cardsParser = parser.parseLeaderCard(fullPathFile);
         //test of the content of the two cards
-
         assertTrue(cardsDeck.containsAll(cardsParser));
         assertTrue(cardsParser.containsAll(cardsDeck));
     }

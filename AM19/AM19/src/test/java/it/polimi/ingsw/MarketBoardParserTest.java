@@ -40,5 +40,6 @@ public class MarketBoardParserTest {
         assertEquals(tray.get(5).getClass(), MarblePurple.class);
         assertEquals(tray.get(6).getClass(), MarbleYellow.class);
         assertEquals(tray.get(7).getClass(), MarbleYellow.class);
+        assertEquals(tray.get(8).getClass(), MarbleYellow.class);
     }
 }
