@@ -1,6 +1,11 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.Boards.StrongBox;
+import it.polimi.ingsw.Model.Resources.*;
 import org.junit.jupiter.api.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -187,6 +192,30 @@ class StrongBoxTest {
         strongBox.addResource(stone, 10);
 
         assertEquals(10, strongBox.calculateTotalResources());
+
+    }
+
+    @Test
+    void getResourcesEmpty(){
+        assertEquals(strongBox.getResources().size(), 0);
+    }
+
+    @Test
+    void getResources(){
+        strongBox.addResource(coin, 3);
+        strongBox.addResource(coin, 1);
+        strongBox.addResource(shield,0);
+        strongBox.addResource(stone,5);
+        Map<Resource,Integer> map = strongBox.getResources();
+
+        Map<Resource, Integer> copy = new HashMap<>();
+        copy.put(coin, 4);
+        copy.put(shield,0);
+        copy.put(stone,5);
+
+        for(Resource r : map.keySet()){
+            assertEquals(map.get(r), copy.get(r));
+        }
 
     }
 }

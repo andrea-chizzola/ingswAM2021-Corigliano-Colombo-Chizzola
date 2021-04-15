@@ -145,7 +145,7 @@
                 <resquantity resource="COINS" amount="2"/>
             </materials>
             <products>
-                <resquantity resource="FAITH" amount="3"/>
+                <resquantity resource="STONES" amount="3"/>
                 <resquantity resource="FAITH" amount="2"/>
             </products>
         </production>
@@ -172,7 +172,7 @@
 
     <card points="11" color="GREEN" level="3">
         <requirements>
-            <resquantity resource="SHIELDS" amount="3" />
+            <resquantity resource="SHIELDS" amount="7" />
         </requirements>
 
         <production>
@@ -181,15 +181,459 @@
             </materials>
             <products>
                 <resquantity resource="COINS" amount="1"/>
-                <resquantity resource="SHIELDS" amount="1"/>
-                <resquantity resource="STONES" amount="1"/>
+                <resquantity resource="FAITH" amount="3"/>
             </products>
         </production>
     </card>
 
     <card points="12" color="GREEN" level="3">
         <requirements>
-            <resquantity resource="SHIELDS" amount="7" />
+            <resquantity resource="SHIELDS" amount="4" />
+            <resquantity resource="COINS" amount="4" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="STONES" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="3"/>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+
+
+    <!-- PURPLE cards - level 1 -->
+    <card points="1" color="PURPLE" level="1">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="STONES" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="2" color="PURPLE" level="1">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="1" />
+            <resquantity resource="SERVANTS" amount="1" />
+            <resquantity resource="COINS" amount="1" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="3" color="PURPLE" level="1">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="3" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="COINS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="SERVANTS" amount="1"/>
+                <resquantity resource="SHIELDS" amount="1"/>
+                <resquantity resource="STONES" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="4" color="PURPLE" level="1">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="2" />
+            <resquantity resource="STONES" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="STONES" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <!-- PURPLE cards - level 2 -->
+    <card points="5" color="PURPLE" level="2">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="4" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="6" color="PURPLE" level="2">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="3" />
+            <resquantity resource="COINS" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SHIELDS" amount="3"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="7" color="PURPLE" level="2">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="5" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="STONES" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="2"/>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="8" color="PURPLE" level="2">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="3" />
+            <resquantity resource="SHIELDS" amount="3" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="STONES" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SERVANTS" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+    <!-- PURPLE cards - level 3 -->
+    <card points="9" color="PURPLE" level="3">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="6" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="STONES" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="3"/>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="10" color="PURPLE" level="3">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="5" />
+            <resquantity resource="COINS" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="STONES" amount="1"/>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="2"/>
+                <resquantity resource="SERVANTS" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="11" color="PURPLE" level="3">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="7" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="COINS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="STONES" amount="1"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="12" color="PURPLE" level="3">
+        <requirements>
+            <resquantity resource="SERVANTS" amount="4" />
+            <resquantity resource="SHIELDS" amount="4" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="STONES" amount="1"/>
+                <resquantity resource="SERVANTS" amount="3"/>
+            </products>
+        </production>
+    </card>
+
+
+
+    <!-- BLUE cards - level 1 -->
+    <card points="1" color="BLUE" level="1">
+        <requirements>
+            <resquantity resource="COINS" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="2" color="BLUE" level="1">
+        <requirements>
+            <resquantity resource="COINS" amount="1" />
+            <resquantity resource="SERVANTS" amount="1" />
+            <resquantity resource="STONES" amount="1" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="STONES" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="3" color="BLUE" level="1">
+        <requirements>
+            <resquantity resource="COINS" amount="3" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="STONES" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="SERVANTS" amount="1"/>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="4" color="BLUE" level="1">
+        <requirements>
+            <resquantity resource="COINS" amount="2" />
+            <resquantity resource="SERVANTS" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SHIELDS" amount="1"/>
+                <resquantity resource="STONES" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SERVANTS" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <!-- BLUE cards - level 2 -->
+    <card points="5" color="BLUE" level="2">
+        <requirements>
+            <resquantity resource="COINS" amount="4" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="6" color="BLUE" level="2">
+        <requirements>
+            <resquantity resource="COINS" amount="3" />
+            <resquantity resource="STONES" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="STONES" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SERVANTS" amount="3"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="7" color="BLUE" level="2">
+        <requirements>
+            <resquantity resource="COINS" amount="5" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SERVANTS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="SHIELDS" amount="2"/>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="8" color="BLUE" level="2">
+        <requirements>
+            <resquantity resource="COINS" amount="3" />
+            <resquantity resource="SERVANTS" amount="3" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="STONES" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+    <!-- BLUE cards - level 3 -->
+    <card points="9" color="BLUE" level="3">
+        <requirements>
+            <resquantity resource="COINS" amount="6" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SERVANTS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="SHIELDS" amount="3"/>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="10" color="BLUE" level="3">
+        <requirements>
+            <resquantity resource="COINS" amount="5" />
+            <resquantity resource="STONES" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SERVANTS" amount="2"/>
+                <resquantity resource="STONES" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="11" color="BLUE" level="3">
+        <requirements>
+            <resquantity resource="COINS" amount="7" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="STONES" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="SHIELDS" amount="1"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="12" color="BLUE" level="3">
+        <requirements>
+            <resquantity resource="COINS" amount="4" />
+            <resquantity resource="STONES" amount="4" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="SHIELDS" amount="3"/>
+            </products>
+        </production>
+    </card>
+
+
+
+    <!-- YELLOW cards - level 1 -->
+    <card points="1" color="YELLOW" level="1">
+        <requirements>
+            <resquantity resource="STONES" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="2" color="YELLOW" level="1">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="1" />
+            <resquantity resource="STONES" amount="1" />
+            <resquantity resource="COINS" amount="1" />
         </requirements>
 
         <production>
@@ -198,9 +642,178 @@
             </materials>
             <products>
                 <resquantity resource="COINS" amount="1"/>
-                <resquantity resource="FAITH" amount="3"/>
             </products>
         </production>
     </card>
+
+    <card points="3" color="YELLOW" level="1">
+        <requirements>
+            <resquantity resource="STONES" amount="3" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SHIELDS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="SERVANTS" amount="1"/>
+                <resquantity resource="STONES" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="4" color="YELLOW" level="1">
+        <requirements>
+            <resquantity resource="STONES" amount="2" />
+            <resquantity resource="SHIELDS" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SHIELDS" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <!-- YELLOW cards - level 2 -->
+    <card points="5" color="YELLOW" level="2">
+        <requirements>
+            <resquantity resource="STONES" amount="4" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="6" color="YELLOW" level="2">
+        <requirements>
+            <resquantity resource="STONES" amount="3" />
+            <resquantity resource="SHIELDS" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="STONES" amount="1"/>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="3"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="7" color="YELLOW" level="2">
+        <requirements>
+            <resquantity resource="STONES" amount="5" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SHIELDS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="SERVANTS" amount="2"/>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="8" color="YELLOW" level="2">
+        <requirements>
+            <resquantity resource="STONES" amount="3" />
+            <resquantity resource="SERVANTS" amount="3" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+    <!-- GREEN cards - level 3 -->
+    <card points="9" color="YELLOW" level="3">
+        <requirements>
+            <resquantity resource="STONES" amount="6" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SHIELDS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="SERVANTS" amount="3"/>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="10" color="YELLOW" level="3">
+        <requirements>
+            <resquantity resource="STONES" amount="5" />
+            <resquantity resource="SERVANTS" amount="2" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="STONES" amount="1"/>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="2"/>
+                <resquantity resource="SHIELDS" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="11" color="YELLOW" level="3">
+        <requirements>
+            <resquantity resource="STONES" amount="7" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SHIELDS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="SERVANTS" amount="1"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card points="12" color="YELLOW" level="3">
+        <requirements>
+            <resquantity resource="STONES" amount="4" />
+            <resquantity resource="SERVANTS" amount="4" />
+        </requirements>
+
+        <production>
+            <materials>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="STONES" amount="1"/>
+                <resquantity resource="SERVANTS" amount="3"/>
+            </products>
+        </production>
+    </card>
+
 </developmentCards>
 

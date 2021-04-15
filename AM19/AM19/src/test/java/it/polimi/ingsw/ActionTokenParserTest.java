@@ -1,12 +1,16 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.ActionTokens.Action;
+import it.polimi.ingsw.Model.ActionTokens.Discard;
+import it.polimi.ingsw.Model.ActionTokens.MoveAndShuffle;
+import it.polimi.ingsw.Model.ActionTokens.MoveBlack;
+import it.polimi.ingsw.Model.Cards.Colors.Purple;
+import it.polimi.ingsw.Model.Cards.Colors.Yellow;
 import it.polimi.ingsw.xmlParser.ActionTokenParser;
-import it.polimi.ingsw.xmlParser.CardParser;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class ActionTokenParserTest {
 
@@ -19,7 +23,7 @@ public class ActionTokenParserTest {
     }
 
     @Test
-    public void builActionTokensTest(){
+    public void buildActionTokensTest(){
         LinkedList<Action> actionTokens = parser.buildActionTokens(file);
 
         //creation of Action Tokens using constructors

@@ -1,14 +1,13 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.MarketBoard.*;
 import it.polimi.ingsw.xmlParser.MarketBoardParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class MarketBoardParserTest {
     private final String file = "src\\test\\java\\it\\polimi\\ingsw\\XMLSourcesTest\\MarketBoardTest.xml";
@@ -21,12 +20,12 @@ public class MarketBoardParserTest {
 
     @Test
     public void getMarketRowsTest(){
-        assertEquals(parser.getMarketRows(file), 3);
+        assertEquals(parser.getMarketRows(file), 4);
     }
 
     @Test
     public void getMarketColumnsTest(){
-        assertEquals(parser.getMarketColumns(file), 4);
+        assertEquals(parser.getMarketColumns(file), 2);
     }
 
     @Test
@@ -40,5 +39,6 @@ public class MarketBoardParserTest {
         assertEquals(tray.get(5).getClass(), MarblePurple.class);
         assertEquals(tray.get(6).getClass(), MarbleYellow.class);
         assertEquals(tray.get(7).getClass(), MarbleYellow.class);
+        assertEquals(tray.get(8).getClass(), MarbleYellow.class);
     }
 }

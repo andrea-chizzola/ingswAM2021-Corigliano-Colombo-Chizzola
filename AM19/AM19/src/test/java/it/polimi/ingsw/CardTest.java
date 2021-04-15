@@ -1,9 +1,15 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.Cards.DevelopmentCard;
+import it.polimi.ingsw.Model.Cards.LeaderCard;
+import it.polimi.ingsw.Model.Cards.Production;
+import it.polimi.ingsw.Model.Resources.Coin;
+import it.polimi.ingsw.Model.Resources.Faith;
+import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.xmlParser.CardParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.LinkedList;

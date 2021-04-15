@@ -41,6 +41,8 @@ public class ConfigurationParserTest {
         assertEquals(path + "defaultMarketBoard.xml", ConfigurationParser.getMarketBoardPath(file));
     }
 
-
-
+    @Test
+    public void getNumLeader(){
+        assertEquals(2, ConfigurationParser.getNumLeader(file));
+    }
 }

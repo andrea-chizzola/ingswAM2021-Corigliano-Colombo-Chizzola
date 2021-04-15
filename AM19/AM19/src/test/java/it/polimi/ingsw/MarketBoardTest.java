@@ -1,11 +1,12 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Exceptions.IllegalMarketException;
+import it.polimi.ingsw.Model.MarketBoard.Marble;
+import it.polimi.ingsw.Model.MarketBoard.MarketBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class MarketBoardTest {
     private final String file = "defaultConfiguration.xml";

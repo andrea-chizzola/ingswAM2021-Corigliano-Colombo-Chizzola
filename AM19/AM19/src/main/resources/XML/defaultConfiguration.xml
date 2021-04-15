@@ -16,4 +16,6 @@
         <slot num = "3" capacity = "3"/>
     </warehouse>
 
+    <leader num = "2"/>
+
 </configuration>

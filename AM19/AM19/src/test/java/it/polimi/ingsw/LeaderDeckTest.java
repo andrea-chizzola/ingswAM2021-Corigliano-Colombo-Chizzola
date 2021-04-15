@@ -1,13 +1,13 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.Cards.LeaderCard;
+import it.polimi.ingsw.Model.Decks.LeaderDeck;
 import it.polimi.ingsw.xmlParser.CardParser;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class LeaderDeckTest {
     private LeaderDeck deck;
@@ -21,12 +21,11 @@ public class LeaderDeckTest {
 
     @Test
     public void extractTest(){
-       LinkedList<LeaderCard> cardsDeck = deck.extract(4);
+       LinkedList<LeaderCard> cardsDeck = deck.extract(16);
        CardParser parser = CardParser.instance();
 
         List<LeaderCard> cardsParser = parser.parseLeaderCard(fullPathFile);
         //test of the content of the two cards
-
         assertTrue(cardsDeck.containsAll(cardsParser));
         assertTrue(cardsParser.containsAll(cardsDeck));
     }

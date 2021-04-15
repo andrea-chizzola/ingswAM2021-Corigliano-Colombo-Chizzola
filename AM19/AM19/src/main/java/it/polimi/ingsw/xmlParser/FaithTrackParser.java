@@ -1,21 +1,15 @@
 package it.polimi.ingsw.xmlParser;
 
-import it.polimi.ingsw.FaithTrack;
-import it.polimi.ingsw.PopeFavor;
-import it.polimi.ingsw.VaticanReportSection;
-import org.w3c.dom.Document;
+import it.polimi.ingsw.Model.Boards.FaithTrack.FaithTrack;
+import it.polimi.ingsw.Model.Boards.FaithTrack.VaticanReportSection;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static java.lang.Integer.parseInt;
 
