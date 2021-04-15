@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.Boards.FaithTrack.FaithTrack;
+import it.polimi.ingsw.Model.Boards.FaithTrack.VaticanReportSection;
 import it.polimi.ingsw.xmlParser.FaithTrackParser;
 import org.junit.jupiter.api.*;
 

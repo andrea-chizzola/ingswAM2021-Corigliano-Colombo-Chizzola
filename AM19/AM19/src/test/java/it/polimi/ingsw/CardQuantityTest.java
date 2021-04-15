@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
-import org.junit.BeforeClass;
+import it.polimi.ingsw.Model.Cards.CardQuantity;
+import it.polimi.ingsw.Model.Cards.Colors.Purple;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

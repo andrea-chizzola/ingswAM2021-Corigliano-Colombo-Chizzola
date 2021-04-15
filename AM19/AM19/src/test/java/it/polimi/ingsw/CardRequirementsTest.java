@@ -1,9 +1,20 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Exceptions.IllegalSlotException;
+import it.polimi.ingsw.Exceptions.InvalidActionException;
+import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Boards.GameBoard;
+import it.polimi.ingsw.Model.Boards.StrongBox;
+import it.polimi.ingsw.Model.Boards.Warehouse;
+import it.polimi.ingsw.Model.Cards.*;
+import it.polimi.ingsw.Model.Cards.Colors.Blue;
+import it.polimi.ingsw.Model.Cards.Colors.Green;
+import it.polimi.ingsw.Model.Cards.Colors.Purple;
+import it.polimi.ingsw.Model.Cards.Colors.Yellow;
+import it.polimi.ingsw.Model.Resources.ResQuantity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 

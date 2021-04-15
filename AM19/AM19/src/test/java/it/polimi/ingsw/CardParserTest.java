@@ -1,5 +1,10 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.Cards.*;
+import it.polimi.ingsw.Model.Cards.Colors.Blue;
+import it.polimi.ingsw.Model.Cards.Colors.Green;
+import it.polimi.ingsw.Model.Cards.Colors.Yellow;
+import it.polimi.ingsw.Model.Resources.*;
 import it.polimi.ingsw.xmlParser.CardParser;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;

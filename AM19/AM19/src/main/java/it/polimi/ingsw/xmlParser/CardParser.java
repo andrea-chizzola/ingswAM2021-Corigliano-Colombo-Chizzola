@@ -1,10 +1,10 @@
 package it.polimi.ingsw.xmlParser;
 
-import java.io.File;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import it.polimi.ingsw.*;
+
+import it.polimi.ingsw.Model.Cards.*;
+import it.polimi.ingsw.Model.Cards.Colors.*;
+import it.polimi.ingsw.Model.Resources.*;
 import org.w3c.dom.*;
 
 import java.io.IOException;
