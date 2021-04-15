@@ -188,5 +188,16 @@ public class GameBoard {
 
     }
 
+    /**
+     * this method gives a number of leader cards to each player
+     * @param file is the name of the XML file that contains the number of initial leader cards of each player
+     */
+    public void giveLeaderCards(String file){
+        int num = ConfigurationParser.getNumLeader(file);
+        for(Board board : players){
+            board.setLeaders(leaderDeck.extract(num));
+        }
+    }
+
 
 }
