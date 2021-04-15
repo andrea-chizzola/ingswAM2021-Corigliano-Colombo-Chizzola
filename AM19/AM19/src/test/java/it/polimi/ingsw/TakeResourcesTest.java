@@ -1,5 +1,12 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Exceptions.*;
+import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Boards.GameBoard;
+import it.polimi.ingsw.Model.MarketBoard.MarbleWhite;
+import it.polimi.ingsw.Model.MarketBoard.MarbleYellow;
+import it.polimi.ingsw.Model.Resources.Coin;
+import it.polimi.ingsw.Model.Turn.TakeResources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +15,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TakeResourcesTest {
-    private  Board board;
+    private Board board;
     private GameBoard gameBoard;
     private  final String file = "defaultConfiguration.xml";
 

@@ -1,5 +1,12 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Exceptions.IllegalShelfException;
+import it.polimi.ingsw.Exceptions.IllegalSlotException;
+import it.polimi.ingsw.Model.Boards.*;
+import it.polimi.ingsw.Model.Cards.*;
+import it.polimi.ingsw.Model.Cards.Colors.Green;
+import it.polimi.ingsw.Model.Cards.Colors.Purple;
+import it.polimi.ingsw.Model.Resources.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

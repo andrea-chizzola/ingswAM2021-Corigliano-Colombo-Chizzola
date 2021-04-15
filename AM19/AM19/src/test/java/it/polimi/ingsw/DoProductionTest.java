@@ -1,5 +1,17 @@
 package it.polimi.ingsw;
+import it.polimi.ingsw.*;
 
+import it.polimi.ingsw.Exceptions.IllegalShelfException;
+import it.polimi.ingsw.Exceptions.InvalidActionException;
+import it.polimi.ingsw.Exceptions.LorenzoWonException;
+import it.polimi.ingsw.Exceptions.PlayerWonException;
+import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Boards.GameBoard;
+import it.polimi.ingsw.Model.Boards.StrongBox;
+import it.polimi.ingsw.Model.Boards.Warehouse;
+import it.polimi.ingsw.Model.Cards.Production;
+import it.polimi.ingsw.Model.Resources.*;
+import it.polimi.ingsw.Model.Turn.DoProduction;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,9 +23,9 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DoProductionTest {
-    private  Production production1;
+    private Production production1;
     private  Production production2;
-    private  Board board;
+    private Board board;
     private  ArrayList<Production> productions;
     private  final String file = "defaultConfiguration.xml";
 

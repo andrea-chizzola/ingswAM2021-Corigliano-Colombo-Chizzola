@@ -1,5 +1,14 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Exceptions.IllegalShelfException;
+import it.polimi.ingsw.Exceptions.InvalidActionException;
+import it.polimi.ingsw.Exceptions.PlayerWonException;
+import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Boards.GameBoard;
+import it.polimi.ingsw.Model.Boards.StrongBox;
+import it.polimi.ingsw.Model.Boards.Warehouse;
+import it.polimi.ingsw.Model.Resources.*;
+import it.polimi.ingsw.Model.Turn.ManageLeader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +21,7 @@ class ManageLeaderTest {
 
 
 
-    private  Board board;
+    private Board board;
 
     private  final String file = "defaultConfiguration.xml";
 
