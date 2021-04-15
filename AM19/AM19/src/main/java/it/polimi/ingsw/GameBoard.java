@@ -65,14 +65,8 @@ public class GameBoard {
 
         if(nicknames.size() > 1) customMode = new MultiplePlayer() ;
         else {
-            ActionTokenParser parser = ActionTokenParser.instance();
-            customMode = new SinglePlayer(this,
-                    ConfigurationParser.getTrackPath(file),
-                    ConfigurationParser.getActionTokensPath(file)
-                    );
+            customMode = new SinglePlayer(this, file);
         }
-
-        //decks missing
 
     }
 

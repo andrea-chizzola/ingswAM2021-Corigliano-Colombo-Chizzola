@@ -21,12 +21,12 @@ public class MarketBoardParserTest {
 
     @Test
     public void getMarketRowsTest(){
-        assertEquals(parser.getMarketRows(file), 3);
+        assertEquals(parser.getMarketRows(file), 4);
     }
 
     @Test
     public void getMarketColumnsTest(){
-        assertEquals(parser.getMarketColumns(file), 4);
+        assertEquals(parser.getMarketColumns(file), 2);
     }
 
     @Test
@@ -40,5 +40,6 @@ public class MarketBoardParserTest {
         assertEquals(tray.get(5).getClass(), MarblePurple.class);
         assertEquals(tray.get(6).getClass(), MarbleYellow.class);
         assertEquals(tray.get(7).getClass(), MarbleYellow.class);
+        assertEquals(tray.get(8).getClass(), MarbleYellow.class);
     }
 }
