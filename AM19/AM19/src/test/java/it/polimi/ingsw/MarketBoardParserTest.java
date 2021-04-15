@@ -1,14 +1,13 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.MarketBoard.*;
 import it.polimi.ingsw.xmlParser.MarketBoardParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class MarketBoardParserTest {
     private final String file = "src\\test\\java\\it\\polimi\\ingsw\\XMLSourcesTest\\MarketBoardTest.xml";

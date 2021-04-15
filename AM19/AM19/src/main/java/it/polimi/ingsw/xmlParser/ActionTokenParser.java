@@ -1,10 +1,12 @@
 package it.polimi.ingsw.xmlParser;
 
-import java.io.File;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import it.polimi.ingsw.*;
+
+import it.polimi.ingsw.Model.ActionTokens.Action;
+import it.polimi.ingsw.Model.ActionTokens.Discard;
+import it.polimi.ingsw.Model.ActionTokens.MoveAndShuffle;
+import it.polimi.ingsw.Model.ActionTokens.MoveBlack;
+import it.polimi.ingsw.Model.Cards.Colors.*;
 import org.w3c.dom.*;
 
 import java.io.IOException;

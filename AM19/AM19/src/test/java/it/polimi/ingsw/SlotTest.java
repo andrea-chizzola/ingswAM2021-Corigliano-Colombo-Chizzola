@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Exceptions.IllegalSlotException;
+import it.polimi.ingsw.Model.Cards.DevelopmentCard;
+import it.polimi.ingsw.Model.Boards.Slot;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

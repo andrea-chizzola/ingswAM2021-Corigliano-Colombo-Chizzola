@@ -1,12 +1,19 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.xmlParser.CardParser;
+import it.polimi.ingsw.Exceptions.IllegalShelfException;
+import it.polimi.ingsw.Exceptions.InvalidActionException;
+import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Boards.GameBoard;
+import it.polimi.ingsw.Model.Boards.StrongBox;
+import it.polimi.ingsw.Model.Boards.Warehouse;
+import it.polimi.ingsw.Model.Cards.*;
+import it.polimi.ingsw.Model.Cards.Colors.Green;
+import it.polimi.ingsw.Model.Resources.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

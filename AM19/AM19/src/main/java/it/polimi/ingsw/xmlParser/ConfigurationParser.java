@@ -4,12 +4,16 @@ import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import it.polimi.ingsw.*;
+
+import it.polimi.ingsw.Model.ActionTokens.Action;
+import it.polimi.ingsw.Model.Cards.DevelopmentCard;
+import it.polimi.ingsw.Model.Cards.LeaderCard;
+import it.polimi.ingsw.Model.Boards.FaithTrack.FaithTrack;
+import it.polimi.ingsw.Model.MarketBoard.Marble;
 import org.w3c.dom.*;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Supplier;
 
 import org.xml.sax.SAXException;
 

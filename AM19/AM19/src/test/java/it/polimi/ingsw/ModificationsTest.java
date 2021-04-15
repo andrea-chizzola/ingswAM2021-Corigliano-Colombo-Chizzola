@@ -1,6 +1,14 @@
 package it.polimi.ingsw;
 import java.util.ArrayList;
 
+import it.polimi.ingsw.Exceptions.IllegalShelfException;
+import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Boards.GameBoard;
+import it.polimi.ingsw.Model.Cards.Discount;
+import it.polimi.ingsw.Model.Cards.ExtraSlot;
+import it.polimi.ingsw.Model.Cards.WhiteMarble;
+import it.polimi.ingsw.Model.Resources.Coin;
+import it.polimi.ingsw.Model.Resources.ResQuantity;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

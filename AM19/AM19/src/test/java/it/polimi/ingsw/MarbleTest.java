@@ -1,4 +1,15 @@
 package it.polimi.ingsw;
+import it.polimi.ingsw.Exceptions.IllegalShelfException;
+import it.polimi.ingsw.Exceptions.InvalidActionException;
+import it.polimi.ingsw.Exceptions.MarbleWhiteException;
+import it.polimi.ingsw.Exceptions.PlayerWonException;
+import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Boards.GameBoard;
+import it.polimi.ingsw.Model.MarketBoard.*;
+import it.polimi.ingsw.Model.Resources.Coin;
+import it.polimi.ingsw.Model.Resources.Servant;
+import it.polimi.ingsw.Model.Resources.Shield;
+import it.polimi.ingsw.Model.Resources.Stone;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;

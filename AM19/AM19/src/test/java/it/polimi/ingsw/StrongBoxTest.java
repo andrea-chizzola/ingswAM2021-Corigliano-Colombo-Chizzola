@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.Boards.StrongBox;
+import it.polimi.ingsw.Model.Resources.*;
 import org.junit.jupiter.api.*;
 
 import java.util.HashMap;

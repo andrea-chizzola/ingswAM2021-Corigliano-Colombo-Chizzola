@@ -1,13 +1,13 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.Cards.LeaderCard;
+import it.polimi.ingsw.Model.Decks.LeaderDeck;
 import it.polimi.ingsw.xmlParser.CardParser;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class LeaderDeckTest {
     private LeaderDeck deck;

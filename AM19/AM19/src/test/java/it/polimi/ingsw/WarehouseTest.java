@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Exceptions.IllegalShelfException;
+import it.polimi.ingsw.Model.Boards.Warehouse;
+import it.polimi.ingsw.Model.Resources.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
