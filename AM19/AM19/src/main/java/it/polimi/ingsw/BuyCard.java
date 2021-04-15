@@ -7,34 +7,7 @@ import java.util.ArrayList;
  */
 public class BuyCard extends Turn{
 
-    /**
-     *
-     * @param board
-     * @param slot
-     * @param color
-     * @param level
-     * @throws InvalidActionException
-     * @throws ResourcesExpectedException
-     */
-    @Override
-    public void buyCard(Board board, int slot, CardColor color, int level) throws InvalidActionException, ResourcesExpectedException {
-        Slot slot1;
-        DevelopmentCard card;
-        try {
-            card = board.getGameBoard().getDevelopmentDeck().readTop(color,level);
-            card.checkReq(board);
-            board.getGameBoard().getDevelopmentDeck().getTop(color, level);
-        }catch (IllegalArgumentException e){throw new InvalidActionException(e.getMessage());}
 
-        try {
-            slot1 = board.getSlot(slot);
-        }
-        catch (IllegalSlotException e){throw new InvalidActionException(e.getMessage());}
-        try {
-            slot1.insertCard(card);
-        }
-        catch (IllegalSlotException e){throw new InvalidActionException(e.getMessage());}
-    }
     /**
      * This method allows to buy the development card with color 'color' and level 'level' on the top of the deck
      * and it allows to add that card in the slot with number 'slot'
@@ -55,7 +28,7 @@ public class BuyCard extends Turn{
         try {
             card = board.getGameBoard().getDevelopmentDeck().readTop(color,level);
             card.checkReq(board,shelves,quantity,strongbox);
-            board.getGameBoard().getDevelopmentDeck().getTop(color, level);
+
         }catch (IllegalArgumentException e){throw new InvalidActionException(e.getMessage());}
         try {
             slot1 = board.getSlot(slot);
@@ -65,6 +38,9 @@ public class BuyCard extends Turn{
             slot1.insertCard(card);
         }
         catch (IllegalSlotException e){throw new InvalidActionException(e.getMessage());}
+        try {
+            board.getGameBoard().getDevelopmentDeck().getTop(color, level);
+        }catch (IllegalArgumentException e){throw new InvalidActionException(e.getMessage());}
 
         ResQuantity.useResources(board,shelves,quantity,strongbox);
 
