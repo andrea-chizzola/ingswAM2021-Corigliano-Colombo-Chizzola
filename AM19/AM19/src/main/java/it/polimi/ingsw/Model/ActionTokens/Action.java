@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.ActionTokens;
 
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
 
 /**
@@ -12,7 +11,7 @@ public interface Action {
      * performs the action related to the action token picked
      * @param singlePlayer is the board of Lorenzo il Magnifico
      */
-    void doAction(SinglePlayer singlePlayer) throws LorenzoWonException;
+    void doAction(SinglePlayer singlePlayer);
 
 
 }

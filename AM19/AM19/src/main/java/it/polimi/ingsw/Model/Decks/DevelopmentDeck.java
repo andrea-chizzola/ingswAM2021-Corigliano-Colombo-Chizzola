@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Decks;
 
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
 import it.polimi.ingsw.Model.Cards.Colors.CardColor;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
@@ -67,14 +66,13 @@ public class DevelopmentDeck {
      * @param num is the number of cards to be extracted
      * @param color is the color of the extracted cards
      * @return the extracted cards
-     * @throws LorenzoWonException if all the decks of a given color are empty, and therefore Lorenzo won
      * @throws IllegalArgumentException if the target deck does not exist
      */
 
      //to be modified using the configuration file. The extraction is related to Action Token, that only controls color
      //and num. You need to get "number of decks" from file
     public LinkedList<DevelopmentCard> extract (int num, CardColor color)
-            throws LorenzoWonException, IllegalArgumentException{
+            throws IllegalArgumentException{
         LinkedList<DevelopmentCard> extracted = new LinkedList<>();
         int n = num;
 
@@ -94,7 +92,6 @@ public class DevelopmentDeck {
                 throw new IllegalArgumentException("The deck does not exist");
             }
         }
-        if(decks.get(new ColorLevelKey(color,3)).size() == 0 ) throw new LorenzoWonException();
         return extracted;
     }
 

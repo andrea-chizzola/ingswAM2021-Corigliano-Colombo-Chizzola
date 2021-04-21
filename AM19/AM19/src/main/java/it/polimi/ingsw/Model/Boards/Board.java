@@ -2,8 +2,6 @@ package it.polimi.ingsw.Model.Boards;
 
 import it.polimi.ingsw.Exceptions.IllegalSlotException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Cards.Colors.CardColor;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
@@ -12,6 +10,7 @@ import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -126,6 +125,13 @@ public class Board {
     }
 
     /**
+     * @return returns an ArrayList containing the slots related to the board
+     */
+    public ArrayList<Slot> getSlots() {
+        return slots;
+    }
+
+    /**
      * @param position indicates the selected leader card
      * @return returns the leader card associated to the indicated position
      * @throws IndexOutOfBoundsException if the leader card doesn't exist
@@ -145,7 +151,7 @@ public class Board {
      * @param position indicates the position of the card that has to be removed
      * @throws IndexOutOfBoundsException if if the leader card doesn't exist
      */
-    public void removeLeaderCard(int position) throws IndexOutOfBoundsException, PlayerWonException {
+    public void removeLeaderCard(int position) throws IndexOutOfBoundsException{
 
         if(position > 0 && position <= leaders.size()){
 
@@ -192,7 +198,7 @@ public class Board {
      * moves the faith marker ahead in the faith track and starts a vatican report if a player reached or passed the end of a section
      * @param amount indicates how many positions have to be added to the faith marker
      */
-    public void addFaith(int amount) throws PlayerWonException {
+    public void addFaith(int amount){
 
         faithTrack.addFaith(amount);
 
@@ -200,7 +206,7 @@ public class Board {
 
         if(faithTrack.isEndTrack()) {
 
-            throw new PlayerWonException();
+            gameBoard.setEndGameStarted(true);
 
         }
 
@@ -210,21 +216,10 @@ public class Board {
      * calls the GameBoard's method that adds faith to other players
      * @param amount equals the amount of resources discarded
      */
-    public void addFaithToOthers(int amount) throws LorenzoWonException, PlayerWonException {
+    public void addFaithToOthers(int amount){
 
-        try {
+        gameBoard.addFaithToOthers(amount);
 
-            gameBoard.addFaithToOthers(amount);
-
-        }catch (LorenzoWonException e){
-
-            throw new LorenzoWonException(e.getMessage());
-
-        }catch (PlayerWonException e){
-
-            throw new PlayerWonException(e.getMessage());
-
-        }
     }
 
     /**
@@ -289,6 +284,4 @@ public class Board {
             throw new InvalidActionException("Card requirements not met!");
         return true;
     }
-
-
 }

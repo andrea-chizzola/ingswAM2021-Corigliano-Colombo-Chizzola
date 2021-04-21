@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model.Turn;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
@@ -49,7 +48,7 @@ public class ManageLeader extends Turn{
      * @throws InvalidActionException if the action is invalid
      */
     @Override
-    public void removeCard(Board board, int position) throws InvalidActionException, PlayerWonException {
+    public void removeCard(Board board, int position) throws InvalidActionException{
 
         try{
             board.removeLeaderCard(position);

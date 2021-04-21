@@ -1,9 +1,7 @@
 package it.polimi.ingsw.Model.MarketBoard;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
 import it.polimi.ingsw.Exceptions.MarbleWhiteException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 
 /**
@@ -19,7 +17,7 @@ public class MarbleRed implements Marble {
      * @throws InvalidActionException
      */
     @Override
-    public void addResource(Board board, int shelf) throws InvalidActionException, MarbleWhiteException, PlayerWonException {
+    public void addResource(Board board, int shelf) throws InvalidActionException, MarbleWhiteException{
         board.addFaith(1);
     }
 
@@ -28,7 +26,7 @@ public class MarbleRed implements Marble {
      * @param board the board of the player
      */
     @Override
-    public void discard(Board board) throws PlayerWonException, LorenzoWonException {
+    public void discard(Board board){
         board.addFaithToOthers(1);
     }
 

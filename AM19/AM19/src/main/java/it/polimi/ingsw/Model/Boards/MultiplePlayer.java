@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model.Boards;
 
-import it.polimi.ingsw.Exceptions.PlayerWonException;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * public class used to implement the endTurnAction method in case of a multiplayer match
@@ -28,7 +30,7 @@ public class MultiplePlayer implements CustomMode{
      * @param gameBoard represents the game board
      */
     @Override
-    public void addFaithToOthers(int amount, GameBoard gameBoard) throws PlayerWonException {
+    public void addFaithToOthers(int amount, GameBoard gameBoard){
 
         for(Board board : gameBoard.getPlayers()){
 
@@ -39,6 +41,31 @@ public class MultiplePlayer implements CustomMode{
             }
 
         }
+
+    }
+
+    @Override
+    public String findWinnerMessage(ArrayList<Board> boards) {
+
+        String result = new String("Final Leaderboards: \n");
+
+        Collections.sort(boards, (Board b1, Board b2) -> {
+            if(b1.getTotalPoints() < b2.getTotalPoints()) return -1;
+            else if(b1.getTotalPoints() > b2.getTotalPoints()) return 1;
+            else if(b1.getTotalPoints() == b2.getTotalPoints() && b1.getStrongBox().calculateTotalResources() + b1.getWarehouse().calculateTotalResources() < b2.getStrongBox().calculateTotalResources() + b2.getWarehouse().calculateTotalResources())
+                return -1;
+            else if(b1.getTotalPoints() == b2.getTotalPoints() && b1.getStrongBox().calculateTotalResources() + b1.getWarehouse().calculateTotalResources() > b2.getStrongBox().calculateTotalResources() + b2.getWarehouse().calculateTotalResources())
+                return 1;
+            else return 0;
+        });
+
+        for(int i = boards.size() - 1; i >= 0; i--){
+
+            result = result + (boards.size() - i) + " " + boards.get(i).getNickname() + " " + boards.get(i).getTotalPoints() + "\n";
+
+        }
+
+        return result;
 
     }
 

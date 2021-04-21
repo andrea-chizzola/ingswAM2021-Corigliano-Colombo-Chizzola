@@ -1,7 +1,5 @@
 package it.polimi.ingsw;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.Boards.StrongBox;
@@ -93,7 +91,7 @@ public class ProductionTest {
     }
 
     @Test
-    public void addProductsTest() throws PlayerWonException, LorenzoWonException {
+    public void addProductsTest(){
         production1.addProducts(board);
         StrongBox strongBox = board.getStrongBox();
         assertEquals(strongBox.getQuantity( new Servant()), 3 );
@@ -102,7 +100,7 @@ public class ProductionTest {
     }
 
     @Test
-    public void addProductsFaithTest() throws PlayerWonException, LorenzoWonException {
+    public void addProductsFaithTest(){
         production2.addProducts(board);
         FaithTrack track = board.getFaithTrack();
         StrongBox strongBox = board.getStrongBox();

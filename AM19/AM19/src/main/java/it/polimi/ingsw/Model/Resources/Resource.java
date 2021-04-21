@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Resources;
 
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 
 /**
@@ -19,7 +18,7 @@ public abstract class Resource {
      * @param board the board of the player
      * @param quantity the quantity of resources to add
      */
-    public abstract void addResourceStrongbox(Board board, int quantity) throws PlayerWonException;
+    public abstract void addResourceStrongbox(Board board, int quantity);
 
 }
 

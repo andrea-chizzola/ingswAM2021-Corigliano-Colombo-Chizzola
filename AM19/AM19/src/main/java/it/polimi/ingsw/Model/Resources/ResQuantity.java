@@ -2,8 +2,6 @@ package it.polimi.ingsw.Model.Resources;
 
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 
 import java.util.ArrayList;
@@ -170,7 +168,7 @@ public class ResQuantity {
      * The type of resource added is the one contained in this object.
      * @param board
      */
-    public void addResourceStrongbox(Board board) throws PlayerWonException, LorenzoWonException {
+    public void addResourceStrongbox(Board board){
         this.resource.addResourceStrongbox(board, this.quantity);
     }
 

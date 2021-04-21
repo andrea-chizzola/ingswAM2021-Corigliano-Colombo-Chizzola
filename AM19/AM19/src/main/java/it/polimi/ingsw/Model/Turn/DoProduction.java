@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Model.Turn;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
@@ -27,7 +25,7 @@ public class DoProduction extends Turn{
      * @throws InvalidActionException if the action is invalid
      */
     @Override
-    public void doProduction(Board board, ArrayList<Production> productions, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException, PlayerWonException, LorenzoWonException {
+    public void doProduction(Board board, ArrayList<Production> productions, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException{
 
         Map<Resource,Integer> resourceStatus;
         try {

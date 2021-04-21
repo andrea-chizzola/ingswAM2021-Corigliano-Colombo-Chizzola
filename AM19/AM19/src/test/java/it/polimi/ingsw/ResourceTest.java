@@ -1,5 +1,4 @@
 package it.polimi.ingsw;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.Boards.StrongBox;
@@ -96,7 +95,7 @@ public class ResourceTest {
     }
 
     @Test
-    public void addResourceFaithTest() throws PlayerWonException {
+    public void addResourceFaithTest(){
         StrongBox strongbox = board.getStrongBox();
         assertEquals(strongbox.getResources().getOrDefault(new Faith(), 0),0);
 

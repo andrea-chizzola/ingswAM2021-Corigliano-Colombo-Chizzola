@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
+
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +40,7 @@ class MultiplePlayerTest {
      */
     @Test
     @DisplayName("Current player switch")
-    void endTurnAction() throws LorenzoWonException {
+    void endTurnAction(){
 
         assertEquals("firstPlayer", gameBoard.getCurrentPlayer().getNickname());
 
@@ -63,7 +62,7 @@ class MultiplePlayerTest {
      * tests the correct behavior of the addFaithToOthers method
      */
     @Test
-    void addFaithToOthers() throws LorenzoWonException, PlayerWonException {
+    void addFaithToOthers(){
 
         gameBoard.getPlayers().get(0).addFaithToOthers(1);
 
@@ -88,4 +87,5 @@ class MultiplePlayerTest {
         assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
 
     }
+
 }
