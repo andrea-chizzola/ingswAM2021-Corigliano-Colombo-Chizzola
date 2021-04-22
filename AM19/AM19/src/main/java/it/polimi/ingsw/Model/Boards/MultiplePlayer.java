@@ -47,7 +47,7 @@ public class MultiplePlayer implements CustomMode{
     @Override
     public String findWinnerMessage(ArrayList<Board> boards) {
 
-        String result = new String("Final Leaderboards: \n");
+        String result = new String("Final Leaderboard: \n");
 
         Collections.sort(boards, (Board b1, Board b2) -> {
             if(b1.getTotalPoints() < b2.getTotalPoints()) return -1;
