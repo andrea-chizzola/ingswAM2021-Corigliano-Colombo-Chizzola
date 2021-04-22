@@ -38,7 +38,7 @@ public class DoProduction extends Turn{
 
         //It checks if the player has selected more resources than required, it is important because all the resources selected will be subtracted from the deposits
         if(resourceStatus.values().stream().mapToInt(Integer::intValue).sum() != 0)
-            throw new InvalidActionException("Too many resources selected");
+            throw new InvalidActionException("Too many resources selected!");
 
         ResQuantity.useResources(board, shelves, quantity, strongbox);
 
