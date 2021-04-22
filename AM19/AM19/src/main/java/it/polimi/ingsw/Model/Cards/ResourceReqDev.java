@@ -38,21 +38,20 @@ public class ResourceReqDev implements Requirements {
      * ResourceReqDev will throw this exception because it needs the current state of the player's StrongBox and
      * Warehouse
      */
-
     @Override
     public boolean checkReq(Board board) throws InvalidActionException, ResourcesExpectedException{
         throw new ResourcesExpectedException("The card needs the status of the StrongBox and the Warehouse!");
     }
+
     /**
      * This method checks if the resources selected from the warehouse and from the strongBox meet the purchase requirements.
-     * An InvalidActionException is thrown the resources selected are not enough or if they are too many.
      * @param board represents the board associated to a player
      * @param shelves ArrayList of Integer which represents all the shelves selected
      * @param quantity ArrayList of Integer which represents the amount of resources selected for each shelf
      * @param strongbox ArrayList of ResQuantity which represents all the resources selected from the strongBox
      *                  It is important that each resource is present at most once
      * @return true if the check is successful
-     * @throws InvalidActionException
+     * @throws InvalidActionException if the resources selected are not enough or if they are too many
      */
     public boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException{
 
@@ -65,9 +64,11 @@ public class ResourceReqDev implements Requirements {
             }
         }
         catch (InvalidActionException e){throw e;}
+
         //It checks if the player has selected more resources than required, it is important because all the resources selected will be subtracted from the deposits
         if(resourceStatus.values().stream().mapToInt(Integer::intValue).sum() != 0)
             throw new InvalidActionException("Too many resources selected!");
+
         return true;
     }
 

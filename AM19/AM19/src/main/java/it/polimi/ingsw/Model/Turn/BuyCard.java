@@ -37,8 +37,8 @@ public class BuyCard extends Turn{
         try {
             card = board.getGameBoard().getDevelopmentDeck().readTop(color,level);
             card.checkReq(board,shelves,quantity,strongbox);
-
         }catch (IllegalArgumentException e){throw new InvalidActionException(e.getMessage());}
+
         try {
             slot1 = board.getSlot(slot);
         }

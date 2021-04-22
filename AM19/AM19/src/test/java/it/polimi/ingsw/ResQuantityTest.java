@@ -54,12 +54,6 @@ class ResQuantityTest {
         strongBox.addResource(new Stone(), 3);
     }
 
-    @Test
-    public void addTest(){
-       ResQuantity resquantity = new ResQuantity(new Coin(),0);
-       resquantity.add(1);
-       assertTrue(resquantity.getQuantity() == 1);
-    }
 
     @Test
     public void createReqMapTest(){
@@ -441,7 +435,7 @@ class ResQuantityTest {
 
         Exception exception;
         exception = assertThrows(InvalidActionException.class, () -> ResQuantity.useResources(board, shelves, quantity, strongBox));
-        assertEquals(exception.getMessage(), "check bug!");
+        assertEquals(exception.getMessage(), "Requirements not met! Error!");
     }
 
 

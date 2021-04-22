@@ -260,34 +260,39 @@ public class Board {
      * @return Map<Resource,Integer>, Integer represents the amount of the resource (the key)
      */
     public Map<Resource,Integer> getResourceStatus(){
+
         Map<Resource,Integer> warehouse = this.warehouse.getAllResources();
         Map<Resource,Integer> strongBox = this.strongBox.getResources();
+
         Map<Resource, Integer> resourceStatus = Stream.concat(warehouse.entrySet().stream(), strongBox.entrySet().stream())
                 .collect(Collectors.groupingBy(Map.Entry::getKey,
                         Collectors.summingInt(Map.Entry::getValue)));
+
         return resourceStatus;
     }
 
 
     /**
      * This method checks if there are at least 'quantity' development cards which have color equals to 'cardColor' and level equals to 'level'.
-     * An InvalidActionException is thrown if the requirements are not met.
      * @param cardColor the color of the cards searched
      * @param level the level of the cards searched
      * @param quantity the quantity required
      * @return true if the requirements are met
-     * @throws InvalidActionException
+     * @throws InvalidActionException if the requirements are not met.
      */
     public boolean checkCards(CardColor cardColor, int level, int quantity) throws InvalidActionException{
+
        int match = 0;
-        for(Slot slot : slots)
-            for(DevelopmentCard card : slot.getCards()){
-                if(card.getCardColor().equals(cardColor) && card.getCardLevel() == level)
-                    match++;
-            }
-        if(match < quantity)
-            throw new InvalidActionException("Card requirements not met!");
-        return true;
+       for(Slot slot : slots)
+           for(DevelopmentCard card : slot.getCards()){
+               if(card.getCardColor().equals(cardColor) && card.getCardLevel() == level)
+                   match++;
+           }
+
+       if(match < quantity)
+           throw new InvalidActionException("Card requirements not met!");
+
+       return true;
     }
 
 

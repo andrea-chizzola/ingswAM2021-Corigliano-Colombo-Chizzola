@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.Boards;
 
 import it.polimi.ingsw.Exceptions.IllegalSlotException;
+import it.polimi.ingsw.Model.Cards.Card;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 
 import java.util.LinkedList;
@@ -31,52 +32,50 @@ public class Slot {
      * @return true if the card can be inserted, false otherwise
      */
     private boolean isInsertable(DevelopmentCard card){
-        if(card.getCardLevel() == 1 && cards.size() == 0)
-            return true;
-        if(cards.size() == 0)//useful to avoid calling getLast().getCardLevel if there is not any card
-            return false;
-        if(card.getCardLevel() == 2 && cards.getLast().getCardLevel() == 1)
-            return true;
-        if(card.getCardLevel() == 3 && cards.getLast().getCardLevel() == 2)
-            return true;
-        return false;
+
+        if(cards.size() == 0)
+            return card.getCardLevel() == 1;
+
+        return card.getCardLevel() == cards.getLast().getCardLevel() + 1;
     }
 
     /**
      * This method inserts a card in the slot.
-     * An IllegalSlotException is thrown if the card can't be inserted.
      * @param card the card you want to insert
-     * @throws IllegalSlotException
+     * @throws IllegalSlotException if the card can't be inserted.
      */
     public void insertCard(DevelopmentCard card) throws IllegalSlotException{
+
         if(!isInsertable(card))
             throw new IllegalSlotException("This card can't be inserted!");
+
         cards.add(card);
     }
 
     /**
      * This method gets the last card added to the slot (the card on the top).
-     * An IllegalSlotException is thrown if the slot is empty.
      * @return the last card added to the slot
-     * @throws IllegalSlotException
+     * @throws IllegalSlotException if the slot is empty.
      */
     public DevelopmentCard getTop() throws IllegalSlotException{
 
         if(cards.size() == 0)
             throw new IllegalSlotException("Empty slot!");
+
         return cards.getLast();
     }
 
     /**
      * This method gets the card present at the position 'position'
-     * An IllegalSlotException is thrown if there is not a card at tha position 'position'
      * @param position of the card you want to get
      * @return card you want to get
-     * @throws IllegalSlotException
+     * @throws IllegalSlotException if there is not a card at tha position 'position'
      */
     public DevelopmentCard getCard(int position) throws IllegalSlotException{
+
         if(position < 0 || position >= cards.size())
             throw new IllegalSlotException("This slot does not exist!");
+
         return cards.get(position);
     }
 
@@ -85,9 +84,11 @@ public class Slot {
      * @return sum of victory points
      */
     public int countPoints(){
+
         if(cards.size() == 0)
             return 0;
-        return cards.stream().mapToInt(developmentCard -> developmentCard.getVictoryPoint()).sum();
+
+        return cards.stream().mapToInt(Card::getVictoryPoint).sum();
     }
 
     /**
@@ -104,6 +105,7 @@ public class Slot {
      * @return an ArrayList which contains the cards
      */
     public LinkedList<DevelopmentCard> getCards(){
+
         return new LinkedList<>(cards.stream().collect(Collectors.toList()));
     }
 }

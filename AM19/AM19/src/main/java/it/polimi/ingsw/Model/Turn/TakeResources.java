@@ -26,6 +26,7 @@ public class TakeResources extends Turn {
             list = board.getGameBoard().getMarketBoard().getRow(row);
         }
         catch (IllegalMarketException e){throw new InvalidActionException(e.getMessage());}
+
         return list;
     }
 
@@ -38,11 +39,13 @@ public class TakeResources extends Turn {
      */
     @Override
     public ArrayList<Marble> takeMarketColumn(Board board, int column) throws InvalidActionException {
+
         ArrayList<Marble> list;
         try {
             list = board.getGameBoard().getMarketBoard().getColumn(column);
         }
         catch (IllegalMarketException e){throw new InvalidActionException(e.getMessage());}
+
         return list;
     }
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Turn;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Exceptions.PlayerWonException;
+import it.polimi.ingsw.Exceptions.ResourcesExpectedException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
@@ -23,8 +24,7 @@ public class ManageLeader extends Turn{
     public void activateCard(Board board, int position) throws InvalidActionException {
 
         LeaderCard card;
-        ArrayList<Integer> array = new ArrayList<>();
-        ArrayList<ResQuantity> array1 = new ArrayList<>();
+
         try {
             card = board.getLeaderCard(position);
         }
@@ -33,9 +33,9 @@ public class ManageLeader extends Turn{
         //if status == true no actions have to be done
         if(card.getStatus() == false){
            try {
-               card.checkReq(board,array,array,array1);
+               card.checkReq(board);
            }
-           catch (InvalidActionException e){throw e;}
+           catch (InvalidActionException | ResourcesExpectedException e){throw new InvalidActionException(e.getMessage());}
 
            card.getSpecialEffect().applyEffect(board);
            card.setStatus(true);

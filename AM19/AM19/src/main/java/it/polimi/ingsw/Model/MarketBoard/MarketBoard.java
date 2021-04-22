@@ -53,10 +53,9 @@ public class MarketBoard {
 
     /**
      * This method gets a list which contains the row (with index 'row') of the tray.
-     * An IllegalMarketException is thrown if the row with index 'row' does not exist.
      * @param row the index of the row
      * @return an ArrayList which contains the row
-     * @throws IllegalMarketException if the row does not exists
+     * @throws IllegalMarketException if the row with index 'row' does not exist
      */
     public ArrayList<Marble> getRow(int row) throws IllegalMarketException{
 
@@ -70,16 +69,16 @@ public class MarketBoard {
         for(i=j; i<=k; i++){
             list.add(tray.get(i));
         }
+
         return list;
     }
 
     /**
      * This method returns a list which contains the row (with index 'row') of the tray and
      * it modifies the tray and the slide according to the rules of the game.
-     * An IllegalMarketException is thrown if the row with index 'row' does not exist.
      * @param row the index of the row
      * @return an ArrayList which contains the row
-     * @throws IllegalMarketException if the row does not exist
+     * @throws IllegalMarketException if the row with index 'row' does not exist
      */
     public ArrayList<Marble> takeRow(int row) throws IllegalMarketException{
 
@@ -92,11 +91,13 @@ public class MarketBoard {
         int j = row*nColumns;
         int k = j + nColumns - 1;
         temp = tray.get(j);
+
         for(i=j; i<=k; i++){
             list.add(tray.get(i));
             if(i != k)
                 tray.set(i, tray.get(i+1));
         }
+
         tray.set(k, slide);
         slide = temp;
         return list;
@@ -104,10 +105,9 @@ public class MarketBoard {
 
     /**
      *This method gets a list which contains the column (with index 'column') of the tray.
-     *An IllegalMarketException is thrown if the column with index 'column' does not exist.
      * @param column the index of the column
      * @return an ArrayList which contains the column
-     * @throws IllegalMarketException if the column does not exist
+     * @throws IllegalMarketException if the column with index 'column' does not exist
      */
     public ArrayList<Marble> getColumn(int column) throws IllegalMarketException{
 
@@ -116,19 +116,20 @@ public class MarketBoard {
 
         ArrayList<Marble> list = new ArrayList<>(nRows);
         int i;
+
         for(i=0; i<nRows; i++){
             list.add(tray.get(column + i*nColumns));
         }
+
         return list;
     }
 
     /**
      * This method returns a list which contains the column (with index 'column') of the tray and
      * it modifies the tray and the slide according to the rules of the game.
-     * An IllegalMarketException is thrown if the column with index 'column' does not exist.
      * @param column the index of the column
      * @return an ArrayList which contains the column
-     * @throws IllegalMarketException if the column does not exist
+     * @throws IllegalMarketException if the column with index 'column' does not exist
      */
     public ArrayList<Marble> takeColumn(int column) throws IllegalMarketException{
 
@@ -140,11 +141,13 @@ public class MarketBoard {
         int i;
         int j = nRows-1;
         temp = tray.get(column);
+
         for(i=0; i<=j; i++){
             list.add(tray.get(column + i*nColumns));
             if(i != j)
                 tray.set(column + i*nColumns, tray.get(column + (i+1)*nColumns));
         }
+
         tray.set(column + j*nColumns, slide);
         slide = temp;
         return list;
@@ -155,6 +158,7 @@ public class MarketBoard {
      * @return an ArrayList which contains the tray
      */
     public ArrayList<Marble> getTray(){
+
         ArrayList<Marble> list = new ArrayList<>(tray.stream().collect(Collectors.toList()));
         return list;
     }

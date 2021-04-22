@@ -15,6 +15,10 @@ import java.util.Objects;
  * this class represents the resource requirements of a LeaderCard
  */
 public class ResourceReqLeader implements Requirements{
+
+    /**
+     * this attribute is the list of requirements of the LeaderCard
+     */
     private LinkedList<ResQuantity> requirements;
 
     /**
@@ -27,30 +31,29 @@ public class ResourceReqLeader implements Requirements{
     }
 
     /**
-     *
-     * @param board is the board on which we are checking the requisites
+     * This method checks if the player has enough resources to activate the Leader Card.
+     * @param board represents the board associated to a player
      * @throws InvalidActionException if the requirements of the card are not satisfied by the player's board
-     * @throws ResourcesExpectedException if the card need more information to check the requirements. In this case,
-     * ResourceReqDev will throw this exception because it needs the current state of the player's StrongBox and
-     * Warehouse
      */
-
     @Override
-    public boolean checkReq(Board board) throws InvalidActionException, ResourcesExpectedException {
-        throw new ResourcesExpectedException("The card needs the status of the StrongBox and the Warehouse!");
+    public boolean checkReq(Board board) throws InvalidActionException {
+
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        ArrayList<ResQuantity> resQuantities = new ArrayList<>();
+        checkReq(board, arrayList, arrayList, resQuantities);
+
+        return true;
     }
 
     /**
      * This method checks if the player has enough resources to activate the Leader Card.
-     * An InvalidActionException is thrown if the resources are not enough.
      * @param board represents the board associated to a player
      * @param shelves not used
      * @param quantity not used
      * @param strongbox not used
      * @return true if the check is successful
-     * @throws InvalidActionException
+     * @throws InvalidActionException if the requirements of the card are not satisfied by the player's board
      */
-
     public boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException{
 
         Map<Resource,Integer> resourceStatus = board.getResourceStatus();

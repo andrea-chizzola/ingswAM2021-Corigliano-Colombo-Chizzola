@@ -25,10 +25,9 @@ public class CardRequirements implements Requirements{
 
     /**
      * This method checks if the cards owned by the player meet the requirements to activate the Leader Card.
-     * An InvalidActionException is thrown if the requirements are not met.
      * @param board represents the board associated to a player
      * @return true if the check is successful
-     * @throws InvalidActionException if the number of owned cards is not sufficient
+     * @throws InvalidActionException if the card requirements are not met
      */
     @Override
     public boolean checkReq(Board board) throws InvalidActionException{
@@ -38,6 +37,15 @@ public class CardRequirements implements Requirements{
         return true;
     }
 
+    /**
+     * This method checks if the cards owned by the player meet the requirements to activate the Leader Card.
+     * @param board represents the board associated to a player
+     * @param shelves
+     * @param quantity
+     * @param strongbox
+     * @return true if the check is successful
+     * @throws InvalidActionException if the card requirements are not met
+     */
     @Override
     public boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException {
         return checkReq(board);
