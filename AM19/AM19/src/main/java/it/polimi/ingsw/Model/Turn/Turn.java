@@ -43,7 +43,7 @@ public abstract class Turn {
      * @param shelf
      * @throws InvalidActionException
      */
-    public void insertResource(Board board, Marble marble, int shelf) throws InvalidActionException, MarbleWhiteException, PlayerWonException {
+    public void insertResource(Board board, Marble marble, int shelf) throws InvalidActionException, MarbleWhiteException{
 
     }
 
@@ -52,7 +52,7 @@ public abstract class Turn {
      * @param board
      * @param marble
      */
-    public void discardResource(Board board, Marble marble) throws PlayerWonException, LorenzoWonException {
+    public void discardResource(Board board, Marble marble){
 
     }
 
@@ -109,7 +109,7 @@ public abstract class Turn {
      * @param strongbox
      * @throws InvalidActionException
      */
-    public void doProduction(Board board, ArrayList<Production> productions, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException, PlayerWonException, LorenzoWonException {
+    public void doProduction(Board board, ArrayList<Production> productions, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException{
 
     }
 
@@ -129,7 +129,7 @@ public abstract class Turn {
      * @param position
      * @throws InvalidActionException
      */
-    public void removeCard(Board board, int position) throws InvalidActionException, PlayerWonException {
+    public void removeCard(Board board, int position) throws InvalidActionException{
 
     }
 

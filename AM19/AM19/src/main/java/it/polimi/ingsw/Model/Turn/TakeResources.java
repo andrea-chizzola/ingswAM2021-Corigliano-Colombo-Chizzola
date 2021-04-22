@@ -57,7 +57,7 @@ public class TakeResources extends Turn {
      * @throws InvalidActionException if the action is invalid
      */
     @Override
-    public void insertResource(Board board, Marble marble, int shelf) throws InvalidActionException, MarbleWhiteException, PlayerWonException {
+    public void insertResource(Board board, Marble marble, int shelf) throws InvalidActionException, MarbleWhiteException{
 
         try {
             marble.addResource(board, shelf);
@@ -72,7 +72,7 @@ public class TakeResources extends Turn {
      * @param marble
      */
     @Override
-    public void discardResource(Board board, Marble marble) throws PlayerWonException, LorenzoWonException {
+    public void discardResource(Board board, Marble marble){
         marble.discard(board);
     }
 }

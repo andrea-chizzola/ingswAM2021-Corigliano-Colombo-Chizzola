@@ -1,9 +1,10 @@
 package it.polimi.ingsw.Model.Boards;
-
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
+;
 import it.polimi.ingsw.Model.Decks.ActionTokenDeck;
 import it.polimi.ingsw.Model.Boards.FaithTrack.FaithTrack;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
+
+import java.util.ArrayList;
 
 /**
  * public class used to implement the endTurnAction method along with the necessary methods in case of a single player match
@@ -63,7 +64,7 @@ public class SinglePlayer implements CustomMode{
      * moves Lorenzo's black cross ahead in the faith track
      * @param amount indicates how many positions the black cross has to be moved ahead
      */
-    public void moveBlackCross(int amount) throws LorenzoWonException {
+    public void moveBlackCross(int amount){
 
         lorenzoTrack.addFaith(amount);
 
@@ -71,7 +72,7 @@ public class SinglePlayer implements CustomMode{
 
         if(lorenzoTrack.isEndTrack()){
 
-            throw new LorenzoWonException();
+            gameBoard.setEndGameStarted(true);
 
         }
 
@@ -83,17 +84,9 @@ public class SinglePlayer implements CustomMode{
      * @param gameBoard represents the game board
      */
     @Override
-    public void endTurnAction(GameBoard gameBoard) throws LorenzoWonException {
+    public void endTurnAction(GameBoard gameBoard){
 
-        try {
-
-            actionTokenDeck.getTop().doAction(this);
-
-        }catch(LorenzoWonException e){
-
-            throw new LorenzoWonException(e.getMessage());
-
-        }
+        actionTokenDeck.getTop().doAction(this);
 
     }
 
@@ -103,18 +96,28 @@ public class SinglePlayer implements CustomMode{
      * @param gameBoard represents the game board
      */
     @Override
-    public void addFaithToOthers(int amount, GameBoard gameBoard) throws LorenzoWonException {
+    public void addFaithToOthers(int amount, GameBoard gameBoard){
 
-        try {
+        moveBlackCross(amount);
 
-            moveBlackCross(amount);
+    }
 
-        }catch(LorenzoWonException e){
+    /**
+     * @param boards contains the boards related to the single player
+     * @return returns the message showed to the player when the match is over
+     */
+    @Override
+    public String findWinnerMessage(ArrayList<Board> boards) {
 
-            throw new LorenzoWonException(e.getMessage());
+        int cardNumber = 0;
 
+        for(Slot slot : boards.get(0).getSlots()){
+            cardNumber = cardNumber + slot.getNumberOfCards();
         }
 
+        if(cardNumber >= 7 || boards.get(0).getFaithTrack().isEndTrack()){
+            return "Congratulations! You defeated Lorenzo il Magnifico with " + boards.get(0).getTotalPoints() + " total points.";
+        }else return "Game Over! Lorenzo il Magnifico won. Final score: " + boards.get(0).getTotalPoints();
     }
 
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Resources;
 
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 
 import java.util.Objects;
@@ -30,7 +29,7 @@ public class Faith extends Resource {
      * This method does nothing because resource faith can't be added to strongbox
      */
     @Override
-    public void addResourceStrongbox(Board board, int quantity) throws PlayerWonException {
+    public void addResourceStrongbox(Board board, int quantity){
         board.addFaith(quantity);
     }
 

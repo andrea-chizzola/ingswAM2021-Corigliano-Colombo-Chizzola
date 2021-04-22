@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Model.ActionTokens;
 
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
 import it.polimi.ingsw.Model.Cards.Colors.CardColor;
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
 import java.util.Objects;
 
@@ -31,17 +31,14 @@ public class Discard implements Action {
      * @param singlePlayer is the board of Lorenzo il Magnifico
      */
     @Override
-    public void doAction(SinglePlayer singlePlayer) throws LorenzoWonException {
+    public void doAction(SinglePlayer singlePlayer){
 
-        try {
+        singlePlayer.getGameBoard().getDevelopmentDeck().extract(quantity, cardColor);
 
-            singlePlayer.getGameBoard().getDevelopmentDeck().extract(quantity, cardColor);
-
-        } catch (LorenzoWonException e) {
-
-            throw new LorenzoWonException(e.getMessage());
-
+        if(!singlePlayer.getGameBoard().getDevelopmentDeck().isColorAvailable(cardColor)){
+            singlePlayer.getGameBoard().setEndGameStarted(true);
         }
+
         singlePlayer.getActionTokenDeck().changeList();
 
     }

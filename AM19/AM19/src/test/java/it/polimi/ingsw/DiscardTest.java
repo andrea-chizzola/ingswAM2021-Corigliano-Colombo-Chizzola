@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
 import it.polimi.ingsw.Model.ActionTokens.Discard;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
@@ -49,7 +48,7 @@ class DiscardTest {
 
     @Test
     @DisplayName("Discard green test")
-    void doActionBlue() throws LorenzoWonException {
+    void doActionBlue(){
 
         assertEquals(6, singlePlayer.getActionTokenDeck().getUnusedActionTokens().size());
         assertEquals(0, singlePlayer.getActionTokenDeck().getUsedActionTokens().size());
@@ -97,36 +96,20 @@ class DiscardTest {
         assertEquals(0, singlePlayer.getGameBoard().getDevelopmentDeck().getNumber(new Green(), 2));
         assertEquals(2, singlePlayer.getGameBoard().getDevelopmentDeck().getNumber(new Green(), 3));
 
-        try{
-            while (!singlePlayer.getActionTokenDeck().getTop().equals(discardGreen)) {
-                singlePlayer.getActionTokenDeck().mergeAndShuffle();
-            }
-
-            singlePlayer.endTurnAction(gameBoard);
-
-        }catch(LorenzoWonException e){
-
-            assertEquals(0, singlePlayer.getGameBoard().getDevelopmentDeck().getNumber(new Green(), 1));
-            assertEquals(0, singlePlayer.getGameBoard().getDevelopmentDeck().getNumber(new Green(), 2));
-            assertEquals(0, singlePlayer.getGameBoard().getDevelopmentDeck().getNumber(new Green(), 3));
-
+        while (!singlePlayer.getActionTokenDeck().getTop().equals(discardGreen)) {
+            singlePlayer.getActionTokenDeck().mergeAndShuffle();
         }
 
-    }
+        assertFalse(singlePlayer.getGameBoard().isEndGameStarted());
 
-    @Test
-    @DisplayName("LorenzoWonException is thrown")
-    void doActionException(){
+        singlePlayer.endTurnAction(gameBoard);
 
-        Exception exception;
-        exception = assertThrows(LorenzoWonException.class, () -> { for(int i = 0; i < 6; i++){
-                                                                        while(!singlePlayer.getActionTokenDeck().getTop().equals(discardGreen)){
-                                                                            singlePlayer.getActionTokenDeck().mergeAndShuffle();
-                                                                        }
-                                                                        singlePlayer.endTurnAction(gameBoard);
-                                                                        singlePlayer.getActionTokenDeck().mergeAndShuffle();}
-                                                                    });
-        assertEquals(exception.getMessage(), "End of the game. Lorenzo won.");
+        assertEquals(0, singlePlayer.getGameBoard().getDevelopmentDeck().getNumber(new Green(), 1));
+        assertEquals(0, singlePlayer.getGameBoard().getDevelopmentDeck().getNumber(new Green(), 2));
+        assertEquals(0, singlePlayer.getGameBoard().getDevelopmentDeck().getNumber(new Green(), 3));
+
+        assertTrue(singlePlayer.getGameBoard().isEndGameStarted());
 
     }
+
 }

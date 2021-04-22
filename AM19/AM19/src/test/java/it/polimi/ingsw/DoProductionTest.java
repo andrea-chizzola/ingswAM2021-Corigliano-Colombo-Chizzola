@@ -3,8 +3,6 @@ import it.polimi.ingsw.*;
 
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.Boards.StrongBox;
@@ -108,7 +106,7 @@ class DoProductionTest {
         try {
 
             action.doProduction(board,productions,shelves,quantity,strongBox);
-        }catch (InvalidActionException | PlayerWonException | LorenzoWonException e){fail();}
+        }catch (InvalidActionException e){fail();}
 
         try {
             assertEquals(board.getWarehouse().getQuantity(2), 1);

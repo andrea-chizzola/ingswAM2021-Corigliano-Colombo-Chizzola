@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.ActionTokens;
 
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
 
 import java.util.Objects;
@@ -28,18 +27,11 @@ public class MoveBlack implements  Action{
      * @param singlePlayer is the board of Lorenzo il Magnifico
      */
     @Override
-    public void doAction(SinglePlayer singlePlayer) throws LorenzoWonException {
+    public void doAction(SinglePlayer singlePlayer){
 
-        try {
-
-            singlePlayer.moveBlackCross(amount);
-
-        } catch (LorenzoWonException e) {
-
-            throw new LorenzoWonException(e.getMessage());
-
-        }
+        singlePlayer.moveBlackCross(amount);
         singlePlayer.getActionTokenDeck().changeList();
+
     }
 
     @Override

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Model.Boards;
 
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Decks.DevelopmentDeck;
 import it.polimi.ingsw.Model.Decks.LeaderDeck;
 import it.polimi.ingsw.Model.Boards.FaithTrack.FaithTrack;
@@ -30,6 +28,11 @@ public class GameBoard {
      * indicates the current player
      */
     private Board currentPlayer;
+
+    /**
+     * indicates if the end of the game has been triggered
+     */
+    private boolean isEndGameStarted;
 
     /**
      * represents the market board
@@ -67,6 +70,7 @@ public class GameBoard {
         }
 
         currentPlayer = players.get(0);
+        isEndGameStarted = false;
 
         if(nicknames.size() > 1) customMode = new MultiplePlayer() ;
         else {
@@ -98,19 +102,27 @@ public class GameBoard {
     }
 
     /**
+     * sets isEndGameStarted to true if the end of the game has been triggered, false otherwise
+     * @param endGameStarted indicates if the end of the game has been triggered
+     */
+    public void setEndGameStarted(boolean endGameStarted) {
+        isEndGameStarted = endGameStarted;
+    }
+
+    /**
+     * @return returns true if the end of the game has been triggered, false otherwise
+     */
+    public boolean isEndGameStarted() {
+        return isEndGameStarted;
+    }
+
+    /**
      * decides what to do at the end of the turn
      */
-    public void endTurnMove() throws LorenzoWonException {        //invece di next player
+    public void endTurnMove(){        //invece di next player
 
-        try {
+        customMode.endTurnAction(this);
 
-            customMode.endTurnAction(this);
-
-        }catch(LorenzoWonException e){
-
-            throw new LorenzoWonException(e.getMessage());
-
-        }
     }
 
     /**
@@ -177,19 +189,9 @@ public class GameBoard {
      * adds faith to the other players when a resource is discarded
      * @param amount equals the amount of resources discarded
      */
-    public void addFaithToOthers(int amount) throws LorenzoWonException, PlayerWonException {
+    public void addFaithToOthers(int amount){
 
-        try {
-            customMode.addFaithToOthers(amount, this);
-        }catch(LorenzoWonException e){
-
-            throw new LorenzoWonException(e.getMessage());
-
-        }catch(PlayerWonException e){
-
-            throw new PlayerWonException(e.getMessage());
-
-        }
+        customMode.addFaithToOthers(amount, this);
 
     }
 
@@ -204,5 +206,11 @@ public class GameBoard {
         }
     }
 
+    /**
+     * @return returns the message showed to the players when the match is over
+     */
+    public String findWinnerMessage(){
+        return customMode.findWinnerMessage(getPlayers());
+    }
 
 }

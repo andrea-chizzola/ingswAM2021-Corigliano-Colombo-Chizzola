@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Decks;
 
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
 import it.polimi.ingsw.Model.Cards.Colors.CardColor;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
@@ -16,6 +15,11 @@ public class DevelopmentDeck {
      * this attribute contains the Decks of DevelopmentCards that will be used during the game.
      */
     private Map<ColorLevelKey, Container<DevelopmentCard>> decks;
+
+    /**
+     * indicates the maximum level of a DevelopmentCard
+     */
+    private final int maxLevel;
 
     /**
      * this private class provides a unique key to map cards into decks
@@ -53,6 +57,7 @@ public class DevelopmentDeck {
         Collections.shuffle(cards);
 
         decks = new HashMap<>();
+        maxLevel = ConfigurationParser.getMaxLevel(file);
 
         for(DevelopmentCard card : cards){
             ColorLevelKey key = new ColorLevelKey(card.getCardColor(), card.getCardLevel());
@@ -67,14 +72,13 @@ public class DevelopmentDeck {
      * @param num is the number of cards to be extracted
      * @param color is the color of the extracted cards
      * @return the extracted cards
-     * @throws LorenzoWonException if all the decks of a given color are empty, and therefore Lorenzo won
      * @throws IllegalArgumentException if the target deck does not exist
      */
 
      //to be modified using the configuration file. The extraction is related to Action Token, that only controls color
      //and num. You need to get "number of decks" from file
     public LinkedList<DevelopmentCard> extract (int num, CardColor color)
-            throws LorenzoWonException, IllegalArgumentException{
+            throws IllegalArgumentException{
         LinkedList<DevelopmentCard> extracted = new LinkedList<>();
         int n = num;
 
@@ -94,7 +98,6 @@ public class DevelopmentDeck {
                 throw new IllegalArgumentException("The deck does not exist");
             }
         }
-        if(decks.get(new ColorLevelKey(color,3)).size() == 0 ) throw new LorenzoWonException();
         return extracted;
     }
 
@@ -151,5 +154,13 @@ public class DevelopmentDeck {
             return decks.get(colorLevelKey).size();
 
         }else return 0;
+    }
+
+    /**
+     * @param cardColor indicates one of the colors of the DevelopmentCards
+     * @return returns false if all the DevelopmentCards of the selected color have been eliminated, true otherwise
+     */
+    public boolean isColorAvailable(CardColor cardColor){
+        return getNumber(cardColor, maxLevel) > 0;
     }
 }

@@ -31,7 +31,7 @@ public class MarbleBlue implements Marble {
      * @param board the board of the player
      */
     @Override
-    public void discard(Board board) throws PlayerWonException, LorenzoWonException {
+    public void discard(Board board){
         board.addFaithToOthers(1);
     }
 

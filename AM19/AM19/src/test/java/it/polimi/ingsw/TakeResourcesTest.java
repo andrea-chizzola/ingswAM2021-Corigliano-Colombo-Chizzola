@@ -39,7 +39,7 @@ class TakeResourcesTest {
         TakeResources takeResources = new TakeResources();
         try {
             takeResources.insertResource(board, new MarbleYellow(), 1);
-        }catch (InvalidActionException | MarbleWhiteException | PlayerWonException e){fail();}
+        }catch (InvalidActionException | MarbleWhiteException e){fail();}
 
         try {
             assertEquals(board.getWarehouse().getQuantity(1), 1);
@@ -59,12 +59,10 @@ class TakeResourcesTest {
     @Test
     public void discardResourceTest(){
         TakeResources takeResources = new TakeResources();
-        try {
-            takeResources.discardResource(board, new MarbleYellow());
-        }catch ( PlayerWonException | LorenzoWonException e){fail();}
 
+        takeResources.discardResource(board, new MarbleYellow());  //tolto lancio dell'eccezione
 
-           assertEquals(board.getFaithTrack().getPosition(),0);
+        assertEquals(board.getFaithTrack().getPosition(),0);
 
         for(Board board1 : gameBoard.getPlayers()){
             if(board1 != board)

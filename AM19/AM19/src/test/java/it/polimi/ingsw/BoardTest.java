@@ -86,7 +86,7 @@ class BoardTest {
 
     @Test
     @DisplayName("Add faith activation")
-    void addFaithActivation() throws PlayerWonException {
+    void addFaithActivation(){
         Board player1 = gameBoard.getPlayers().get(0);
         Board player2 = gameBoard.getPlayers().get(1);
         Board player3 = gameBoard.getPlayers().get(2);
@@ -161,7 +161,7 @@ class BoardTest {
 
     @Test
     @DisplayName("Multiple activation")
-    void addFaithMultipleActivation() throws PlayerWonException {
+    void addFaithMultipleActivation(){
 
         gameBoard.getPlayers().get(0).addFaith(7); //1>7
         gameBoard.getPlayers().get(1).addFaith(6); //2>6
@@ -198,7 +198,7 @@ class BoardTest {
      */
 
     @Test
-    void addFaithToOthers() throws LorenzoWonException, PlayerWonException {
+    void addFaithToOthers(){
 
         gameBoard.getPlayers().get(0).addFaithToOthers(1);
 
@@ -329,7 +329,7 @@ class BoardTest {
     }
 
     @Test
-    void getDevelopmentCardBoundsException() {
+    void getDevelopmentCardBoundsException(){
 
         Exception exception;
         exception = assertThrows(IllegalSlotException.class, () -> board.getSlot(4));
@@ -338,7 +338,7 @@ class BoardTest {
     }
 
     @Test
-    void removeLeaderCardTest1() throws PlayerWonException {
+    void removeLeaderCardTest1(){
         //Each player receives two leader cards
         gameBoard.giveLeaderCards(file);
         LeaderCard leader1 = board.getLeaderCard(1);
@@ -354,7 +354,7 @@ class BoardTest {
     }
 
     @Test
-    void removeLeaderCardTest2() throws PlayerWonException {
+    void removeLeaderCardTest2(){
         //Each player receives two leader cards
         gameBoard.giveLeaderCards(file);
 
@@ -369,7 +369,7 @@ class BoardTest {
     }
 
     @Test
-    void removeLeaderCardTest3() throws PlayerWonException {
+    void removeLeaderCardTest3(){
         //Each player receives two leader cards
         gameBoard.giveLeaderCards(file);
 

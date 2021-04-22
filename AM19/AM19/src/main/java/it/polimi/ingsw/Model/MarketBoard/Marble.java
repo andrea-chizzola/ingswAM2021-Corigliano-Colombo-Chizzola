@@ -1,9 +1,7 @@
 package it.polimi.ingsw.Model.MarketBoard;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
 import it.polimi.ingsw.Exceptions.MarbleWhiteException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 
 /**
@@ -18,11 +16,11 @@ public interface Marble {
      * @throws InvalidActionException if the resource is inserted in the wrong shelf.
      * @throws MarbleWhiteException if the marble is white.
      */
-    void addResource(Board board, int shelf) throws InvalidActionException, MarbleWhiteException, PlayerWonException;
+    void addResource(Board board, int shelf) throws InvalidActionException, MarbleWhiteException;
 
     /**
      * This method allow to discard a resource.
      * @param board the board of the player
      */
-    void discard(Board board) throws PlayerWonException, LorenzoWonException;
+    void discard(Board board);
 }

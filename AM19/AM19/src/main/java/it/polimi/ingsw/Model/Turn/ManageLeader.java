@@ -49,7 +49,7 @@ public class ManageLeader extends Turn{
      * @throws InvalidActionException if the action is invalid
      */
     @Override
-    public void removeCard(Board board, int position) throws InvalidActionException, PlayerWonException {
+    public void removeCard(Board board, int position) throws InvalidActionException, PlayerWonException{
 
         try{
             board.removeLeaderCard(position);

@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.LorenzoWonException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
@@ -67,7 +65,7 @@ public class Production extends SpecialEffect{
      *This method adds to the resources of the player all the resources contained in the products.
      * @param board the board of the player
      */
-    public void addProducts(Board board) throws PlayerWonException, LorenzoWonException {
+    public void addProducts(Board board){
 
         for(ResQuantity resQuantity : products)
             resQuantity.addResourceStrongbox(board);

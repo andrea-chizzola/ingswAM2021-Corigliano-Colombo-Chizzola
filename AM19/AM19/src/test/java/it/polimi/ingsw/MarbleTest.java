@@ -2,7 +2,6 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Exceptions.MarbleWhiteException;
-import it.polimi.ingsw.Exceptions.PlayerWonException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.MarketBoard.*;
@@ -88,7 +87,7 @@ public class MarbleTest {
         try{
             new MarbleRed().addResource(board,1);
         }
-        catch(InvalidActionException | MarbleWhiteException | PlayerWonException e){
+        catch(InvalidActionException | MarbleWhiteException e){
             fail();
         }
         assertEquals(board.getFaithTrack().getPosition(),1);
