@@ -132,6 +132,22 @@ public class Board {
     }
 
     /**
+     * checks if the current player currently has seven development cards. If so the End Game is triggered
+     */
+    public void checkSeventhDevCard(){
+
+        int cardNumber = 0;
+
+        for(Slot slot : getSlots()){
+            cardNumber = cardNumber + slot.getNumberOfCards();
+        }
+
+        if(cardNumber >= 7){
+            gameBoard.setEndGameStarted(true);
+        }
+    }
+
+    /**
      * @param position indicates the selected leader card
      * @return returns the leader card associated to the indicated position
      * @throws IndexOutOfBoundsException if the leader card doesn't exist
