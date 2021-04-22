@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.ActionTokens;
 
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
 import it.polimi.ingsw.Model.Cards.Colors.CardColor;
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ public class Discard implements Action {
 
         singlePlayer.getGameBoard().getDevelopmentDeck().extract(quantity, cardColor);
 
-        if(singlePlayer.getGameBoard().getDevelopmentDeck().getNumber(cardColor, 3) == 0){
+        if(!singlePlayer.getGameBoard().getDevelopmentDeck().isColorAvailable(cardColor)){
             singlePlayer.getGameBoard().setEndGameStarted(true);
         }
 

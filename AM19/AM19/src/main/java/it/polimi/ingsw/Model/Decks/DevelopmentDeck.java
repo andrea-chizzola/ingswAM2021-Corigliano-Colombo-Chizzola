@@ -17,6 +17,11 @@ public class DevelopmentDeck {
     private Map<ColorLevelKey, Container<DevelopmentCard>> decks;
 
     /**
+     * indicates the maximum level of a DevelopmentCard
+     */
+    private final int maxLevel;
+
+    /**
      * this private class provides a unique key to map cards into decks
      */
     private class ColorLevelKey{
@@ -52,6 +57,7 @@ public class DevelopmentDeck {
         Collections.shuffle(cards);
 
         decks = new HashMap<>();
+        maxLevel = ConfigurationParser.getMaxLevel(file);
 
         for(DevelopmentCard card : cards){
             ColorLevelKey key = new ColorLevelKey(card.getCardColor(), card.getCardLevel());
@@ -148,5 +154,13 @@ public class DevelopmentDeck {
             return decks.get(colorLevelKey).size();
 
         }else return 0;
+    }
+
+    /**
+     * @param cardColor indicates one of the colors of the DevelopmentCards
+     * @return returns false if all the DevelopmentCards of the selected color have been eliminated, true otherwise
+     */
+    public boolean isColorAvailable(CardColor cardColor){
+        return getNumber(cardColor, maxLevel) > 0;
     }
 }
