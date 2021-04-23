@@ -6,10 +6,7 @@ import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * this class represents the resource requirements of a LeaderCard
@@ -64,6 +61,29 @@ public class ResourceReqLeader implements Requirements{
         catch (InvalidActionException e){throw e;}
 
         return true;
+    }
+
+    /**
+     * @return HasMap<Resource,Integer> with all the resources present in the requirements
+     */
+    @Override
+    public HashMap<Resource, Integer> getRequirements() {
+        HashMap<Resource, Integer> map = new HashMap<>();
+        for(ResQuantity resQuantity : requirements){
+            if(map.containsKey(resQuantity.getResource())){
+                map.put(resQuantity.getResource(), map.get(resQuantity.getResource()) + resQuantity.getQuantity());}
+            else{map.put(resQuantity.getResource(), resQuantity.getQuantity());}
+        }
+        return map;
+    }
+
+    /**
+     * @return LinkedList<CardQuantity> with all the cards present in the requirements
+     */
+    @Override
+    public LinkedList<CardQuantity> getCardRequirements() {
+        LinkedList<CardQuantity> list = new LinkedList<>();
+        return list;
     }
 
 

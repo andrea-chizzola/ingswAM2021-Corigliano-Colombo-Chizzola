@@ -57,7 +57,7 @@ public class TakeResources extends Turn {
      * @throws InvalidActionException if the action is invalid
      */
     @Override
-    public void insertResource(Board board, Marble marble, int shelf) throws InvalidActionException, MarbleWhiteException{
+    public void insertResource(Board board, Marble marble, int shelf) throws InvalidActionException{
 
         try {
             marble.addResource(board, shelf);

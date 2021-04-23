@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.MarbleWhiteException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.MarketBoard.*;
@@ -36,9 +35,22 @@ public class MarbleTest {
             assertEquals(board.getWarehouse().getResource(1), new Shield());
             assertEquals(board.getWarehouse().getQuantity(1), 1);
         }
-        catch(InvalidActionException | MarbleWhiteException | IllegalShelfException e){
+        catch(InvalidActionException | IllegalShelfException e){
             fail();
         }
+    }
+
+    @Test
+    public void testWhiteMarble(){
+        board.getModifications().addMarbleTo(new Coin());
+        board.getModifications().addMarbleTo((new Stone()));
+
+        Marble marble = new MarbleWhite();
+
+        assertEquals(marble.whiteTransformations(board).size(),2);
+        assertTrue(marble.whiteTransformations(board).stream().anyMatch(marble1 -> marble1.toString().equals("MarbleYellow")));
+        assertTrue(marble.whiteTransformations(board).stream().anyMatch(marble1 -> marble1.toString().equals("MarbleGray")));
+
     }
 
     @Test
@@ -48,7 +60,7 @@ public class MarbleTest {
             assertEquals(board.getWarehouse().getResource(2), new Stone());
             assertEquals(board.getWarehouse().getQuantity(2), 1);
         }
-        catch(InvalidActionException | MarbleWhiteException | IllegalShelfException e){
+        catch(InvalidActionException | IllegalShelfException e){
             fail();
         }
     }
@@ -60,7 +72,7 @@ public class MarbleTest {
             assertEquals(board.getWarehouse().getResource(1), new Servant());
             assertEquals(board.getWarehouse().getQuantity(1), 1);
         }
-        catch(InvalidActionException | MarbleWhiteException | IllegalShelfException e){
+        catch(InvalidActionException | IllegalShelfException e){
             fail();
         }
     }
@@ -72,22 +84,18 @@ public class MarbleTest {
             assertEquals(board.getWarehouse().getResource(1), new Coin());
             assertEquals(board.getWarehouse().getQuantity(1), 1);
         }
-        catch(InvalidActionException | MarbleWhiteException | IllegalShelfException e){
+        catch(InvalidActionException | IllegalShelfException e){
             fail();
         }
     }
 
-    @Test
-    public void addMarbleWhite(){
-        assertThrows(MarbleWhiteException.class, () -> new MarbleWhite().addResource(board,1));
-    }
 
     @Test
     public void addMarbleRed(){
         try{
             new MarbleRed().addResource(board,1);
         }
-        catch(InvalidActionException | MarbleWhiteException e){
+        catch(InvalidActionException e){
             fail();
         }
         assertEquals(board.getFaithTrack().getPosition(),1);
@@ -98,7 +106,7 @@ public class MarbleTest {
         try {
             new MarbleYellow().addResource(board, 1);
         }
-        catch(InvalidActionException | MarbleWhiteException e){
+        catch(InvalidActionException e){
                 fail();
             }
         assertThrows(InvalidActionException.class, () -> new MarbleBlue().addResource(board,1));

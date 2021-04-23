@@ -3,10 +3,9 @@ package it.polimi.ingsw.Model.Cards;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.Model.Resources.Resource;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * this class represents the requirements of a LeaderCard.
@@ -49,6 +48,24 @@ public class CardRequirements implements Requirements{
     @Override
     public boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException {
         return checkReq(board);
+    }
+
+    /**
+     * @return HasMap<Resource,Integer> with all the resources present in the requirements
+     */
+    @Override
+    public HashMap<Resource, Integer> getRequirements() {
+        HashMap<Resource,Integer> map = new HashMap<>();
+        return map;
+    }
+
+    /**
+     * @return LinkedList<CardQuantity> with all the cards present in the requirements
+     */
+    public LinkedList<CardQuantity> getCardRequirements(){
+        LinkedList<CardQuantity> list = new LinkedList<>();
+        list.addAll(cards);
+        return list;
     }
 
     @Override

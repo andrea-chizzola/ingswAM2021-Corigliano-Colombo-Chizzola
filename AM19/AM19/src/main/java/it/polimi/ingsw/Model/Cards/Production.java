@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Resources.Coin;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
 
@@ -69,6 +70,15 @@ public class Production extends SpecialEffect{
 
         for(ResQuantity resQuantity : products)
             resQuantity.addResourceStrongbox(board);
+    }
+
+
+    /**
+     * @return a ResQuantity which represents the special effect
+     */
+    @Override
+    public ResQuantity getSpecialEffect() {
+        return new ResQuantity(new Coin(), 0);
     }
 
     @Override

@@ -4,6 +4,8 @@ import it.polimi.ingsw.Exceptions.*;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.Servant;
 
+import java.util.LinkedList;
+
 /**
  * This class implements Marble.
  * It represents the purple marble.
@@ -18,7 +20,7 @@ public class MarblePurple implements Marble {
      * @throws InvalidActionException
      */
     @Override
-    public void addResource(Board board, int shelf) throws InvalidActionException, MarbleWhiteException {
+    public void addResource(Board board, int shelf) throws InvalidActionException {
         try {
             board.getWarehouse().addResource(shelf, new Servant());
         }
@@ -34,6 +36,12 @@ public class MarblePurple implements Marble {
     @Override
     public void discard(Board board){
         board.addFaithToOthers(1);
+    }
+
+    @Override
+    public LinkedList<Marble> whiteTransformations(Board board) {
+        LinkedList<Marble> list = new LinkedList<>();
+        return list;
     }
 
     @Override

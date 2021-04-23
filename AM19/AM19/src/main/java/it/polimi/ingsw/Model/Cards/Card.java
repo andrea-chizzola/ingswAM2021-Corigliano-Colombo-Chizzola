@@ -4,8 +4,11 @@ import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Exceptions.ResourcesExpectedException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.Model.Resources.Resource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Objects;
 
 /**
@@ -80,6 +83,22 @@ public abstract class Card{
          return true;
      }
 
+
+    /**
+     * @return HasMap<Resource,Integer> with all the resources present in the requirements
+     */
+     public HashMap<Resource,Integer> getRequirements(){
+        HashMap<Resource,Integer> map = requirements.getRequirements();
+         return map;
+     }
+
+    /**
+     * @return LinkedList<CardQuantity> with all the cards present in the requirements
+     */
+    public LinkedList<CardQuantity> getCardRequirements(){
+         LinkedList<CardQuantity> list = requirements.getCardRequirements();
+         return list;
+    }
 
     @Override
     public boolean equals(Object o) {

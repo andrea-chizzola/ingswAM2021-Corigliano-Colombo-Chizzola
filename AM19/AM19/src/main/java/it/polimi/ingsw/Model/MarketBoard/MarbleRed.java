@@ -1,8 +1,9 @@
 package it.polimi.ingsw.Model.MarketBoard;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.MarbleWhiteException;
 import it.polimi.ingsw.Model.Boards.Board;
+
+import java.util.LinkedList;
 
 /**
  * This class implements Marble.
@@ -17,7 +18,7 @@ public class MarbleRed implements Marble {
      * @throws InvalidActionException
      */
     @Override
-    public void addResource(Board board, int shelf) throws InvalidActionException, MarbleWhiteException{
+    public void addResource(Board board, int shelf) throws InvalidActionException{
         board.addFaith(1);
     }
 
@@ -28,6 +29,12 @@ public class MarbleRed implements Marble {
     @Override
     public void discard(Board board){
         board.addFaithToOthers(1);
+    }
+
+    @Override
+    public LinkedList<Marble> whiteTransformations(Board board) {
+        LinkedList<Marble> list = new LinkedList<>();
+        return list;
     }
 
     @Override

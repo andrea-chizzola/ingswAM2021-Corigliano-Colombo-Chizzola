@@ -1,6 +1,9 @@
 package it.polimi.ingsw.Model.Resources;
 
 import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.MarketBoard.Marble;
+import it.polimi.ingsw.Model.MarketBoard.MarbleRed;
+import it.polimi.ingsw.Model.MarketBoard.MarbleYellow;
 
 import java.util.Objects;
 
@@ -33,6 +36,14 @@ public class Faith extends Resource {
         board.addFaith(quantity);
     }
 
+    /**
+     * This method returns the Marble associated to the resource.
+     * @return the Marble associated to the resource
+     */
+    @Override
+    public Marble getMarbleAssociated() {
+        return new MarbleRed();
+    }
 
     @Override
     public boolean equals(Object o) {

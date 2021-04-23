@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.Model.Resources.Resource;
 
 import java.util.LinkedList;
 
@@ -29,5 +30,14 @@ public abstract class SpecialEffect {
         LinkedList<ResQuantity> products = new LinkedList<>();
         return new Production(materials, products);
     }
+
+    /**
+     * @return a ResQuantity which represents the special effect
+     */
+    public abstract ResQuantity getSpecialEffect();
+
+    public boolean isDiscount(){return false;}
+    public boolean isWhiteMarble(){return false;}
+    public boolean isExtraShelf(){return false;}
 
 }
