@@ -180,10 +180,13 @@ public class GameBoard {
     public void checkStartVaticanReport(FaithTrack currentTrack){
 
         for(VaticanReportSection section : currentTrack.getSections()){
-            if(currentTrack.isEndSection(currentTrack.getSections().indexOf(section) + 1) || currentTrack.isAfterSection(currentTrack.getSections().indexOf(section) + 1)){
+
+            int sectionNumber = currentTrack.getSections().indexOf(section) + 1;
+
+            if(currentTrack.isEndSection(sectionNumber) || currentTrack.isAfterSection(sectionNumber)){
                 if(!currentTrack.getSections().get(currentTrack.getSections().indexOf(section)).isDiscarded())
                     if(!currentTrack.getSections().get(currentTrack.getSections().indexOf(section)).getStatus()){
-                    startVaticanReport(currentTrack.getSections().indexOf(section) + 1, currentTrack);
+                    startVaticanReport(sectionNumber, currentTrack);
                 }
             }
         }
