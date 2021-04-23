@@ -211,6 +211,15 @@ public class Board {
     }
 
     /**
+     * @return returns the number of resources remaining to the player
+     */
+    public int getTotalResources(){
+
+        return strongBox.calculateTotalResources() + warehouse.calculateTotalResources();
+
+    }
+
+    /**
      * moves the faith marker ahead in the faith track and starts a vatican report if a player reached or passed the end of a section
      * @param amount indicates how many positions have to be added to the faith marker
      */

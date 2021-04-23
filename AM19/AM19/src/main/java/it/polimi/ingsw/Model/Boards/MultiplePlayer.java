@@ -44,6 +44,10 @@ public class MultiplePlayer implements CustomMode{
 
     }
 
+    /**
+     * @param boards contains the board of each player
+     * @return returns the message showed to the players when the match is over
+     */
     @Override
     public String findWinnerMessage(ArrayList<Board> boards) {
 
@@ -52,10 +56,8 @@ public class MultiplePlayer implements CustomMode{
         Collections.sort(boards, (Board b1, Board b2) -> {
             if(b1.getTotalPoints() < b2.getTotalPoints()) return -1;
             else if(b1.getTotalPoints() > b2.getTotalPoints()) return 1;
-            else if(b1.getTotalPoints() == b2.getTotalPoints() && b1.getStrongBox().calculateTotalResources() + b1.getWarehouse().calculateTotalResources() < b2.getStrongBox().calculateTotalResources() + b2.getWarehouse().calculateTotalResources())
-                return -1;
-            else if(b1.getTotalPoints() == b2.getTotalPoints() && b1.getStrongBox().calculateTotalResources() + b1.getWarehouse().calculateTotalResources() > b2.getStrongBox().calculateTotalResources() + b2.getWarehouse().calculateTotalResources())
-                return 1;
+            else if(b1.getTotalPoints() == b2.getTotalPoints() && b1.getTotalResources() < b2.getTotalResources()) return -1;
+            else if(b1.getTotalPoints() == b2.getTotalPoints() && b1.getTotalResources() > b2.getTotalResources()) return 1;
             else return 0;
         });
 
