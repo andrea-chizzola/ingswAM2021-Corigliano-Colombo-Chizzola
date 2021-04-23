@@ -159,6 +159,20 @@ public class FaithTrack {
     }
 
     /**
+     * @param section represents the section of the faith track
+     * @return returns true if the current position is after the section
+     * @throws IndexOutOfBoundsException if the section related to the parameter doesn't exist
+     */
+    public boolean isAfterSection(int section) throws IndexOutOfBoundsException{
+
+        if (section > 0 && section <= sections.size()) {
+
+            return !isBeforeSection(section) && !isInsideSection(section);
+
+        }else throw new IndexOutOfBoundsException("Nonexistent Vatican Report Section");
+    }
+
+    /**
      * @return true only if the player has reached the last spot of the track
      */
     public boolean isEndTrack(){

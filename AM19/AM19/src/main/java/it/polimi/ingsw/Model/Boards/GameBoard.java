@@ -163,7 +163,7 @@ public class GameBoard {
             if(board.getFaithTrack() == currentTrack){
                 board.getFaithTrack().getSection(section).activateFavor();
             }else {
-                if (board.getFaithTrack().isInsideSection(section) || (!board.getFaithTrack().isBeforeSection(section) && !board.getFaithTrack().isInsideSection(section))){
+                if (board.getFaithTrack().isInsideSection(section) || board.getFaithTrack().isAfterSection(section)){
                     if(!board.getFaithTrack().getSection(section).isDiscarded() && !board.getFaithTrack().getSection(section).getStatus()) {
                         board.getFaithTrack().getSection(section).activateFavor();
                     }
@@ -173,11 +173,16 @@ public class GameBoard {
 
     }
 
+    /**
+     * checks if a new vatican report has to start
+     * @param currentTrack indicates the track of a player who changed his position in the faith track
+     */
     public void checkStartVaticanReport(FaithTrack currentTrack){
 
         for(VaticanReportSection section : currentTrack.getSections()){
-            if(currentTrack.isEndSection(currentTrack.getSections().indexOf(section) + 1) || (!currentTrack.isBeforeSection(currentTrack.getSections().indexOf(section) + 1) && !currentTrack.isInsideSection(currentTrack.getSections().indexOf(section) + 1))){
-                if(!currentTrack.getSections().get(currentTrack.getSections().indexOf(section)).isDiscarded() && !currentTrack.getSections().get(currentTrack.getSections().indexOf(section)).getStatus()){
+            if(currentTrack.isEndSection(currentTrack.getSections().indexOf(section) + 1) || currentTrack.isAfterSection(currentTrack.getSections().indexOf(section) + 1)){
+                if(!currentTrack.getSections().get(currentTrack.getSections().indexOf(section)).isDiscarded())
+                    if(!currentTrack.getSections().get(currentTrack.getSections().indexOf(section)).getStatus()){
                     startVaticanReport(currentTrack.getSections().indexOf(section) + 1, currentTrack);
                 }
             }

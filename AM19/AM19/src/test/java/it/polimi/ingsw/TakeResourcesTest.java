@@ -60,7 +60,7 @@ class TakeResourcesTest {
     public void discardResourceTest(){
         TakeResources takeResources = new TakeResources();
 
-        takeResources.discardResource(board, new MarbleYellow());  //tolto lancio dell'eccezione
+        takeResources.discardResource(board, new MarbleYellow());
 
         assertEquals(board.getFaithTrack().getPosition(),0);
 
