@@ -61,9 +61,6 @@ public class Board {
      */
     private Modifications modification;
 
-    //turn attribute/methods missing
-
-
     public Board(String nickname, GameBoard gameBoard, String file) {
 
         this.nickname = nickname;
