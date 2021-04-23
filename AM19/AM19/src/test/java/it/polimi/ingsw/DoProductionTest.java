@@ -148,4 +148,22 @@ class DoProductionTest {
         exception = assertThrows(InvalidActionException.class, () -> action.doProduction(board, productions, shelves, quantity, strongBox));
         assertEquals(exception.getMessage(), "Too many resources selected!");
     }
+
+    @Test
+    public void DoProductionTestNotEnoughResources() {
+        ArrayList<Integer> shelves = new ArrayList<>();
+        shelves.add(1);
+        shelves.add(3);
+        ArrayList<Integer> quantity = new ArrayList<>();
+        quantity.add(1);
+        quantity.add(2);
+        ArrayList<ResQuantity> strongBox = new ArrayList<>();
+        strongBox.add(new ResQuantity(new Coin(), 0));
+        strongBox.add(new ResQuantity(new Stone(), 2));
+        strongBox.add(new ResQuantity(new Shield(), 1));
+        DoProduction action = new DoProduction();
+        Exception exception;
+        exception = assertThrows(InvalidActionException.class, () -> action.doProduction(board, productions, shelves, quantity, strongBox));
+        assertEquals(exception.getMessage(), "Insufficient resources!");
+    }
 }

@@ -89,7 +89,7 @@ class WarehouseTest {
            i = warehouse.getCapacity(1);
        }
        catch (IllegalShelfException e){
-           System.out.println(e.getMessage());
+          fail();
 
        }
         assertEquals(i, 1);
@@ -101,7 +101,7 @@ class WarehouseTest {
             i = warehouse.getCapacity(2);
         }
         catch (IllegalShelfException e){
-            System.out.println(e.getMessage());
+            fail();
         }
         assertEquals(i, 2);
     }
@@ -113,7 +113,7 @@ class WarehouseTest {
             i = warehouse.getCapacity(3);
         }
         catch (IllegalShelfException e){
-            System.out.println(e.getMessage());
+            fail();
 
         }
         assertEquals(i, 3);
@@ -137,16 +137,12 @@ class WarehouseTest {
         Resource resource = null;
         try {
             warehouse.addResource(1, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             i = warehouse.getQuantity(1);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             resource = warehouse.getResource(1);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertEquals(i, 1);
         assertEquals(resource, new Coin());
     }
@@ -157,7 +153,7 @@ class WarehouseTest {
         try {
             warehouse.addResource(1, new Coin());
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         exception = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(1,new Coin()));
         assertEquals(exception.getMessage(),"Full shelf!");
     }
@@ -168,7 +164,7 @@ class WarehouseTest {
         try {
             warehouse.addResource(1, new Coin());
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         exception = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(1,new Stone()));
         assertEquals(exception.getMessage(),"Wrong resource!");
     }
@@ -179,7 +175,7 @@ class WarehouseTest {
         try {
             warehouse.addResource(1, new Coin());
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         exception = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(2,new Coin()));
         assertEquals(exception.getMessage(),"Already exists a shelf with this resource!");
     }
@@ -204,41 +200,46 @@ class WarehouseTest {
         Resource resource = null;
         try {
             warehouse.addResource(1, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.subtract(1);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertThrows(IllegalShelfException.class, () -> warehouse.getQuantity(0));
         assertThrows(IllegalShelfException.class, () -> warehouse.getResource(0));
     }
 
     @Test
-    public void testSubctract2to1(){
+    public void testSubctractIllegalExtra(){
+        int i = 1;
+        Resource resource = null;
+
+            warehouse.addShelf(new ResQuantity(new Coin(),2));
+
+        Exception exception;
+        exception = assertThrows(IllegalShelfException.class, () -> warehouse.subtract(4));
+        assertEquals(exception.getMessage(),"Empty extra shelf!");
+
+
+
+    }
+
+    @Test
+    public void testSubtract2to1(){
 
         int i = 0;
         Resource resource = null;
         try {
             warehouse.addResource(2, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.addResource(2, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.subtract(2);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             i = warehouse.getQuantity(2);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             resource = warehouse.getResource(2);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertTrue(i==1);
         assertEquals(resource, new Coin());
     }
@@ -250,26 +251,40 @@ class WarehouseTest {
         Resource resource1 = null;
         try {
             warehouse.addResource(1, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.addResource(2, new Stone());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.swap(1,2);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             resource1 = warehouse.getResource(1);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             resource = warehouse.getResource(2);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertEquals(resource1, new Stone());
         assertEquals(resource, new Coin());
+    }
+
+    @Test
+    public void testSwapSameShelf(){
+        int i = 0;
+
+        Resource resource1 = null;
+        try {
+            warehouse.addResource(1, new Coin());
+
+            warehouse.addResource(2, new Stone());
+
+            warehouse.swap(1,1);
+
+            resource1 = warehouse.getResource(1);
+            i = warehouse.getQuantity(1);
+        }
+        catch(IllegalShelfException e){fail();}
+
+        assertEquals(resource1, new Coin());
+        assertEquals(i,1);
+
     }
 
     @Test
@@ -279,26 +294,86 @@ class WarehouseTest {
         Resource resource1 = null;
         try {
             warehouse.addResource(1, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.addResource(2, new Stone());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.swap(2,1);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             resource1 = warehouse.getResource(1);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             resource = warehouse.getResource(2);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertEquals(resource1, new Stone());
         assertEquals(resource, new Coin());
+    }
+
+    @Test
+    public void testSwapSourceQuantityTooBig(){
+        int i1 = 0;
+        int i2 = 0;
+
+
+        Resource resource1 = null;
+        Resource resource2 = null;
+
+        try {
+            warehouse.addResource(1, new Coin());
+
+            warehouse.addResource(2, new Stone());
+            warehouse.addResource(2,new Stone());
+        }
+        catch(IllegalShelfException e){fail();}
+
+        Exception exception;
+        exception = assertThrows(IllegalShelfException.class, () ->  warehouse.swap(2,1));
+        assertEquals(exception.getMessage(),"Illegal swap!");
+
+        try {
+            resource1 = warehouse.getResource(1);
+            resource2 = warehouse.getResource(2);
+            i1= warehouse.getQuantity(1);
+            i2= warehouse.getQuantity(2);
+        }catch (IllegalShelfException e){fail();}
+        assertEquals(resource2, new Stone());
+        assertEquals(resource1, new Coin());
+        assertEquals(i1, 1);
+        assertEquals(i2, 2);
+
+    }
+
+    @Test
+    public void testSwapSourceQuantityTooBig2(){
+        int i1 = 0;
+        int i2 = 0;
+
+
+        Resource resource1 = null;
+        Resource resource2 = null;
+
+        try {
+            warehouse.addResource(1, new Coin());
+
+            warehouse.addResource(2, new Stone());
+            warehouse.addResource(2,new Stone());
+        }
+        catch(IllegalShelfException e){fail();}
+
+        Exception exception;
+        exception = assertThrows(IllegalShelfException.class, () ->  warehouse.swap(1,2));
+        assertEquals(exception.getMessage(),"Illegal swap!");
+
+        try {
+            resource1 = warehouse.getResource(1);
+            resource2 = warehouse.getResource(2);
+            i1= warehouse.getQuantity(1);
+            i2= warehouse.getQuantity(2);
+        }catch (IllegalShelfException e){fail();}
+        assertEquals(resource2, new Stone());
+        assertEquals(resource1, new Coin());
+        assertEquals(i1, 1);
+        assertEquals(i2, 2);
+
     }
 
     @Test
@@ -309,20 +384,14 @@ class WarehouseTest {
 
         try {
             warehouse.addResource(2, new Stone());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.swap(1,2);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             resource1 = warehouse.getResource(1);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             i = warehouse.getQuantity(1);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertEquals(resource1, new Stone());
         assertEquals(i,1 );
         assertThrows(IllegalShelfException.class, () -> warehouse.getQuantity(2));
@@ -341,9 +410,8 @@ class WarehouseTest {
     public void testSwapBothEmpty(){
         try{
             warehouse.swap(1,3);
-            System.out.println("Swap ok!");
         }
-        catch (IllegalShelfException e){System.out.println(e.getMessage());}
+        catch (IllegalShelfException e){fail();}
     }
 
     @Test
@@ -353,24 +421,16 @@ class WarehouseTest {
 
         try {
             warehouse.addResource(2, new Stone());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.addResource(2, new Stone());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.addResource(1, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             resource1 = warehouse.getResource(2);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             i = warehouse.getQuantity(2);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertEquals(resource1, new Stone());
         assertEquals(i,2 );
     }
@@ -385,20 +445,14 @@ class WarehouseTest {
 
         try {
             warehouse.addResource(4, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.addResource(4, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             resource1 = warehouse.getResource(4);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             i = warehouse.getQuantity(4);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertEquals(resource1, new Coin());
         assertEquals(i,2 );
     }
@@ -412,23 +466,19 @@ class WarehouseTest {
         warehouse.addShelf(new ResQuantity(new Stone(),5));
         try {
             resource1 = warehouse.getResource(4);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             i = warehouse.getCapacity(4);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertEquals(resource1, new Coin());
         assertEquals(i,2 );
 
         try {
             resource1 = warehouse.getResource(5);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             i = warehouse.getCapacity(5);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertEquals(resource1, new Stone());
         assertEquals(i,5 );
     }
@@ -447,31 +497,23 @@ class WarehouseTest {
     }
 
     @Test
-    public void testExtraShelfSubctract2to1(){
+    public void testExtraShelfSubtract2to1(){
 
         int i = 0;
         Resource resource = null;
         warehouse.addShelf(new ResQuantity(new Coin(),2));
         try {
             warehouse.addResource(4, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.addResource(4, new Coin());
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             warehouse.subtract(4);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             i = warehouse.getQuantity(4);
-        }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
-        try {
+
             resource = warehouse.getResource(4);
         }
-        catch(IllegalShelfException e){System.out.println(e.getMessage());}
+        catch(IllegalShelfException e){fail();}
         assertTrue(i==1);
         assertEquals(resource, new Coin());
     }
@@ -504,6 +546,17 @@ class WarehouseTest {
             assertEquals(map.get(r), copy.get(r));
         }
 
+    }
 
+    @Test
+    public void testAddDifferentResourceExtra(){
+        Exception exception;
+        try {
+            warehouse.addShelf(new ResQuantity(new Coin(),2));
+            warehouse.addResource(4, new Coin());
+        }
+        catch(IllegalShelfException e){fail();}
+        exception = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(4,new Stone()));
+        assertEquals(exception.getMessage(),"Wrong resource!");
     }
 }

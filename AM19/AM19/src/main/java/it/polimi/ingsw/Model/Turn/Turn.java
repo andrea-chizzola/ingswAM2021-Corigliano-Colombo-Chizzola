@@ -43,7 +43,7 @@ public abstract class Turn {
      * @param shelf
      * @throws InvalidActionException
      */
-    public void insertResource(Board board, Marble marble, int shelf) throws InvalidActionException, MarbleWhiteException{
+    public void insertResource(Board board, Marble marble, int shelf) throws InvalidActionException {
 
     }
 

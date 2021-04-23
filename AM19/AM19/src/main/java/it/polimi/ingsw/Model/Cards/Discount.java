@@ -28,6 +28,19 @@ public class Discount extends SpecialEffect {
         board.getModifications().addDiscount(resQuantity.getResource(), resQuantity.getQuantity());
     }
 
+    /**
+     * @return a ResQuantity which represents the special effect
+     */
+    @Override
+    public ResQuantity getSpecialEffect() {
+        return resQuantity;
+    }
+
+    @Override
+    public boolean isDiscount() {
+        return true;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

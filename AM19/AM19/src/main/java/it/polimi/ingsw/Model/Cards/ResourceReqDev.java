@@ -6,10 +6,7 @@ import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * public class that represents the requirements of a DevelopmentCard
@@ -38,21 +35,20 @@ public class ResourceReqDev implements Requirements {
      * ResourceReqDev will throw this exception because it needs the current state of the player's StrongBox and
      * Warehouse
      */
-
     @Override
     public boolean checkReq(Board board) throws InvalidActionException, ResourcesExpectedException{
         throw new ResourcesExpectedException("The card needs the status of the StrongBox and the Warehouse!");
     }
+
     /**
      * This method checks if the resources selected from the warehouse and from the strongBox meet the purchase requirements.
-     * An InvalidActionException is thrown the resources selected are not enough or if they are too many.
      * @param board represents the board associated to a player
      * @param shelves ArrayList of Integer which represents all the shelves selected
      * @param quantity ArrayList of Integer which represents the amount of resources selected for each shelf
      * @param strongbox ArrayList of ResQuantity which represents all the resources selected from the strongBox
      *                  It is important that each resource is present at most once
      * @return true if the check is successful
-     * @throws InvalidActionException
+     * @throws InvalidActionException if the resources selected are not enough or if they are too many
      */
     public boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException{
 
@@ -65,13 +61,37 @@ public class ResourceReqDev implements Requirements {
             }
         }
         catch (InvalidActionException e){throw e;}
+
         //It checks if the player has selected more resources than required, it is important because all the resources selected will be subtracted from the deposits
         if(resourceStatus.values().stream().mapToInt(Integer::intValue).sum() != 0)
             throw new InvalidActionException("Too many resources selected!");
+
         return true;
     }
 
+    /**
+     * @return HasMap<Resource,Integer> with all the resources present in the requirements
+     */
+    @Override
+    public HashMap<Resource, Integer> getRequirements(){
 
+        HashMap<Resource, Integer> map = new HashMap<>();
+        for(ResQuantity resQuantity : requirements){
+            if(map.containsKey(resQuantity.getResource())){
+                map.put(resQuantity.getResource(), map.get(resQuantity.getResource()) + resQuantity.getQuantity());}
+            else{map.put(resQuantity.getResource(), resQuantity.getQuantity());}
+        }
+        return map;
+    }
+
+    /**
+     * @return LinkedList<CardQuantity> with all the cards present in the requirements
+     */
+    @Override
+    public LinkedList<CardQuantity> getCardRequirements() {
+        LinkedList<CardQuantity> list = new LinkedList<>();
+        return list;
+    }
 
     @Override
     public boolean equals(Object o) {

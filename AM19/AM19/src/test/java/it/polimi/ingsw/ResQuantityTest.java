@@ -54,12 +54,6 @@ class ResQuantityTest {
         strongBox.addResource(new Stone(), 3);
     }
 
-    @Test
-    public void addTest(){
-       ResQuantity resquantity = new ResQuantity(new Coin(),0);
-       resquantity.add(1);
-       assertTrue(resquantity.getQuantity() == 1);
-    }
 
     @Test
     public void createReqMapTest(){
@@ -79,6 +73,43 @@ class ResQuantityTest {
             Map<Resource, Integer> map = ResQuantity.createReqMap(board,shelves, quantity, strongBox);
             Map<Resource, Integer> copy = new HashMap<>();
             copy.put(new Coin(), 11);
+            copy.put(new Stone(), 3);
+            copy.put(new Shield(), 2);
+
+            for(Resource r : map.keySet()){
+                assertEquals(map.get(r), copy.get(r));
+            }
+        }
+        catch(InvalidActionException e){
+            fail();
+        }
+    }
+
+    @Test
+    public void createReqMapTest1(){
+
+        try {
+            board.getWarehouse().addShelf(new ResQuantity(new Coin(),2));
+            board.getWarehouse().addResource(6,new Coin());
+        }catch (IllegalShelfException e){fail();}
+        ArrayList<Integer> shelves = new ArrayList<>();
+        shelves.add(1);
+        shelves.add(3);
+        shelves.add(4);
+        shelves.add(6);
+        ArrayList<Integer> quantity = new ArrayList<>();
+        quantity.add(1);
+        quantity.add(2);
+        quantity.add(1);
+        quantity.add(1);
+        ArrayList<ResQuantity> strongBox = new ArrayList<>();
+        strongBox.add(new ResQuantity(new Coin(), 10));
+        strongBox.add(new ResQuantity(new Stone(), 1));
+        strongBox.add(new ResQuantity(new Shield(), 1));
+        try{
+            Map<Resource, Integer> map = ResQuantity.createReqMap(board,shelves, quantity, strongBox);
+            Map<Resource, Integer> copy = new HashMap<>();
+            copy.put(new Coin(), 12);
             copy.put(new Stone(), 3);
             copy.put(new Shield(), 2);
 
@@ -441,7 +472,7 @@ class ResQuantityTest {
 
         Exception exception;
         exception = assertThrows(InvalidActionException.class, () -> ResQuantity.useResources(board, shelves, quantity, strongBox));
-        assertEquals(exception.getMessage(), "check bug!");
+        assertEquals(exception.getMessage(), "Requirements not met! Error!");
     }
 
 

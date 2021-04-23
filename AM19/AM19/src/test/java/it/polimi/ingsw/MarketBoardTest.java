@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 class MarketBoardTest {
     private final String file = "defaultConfiguration.xml";
     private MarketBoard market;
@@ -51,7 +53,7 @@ class MarketBoardTest {
         System.out.println();
 
         try{col = market.getColumn(0);}
-        catch (IllegalMarketException e){System.out.println(e.getMessage());}
+        catch (IllegalMarketException e){fail();}
         col.stream().forEach(System.out::println);
 
     }
@@ -72,7 +74,7 @@ class MarketBoardTest {
         System.out.println();
 
         try{col = market.takeColumn(0);}
-        catch (IllegalMarketException e){System.out.println(e.getMessage());}
+        catch (IllegalMarketException e){fail();}
         col.stream().forEach(System.out::println);
 
         System.out.println();
@@ -108,7 +110,7 @@ class MarketBoardTest {
         try {
             row = market.getRow(0);
         } catch (IllegalMarketException e) {
-            System.out.println(e.getMessage());
+            fail();
         }
         for (Marble marble : row) {
             System.out.print(marble + "   ");
@@ -131,7 +133,7 @@ class MarketBoardTest {
             System.out.println();
 
             try{row = market.takeRow(0);}
-            catch (IllegalMarketException e){System.out.println(e.getMessage());}
+            catch (IllegalMarketException e){fail();}
             for (Marble marble : row) {
                 System.out.print(marble + "   ");
             }

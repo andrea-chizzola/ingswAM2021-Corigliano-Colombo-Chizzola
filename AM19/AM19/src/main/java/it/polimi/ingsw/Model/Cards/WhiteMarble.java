@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
 
 import java.util.Objects;
@@ -26,6 +27,19 @@ public class WhiteMarble extends SpecialEffect{
     @Override
     public void applyEffect(Board board) {
         board.getModifications().addMarbleTo(resource);
+    }
+
+    /**
+     * @return a ResQuantity which represents the special effect
+     */
+    @Override
+    public ResQuantity getSpecialEffect() {
+        return new ResQuantity(resource, 0);
+    }
+
+    @Override
+    public boolean isWhiteMarble() {
+        return true;
     }
 
     @Override

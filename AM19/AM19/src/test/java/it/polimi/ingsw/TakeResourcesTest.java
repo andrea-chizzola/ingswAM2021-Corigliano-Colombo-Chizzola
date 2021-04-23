@@ -39,7 +39,7 @@ class TakeResourcesTest {
         TakeResources takeResources = new TakeResources();
         try {
             takeResources.insertResource(board, new MarbleYellow(), 1);
-        }catch (InvalidActionException | MarbleWhiteException e){fail();}
+        }catch (InvalidActionException e){fail();}
 
         try {
             assertEquals(board.getWarehouse().getQuantity(1), 1);
@@ -48,13 +48,6 @@ class TakeResourcesTest {
 
     }
 
-    @Test
-    public void insertResourcesTestWhite(){
-        TakeResources takeResources = new TakeResources();
-        Exception exception;
-        exception = assertThrows(MarbleWhiteException.class, () -> takeResources.insertResource(board,new MarbleWhite(), 3));
-
-    }
 
     @Test
     public void discardResourceTest(){

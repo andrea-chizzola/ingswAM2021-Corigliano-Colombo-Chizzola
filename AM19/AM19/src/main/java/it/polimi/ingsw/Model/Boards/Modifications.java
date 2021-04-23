@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Model.Boards;
 
+import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.Resource;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,6 +57,24 @@ public class Modifications{
      */
     public void addDiscount(Resource resource, int amount){
         discount.put(resource, this.getDiscount(resource) + amount);
+    }
+
+
+    /**
+     * This method returns a LinkedList of Marble which contains all the marbles that can be used instead of the white one.
+     * If there are not marbles that can be used instead of the white one the LinkedList is empty.
+     * @return LinkedList of Marble which contains all the marbles that can be used instead of the white one
+     */
+    public LinkedList<Marble> getWhiteTransformations(){
+
+        LinkedList<Marble> list = new LinkedList<>();
+
+        for(Resource resource : marbleTo.keySet()){
+            if(marbleTo.get(resource))
+                list.add(resource.getMarbleAssociated());
+        }
+
+        return list;
     }
 }
 

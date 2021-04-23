@@ -1,6 +1,9 @@
 package it.polimi.ingsw.Model.Resources;
 
 import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.MarketBoard.Marble;
+import it.polimi.ingsw.Model.MarketBoard.MarblePurple;
+import it.polimi.ingsw.Model.MarketBoard.MarbleYellow;
 
 import java.util.Objects;
 
@@ -23,6 +26,14 @@ public class Servant extends Resource {
         return color;
     }
 
+    /**
+     * This method returns the Marble associated to the resource.
+     * @return the Marble associated to the resource
+     */
+    @Override
+    public Marble getMarbleAssociated() {
+        return new MarblePurple();
+    }
 
     /**
      * This method adds to the strongbox a number of resources 'Servant' equal to 'quantity'

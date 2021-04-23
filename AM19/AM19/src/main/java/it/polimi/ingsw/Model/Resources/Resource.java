@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.Resources;
 
 import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.MarketBoard.Marble;
 
 /**
  * This abstract class represents the resources and it provides useful methods for managing them
@@ -19,6 +20,12 @@ public abstract class Resource {
      * @param quantity the quantity of resources to add
      */
     public abstract void addResourceStrongbox(Board board, int quantity);
+
+    /**
+     * This method returns the Marble associated to the resource.
+     * @return the Marble associated to the resource
+     */
+    public abstract Marble getMarbleAssociated();
 
 }
 

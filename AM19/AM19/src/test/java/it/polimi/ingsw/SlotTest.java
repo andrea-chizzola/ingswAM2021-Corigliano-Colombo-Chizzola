@@ -23,7 +23,7 @@ class SlotTest {
         try {
             slot.insertCard(dev);
         }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
+        catch (IllegalSlotException e){fail();}
         assertEquals(1,slot.getNumberOfCards());
     }
 
@@ -33,7 +33,7 @@ class SlotTest {
         try {
             slot.insertCard(dev);
         }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
+        catch (IllegalSlotException e){fail();}
         Exception exception1;
         exception1 = assertThrows(IllegalSlotException.class, () -> {slot.insertCard(dev);});
         assertEquals("This card can't be inserted!", exception1.getMessage());
@@ -46,12 +46,10 @@ class SlotTest {
         DevelopmentCard dev2 = new DevelopmentCard(2,null,null,null,2);
         try {
             slot.insertCard(dev1);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             slot.insertCard(dev2);
         }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
+        catch (IllegalSlotException e){fail();}
 
         assertEquals(2,slot.getNumberOfCards());
     }
@@ -74,16 +72,12 @@ class SlotTest {
         DevelopmentCard dev3 = new DevelopmentCard(3,null,null, null, 3);
         try {
             slot.insertCard(dev1);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             slot.insertCard(dev2);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             slot.insertCard(dev3);
         }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
+        catch (IllegalSlotException e){fail();}
         assertEquals(3,slot.getNumberOfCards());
     }
 
@@ -95,7 +89,7 @@ class SlotTest {
         try {
             slot.insertCard(dev1);
         }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
+        catch (IllegalSlotException e){fail();}
         Exception exception1;
         exception1 = assertThrows(IllegalSlotException.class, () -> {slot.insertCard(dev3);});
         assertEquals("This card can't be inserted!", exception1.getMessage());
@@ -132,20 +126,14 @@ class SlotTest {
         DevelopmentCard dev3 = new DevelopmentCard(3,null,null, null, 3);
         try {
             slot.insertCard(dev1);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             slot.insertCard(dev2);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             slot.insertCard(dev3);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             dev1 = slot.getTop();
         }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
+        catch (IllegalSlotException e){fail();}
 
         assertEquals(3,slot.getNumberOfCards());
         assertEquals(dev1.getCardLevel(),3);
@@ -158,16 +146,12 @@ class SlotTest {
         DevelopmentCard dev3 = new DevelopmentCard(1,null,null, null, 3);
         try {
             slot.insertCard(dev1);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             slot.insertCard(dev2);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             slot.insertCard(dev3);
         }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
+        catch (IllegalSlotException e){fail();}
 
 
         assertEquals(3,slot.getNumberOfCards());
@@ -197,13 +181,10 @@ class SlotTest {
         DevelopmentCard dev3 = new DevelopmentCard(1,null,null, null, 3);
         try {
             slot.insertCard(dev1);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
 
-        try {
            dev2 = slot.getCard(0);
         }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
+        catch (IllegalSlotException e){fail();}
 
 
         assertEquals(1,slot.getNumberOfCards());
@@ -216,20 +197,14 @@ class SlotTest {
         DevelopmentCard dev3 = new DevelopmentCard(3,null,null, null, 3);
         try {
             slot.insertCard(dev1);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             slot.insertCard(dev2);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             slot.insertCard(dev3);
-        }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
-        try {
+
             dev1 = slot.getCard(2);
         }
-        catch (IllegalSlotException e){System.out.println(e.getMessage());}
+        catch (IllegalSlotException e){fail();}
 
         assertEquals(3,slot.getNumberOfCards());
     }

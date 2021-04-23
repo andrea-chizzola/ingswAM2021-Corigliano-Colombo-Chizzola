@@ -37,19 +37,20 @@ public class BuyCard extends Turn{
         try {
             card = board.getGameBoard().getDevelopmentDeck().readTop(color,level);
             card.checkReq(board,shelves,quantity,strongbox);
-
         }catch (IllegalArgumentException e){throw new InvalidActionException(e.getMessage());}
+
         try {
             slot1 = board.getSlot(slot);
         }
         catch (IllegalSlotException e){throw new InvalidActionException(e.getMessage());}
         try {
             slot1.insertCard(card);
+            board.checkSeventhDevCard();
         }
         catch (IllegalSlotException e){throw new InvalidActionException(e.getMessage());}
         try {
             board.getGameBoard().getDevelopmentDeck().getTop(color, level);
-        }catch (IllegalArgumentException e){throw new InvalidActionException(e.getMessage());}
+        }catch (IllegalArgumentException e){throw new InvalidActionException("Problem!");}
 
         ResQuantity.useResources(board,shelves,quantity,strongbox);
 

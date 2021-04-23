@@ -1,8 +1,12 @@
 package it.polimi.ingsw.Model.MarketBoard;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.MarbleWhiteException;
 import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Boards.Modifications;
+import it.polimi.ingsw.Model.Resources.*;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class implements Marble.
@@ -14,11 +18,9 @@ public class MarbleWhite implements Marble {
      * This method manages the actions of white marble.
      * @param board the board of the player
      * @param shelf not used
-     * @throws InvalidActionException
      */
     @Override
-    public void addResource(Board board, int shelf) throws InvalidActionException, MarbleWhiteException {
-        throw new MarbleWhiteException();
+    public void addResource(Board board, int shelf) {
     }
 
     /**
@@ -27,7 +29,17 @@ public class MarbleWhite implements Marble {
      */
     @Override
     public void discard(Board board){
-        board.addFaithToOthers(1);
+    }
+
+    /**
+     * This method returns a LinkedList of Marble which contains all the marbles that can be used instead of the white one.
+     * If there are not marbles that can be used instead of the white one the LinkedList is empty.
+     * @param board is the board of the player
+     * @return LinkedList of Marble which contains all the marbles that can be used instead of the white one
+     */
+    public LinkedList<Marble> whiteTransformations(Board board){
+
+        return board.getModifications().getWhiteTransformations();
     }
 
     @Override
