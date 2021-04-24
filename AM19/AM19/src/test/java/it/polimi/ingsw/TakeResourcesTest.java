@@ -3,7 +3,6 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Exceptions.*;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Boards.GameBoard;
-import it.polimi.ingsw.Model.MarketBoard.MarbleWhite;
 import it.polimi.ingsw.Model.MarketBoard.MarbleYellow;
 import it.polimi.ingsw.Model.Resources.Coin;
 import it.polimi.ingsw.Model.Turn.TakeResources;
@@ -30,8 +29,7 @@ class TakeResourcesTest {
 
         gameBoard = new GameBoard(names, file);
         board = gameBoard.getPlayers().get(0);
-        Board player2 = gameBoard.getPlayers().get(1);
-        Board player3 = gameBoard.getPlayers().get(2);
+
     }
 
     @Test

@@ -196,8 +196,8 @@ class WarehouseTest {
 
     @Test
     public void testSubctract1to0(){
-        int i = 1;
-        Resource resource = null;
+
+
         try {
             warehouse.addResource(1, new Coin());
 
@@ -210,8 +210,7 @@ class WarehouseTest {
 
     @Test
     public void testSubctractIllegalExtra(){
-        int i = 1;
-        Resource resource = null;
+
 
             warehouse.addShelf(new ResQuantity(new Coin(),2));
 
@@ -240,13 +239,13 @@ class WarehouseTest {
             resource = warehouse.getResource(2);
         }
         catch(IllegalShelfException e){fail();}
-        assertTrue(i==1);
+        assertEquals(i, 1);
         assertEquals(resource, new Coin());
     }
 
     @Test
     public void testSwap(){
-        int i = 0;
+
         Resource resource = null;
         Resource resource1 = null;
         try {
@@ -289,7 +288,7 @@ class WarehouseTest {
 
     @Test
     public void testSwapWithInvertedParameters(){
-        int i = 0;
+
         Resource resource = null;
         Resource resource1 = null;
         try {
@@ -379,7 +378,7 @@ class WarehouseTest {
     @Test
     public void testSwapWithEmpty(){
         int i = 0;
-        Resource resource = null;
+
         Resource resource1 = null;
 
         try {
@@ -485,8 +484,7 @@ class WarehouseTest {
 
     @Test
     public void testAddShelfZeroCapacity(){
-        int i = 0;
-        Resource resource1 = null;
+
 
 
         warehouse.addShelf(new ResQuantity(new Coin(), 0));
@@ -514,7 +512,7 @@ class WarehouseTest {
             resource = warehouse.getResource(4);
         }
         catch(IllegalShelfException e){fail();}
-        assertTrue(i==1);
+        assertEquals(i, 1);
         assertEquals(resource, new Coin());
     }
 

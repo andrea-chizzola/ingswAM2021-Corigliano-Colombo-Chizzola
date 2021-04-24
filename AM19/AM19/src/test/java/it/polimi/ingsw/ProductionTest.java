@@ -114,7 +114,7 @@ public class ProductionTest {
     public void checkProductionTest1(){
         //the map contains more resources than the ones required
         try{
-            assertEquals(production1.checkProduction(resources), true);
+            assertTrue(production1.checkProduction(resources));
         }
         catch(InvalidActionException e){
             fail();
@@ -125,7 +125,7 @@ public class ProductionTest {
     public void checkProductionTest2(){
         //the map contains exactly the required resources
         try{
-            assertEquals(production4.checkProduction(resources), true);
+            assertTrue(production4.checkProduction(resources));
         }
         catch(InvalidActionException e){
             fail();

@@ -4,8 +4,6 @@ import it.polimi.ingsw.Exceptions.IllegalSlotException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Boards.GameBoard;
-import it.polimi.ingsw.Model.Boards.StrongBox;
-import it.polimi.ingsw.Model.Boards.Warehouse;
 import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Cards.Colors.Blue;
 import it.polimi.ingsw.Model.Cards.Colors.Green;
@@ -36,9 +34,7 @@ class CardRequirementsTest {
         GameBoard gameBoard = new GameBoard(names, file);
         board = gameBoard.getPlayers().get(0);
 
-        //initialization of Warehouse and StrongBox
-        Warehouse warehouse = board.getWarehouse();
-        StrongBox strongBox = board.getStrongBox();
+
 
         //Requirements coin:1, servant:2, shield:3
         LinkedList<CardQuantity> requirements1 = new LinkedList<>();
@@ -66,13 +62,8 @@ class CardRequirementsTest {
 
         card2 = new LeaderCard(3, production2, req2);
 
-        //development cards
-        //Requirements coin:2, servant:1
-        LinkedList<ResQuantity> requirements3 = new LinkedList<>();
-        Requirements req3 = new ResourceReqDev(requirements3);
-        LinkedList<ResQuantity> materials3 = new LinkedList<>();
-        LinkedList<ResQuantity> products3 = new LinkedList<>();
-        Production production3 = new Production(materials1,products1);
+
+
 
         DevelopmentCard card3 = new DevelopmentCard(3,production1,req1,new Green(), 1);
         DevelopmentCard card4 = new DevelopmentCard(2,production1,req1,new Blue(), 2);

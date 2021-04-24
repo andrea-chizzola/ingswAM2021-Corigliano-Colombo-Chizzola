@@ -75,7 +75,7 @@ class BuyCardTest {
 
         //creation of a DevelopmentCard
         Requirements requirements3 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect3 = new Production(new LinkedList<>(), new LinkedList<>());
+        
         dev3 = new DevelopmentCard(0, effect2, requirements3, new Purple(), 2);
 
         //Initialization of board slots of firstPlayer
@@ -142,16 +142,13 @@ class BuyCardTest {
         try {
             buyCard.buyCard(board, 3, new Blue(), 1, shelves, quantity, strongBox);
         } catch (InvalidActionException e) {
-            System.out.println(e);
-            e.printStackTrace();
             fail();
         }
 
 
         try {
             if (map.containsKey(coin)) {
-                Exception exception;
-                exception = assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getResource(1));
+                assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getResource(1));
             }
 
             if (map.containsKey(stone)) {
@@ -195,12 +192,6 @@ class BuyCardTest {
         ArrayList<Integer> quantity = new ArrayList<>();
         ArrayList<ResQuantity> strongBox = new ArrayList<>();
 
-        DevelopmentCard card = board.getGameBoard().getDevelopmentDeck().readTop(new Blue(), 1);
-        int coins = board.getStrongBox().getQuantity(coin);
-        int shields = board.getStrongBox().getQuantity(shield);
-        int stones = board.getStrongBox().getQuantity(stone);
-        int servants = board.getStrongBox().getQuantity(servant);
-        int deckSize = board.getGameBoard().getDevelopmentDeck().getNumber(new Blue(), 1);
 
         if (map.containsKey(coin)) {
             shelves.add(1);
@@ -247,12 +238,6 @@ class BuyCardTest {
         ArrayList<Integer> quantity = new ArrayList<>();
         ArrayList<ResQuantity> strongBox = new ArrayList<>();
 
-        DevelopmentCard card = board.getGameBoard().getDevelopmentDeck().readTop(new Blue(), 1);
-        int coins = board.getStrongBox().getQuantity(coin);
-        int shields = board.getStrongBox().getQuantity(shield);
-        int stones = board.getStrongBox().getQuantity(stone);
-        int servants = board.getStrongBox().getQuantity(servant);
-        int deckSize = board.getGameBoard().getDevelopmentDeck().getNumber(new Blue(), 1);
 
         if (map.containsKey(coin)) {
             shelves.add(1);
@@ -299,12 +284,6 @@ class BuyCardTest {
         ArrayList<Integer> quantity = new ArrayList<>();
         ArrayList<ResQuantity> strongBox = new ArrayList<>();
 
-        DevelopmentCard card = board.getGameBoard().getDevelopmentDeck().readTop(new Blue(), 1);
-        int coins = board.getStrongBox().getQuantity(coin);
-        int shields = board.getStrongBox().getQuantity(shield);
-        int stones = board.getStrongBox().getQuantity(stone);
-        int servants = board.getStrongBox().getQuantity(servant);
-        int deckSize = board.getGameBoard().getDevelopmentDeck().getNumber(new Blue(), 1);
 
         if (map.containsKey(coin)) {
             shelves.add(1);
@@ -383,8 +362,7 @@ class BuyCardTest {
         try {
             buyCard.buyCard(board, 3, new Blue(), 1, shelves, quantity, strongBox);
         } catch (InvalidActionException e) {
-            System.out.println(e);
-            e.printStackTrace();
+
             fail();
         }
 
@@ -431,18 +409,13 @@ class BuyCardTest {
     @Test
     public void testBuyCardNotEnoughResources() {
 
-        HashMap<Resource, Integer> map = board.getGameBoard().getDevelopmentDeck().readTop(new Blue(), 1).getRequirements();
+
 
         ArrayList<Integer> shelves = new ArrayList<>();
         ArrayList<Integer> quantity = new ArrayList<>();
         ArrayList<ResQuantity> strongBox = new ArrayList<>();
 
-        DevelopmentCard card = board.getGameBoard().getDevelopmentDeck().readTop(new Blue(), 1);
-        int coins = board.getStrongBox().getQuantity(coin);
-        int shields = board.getStrongBox().getQuantity(shield);
-        int stones = board.getStrongBox().getQuantity(stone);
-        int servants = board.getStrongBox().getQuantity(servant);
-        int deckSize = board.getGameBoard().getDevelopmentDeck().getNumber(new Blue(), 1);
+
 
 
         BuyCard buyCard = new BuyCard();
@@ -462,12 +435,7 @@ class BuyCardTest {
         ArrayList<Integer> quantity = new ArrayList<>();
         ArrayList<ResQuantity> strongBox = new ArrayList<>();
 
-        DevelopmentCard card = board.getGameBoard().getDevelopmentDeck().readTop(new Blue(), 1);
-        int coins = board.getStrongBox().getQuantity(coin);
-        int shields = board.getStrongBox().getQuantity(shield);
-        int stones = board.getStrongBox().getQuantity(stone);
-        int servants = board.getStrongBox().getQuantity(servant);
-        int deckSize = board.getGameBoard().getDevelopmentDeck().getNumber(new Blue(), 1);
+
 
         if (map.containsKey(coin)) {
             shelves.add(1);
@@ -560,16 +528,14 @@ class BuyCardTest {
         try {
             buyCard.buyCard(board, 1, new Green(), 3, shelves, quantity, strongBox);
         } catch (InvalidActionException e) {
-            System.out.println(e);
-            e.printStackTrace();
+
             fail();
         }
 
 
         try {
             if (map.containsKey(coin)) {
-                Exception exception;
-                exception = assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getResource(1));
+                 assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getResource(1));
             }
 
             if (map.containsKey(stone)) {
