@@ -45,7 +45,7 @@ public class BuyCard extends Turn{
         catch (IllegalSlotException e){throw new InvalidActionException(e.getMessage());}
         try {
             slot1.insertCard(card);
-            board.checkSeventhDevCard();
+            board.checkDevCard(card.getCardColor());
         }
         catch (IllegalSlotException e){throw new InvalidActionException(e.getMessage());}
         try {

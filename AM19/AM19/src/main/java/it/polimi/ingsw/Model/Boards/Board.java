@@ -131,7 +131,7 @@ public class Board {
     /**
      * checks if the current player currently has seven development cards. If so the End Game is triggered
      */
-    public void checkSeventhDevCard(){
+    public void checkDevCard(CardColor cardColor){
 
         int cardNumber = 0;
 
@@ -142,6 +142,10 @@ public class Board {
         if(cardNumber >= 7){
             gameBoard.setEndGameStarted(true);
         }
+        if(gameBoard.getPlayers().size() == 1 && !gameBoard.getDevelopmentDeck().isColorAvailable(cardColor)){
+            gameBoard.setEndGameStarted(true);
+        }
+
     }
 
     /**
