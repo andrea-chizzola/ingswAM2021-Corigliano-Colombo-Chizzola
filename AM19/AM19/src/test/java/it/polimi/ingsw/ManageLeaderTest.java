@@ -11,15 +11,15 @@ import it.polimi.ingsw.Model.Cards.Colors.Green;
 import it.polimi.ingsw.Model.Cards.Colors.Purple;
 import it.polimi.ingsw.Model.Cards.Colors.Yellow;
 import it.polimi.ingsw.Model.Resources.*;
-import it.polimi.ingsw.Model.Turn.BuyCard;
+
 import it.polimi.ingsw.Model.Turn.ManageLeader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import javax.accessibility.AccessibleAction;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -85,17 +85,12 @@ class ManageLeaderTest {
 
         //creation of a DevelopmentCard
         Requirements requirements3 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect3 = new Production(new LinkedList<>(), new LinkedList<>());
         dev3 = new DevelopmentCard(0, effect2, requirements3, new Purple(), 2);
 
         //creation of a DevelopmentCard
-        Requirements requirements4 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect4 = new Production(new LinkedList<>(), new LinkedList<>());
         dev4 = new DevelopmentCard(0, effect2, requirements3, new Blue(), 1);
 
         //creation of a DevelopmentCard
-        Requirements requirements5 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect5 = new Production(new LinkedList<>(), new LinkedList<>());
         dev5 = new DevelopmentCard(0, effect2, requirements3, new Yellow(), 2);
 
         //Initialization of board slots of firstPlayer
@@ -182,9 +177,8 @@ class ManageLeaderTest {
 
         }
         else{
-            Exception exception;
-            exception = assertThrows(InvalidActionException.class, () -> manageLeader.activateCard(board,1));
-            assertTrue(!board.getLeaderCard(1).getStatus());
+            assertThrows(InvalidActionException.class, () -> manageLeader.activateCard(board,1));
+            assertFalse(board.getLeaderCard(1).getStatus());
         }
 
         try {

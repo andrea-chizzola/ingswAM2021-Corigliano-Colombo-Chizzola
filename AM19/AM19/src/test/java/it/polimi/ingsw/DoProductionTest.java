@@ -1,5 +1,4 @@
 package it.polimi.ingsw;
-import it.polimi.ingsw.*;
 
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
@@ -10,13 +9,12 @@ import it.polimi.ingsw.Model.Boards.Warehouse;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.Resources.*;
 import it.polimi.ingsw.Model.Turn.DoProduction;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Map;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -91,7 +89,7 @@ class DoProductionTest {
 
 
     @Test
-    public void DoProductionTest(){
+    public void testDoProduction(){
         ArrayList<Integer> shelves = new ArrayList<>();
         shelves.add(1);
         shelves.add(3);
@@ -118,10 +116,10 @@ class DoProductionTest {
 
         }catch (IllegalShelfException e){fail();}
 
-        Exception exception;
-        exception = assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getQuantity(1));
-        exception = assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getQuantity(3));
-        exception = assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getQuantity(6));
+
+        assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getQuantity(1));
+        assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getQuantity(3));
+        assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getQuantity(6));
 
         assertEquals(board.getStrongBox().getQuantity(new Coin()), 7);
         assertEquals(board.getStrongBox().getQuantity(new Shield()), 6);

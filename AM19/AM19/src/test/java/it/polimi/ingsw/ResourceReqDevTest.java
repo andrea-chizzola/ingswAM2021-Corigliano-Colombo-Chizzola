@@ -194,8 +194,7 @@ class ResourceReqDevTest {
         strongBox.add(new ResQuantity(new Stone(), 0));
         strongBox.add(new ResQuantity(new Servant(), 1));
 
-        Exception exception;
-        exception = assertThrows(InvalidActionException.class, () -> card.checkReq(board, shelves, quantity, strongBox));
+        assertThrows(InvalidActionException.class, () -> card.checkReq(board, shelves, quantity, strongBox));
 
     }
 

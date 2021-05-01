@@ -141,8 +141,7 @@ class ResourceReqLeaderTest {
         card = new LeaderCard(3, production, req);
 
 
-        Exception exception;
-        exception = assertThrows(InvalidActionException.class, () -> card.checkReq(board, shelves, quantity, strongBox));
+        assertThrows(InvalidActionException.class, () -> card.checkReq(board, shelves, quantity, strongBox));
     }
 
     @Test
