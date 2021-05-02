@@ -124,7 +124,6 @@ public class CardParser{
      * @param production an XML element containing all the requirements and the resulting products of a production
      * @return a Production with the given characteristics
      */
-
     private Production buildProduction(Element production) {
 
         LinkedList<ResQuantity> materials = createResourceList((Element) production.getElementsByTagName("materials").item(0));
@@ -137,7 +136,6 @@ public class CardParser{
      * @param req an XML element which contains the name of a resource
      * @return an instance of the given resource
      */
-
     private Resource getRes(Element req) {
         String type = req.getAttribute("resource").toUpperCase();
         return resources.get(type).get();
@@ -171,8 +169,6 @@ public class CardParser{
      * @param req a XML element that contains an amount
      * @return an int of the value of amount
      */
-
-    //per implementare effetti e requisiti strani usa if uno dopo l'altro che si attivano sse "hasAttribute".
     private int getAmount(Element req) {
         return parseInt(req.getAttribute("amount"));
     }
@@ -191,7 +187,6 @@ public class CardParser{
      * @param card a XML element that contains the level of a card
      * @return an int that represents the level of the given card
      */
-
     private int getLevel(Element card) {
         return parseInt(card.getAttribute("level"));
     }

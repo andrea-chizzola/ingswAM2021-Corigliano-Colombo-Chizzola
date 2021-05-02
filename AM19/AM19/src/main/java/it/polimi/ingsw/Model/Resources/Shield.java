@@ -46,10 +46,18 @@ public class Shield extends Resource {
         return new MarbleBlue();
     }
 
+    /**
+     * @return the name of the resource
+     */
+    @Override
+    public String toString(){
+        return "Shield";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Shield)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Shield shield = (Shield) o;
         return color == shield.color;
     }

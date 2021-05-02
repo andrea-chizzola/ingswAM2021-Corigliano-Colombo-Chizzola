@@ -28,7 +28,7 @@ public class ConfigurationParser{
     /**
      * this attribute represents the path of a generic XML file in the project
      */
-    private static final String path = "src\\main\\resources\\XML\\";
+    private static final String path = "src/main/resources/XML/";
     /**
      * this attribute represents the element faitTrack in the XML file
      */
@@ -90,7 +90,7 @@ public class ConfigurationParser{
      * @param file is the name of the XML that contains the configuration files
      * @return the configuration file that contains the FaithTrack characteristics
      */
-    public static String getTrackPath(String file){
+    private static String getTrackPath(String file){
         return getPath(file, faithTrack);
     }
 
@@ -99,7 +99,7 @@ public class ConfigurationParser{
      * @param file is the name of the XML that contains the configuration files
      * @return the configuration file that contains the DevelopmentCards characteristics
      */
-    public static String getDevCardsPath(String file){
+    private static String getDevCardsPath(String file){
         return getPath(file, developmentCards);
     }
 
@@ -108,7 +108,7 @@ public class ConfigurationParser{
      * @param file is the name of the XML that contains the configuration files
      * @return the configuration file that contains the LeaderCards characteristics
      */
-    public static String getLeaderCardsPath(String file){
+    private static String getLeaderCardsPath(String file){
         return getPath(file, leaderCards);
     }
 
@@ -117,7 +117,7 @@ public class ConfigurationParser{
      * @param file is the name of the XML that contains the configuration files
      * @return the configuration file that contains the ActionTokens characteristics
      */
-    public static String getActionTokensPath(String file){
+    private static String getActionTokensPath(String file){
         return getPath(file, actionTokens);
     }
 
@@ -126,7 +126,7 @@ public class ConfigurationParser{
      * @param file is the name of the XML that contains the configuration files
      * @return the configuration file that contains the MarketBoard characteristics
      */
-    public static String getMarketBoardPath(String file){
+    private static String getMarketBoardPath(String file){
         return getPath(file, marketBoard);
     }
 

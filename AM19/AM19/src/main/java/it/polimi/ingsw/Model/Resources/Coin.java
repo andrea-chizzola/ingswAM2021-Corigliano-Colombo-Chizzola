@@ -46,10 +46,18 @@ public class Coin extends Resource {
         return new MarbleYellow();
     }
 
+    /**
+     * @return the name of the resource
+     */
+    @Override
+    public String toString(){
+        return "Coin";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Coin)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Coin coin = (Coin) o;
         return color == coin.color;
     }

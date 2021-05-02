@@ -30,7 +30,7 @@ public class ManageLeader extends Turn{
         catch (IndexOutOfBoundsException e){throw new InvalidActionException(e.getMessage());}
 
         //if status == true no actions have to be done
-        if(card.getStatus() == false){
+        if(!card.getStatus()){
            try {
                card.checkReq(board);
            }

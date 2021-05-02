@@ -59,7 +59,6 @@ public class Modifications{
         discount.put(resource, this.getDiscount(resource) + amount);
     }
 
-
     /**
      * This method returns a LinkedList of Marble which contains all the marbles that can be used instead of the white one.
      * If there are not marbles that can be used instead of the white one the LinkedList is empty.

@@ -46,10 +46,18 @@ public class Stone extends Resource {
         return new MarbleGray();
     }
 
+    /**
+     * @return the name of the resource
+     */
+    @Override
+    public String toString(){
+        return "Stone";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Stone)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Stone stone = (Stone) o;
         return color == stone.color;
     }

@@ -7,7 +7,7 @@ public abstract class Message implements Serializable {
     /**
      * Represents all the possible message types
      */
-    public enum MessageType {CONNECTION, RECONNECTION, REPLY, GAME_STATUS, UPDATE_GAME, LEADER_UPDATE, RESOURCE_SLOT, BOX_UPDATE, MARKET_SELECTION,
+    public enum MessageType {CONNECTION, RECONNECTION, REPLY, GAME_STATUS, UPDATE_GAME, LEADER_UPDATE, RESOURCE_SLOT, UPDATE_BOARD, MARKET_SELECTION,
                              MARBLE_SELECTION, ACTION, LEADER_ACTION, CARD, RESOURCE_SELECTION, CARD_UPDATE, PRODUCTION, PING, PONG, DISCONNECTION}
 
     /**

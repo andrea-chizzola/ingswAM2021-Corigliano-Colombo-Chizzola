@@ -38,7 +38,6 @@ public class MarbleWhite implements Marble {
      * @return LinkedList of Marble which contains all the marbles that can be used instead of the white one
      */
     public LinkedList<Marble> whiteTransformations(Board board){
-
         return board.getModifications().getWhiteTransformations();
     }
 

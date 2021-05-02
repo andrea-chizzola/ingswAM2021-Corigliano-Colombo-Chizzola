@@ -38,7 +38,6 @@ public class MarbleBlue implements Marble {
         board.addFaithToOthers(1);
     }
 
-
     @Override
     public LinkedList<Marble> whiteTransformations(Board board) {
         LinkedList<Marble> list = new LinkedList<>();

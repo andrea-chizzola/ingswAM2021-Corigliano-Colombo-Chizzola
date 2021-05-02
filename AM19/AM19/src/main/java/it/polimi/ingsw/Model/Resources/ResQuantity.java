@@ -240,12 +240,19 @@ public class ResQuantity {
         resourceStatus.put(this.resource, i);
     }
 
+    /**
+     * @return a String that represent the object
+     */
+    @Override
+    public String toString(){
+        return "res:" + resource.toString() + "quantity:" + quantity;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ResQuantity)) return false;
-        ResQuantity res= (ResQuantity) o;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResQuantity res = (ResQuantity) o;
         return (this.quantity != res.quantity || this.resource.equals(res.resource));
     }
 }

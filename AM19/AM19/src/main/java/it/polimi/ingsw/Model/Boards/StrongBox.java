@@ -18,7 +18,7 @@ public class StrongBox {
      */
     public StrongBox(){
         
-        resources = new HashMap<Resource, Integer>();
+        resources = new HashMap<>();
 
     }
 
@@ -26,8 +26,7 @@ public class StrongBox {
      * @return returns a map containing the resources currently in the strongbox with their quantity
      */
     public HashMap<Resource, Integer> getResources() {
-        HashMap<Resource,Integer> map = new HashMap<>();
-        map.putAll(resources);
+        HashMap<Resource, Integer> map = new HashMap<>(resources);
         return map;
     }
 
@@ -62,9 +61,7 @@ public class StrongBox {
      */
     public int getQuantity(Resource resource){
 
-        if(resources.containsKey(resource)) {
-            return resources.get(resource);
-        }else return 0;
+        return resources.getOrDefault(resource, 0);
     }
 
     /**
@@ -72,7 +69,10 @@ public class StrongBox {
      */
     public int calculateTotalResources(){
 
-        return resources.values().stream().mapToInt(Integer::intValue).sum();
+        return resources.values()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .sum();
 
     }
 

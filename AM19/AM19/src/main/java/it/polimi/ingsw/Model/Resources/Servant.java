@@ -45,13 +45,18 @@ public class Servant extends Resource {
         board.getStrongBox().addResource(this, quantity);
     }
 
-
-
+    /**
+     * @return the name of the resource
+     */
+    @Override
+    public String toString(){
+        return "Servant";
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Servant)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Servant servant = (Servant) o;
         return color == servant.color;
     }

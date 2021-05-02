@@ -34,11 +34,9 @@ public class ResourceReqLeader implements Requirements{
      */
     @Override
     public boolean checkReq(Board board) throws InvalidActionException {
-
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        ArrayList<ResQuantity> resQuantities = new ArrayList<>();
-        checkReq(board, arrayList, arrayList, resQuantities);
-
+        Map<Resource,Integer> resourceStatus = board.getResourceStatus();
+        for (ResQuantity resQuantity : requirements)
+            resQuantity.checkLeader(resourceStatus);
         return true;
     }
 
@@ -52,15 +50,7 @@ public class ResourceReqLeader implements Requirements{
      * @throws InvalidActionException if the requirements of the card are not satisfied by the player's board
      */
     public boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException{
-
-        Map<Resource,Integer> resourceStatus = board.getResourceStatus();
-        try {
-            for (ResQuantity resQuantity : requirements)
-                resQuantity.checkLeader(resourceStatus);
-        }
-        catch (InvalidActionException e){throw e;}
-
-        return true;
+        return checkReq(board);
     }
 
     /**

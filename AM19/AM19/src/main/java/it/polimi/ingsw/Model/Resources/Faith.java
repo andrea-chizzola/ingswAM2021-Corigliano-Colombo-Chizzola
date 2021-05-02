@@ -45,10 +45,18 @@ public class Faith extends Resource {
         return new MarbleRed();
     }
 
+    /**
+     * @return the name of the resource
+     */
+    @Override
+    public String toString(){
+        return "Faith";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Faith)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Faith faith = (Faith) o;
         return color == faith.color;
     }
