@@ -7,7 +7,7 @@ public abstract class Message implements Serializable {
     /**
      * Represents all the possible message types
      */
-    public enum MessageType {CONNECTION, REPLY, GAME_STATUS, UPDATE_GAME, LEADER_UPDATE, RESOURCE_SLOT, BOX_UPDATE, MARKET_SELECTION,
+    public enum MessageType {CONNECTION, RECONNECTION, REPLY, GAME_STATUS, UPDATE_GAME, LEADER_UPDATE, RESOURCE_SLOT, BOX_UPDATE, MARKET_SELECTION,
                              MARBLE_SELECTION, ACTION, LEADER_ACTION, CARD, RESOURCE_SELECTION, CARD_UPDATE, PRODUCTION, PING, PONG, DISCONNECTION}
 
     /**
@@ -39,6 +39,28 @@ public abstract class Message implements Serializable {
      * Represents the status of the message: ERROR if it's an error message, OK otherwise
      */
     private Status status;
+
+    /**
+     * creates a new message
+     * @param body represents the body of the message
+     * @param messageType represents the body of the message
+     */
+    public Message(String body, MessageType messageType) {
+        this.body = body;
+        this.messageType = messageType;
+    }
+
+    /**
+     * creates a new error message
+     * @param body represents the body of the message
+     * @param messageType represents the body of the message
+     * @param errorType represents the type of the message
+     */
+    public Message(String body, MessageType messageType, ErrorType errorType) {
+        this.body = body;
+        this.messageType = messageType;
+        this.errorType = errorType;
+    }
 
     /**
      * @return returns the body of the message
