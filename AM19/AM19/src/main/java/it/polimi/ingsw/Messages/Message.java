@@ -11,16 +11,6 @@ public abstract class Message implements Serializable {
                              MARBLE_SELECTION, ACTION, LEADER_ACTION, CARD, RESOURCE_SELECTION, CARD_UPDATE, PRODUCTION, PING, PONG, DISCONNECTION}
 
     /**
-     * Represents all the possible message errors
-     */
-    public enum ErrorType {CONNECTION_ERROR, NICKNAME_TAKEN, LOBBY_ERROR, LEADER_ERROR, RESOURCE_ERROR, TURN_ERROR, PRODUCTION_ERROR}
-
-    /**
-     * Represents the status of a message
-     */
-    public enum Status {ERROR, OK}
-
-    /**
      * Contains the body of the message
      */
     private String body;
@@ -31,35 +21,15 @@ public abstract class Message implements Serializable {
     private MessageType messageType;
 
     /**
-     * Represents the type of error related to the message
-     */
-    private ErrorType errorType;
-
-    /**
-     * Represents the status of the message: ERROR if it's an error message, OK otherwise
-     */
-    private Status status;
-
-    /**
      * creates a new message
      * @param body represents the body of the message
      * @param messageType represents the body of the message
      */
     public Message(String body, MessageType messageType) {
-        this.body = body;
-        this.messageType = messageType;
-    }
 
-    /**
-     * creates a new error message
-     * @param body represents the body of the message
-     * @param messageType represents the body of the message
-     * @param errorType represents the type of the message
-     */
-    public Message(String body, MessageType messageType, ErrorType errorType) {
         this.body = body;
         this.messageType = messageType;
-        this.errorType = errorType;
+
     }
 
     /**
@@ -77,20 +47,6 @@ public abstract class Message implements Serializable {
     }
 
     /**
-     * @return returns the error type of the message
-     */
-    public ErrorType getErrorType() {
-        return errorType;
-    }
-
-    /**
-     * @return returns the status of the message
-     */
-    public Status getStatus() {
-        return status;
-    }
-
-    /**
      * @return returns a string containing the message details
      */
     @Override
@@ -98,8 +54,6 @@ public abstract class Message implements Serializable {
         return "Message{" +
                 "body='" + body + '\'' +
                 ", messageType=" + messageType +
-                ", errorType=" + errorType +
-                ", status=" + status +
                 '}';
     }
 }
