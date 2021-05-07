@@ -5,7 +5,7 @@ public class MessageConnection extends Message{
     /**
      * represents the nickname chosen by the player
      */
-    private String nickName;
+    private String nickname;
 
     /**
      * Indicates if the player wants to create a new game or join an existing one
@@ -27,7 +27,7 @@ public class MessageConnection extends Message{
 
         super("Connection request", MessageType.CONNECTION);
 
-        this.nickName = nickName;
+        this.nickname = nickName;
         this.gameHost = gameHost;
         this.playersNumber = playersNumber;
 
@@ -36,8 +36,8 @@ public class MessageConnection extends Message{
     /**
      * @return returns the nickname chosen by the player
      */
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
     /**
@@ -60,7 +60,7 @@ public class MessageConnection extends Message{
     @Override
     public String toString() {
         return "MessageConnection{" +
-                "nickName='" + nickName + '\'' +
+                "nickname='" + nickname + '\'' +
                 ", gameHost=" + gameHost +
                 ", playersNumber=" + playersNumber +
                 "\n" +

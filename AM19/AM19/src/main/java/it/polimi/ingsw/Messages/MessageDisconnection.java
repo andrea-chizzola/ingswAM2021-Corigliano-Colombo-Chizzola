@@ -3,14 +3,34 @@ package it.polimi.ingsw.Messages;
 public class MessageDisconnection extends Message{
 
     /**
-     * creates a new message requesting to be disconnected from the game
-     * @param nickName represents the nickname of the player who wants to leave the match
+     * represents the nickname of the player who wants to be disconnected
      */
-    public MessageDisconnection(String nickName){ super(nickName, Message.MessageType.DISCONNECTION); }
+    private String nickname;
+
+    /**
+     * creates a new message requesting to be disconnected from the game
+     * @param nickname represents the nickname of the player who wants to leave the match
+     */
+    public MessageDisconnection(String nickname){
+
+        super("Disconnection request", Message.MessageType.DISCONNECTION);
+        this.nickname = nickname;
+
+    }
+
+    /**
+     * @return returns the nickname of the player asking to be disconnected
+     */
+    public String getNickName() {
+        return nickname;
+    }
 
     @Override
     public String toString() {
-        return "MessageDisconnection:" + "\n" +
-                super.toString();
+        return "MessageDisconnection{" +
+                "nickName='" + nickname + '\'' +
+                "\n" +
+                super.toString() +
+                '}';
     }
 }
