@@ -32,6 +32,11 @@
           <version>1.4.20</version>
           <scope>compile</scope>
       </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.12.3</version>
+    </dependency>
       <dependency>
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>
