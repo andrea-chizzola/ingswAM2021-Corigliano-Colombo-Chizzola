@@ -29,6 +29,23 @@ public class NetworkBuffer {
         extracted = new LinkedList<>();
     }
 
+
+    public boolean getPing() {
+        if(extracted.size() > 0 && extracted.get(0).equals(ping)){
+            extracted.remove(0);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean getPong() {
+        if(extracted.size() > 0 && extracted.get(0).equals(pong)){
+            extracted.remove(0);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * this method is used to add a String to the buffer
      * @param s is the string to be added
