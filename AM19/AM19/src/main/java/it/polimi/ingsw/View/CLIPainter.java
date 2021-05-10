@@ -186,8 +186,6 @@ public class CLIPainter{
                         " ", res.getResource().toColor(), baseFont);
                 c++;
             }
-
-
         }
 
         //drawing of non-customizable products
@@ -210,7 +208,6 @@ public class CLIPainter{
         for(int i=0; i<length-1; i++){
             target[i+V_OFFSET+1][mid+H_OFFSET] = baseFont.getColor() + "║";
         }
-
         paintRectangle(target, V_OFFSET+1, H_OFFSET, width, length, baseFont);
     }
 
@@ -248,7 +245,6 @@ public class CLIPainter{
             target[V_OFFSET][H_OFFSET+i] = font.getColor() + "=";
             target[V_OFFSET+length-1][H_OFFSET+i] = font.getColor() + "=";
         }
-
         for(int i=1; i < length-1; i++){
             target[V_OFFSET+i][H_OFFSET] = font.getColor() + "║";
             target[V_OFFSET+i][H_OFFSET+width-1] = font.getColor() + "║";
@@ -371,7 +367,6 @@ public class CLIPainter{
      */
     private static void paintResourceBox
             (String[][] target, int V_OFFSET, int H_OFFSET, List<ResQuantity> status, String title){
-
 
         int width, length;
         width = (SPHERE_WIDTH + 1) * 2 + 7;

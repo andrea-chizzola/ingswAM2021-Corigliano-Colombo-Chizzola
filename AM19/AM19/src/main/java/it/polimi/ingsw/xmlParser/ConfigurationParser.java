@@ -72,10 +72,6 @@ public class ConfigurationParser{
         return document.getDocumentElement();
     }
 
-    /*protected static Element getID(String file, String id) throws IOException, SAXException, ParserConfigurationException {
-        return openFile(file).getElementById(id);
-    }*/
-
     /**
      * this method returns the ID of an XML element
      * @param el is the target element
@@ -84,13 +80,6 @@ public class ConfigurationParser{
     protected static String getIDvalue(Element el){
         return el.getAttribute("id");
     }
-
-    /*
-    private static Document openFile(String file)  throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        return dBuilder.parse(new File(file));
-    }*/
 
     /**
      * This method extract the path of a configuration file from another XML file
