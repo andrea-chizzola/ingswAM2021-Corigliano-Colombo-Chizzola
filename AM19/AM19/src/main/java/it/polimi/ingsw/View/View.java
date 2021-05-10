@@ -14,7 +14,11 @@ import java.util.Optional;
  */
 public interface View {
 
+    /**
+     * this method is used to initialize the state of the view
+     */
     void initialize();
+
     /**
      * this method is used to show a message
      * @param answer represents the type of message
