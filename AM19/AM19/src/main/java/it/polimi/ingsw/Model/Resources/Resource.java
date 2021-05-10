@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Resources;
 
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
+import it.polimi.ingsw.View.CLIColors;
 
 /**
  * This abstract class represents the resources and it provides useful methods for managing them
@@ -26,6 +27,16 @@ public abstract class Resource {
      * @return the Marble associated to the resource
      */
     public abstract Marble getMarbleAssociated();
+
+    /**
+     * @return a symbol associated to the resource
+     */
+    public abstract String getSymbol();
+
+    /**
+     * @return the color associated to the resource
+     */
+    public abstract CLIColors toColor();
 
 }
 

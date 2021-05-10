@@ -19,6 +19,6 @@ public class ConfigurationParserTest {
 
     @Test
     public void getNumLeader(){
-        assertEquals(2, ConfigurationParser.getNumLeader(file));
+        assertEquals(4, ConfigurationParser.getNumLeader(file));
     }
 }

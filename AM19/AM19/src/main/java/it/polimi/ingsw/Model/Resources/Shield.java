@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.MarketBoard.MarbleBlue;
 import it.polimi.ingsw.Model.MarketBoard.MarbleYellow;
+import it.polimi.ingsw.View.CLIColors;
 
 import java.util.Objects;
 
@@ -52,6 +53,19 @@ public class Shield extends Resource {
     @Override
     public String toString(){
         return "Shield";
+    }
+
+    /**
+     * @return a symbol associated to the resource
+     */
+    @Override
+    public String getSymbol(){
+        return "\u001B[34m" + "◆";
+    }
+
+    @Override
+    public CLIColors toColor() {
+        return CLIColors.B_BLUE;
     }
 
     @Override

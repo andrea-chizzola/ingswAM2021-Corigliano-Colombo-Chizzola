@@ -4,6 +4,7 @@ import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Boards.Modifications;
 import it.polimi.ingsw.Model.Resources.*;
+import it.polimi.ingsw.View.CLIColors;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +40,14 @@ public class MarbleWhite implements Marble {
      */
     public LinkedList<Marble> whiteTransformations(Board board){
         return board.getModifications().getWhiteTransformations();
+    }
+
+    /**
+     * @return the string associated with the color of the marble
+     */
+    @Override
+    public CLIColors toColor() {
+        return CLIColors.B_WHITE;
     }
 
     @Override

@@ -26,10 +26,11 @@ public class DevelopmentCard extends Card{
      * @param requirements indicates the necessary requirements to buy the card
      * @param color indicates the color associated to the development card
      * @param level indicates the level associated to the development card
+     * @param id indicates the ID of the card
      */
-    public DevelopmentCard(int victoryPoint, SpecialEffect specialEffect, Requirements requirements, CardColor color, int level) {
+    public DevelopmentCard(int victoryPoint, SpecialEffect specialEffect, Requirements requirements, CardColor color, int level, String id) {
 
-        super(victoryPoint, specialEffect, requirements);
+        super(victoryPoint, specialEffect, requirements, id);
         this.color = color;
         this.level = level;
 
@@ -62,6 +63,13 @@ public class DevelopmentCard extends Card{
     @Override
     public boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException {
         return super.checkReq(board, shelves, quantity, strongbox);
+    }
+
+    @Override
+    public String toString(){
+        return  "Development card: \n" +
+                "L=" + level + " " + color + " " +
+                super.toString();
     }
 
     @Override

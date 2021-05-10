@@ -9,19 +9,20 @@ import java.util.Objects;
 /**
  * this class represents the Discard action of Lorenzo il Magnifico.
  */
-public class Discard implements Action {
+public class Discard extends Action {
 
     /**
      * represents the color of the cards that have to be discarded
      */
-    CardColor cardColor;
+    private CardColor cardColor;
 
     /**
      * indicates how many cards have to be discarded
      */
-    int quantity;
+    private int quantity;
 
-    public Discard(CardColor cardColor, int quantity) {
+    public Discard(CardColor cardColor, int quantity, String id) {
+        super(id);
         this.cardColor = cardColor;
         this.quantity = quantity;
     }
@@ -44,17 +45,11 @@ public class Discard implements Action {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Discard discard = (Discard) o;
-        return quantity == discard.quantity &&
-                Objects.equals(cardColor, discard.cardColor);
+    public String toString(){
+        return "Action Token: " + "\n" +
+                "Discard: " + "\n" +
+                quantity + " " + cardColor.toString();
     }
 
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(cardColor, quantity);
-    }
 }

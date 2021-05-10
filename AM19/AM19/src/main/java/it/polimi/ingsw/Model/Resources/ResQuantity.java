@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * This class associates a quantity to a resource
+ * This class associates a quantity to a resource. The instances of ResQuantity are immutable.
  */
 
 public class ResQuantity {
@@ -245,7 +245,7 @@ public class ResQuantity {
      */
     @Override
     public String toString(){
-        return "res:" + resource.toString() + "quantity:" + quantity;
+        return resource.toString() + ": " + quantity;
     }
 
     @Override

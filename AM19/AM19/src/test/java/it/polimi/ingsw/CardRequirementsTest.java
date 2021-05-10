@@ -45,9 +45,9 @@ class CardRequirementsTest {
         Requirements req1 = new CardRequirements(requirements1);
         LinkedList<ResQuantity> materials1 = new LinkedList<>();
         LinkedList<ResQuantity> products1 = new LinkedList<>();
-        Production production1 = new Production(materials1,products1);
+        Production production1 = new Production(materials1,products1, 0, 0);
 
-        card1 = new LeaderCard(3, production1, req1);
+        card1 = new LeaderCard(3, production1, req1, "0");
 
         //Requirements coin:1, servant:2, shield:3
         LinkedList<CardQuantity> requirements2 = new LinkedList<>();
@@ -58,19 +58,19 @@ class CardRequirementsTest {
         Requirements req2 = new CardRequirements(requirements2);
         LinkedList<ResQuantity> materials2 = new LinkedList<>();
         LinkedList<ResQuantity> products2 = new LinkedList<>();
-        Production production2 = new Production(materials2,products2);
+        Production production2 = new Production(materials2,products2, 0, 0);
 
-        card2 = new LeaderCard(3, production2, req2);
-
-
+        card2 = new LeaderCard(3, production2, req2, "1");
 
 
-        DevelopmentCard card3 = new DevelopmentCard(3,production1,req1,new Green(), 1);
-        DevelopmentCard card4 = new DevelopmentCard(2,production1,req1,new Blue(), 2);
-        DevelopmentCard card5 = new DevelopmentCard(2,production1,req1,new Purple(), 3);
-        DevelopmentCard card6 = new DevelopmentCard(2,production1,req1,new Green(), 1);
-        DevelopmentCard card7 = new DevelopmentCard(2,production1,req1,new Green(), 2);
-        DevelopmentCard card8 = new DevelopmentCard(2,production1,req1,new Green(), 3);
+
+
+        DevelopmentCard card3 = new DevelopmentCard(3,production1,req1,new Green(), 1, "0");
+        DevelopmentCard card4 = new DevelopmentCard(2,production1,req1,new Blue(), 2, "1");
+        DevelopmentCard card5 = new DevelopmentCard(2,production1,req1,new Purple(), 3, "2");
+        DevelopmentCard card6 = new DevelopmentCard(2,production1,req1,new Green(), 1, "3");
+        DevelopmentCard card7 = new DevelopmentCard(2,production1,req1,new Green(), 2, "4");
+        DevelopmentCard card8 = new DevelopmentCard(2,production1,req1,new Green(), 3, "5");
 
         try {
             board.getSlot(1).insertCard(card3);

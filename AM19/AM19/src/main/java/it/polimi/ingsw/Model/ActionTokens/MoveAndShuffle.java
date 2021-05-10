@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * public class representing the action related to the action token which moves Lorenzo ahead of one position and shuffles the action token deck
  */
-public class MoveAndShuffle implements Action{
+public class MoveAndShuffle extends Action{
 
     /**
      * this attribute represents the amount of faith points Lorenzo gains
@@ -18,7 +18,8 @@ public class MoveAndShuffle implements Action{
      * creates a new move black and shuffle token
      * @param amount indicates how many positions the black cross has to be moved
      */
-    public MoveAndShuffle(int amount){
+    public MoveAndShuffle(int amount, String id){
+        super(id);
         this.amount=amount;
     }
 
@@ -33,6 +34,13 @@ public class MoveAndShuffle implements Action{
         singlePlayer.getActionTokenDeck().mergeAndShuffle();
 
     }
+
+    @Override
+    public String toString(){
+        return "Action Token: " + "\n" +
+                "Move&Shuffle - " + amount;
+    }
+
 
     @Override
     public boolean equals(Object o) {

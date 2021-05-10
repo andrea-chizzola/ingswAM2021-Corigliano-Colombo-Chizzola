@@ -28,7 +28,7 @@ public abstract class SpecialEffect {
         LinkedList<ResQuantity> materials = new LinkedList<>();
         //construction of an empty list of products
         LinkedList<ResQuantity> products = new LinkedList<>();
-        return new Production(materials, products);
+        return new Production(materials, products, 0 , 0);
     }
 
     /**

@@ -43,6 +43,12 @@ public class WhiteMarble extends SpecialEffect{
     }
 
     @Override
+    public String toString(){
+        return  "+ new White Marble: \n" +
+                resource.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

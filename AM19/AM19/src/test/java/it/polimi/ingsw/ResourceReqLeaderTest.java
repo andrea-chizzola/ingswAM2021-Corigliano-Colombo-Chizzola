@@ -67,9 +67,9 @@ class ResourceReqLeaderTest {
 
         LinkedList<ResQuantity> materials = new LinkedList<>();
         LinkedList<ResQuantity> products = new LinkedList<>();
-        Production production = new Production(materials,products);
+        Production production = new Production(materials,products, 0, 0);
 
-       card = new LeaderCard(3, production, req);
+       card = new LeaderCard(3, production, req, "1");
     }
 
     @Test
@@ -106,9 +106,9 @@ class ResourceReqLeaderTest {
 
         LinkedList<ResQuantity> materials = new LinkedList<>();
         LinkedList<ResQuantity> products = new LinkedList<>();
-        Production production = new Production(materials,products);
+        Production production = new Production(materials,products, 0, 0);
 
-        card = new LeaderCard(3, production, req);
+        card = new LeaderCard(3, production, req, "2");
 
         try {
             card.checkReq(board, shelves, quantity, strongBox);
@@ -136,9 +136,9 @@ class ResourceReqLeaderTest {
 
         LinkedList<ResQuantity> materials = new LinkedList<>();
         LinkedList<ResQuantity> products = new LinkedList<>();
-        Production production = new Production(materials,products);
+        Production production = new Production(materials,products, 0, 0);
 
-        card = new LeaderCard(3, production, req);
+        card = new LeaderCard(3, production, req, "3");
 
 
         assertThrows(InvalidActionException.class, () -> card.checkReq(board, shelves, quantity, strongBox));
@@ -160,9 +160,9 @@ class ResourceReqLeaderTest {
 
         LinkedList<ResQuantity> materials = new LinkedList<>();
         LinkedList<ResQuantity> products = new LinkedList<>();
-        Production production = new Production(materials,products);
+        Production production = new Production(materials,products,0,0);
 
-        card = new LeaderCard(3, production, req);
+        card = new LeaderCard(3, production, req, "3");
 
         try {
             card.checkReq(board, shelves, quantity, strongBox);

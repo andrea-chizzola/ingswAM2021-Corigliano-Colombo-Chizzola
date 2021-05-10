@@ -76,6 +76,16 @@ public class ResourceReqLeader implements Requirements{
         return list;
     }
 
+    @Override
+    public String toString(){
+        StringBuilder req = new StringBuilder();
+        for(int i=0; i<requirements.size(); i++){
+            req.append(requirements.get(i).toString())
+                    .append("\n");
+        }
+        return  "+ Resource Requirement: \n" +
+                req;
+    }
 
     @Override
     public boolean equals(Object o) {

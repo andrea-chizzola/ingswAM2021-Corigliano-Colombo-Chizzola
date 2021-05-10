@@ -35,7 +35,7 @@ public class CardParserTest {
         LinkedList<ResQuantity> products = new LinkedList<>();
         products.add(new ResQuantity(new Faith(), 1));
 
-        SpecialEffect effect = new Production(materials, products);
+        SpecialEffect effect = new Production(materials, products,1,2);
 
         //construction of card requirements
         LinkedList<ResQuantity> req = new LinkedList<>();
@@ -43,7 +43,7 @@ public class CardParserTest {
         Requirements requirements = new ResourceReqDev(req);
 
         //test of the content of the two cards
-        assertEquals(card, new DevelopmentCard(1,effect, requirements ,new Green(), 1 ));
+        assertEquals(card, new DevelopmentCard(1,effect, requirements ,new Green(), 1 , "1"));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class CardParserTest {
         Requirements requirements = new CardRequirements(req);
 
         //test of the content of the two cards
-        assertEquals(card, new LeaderCard(2,effect, requirements));
+        assertEquals(card, new LeaderCard(2,effect, requirements, "1"));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class CardParserTest {
         Requirements requirements = new ResourceReqLeader(req);
 
         //test of the content of the two cards
-        assertEquals(card, new LeaderCard(3,effect, requirements));
+        assertEquals(card, new LeaderCard(3,effect, requirements, "2"));
     }
 
     @Test
@@ -96,7 +96,7 @@ public class CardParserTest {
         Requirements requirements = new CardRequirements(req);
 
         //test of the content of the two cards
-        assertEquals(card, new LeaderCard(5,effect, requirements));
+        assertEquals(card, new LeaderCard(5,effect, requirements, "3"));
     }
 
     @Test
@@ -111,7 +111,7 @@ public class CardParserTest {
         LinkedList<ResQuantity> products = new LinkedList<>();
         products.add(new ResQuantity(new Faith(), 1));
 
-        SpecialEffect effect = new Production(materials, products);
+        SpecialEffect effect = new Production(materials, products, 0 , 0);
 
         //construction of card requirements
         LinkedList<CardQuantity> req = new LinkedList<>();
@@ -119,6 +119,6 @@ public class CardParserTest {
         Requirements requirements = new CardRequirements(req);
 
         //test of the content of the two cards
-        assertEquals(card, new LeaderCard(4,effect, requirements));
+        assertEquals(card, new LeaderCard(4,effect, requirements, "4"));
     }
 }

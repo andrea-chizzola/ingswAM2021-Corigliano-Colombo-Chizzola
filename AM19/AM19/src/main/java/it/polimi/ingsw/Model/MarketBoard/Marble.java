@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.MarketBoard;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.View.CLIColors;
 
 import java.util.LinkedList;
 
@@ -31,5 +32,10 @@ public interface Marble {
      * @return LinkedList of Marble which contains all the marbles that can be used instead of the white one
      */
     LinkedList<Marble> whiteTransformations(Board board);
+
+    /**
+     * @return the string associated with the color of the marble
+     */
+    CLIColors toColor();
 
 }

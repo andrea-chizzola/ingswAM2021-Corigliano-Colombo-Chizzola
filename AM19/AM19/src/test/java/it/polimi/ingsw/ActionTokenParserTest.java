@@ -28,10 +28,10 @@ public class ActionTokenParserTest {
 
         //creation of Action Tokens using constructors
         LinkedList<Action> copy = new LinkedList<>();
-        copy.add(new Discard(new Purple(),2));
-        copy.add(new Discard(new Yellow(),2));
-        copy.add(new MoveBlack(2));
-        copy.add(new MoveAndShuffle(1));
+        copy.add(new Discard(new Purple(),2, "1"));
+        copy.add(new Discard(new Yellow(),2, "2"));
+        copy.add(new MoveBlack(2, "3"));
+        copy.add(new MoveAndShuffle(1, "4"));
 
         assertEquals(actionTokens.get(0), copy.get(0));
         assertEquals(actionTokens.get(1), copy.get(1));

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<faithTrack>
+<faithTrack length = "25">
     <track>
         <position value = "0" points = "0"/>
         <position value = "1" points = "0"/>
