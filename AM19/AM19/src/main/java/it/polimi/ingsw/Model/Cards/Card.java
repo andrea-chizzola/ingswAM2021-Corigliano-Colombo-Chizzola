@@ -20,21 +20,25 @@ public abstract class Card{
      * victoryPoint represents the victory points associated to a card
      * specialEffect represents a production in case of a development card or a special effect in case of a leader card
      * requirements represents the necessary requirements to buy a card
+     * id represents the ID of the card
      */
     private int victoryPoint;
     private SpecialEffect specialEffect;
     private Requirements requirements;
+    private String id;
 
     /**
      * @param victoryPoint indicates the victory points associated to the card
      * @param specialEffect indicates the production of a development card or the special effect of a leader card
      * @param requirements indicates the necessary requirements to buy the card
+     * @param id is the ID of the card
      */
-    public Card(int victoryPoint, SpecialEffect specialEffect, Requirements requirements) {
+    public Card(int victoryPoint, SpecialEffect specialEffect, Requirements requirements, String id) {
 
         this.victoryPoint = victoryPoint;
         this.specialEffect = specialEffect;
         this.requirements = requirements;
+        this.id = id;
 
     }
 
@@ -51,6 +55,13 @@ public abstract class Card{
      */
     public SpecialEffect getSpecialEffect(){
         return specialEffect;
+    }
+
+    /**
+     * @return the ID of the card
+     */
+    public String getId() {
+        return id;
     }
 
     /**
@@ -101,6 +112,13 @@ public abstract class Card{
     }
 
     @Override
+    public String toString(){
+        return "P=" + victoryPoint + "\n" +
+                requirements.toString() + "\n" +
+                specialEffect.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -114,8 +132,5 @@ public abstract class Card{
     public int hashCode() {
         return Objects.hash(victoryPoint, specialEffect, requirements);
     }
-
-    //checkReq() method missing
-
 
 }

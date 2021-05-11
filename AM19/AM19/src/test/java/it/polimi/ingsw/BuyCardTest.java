@@ -65,18 +65,18 @@ class BuyCardTest {
 
         //creation of a DevelopmentCard
         Requirements requirements1 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect1 = new Production(new LinkedList<>(), new LinkedList<>());
-        dev1 = new DevelopmentCard(0, effect1, requirements1, new Green(), 1);
+        SpecialEffect effect1 = new Production(new LinkedList<>(), new LinkedList<>(), 0, 0);
+        dev1 = new DevelopmentCard(0, effect1, requirements1, new Green(), 1, "1");
 
         //creation of a DevelopmentCard
         Requirements requirements2 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect2 = new Production(new LinkedList<>(), new LinkedList<>());
-        dev2 = new DevelopmentCard(0, effect2, requirements2, new Green(), 1);
+        SpecialEffect effect2 = new Production(new LinkedList<>(), new LinkedList<>(), 0 , 0);
+        dev2 = new DevelopmentCard(0, effect2, requirements2, new Green(), 1, "2");
 
         //creation of a DevelopmentCard
         Requirements requirements3 = new ResourceReqDev(new LinkedList<>());
         
-        dev3 = new DevelopmentCard(0, effect2, requirements3, new Purple(), 2);
+        dev3 = new DevelopmentCard(0, effect2, requirements3, new Purple(), 2, "3");
 
         //Initialization of board slots of firstPlayer
         try {

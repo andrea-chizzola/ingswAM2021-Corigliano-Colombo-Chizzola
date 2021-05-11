@@ -14,7 +14,7 @@ import java.util.LinkedList;
 class SlotTest {
 
     private Slot slot;
-    private final SpecialEffect specialEffect = new Production(new LinkedList<>(),new LinkedList<>());
+    private final SpecialEffect specialEffect = new Production(new LinkedList<>(),new LinkedList<>(), 0, 0);
     private final Requirements requirements = new ResourceReqDev(new LinkedList<>());
     private final CardColor color = new Yellow();
 
@@ -25,7 +25,7 @@ class SlotTest {
 
     @Test
     public void testAddLevel1WithEmptySlot(){
-        DevelopmentCard dev = new DevelopmentCard(3,specialEffect,requirements, color, 1);
+        DevelopmentCard dev = new DevelopmentCard(3,specialEffect,requirements, color, 1, "1");
         try {
             slot.insertCard(dev);
         }
@@ -35,7 +35,7 @@ class SlotTest {
 
     @Test
     public void testAddLevel1WithLevel1In(){
-        DevelopmentCard dev = new DevelopmentCard(3,specialEffect,requirements, color, 1);
+        DevelopmentCard dev = new DevelopmentCard(3,specialEffect,requirements, color, 1, "2");
         try {
             slot.insertCard(dev);
         }
@@ -48,8 +48,8 @@ class SlotTest {
 
     @Test
     public void testAddLevel2WithLevel1In(){
-        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1);
-        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2);
+        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1, "3");
+        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2, "4");
         try {
             slot.insertCard(dev1);
 
@@ -63,7 +63,7 @@ class SlotTest {
     @Test
     public void testAddLevel2WithEmpty(){
 
-        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2);
+        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2, "5");
         Exception exception1;
         exception1 = assertThrows(IllegalSlotException.class, () -> slot.insertCard(dev2));
         assertEquals("This card can't be inserted!", exception1.getMessage());
@@ -73,9 +73,9 @@ class SlotTest {
 
     @Test
     public void testAddLevel3WithLevel2In(){
-        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1);
-        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2);
-        DevelopmentCard dev3 = new DevelopmentCard(3,specialEffect,requirements, color, 3);
+        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1,"6");
+        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2, "7");
+        DevelopmentCard dev3 = new DevelopmentCard(3,specialEffect,requirements, color, 3, "8");
         try {
             slot.insertCard(dev1);
 
@@ -89,9 +89,9 @@ class SlotTest {
 
     @Test
     public void testAddLevel3WithLevel1In(){
-        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1);
+        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1, "9");
 
-        DevelopmentCard dev3 = new DevelopmentCard(3,specialEffect,requirements, color, 3);
+        DevelopmentCard dev3 = new DevelopmentCard(3,specialEffect,requirements, color, 3, "10");
         try {
             slot.insertCard(dev1);
         }
@@ -105,7 +105,7 @@ class SlotTest {
 
     @Test
     public void testAddIllegalLevel(){
-        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, -1);
+        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, -1, "11");
 
         Exception exception1;
         exception1 = assertThrows(IllegalSlotException.class, () -> slot.insertCard(dev1));
@@ -126,9 +126,9 @@ class SlotTest {
 
     @Test
     public void testGetTop(){
-        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1);
-        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2);
-        DevelopmentCard dev3 = new DevelopmentCard(3,specialEffect,requirements, color, 3);
+        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1, "12");
+        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2, "13");
+        DevelopmentCard dev3 = new DevelopmentCard(3,specialEffect,requirements, color, 3, "14");
         try {
             slot.insertCard(dev1);
 
@@ -146,9 +146,9 @@ class SlotTest {
 
     @Test
     public void testCountPoints(){
-        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1);
-        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2);
-        DevelopmentCard dev3 = new DevelopmentCard(1,specialEffect,requirements, color, 3);
+        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1, "15");
+        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2, "16");
+        DevelopmentCard dev3 = new DevelopmentCard(1,specialEffect,requirements, color, 3, "17");
         try {
             slot.insertCard(dev1);
 
@@ -181,8 +181,8 @@ class SlotTest {
 
     @Test
     public void testGet0(){
-        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1);
-        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2);
+        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1, "18");
+        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2, "19");
 
         try {
             slot.insertCard(dev1);
@@ -197,9 +197,9 @@ class SlotTest {
 
     @Test
     public void testGetCard2(){
-        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1);
-        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2);
-        DevelopmentCard dev3 = new DevelopmentCard(3,specialEffect,requirements, color, 3);
+        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1, "20");
+        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2, "21");
+        DevelopmentCard dev3 = new DevelopmentCard(3,specialEffect,requirements, color, 3, "22");
         try {
             slot.insertCard(dev1);
 
@@ -217,9 +217,9 @@ class SlotTest {
     @Test
     public void getCardsTest(){
 
-        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1);
-        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2);
-        DevelopmentCard dev3 = new DevelopmentCard(3,specialEffect,requirements, color, 3);
+        DevelopmentCard dev1 = new DevelopmentCard(3,specialEffect,requirements, color, 1, "23");
+        DevelopmentCard dev2 = new DevelopmentCard(2,specialEffect,requirements,color,2, "24");
+        DevelopmentCard dev3 = new DevelopmentCard(3,specialEffect,requirements, color, 3, "25");
         ArrayList<DevelopmentCard> copy = new ArrayList<>();
         copy.add(dev1);
         copy.add(dev2);

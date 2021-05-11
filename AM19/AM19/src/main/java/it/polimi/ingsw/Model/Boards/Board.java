@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Cards.Colors.CardColor;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Boards.FaithTrack.FaithTrack;
+import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
@@ -61,11 +62,17 @@ public class Board {
      */
     private Modifications modification;
 
+    /**
+     * this attribute represents the personal production of the player
+     */
+    private Production personalProduction;
+
     public Board(String nickname, GameBoard gameBoard, String file) {
 
         this.nickname = nickname;
         this.gameBoard = gameBoard;
         faithTrack = ConfigurationParser.parseFaithTrack(file);
+        personalProduction = ConfigurationParser.parsePersonalProduction(file);
 
         int nSlots = ConfigurationParser.getNumSlots(file);
         slots = new ArrayList<>();
@@ -99,6 +106,13 @@ public class Board {
      */
     public String getNickname() {
         return nickname;
+    }
+
+    /**
+     * @return the personal production of the player
+     */
+    public Production getPersonalProduction() {
+        return personalProduction;
     }
 
     /**
@@ -315,4 +329,5 @@ public class Board {
 
        return true;
     }
+
 }

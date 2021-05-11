@@ -39,18 +39,18 @@ class BoardTest {
 
         //creation of a DevelopmentCard
         Requirements requirements1 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect1 = new Production(new LinkedList<>(), new LinkedList<>());
-        dev1 = new DevelopmentCard(0, effect1, requirements1, new Green(), 1);
+        SpecialEffect effect1 = new Production(new LinkedList<>(), new LinkedList<>(), 0, 0);
+        dev1 = new DevelopmentCard(0, effect1, requirements1, new Green(), 1, "1");
 
         //creation of a DevelopmentCard
         Requirements requirements2 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect2 = new Production(new LinkedList<>(), new LinkedList<>());
-        dev2 = new DevelopmentCard(0, effect2, requirements2, new Green(), 1);
+        SpecialEffect effect2 = new Production(new LinkedList<>(), new LinkedList<>(), 0, 0);
+        dev2 = new DevelopmentCard(0, effect2, requirements2, new Green(), 1, "2");
 
         //creation of a DevelopmentCard
         Requirements requirements3 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect3 = new Production(new LinkedList<>(), new LinkedList<>());
-        dev3 = new DevelopmentCard(0, effect2, requirements3, new Purple(), 2);
+        SpecialEffect effect3 = new Production(new LinkedList<>(), new LinkedList<>(), 0, 0);
+        dev3 = new DevelopmentCard(0, effect2, requirements3, new Purple(), 2, "3");
 
         //Initialization of board slots of firstPlayer
         try{
@@ -349,7 +349,7 @@ class BoardTest {
 
         assertEquals(1, board.getFaithTrack().getPosition());
         assertEquals(board.getLeaderCard(1), leader2);
-        assertThrows(IndexOutOfBoundsException.class, () -> board.getLeaderCard(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> board.getLeaderCard(4));
 
     }
 
@@ -361,8 +361,10 @@ class BoardTest {
         //The first player discard all their cards
         board.removeLeaderCard(1);
         board.removeLeaderCard(1);
+        board.removeLeaderCard(1);
+        board.removeLeaderCard(1);
 
-        assertEquals(2, board.getFaithTrack().getPosition());
+        assertEquals(4, board.getFaithTrack().getPosition());
         assertThrows(IndexOutOfBoundsException.class, () -> board.getLeaderCard(1));
         assertThrows(IndexOutOfBoundsException.class, () -> board.getLeaderCard(2));
 
@@ -376,6 +378,9 @@ class BoardTest {
         //The first player discard more cards than the ones he owns
         board.removeLeaderCard(1);
         board.removeLeaderCard(1);
+        board.removeLeaderCard(1);
+        board.removeLeaderCard(1);
+
         assertThrows(IndexOutOfBoundsException.class, () -> board.removeLeaderCard(2));
 
     }

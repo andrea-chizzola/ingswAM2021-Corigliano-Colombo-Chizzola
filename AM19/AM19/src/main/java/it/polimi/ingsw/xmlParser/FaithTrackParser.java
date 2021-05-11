@@ -24,7 +24,7 @@ public class FaithTrackParser{
      * @param file is the XML file
      * @return a LinkedList containing all the VaticanReportSections
      */
-    private static ArrayList<VaticanReportSection> buildReportSection(String file){
+    protected static ArrayList<VaticanReportSection> buildReportSection(String file){
         ArrayList<VaticanReportSection> result = new ArrayList<>();
         try {
             NodeList sections = ConfigurationParser.getRoot(file)
@@ -51,7 +51,7 @@ public class FaithTrackParser{
      * @param file is the XML file containing the characteristics of the given track
      * @return the requested track
      */
-    private static ArrayList<Integer> buildTrack(String file){
+    protected static ArrayList<Integer> buildTrack(String file){
         ArrayList<Integer> result = new ArrayList<>();
         try {
             NodeList positions = ConfigurationParser.getRoot(file)
@@ -77,5 +77,22 @@ public class FaithTrackParser{
      */
     public static FaithTrack buildFaithTrack(String file){
         return new FaithTrack(buildTrack(file), buildReportSection(file));
+    }
+
+    /**
+     * This method return the length of the FaithTrack
+     * @param file is the name of the configuration file
+     * @return the length of the FaithTrack
+     */
+    protected static int getTrackLength(String file){
+        int length = 0;
+        try {
+            return parseInt(ConfigurationParser
+                    .getRoot(file)
+                    .getAttribute("length"));
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        return length;
     }
 }

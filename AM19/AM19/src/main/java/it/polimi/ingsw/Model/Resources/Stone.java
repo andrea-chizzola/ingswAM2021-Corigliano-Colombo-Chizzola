@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.MarketBoard.MarbleGray;
 import it.polimi.ingsw.Model.MarketBoard.MarbleYellow;
+import it.polimi.ingsw.View.CLIColors;
 
 import java.util.Objects;
 
@@ -46,10 +47,32 @@ public class Stone extends Resource {
         return new MarbleGray();
     }
 
+    /**
+     * @return the name of the resource
+     */
+    @Override
+    public String toString(){
+        return "Stone";
+    }
+
+    /**
+     * @return a symbol associated to the resource
+     */
+    @Override
+    public String getSymbol(){
+        return "\u001B[36m" + "■";
+    }
+
+    @Override
+    public CLIColors toColor() {
+        return CLIColors.B_CYAN;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Stone)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Stone stone = (Stone) o;
         return color == stone.color;
     }

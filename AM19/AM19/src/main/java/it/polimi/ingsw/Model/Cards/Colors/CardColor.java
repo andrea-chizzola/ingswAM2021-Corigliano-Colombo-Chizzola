@@ -40,4 +40,9 @@ public abstract class CardColor {
     public int hashCode() {
         return Objects.hash(color);
     }
+
+    @Override
+    public String toString(){
+        return "C=" + color;
+    }
 }

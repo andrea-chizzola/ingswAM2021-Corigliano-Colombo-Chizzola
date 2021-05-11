@@ -102,12 +102,14 @@ public class CardParser{
 
         int victoryPoint = getPoints(card);
         int level = getLevel(card);
+        String id = ConfigurationParser.getIDvalue(card);
         CardColor color = getCardColor(card);
 
         ResourceReqDev requirement = buildRequirementDev((Element) card.getElementsByTagName("requirements").item(0));
         Production effect = buildProduction((Element) card.getElementsByTagName("production").item(0));
 
-        return new DevelopmentCard(victoryPoint, effect, requirement, color, level);
+
+        return new DevelopmentCard(victoryPoint, effect, requirement, color, level, id);
     }
 
     /**
@@ -124,12 +126,12 @@ public class CardParser{
      * @param production an XML element containing all the requirements and the resulting products of a production
      * @return a Production with the given characteristics
      */
-
-    private Production buildProduction(Element production) {
-
+    public Production buildProduction(Element production) {
+        int customMaterials = parseInt(production.getAttribute("customMaterials"));
+        int customProducts = parseInt(production.getAttribute("customProducts"));
         LinkedList<ResQuantity> materials = createResourceList((Element) production.getElementsByTagName("materials").item(0));
         LinkedList<ResQuantity> products = createResourceList((Element) production.getElementsByTagName("products").item(0));
-        return new Production(materials, products);
+        return new Production(materials, products, customMaterials, customProducts);
     }
 
     /**
@@ -137,7 +139,6 @@ public class CardParser{
      * @param req an XML element which contains the name of a resource
      * @return an instance of the given resource
      */
-
     private Resource getRes(Element req) {
         String type = req.getAttribute("resource").toUpperCase();
         return resources.get(type).get();
@@ -171,8 +172,6 @@ public class CardParser{
      * @param req a XML element that contains an amount
      * @return an int of the value of amount
      */
-
-    //per implementare effetti e requisiti strani usa if uno dopo l'altro che si attivano sse "hasAttribute".
     private int getAmount(Element req) {
         return parseInt(req.getAttribute("amount"));
     }
@@ -191,7 +190,6 @@ public class CardParser{
      * @param card a XML element that contains the level of a card
      * @return an int that represents the level of the given card
      */
-
     private int getLevel(Element card) {
         return parseInt(card.getAttribute("level"));
     }
@@ -241,8 +239,9 @@ public class CardParser{
 
         Requirements requirement = buildRequirementLeader((Element) card.getElementsByTagName("requirements").item(0));
         SpecialEffect effect = buildEffectLeader((Element) card.getElementsByTagName("effect").item(0));
+        String id = ConfigurationParser.getIDvalue(card);
 
-        return new LeaderCard(victoryPoint, effect, requirement);
+        return new LeaderCard(victoryPoint, effect, requirement, id);
     }
 
     /**
@@ -349,4 +348,28 @@ public class CardParser{
     private ResourceReqLeader buildRequirementRes(Element resources){
         return new ResourceReqLeader(createResourceList(resources));
     }
+
+    /*
+    protected LeaderCard getLeaderById(String file, String id){
+        LeaderCard target = null;
+        try{
+            Element card = ConfigurationParser.getID(file, id);
+            target = buildLeaderCard(card);
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        return target;
+    }
+
+
+    protected DevelopmentCard getDevelopmentById(String file, String id){
+        DevelopmentCard target = null;
+        try{
+            Element card = ConfigurationParser.getID(file, id);
+            target = buildDevelopmentCard(card);
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        return target;
+    }*/
 }

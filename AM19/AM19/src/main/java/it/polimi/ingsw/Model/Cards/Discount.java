@@ -42,6 +42,12 @@ public class Discount extends SpecialEffect {
     }
 
     @Override
+    public String toString(){
+        return  "+ Resource Discount: \n" +
+                resQuantity.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

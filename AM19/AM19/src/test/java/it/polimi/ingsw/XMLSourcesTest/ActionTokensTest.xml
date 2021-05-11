@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <tokens>
     <discard>
-        <cards color="PURPLE" amount = "2"/>
-        <cards color="YELLOW" amount = "2"/>
+        <cards id = "1" color="PURPLE" amount = "2"/>
+        <cards id = "2" color="YELLOW" amount = "2"/>
     </discard>
 
     <move>
-        <value amount = "2"/>
+        <value id = "3" amount = "2"/>
     </move>
 
     <moveAndShuffle>
-        <value amount = "1"/>
+        <value id = "4" amount = "1"/>
     </moveAndShuffle>
 </tokens>

@@ -94,6 +94,17 @@ public class ResourceReqDev implements Requirements {
     }
 
     @Override
+    public String toString(){
+        StringBuilder req = new StringBuilder();
+        for(int i=0; i<requirements.size(); i++){
+            req.append(requirements.get(i).toString())
+                    .append("\n");
+        }
+        return  "+ Resource Requirement: \n" +
+                req;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -6,14 +6,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import it.polimi.ingsw.Model.ActionTokens.Action;
+import it.polimi.ingsw.Model.Boards.FaithTrack.VaticanReportSection;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Boards.FaithTrack.FaithTrack;
+import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import org.w3c.dom.*;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.xml.sax.SAXException;
 
@@ -28,7 +31,7 @@ public class ConfigurationParser{
     /**
      * this attribute represents the path of a generic XML file in the project
      */
-    private static final String path = "src\\main\\resources\\XML\\";
+    private static final String path = "src/main/resources/XML/";
     /**
      * this attribute represents the element faitTrack in the XML file
      */
@@ -60,11 +63,22 @@ public class ConfigurationParser{
      * @throws SAXException if any parse errors occur
      * @throws IOException if any IO errors occur
      */
+
     protected static Element getRoot(String file) throws ParserConfigurationException, SAXException, IOException {
+
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document document = dBuilder.parse(new File(file));
         return document.getDocumentElement();
+    }
+
+    /**
+     * this method returns the ID of an XML element
+     * @param el is the target element
+     * @return is the value of the id
+     */
+    protected static String getIDvalue(Element el){
+        return el.getAttribute("id");
     }
 
     /**
@@ -90,7 +104,7 @@ public class ConfigurationParser{
      * @param file is the name of the XML that contains the configuration files
      * @return the configuration file that contains the FaithTrack characteristics
      */
-    public static String getTrackPath(String file){
+    private static String getTrackPath(String file){
         return getPath(file, faithTrack);
     }
 
@@ -99,7 +113,7 @@ public class ConfigurationParser{
      * @param file is the name of the XML that contains the configuration files
      * @return the configuration file that contains the DevelopmentCards characteristics
      */
-    public static String getDevCardsPath(String file){
+    private static String getDevCardsPath(String file){
         return getPath(file, developmentCards);
     }
 
@@ -108,7 +122,7 @@ public class ConfigurationParser{
      * @param file is the name of the XML that contains the configuration files
      * @return the configuration file that contains the LeaderCards characteristics
      */
-    public static String getLeaderCardsPath(String file){
+    private static String getLeaderCardsPath(String file){
         return getPath(file, leaderCards);
     }
 
@@ -117,7 +131,7 @@ public class ConfigurationParser{
      * @param file is the name of the XML that contains the configuration files
      * @return the configuration file that contains the ActionTokens characteristics
      */
-    public static String getActionTokensPath(String file){
+    private static String getActionTokensPath(String file){
         return getPath(file, actionTokens);
     }
 
@@ -126,7 +140,7 @@ public class ConfigurationParser{
      * @param file is the name of the XML that contains the configuration files
      * @return the configuration file that contains the MarketBoard characteristics
      */
-    public static String getMarketBoardPath(String file){
+    private static String getMarketBoardPath(String file){
         return getPath(file, marketBoard);
     }
 
@@ -239,6 +253,26 @@ public class ConfigurationParser{
     }
 
     /**
+     * This method return the length of the FaithTrack
+     * @param file is the name of the configuration file
+     * @return the length of the FaithTrack
+     */
+    public static int parseTrackLength(String file){
+        file = getTrackPath(file);
+        return FaithTrackParser.getTrackLength(file);
+    }
+
+    /**
+     * This method builds the path of a given FaithTrack
+     * @param file is the XML file containing the characteristics of the given track
+     * @return the requested track
+     */
+    public static ArrayList<Integer> parseTrack(String file){
+        file = getTrackPath(file);
+        return FaithTrackParser.buildTrack(file);
+    }
+
+    /**
      * this method returns all the Action Tokens contained in a XML file (full path is not required)
      * @param file is the configuration file
      * @return a LinkedList that contains all the tokens
@@ -281,5 +315,71 @@ public class ConfigurationParser{
         file = getMarketBoardPath(file);
         return parser.buildMarketTray(file);
     }
+
+    /**
+     * this method creates a list of VaticanReportSections from a XML file
+     * @param file is the XML file
+     * @return a LinkedList containing all the VaticanReportSections
+     */
+    public static ArrayList<VaticanReportSection> parseReportSection(String file){
+        file = getTrackPath(file);
+        return FaithTrackParser.buildReportSection(file);
+    }
+
+    public static Production parsePersonalProduction(String file){
+        file = path + file;
+        CardParser parser = CardParser.instance();
+        Production p = new Production(new LinkedList<>(), new LinkedList<>(), 0, 0);
+        try {
+            Element production = (Element) getRoot(file).getElementsByTagName("production").item(0);
+            p = parser.buildProduction(production);
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        return p;
+    }
+
+    /**
+     * this method returns a LeaderCard of a given ID
+     * @param file is the source XML file
+     * @param id is the ID of the card
+     * @return is the card with the given ID
+     */
+    public static LeaderCard getLeaderById(String file, String id){
+        List<LeaderCard> card = ConfigurationParser
+                .parseLeaderCard(file).stream()
+                .filter(c -> c.getId().equalsIgnoreCase(id))
+                .collect(Collectors.toList());
+        return card.get(0);
+    }
+
+    /**
+     * this method returns a DevelopmentCard of a given ID
+     * @param file is the source XML file
+     * @param id is the ID of the card
+     * @return is the card with the given ID
+     */
+    public static DevelopmentCard getDevelopmentById(String file, String id){
+        List<DevelopmentCard> card = ConfigurationParser
+                .parseDevelopmentCard(file).stream()
+                .filter(c -> c.getId().equalsIgnoreCase(id))
+                .collect(Collectors.toList());
+        return card.get(0);
+    }
+
+    /**
+     * this method returns a DevelopmentCard of a given ID
+     * @param file is the source XML file
+     * @param id is the ID of the card
+     * @return is the card with the given ID
+     */
+    public static Action getActionTokenById(String file, String id){
+        List<Action> card = ConfigurationParser
+                .parseActionTokens(file).stream()
+                .filter(c -> c.getId().equalsIgnoreCase(id))
+                .collect(Collectors.toList());
+        return card.get(0);
+    }
+
 }
 

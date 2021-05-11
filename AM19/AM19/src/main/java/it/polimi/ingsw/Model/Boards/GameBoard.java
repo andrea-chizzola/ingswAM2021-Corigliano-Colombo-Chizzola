@@ -119,7 +119,7 @@ public class GameBoard {
     /**
      * decides what to do at the end of the turn
      */
-    public void endTurnMove(){        //invece di next player
+    public void endTurnMove(){
 
         customMode.endTurnAction(this);
 

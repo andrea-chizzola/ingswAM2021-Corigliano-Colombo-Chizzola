@@ -41,7 +41,7 @@ public class ProductionTest {
         products1.add(new ResQuantity(new Servant(),3));
         products1.add(new ResQuantity(new Shield(),1));
 
-        production1 = new Production(materials1, products1);
+        production1 = new Production(materials1, products1, 0, 0);
 
         //creation of a production with faith in products
         LinkedList<ResQuantity> materials2 = new LinkedList<>();
@@ -52,7 +52,7 @@ public class ProductionTest {
         products2.add(new ResQuantity(new Faith(),3));
         products2.add(new ResQuantity(new Stone(),1));
 
-        production2 = new Production(materials2, products2);
+        production2 = new Production(materials2, products2, 1, 1);
 
         //creation of a production with faith in materials
         LinkedList<ResQuantity> materials3 = new LinkedList<>();
@@ -63,7 +63,7 @@ public class ProductionTest {
         products3.add(new ResQuantity(new Servant(),3));
         products3.add(new ResQuantity(new Shield(),1));
 
-        production3 = new Production(materials3, products3);
+        production3 = new Production(materials3, products3, 2, 3);
 
         //creation of a production whose requirements contains exactly the same resources of the map
         LinkedList<ResQuantity> materials4 = new LinkedList<>();
@@ -74,7 +74,7 @@ public class ProductionTest {
         products4.add(new ResQuantity(new Servant(),3));
         products4.add(new ResQuantity(new Shield(),1));
 
-        production4 = new Production(materials4, products4);
+        production4 = new Production(materials4, products4,1, 1);
     }
 
     @BeforeEach

@@ -21,10 +21,11 @@ public class LeaderCard extends Card{
      * @param victoryPoint indicates the victory points associated to the card
      * @param specialEffect indicates the production of a development card or the special effect of a leader card
      * @param requirements indicates the necessary requirements to buy the card
+     * @param id indicates the ID of the card
      */
-    public LeaderCard(int victoryPoint, SpecialEffect specialEffect, Requirements requirements){
+    public LeaderCard(int victoryPoint, SpecialEffect specialEffect, Requirements requirements, String id){
 
-        super(victoryPoint, specialEffect, requirements);
+        super(victoryPoint, specialEffect, requirements, id);
         this.status = false;
 
     }
@@ -55,6 +56,14 @@ public class LeaderCard extends Card{
      */
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+
+    @Override
+    public String toString(){
+        return  "Leader card: \n" +
+                "S=" + ((status)? "active" : "inactive") + " " +
+                super.toString();
     }
 
     @Override

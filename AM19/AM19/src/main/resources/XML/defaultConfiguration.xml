@@ -16,6 +16,11 @@
         <slot num = "3" capacity = "3"/>
     </warehouse>
 
-    <leader num = "2"/>
+    <leader num = "4"/>
+
+    <production customMaterials = "2" customProducts = "1">
+        <materials></materials>
+        <products></products>
+    </production>
 
 </configuration>

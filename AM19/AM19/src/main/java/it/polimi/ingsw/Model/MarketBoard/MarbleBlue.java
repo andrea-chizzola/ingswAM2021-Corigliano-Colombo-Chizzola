@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.MarketBoard;
 import it.polimi.ingsw.Exceptions.*;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.Shield;
+import it.polimi.ingsw.View.CLIColors;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,11 +39,18 @@ public class MarbleBlue implements Marble {
         board.addFaithToOthers(1);
     }
 
-
     @Override
     public LinkedList<Marble> whiteTransformations(Board board) {
         LinkedList<Marble> list = new LinkedList<>();
         return list;
+    }
+
+    /**
+     * @return the string associated with the color of the marble
+     */
+    @Override
+    public CLIColors toColor() {
+        return CLIColors.B_BLUE;
     }
 
     @Override

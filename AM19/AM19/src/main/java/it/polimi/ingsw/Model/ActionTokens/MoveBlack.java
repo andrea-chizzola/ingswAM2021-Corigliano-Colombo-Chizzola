@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * public class representing the action related to the action token which moves Lorenzo ahead of two positions
  */
-public class MoveBlack implements  Action{
+public class MoveBlack extends  Action{
 
     /**
      * this attribute represents the amount of faith points Lorenzo gains
@@ -18,7 +18,8 @@ public class MoveBlack implements  Action{
      * creates a new move black token
      * @param amount indicates how many positions the black cross has to be moved
      */
-    public MoveBlack(int amount) {
+    public MoveBlack(int amount, String id) {
+        super(id);
         this.amount = amount;
     }
 
@@ -33,6 +34,13 @@ public class MoveBlack implements  Action{
         singlePlayer.getActionTokenDeck().changeList();
 
     }
+
+    @Override
+    public String toString(){
+        return "Action Token: " + "\n" +
+                "Move - " + amount;
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -75,23 +75,23 @@ class ManageLeaderTest {
 
         //creation of a DevelopmentCard
         Requirements requirements1 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect1 = new Production(new LinkedList<>(), new LinkedList<>());
-        dev1 = new DevelopmentCard(0, effect1, requirements1, new Green(), 1);
+        SpecialEffect effect1 = new Production(new LinkedList<>(), new LinkedList<>(), 0, 0);
+        dev1 = new DevelopmentCard(0, effect1, requirements1, new Green(), 1, "1");
 
         //creation of a DevelopmentCard
         Requirements requirements2 = new ResourceReqDev(new LinkedList<>());
-        SpecialEffect effect2 = new Production(new LinkedList<>(), new LinkedList<>());
-        dev2 = new DevelopmentCard(0, effect2, requirements2, new Yellow(), 1);
+        SpecialEffect effect2 = new Production(new LinkedList<>(), new LinkedList<>(), 0, 0);
+        dev2 = new DevelopmentCard(0, effect2, requirements2, new Yellow(), 1, "2");
 
         //creation of a DevelopmentCard
         Requirements requirements3 = new ResourceReqDev(new LinkedList<>());
-        dev3 = new DevelopmentCard(0, effect2, requirements3, new Purple(), 2);
+        dev3 = new DevelopmentCard(0, effect2, requirements3, new Purple(), 2, "3");
 
         //creation of a DevelopmentCard
-        dev4 = new DevelopmentCard(0, effect2, requirements3, new Blue(), 1);
+        dev4 = new DevelopmentCard(0, effect2, requirements3, new Blue(), 1, "4");
 
         //creation of a DevelopmentCard
-        dev5 = new DevelopmentCard(0, effect2, requirements3, new Yellow(), 2);
+        dev5 = new DevelopmentCard(0, effect2, requirements3, new Yellow(), 2, "5");
 
         //Initialization of board slots of firstPlayer
         try {
@@ -120,7 +120,7 @@ class ManageLeaderTest {
 
         assertEquals(board.getFaithTrack().getPosition(), 1);
         Exception exception;
-        exception = assertThrows(IndexOutOfBoundsException.class, () -> board.getLeaderCard(2));
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> board.getLeaderCard(5));
         //If a leader card is removed the arraylist with the leadercards will decrease its size
         assertEquals("Nonexistent Leader card",exception.getMessage());
 
@@ -219,7 +219,7 @@ class ManageLeaderTest {
 
 
             Exception exception;
-            exception = assertThrows(InvalidActionException.class, () -> manageLeader.activateCard(board,3));
+            exception = assertThrows(InvalidActionException.class, () -> manageLeader.activateCard(board,5));
             assertEquals("Nonexistent Leader card",exception.getMessage());
 
 

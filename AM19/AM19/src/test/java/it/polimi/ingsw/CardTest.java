@@ -41,7 +41,7 @@ public class CardTest {
         LinkedList<ResQuantity> products = new LinkedList<>();
         products.add(new ResQuantity(new Faith(), 1));
 
-        Production effect = new Production(materials, products);
+        Production effect = new Production(materials, products, 1, 2);
 
         assertEquals(card.getSpecialEffect().getProduction(), effect);
 
@@ -53,7 +53,7 @@ public class CardTest {
         LeaderCard card = cards.get(0);
 
         assertEquals(card.getSpecialEffect().getProduction(), new Production(
-                new LinkedList<>(), new LinkedList<>()
+                new LinkedList<>(), new LinkedList<>(), 0, 0
         ));
 
     }

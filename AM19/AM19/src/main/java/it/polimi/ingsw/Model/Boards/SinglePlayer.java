@@ -1,5 +1,4 @@
 package it.polimi.ingsw.Model.Boards;
-;
 import it.polimi.ingsw.Model.Decks.ActionTokenDeck;
 import it.polimi.ingsw.Model.Boards.FaithTrack.FaithTrack;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
@@ -116,8 +115,12 @@ public class SinglePlayer implements CustomMode{
         }
 
         if(cardNumber >= 7 || boards.get(0).getFaithTrack().isEndTrack()){
-            return "Congratulations! You defeated Lorenzo il Magnifico with " + boards.get(0).getTotalPoints() + " total points.";
-        }else return "Game Over! Lorenzo il Magnifico won. Final score: " + boards.get(0).getTotalPoints();
+            return "Congratulations! You defeated Lorenzo il Magnifico with "
+                    + boards.get(0).getTotalPoints()
+                    + " total points.";
+        }
+        else return "Game Over! Lorenzo il Magnifico won. Final score: "
+                + boards.get(0).getTotalPoints();
     }
 
 }

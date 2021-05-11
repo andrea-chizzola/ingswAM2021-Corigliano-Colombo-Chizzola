@@ -69,6 +69,16 @@ public class CardRequirements implements Requirements{
     }
 
     @Override
+    public String toString(){
+        StringBuilder req = new StringBuilder();
+        for(int i=0; i<cards.size(); i++){
+            req.append(cards.get(i).toString()).append("\n");
+        }
+        return  "+ Card Requirement: \n" +
+                req;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

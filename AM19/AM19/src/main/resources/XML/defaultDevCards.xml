@@ -2,12 +2,12 @@
 
 <developmentCards>
     <!-- GREEN cards - level 1 -->
-    <card points="1" color="GREEN" level="1">
+    <card id = "1" points="1" color="GREEN" level="1">
         <requirements>
             <resquantity resource="SHIELDS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
             </materials>
@@ -17,14 +17,14 @@
         </production>
     </card>
 
-    <card points="2" color="GREEN" level="1">
+    <card id = "2" points="2" color="GREEN" level="1">
         <requirements>
             <resquantity resource="SHIELDS" amount="1" />
             <resquantity resource="SERVANTS" amount="1" />
             <resquantity resource="STONES" amount="1" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="1"/>
             </materials>
@@ -34,12 +34,12 @@
         </production>
     </card>
 
-    <card points="3" color="GREEN" level="1">
+    <card id = "3" points="3" color="GREEN" level="1">
         <requirements>
             <resquantity resource="SHIELDS" amount="3" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SERVANTS" amount="2"/>
             </materials>
@@ -51,13 +51,13 @@
         </production>
     </card>
 
-    <card points="4" color="GREEN" level="1">
+    <card id = "4" points="4" color="GREEN" level="1">
         <requirements>
             <resquantity resource="SHIELDS" amount="2" />
             <resquantity resource="COINS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="1"/>
                 <resquantity resource="SERVANTS" amount="1"/>
@@ -70,12 +70,12 @@
     </card>
 
     <!-- GREEN cards - level 2 -->
-    <card points="5" color="GREEN" level="2">
+    <card id = "5" points="5" color="GREEN" level="2">
         <requirements>
             <resquantity resource="SHIELDS" amount="4" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="1"/>
             </materials>
@@ -85,13 +85,13 @@
         </production>
     </card>
 
-    <card points="6" color="GREEN" level="2">
+    <card id = "6" points="6" color="GREEN" level="2">
         <requirements>
             <resquantity resource="SHIELDS" amount="3" />
             <resquantity resource="SERVANTS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="1"/>
                 <resquantity resource="SERVANTS" amount="1"/>
@@ -102,12 +102,12 @@
         </production>
     </card>
 
-    <card points="7" color="GREEN" level="2">
+    <card id = "7" points="7" color="GREEN" level="2">
         <requirements>
             <resquantity resource="SHIELDS" amount="5" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="2"/>
             </materials>
@@ -118,13 +118,13 @@
         </production>
     </card>
 
-    <card points="8" color="GREEN" level="2">
+    <card id = "8" points="8" color="GREEN" level="2">
         <requirements>
             <resquantity resource="SHIELDS" amount="3" />
             <resquantity resource="COINS" amount="3" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
             </materials>
@@ -135,12 +135,12 @@
         </production>
     </card>
     <!-- GREEN cards - level 3 -->
-    <card points="9" color="GREEN" level="3">
+    <card id = "9" points="9" color="GREEN" level="3">
         <requirements>
             <resquantity resource="SHIELDS" amount="6" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="2"/>
             </materials>
@@ -151,13 +151,13 @@
         </production>
     </card>
 
-    <card points="10" color="GREEN" level="3">
+    <card id = "10" points="10" color="GREEN" level="3">
         <requirements>
             <resquantity resource="SHIELDS" amount="5" />
             <resquantity resource="SERVANTS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
                 <resquantity resource="SERVANTS" amount="1"/>
@@ -170,12 +170,12 @@
         </production>
     </card>
 
-    <card points="11" color="GREEN" level="3">
+    <card id = "11" points="11" color="GREEN" level="3">
         <requirements>
             <resquantity resource="SHIELDS" amount="7" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SERVANTS" amount="2"/>
             </materials>
@@ -186,13 +186,13 @@
         </production>
     </card>
 
-    <card points="12" color="GREEN" level="3">
+    <card id = "12" points="12" color="GREEN" level="3">
         <requirements>
             <resquantity resource="SHIELDS" amount="4" />
             <resquantity resource="COINS" amount="4" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="1"/>
             </materials>
@@ -206,12 +206,12 @@
 
 
     <!-- PURPLE cards - level 1 -->
-    <card points="1" color="PURPLE" level="1">
+    <card id = "13" points="1" color="PURPLE" level="1">
         <requirements>
             <resquantity resource="SERVANTS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="1"/>
             </materials>
@@ -221,14 +221,14 @@
         </production>
     </card>
 
-    <card points="2" color="PURPLE" level="1">
+    <card id = "14" points="2" color="PURPLE" level="1">
         <requirements>
             <resquantity resource="SHIELDS" amount="1" />
             <resquantity resource="SERVANTS" amount="1" />
             <resquantity resource="COINS" amount="1" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
             </materials>
@@ -238,12 +238,12 @@
         </production>
     </card>
 
-    <card points="3" color="PURPLE" level="1">
+    <card id = "15" points="3" color="PURPLE" level="1">
         <requirements>
             <resquantity resource="SERVANTS" amount="3" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="2"/>
             </materials>
@@ -255,13 +255,13 @@
         </production>
     </card>
 
-    <card points="4" color="PURPLE" level="1">
+    <card id = "16" points="4" color="PURPLE" level="1">
         <requirements>
             <resquantity resource="SERVANTS" amount="2" />
             <resquantity resource="STONES" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
                 <resquantity resource="SHIELDS" amount="1"/>
@@ -274,12 +274,12 @@
     </card>
 
     <!-- PURPLE cards - level 2 -->
-    <card points="5" color="PURPLE" level="2">
+    <card id = "17" points="5" color="PURPLE" level="2">
         <requirements>
             <resquantity resource="SERVANTS" amount="4" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
             </materials>
@@ -289,13 +289,13 @@
         </production>
     </card>
 
-    <card points="6" color="PURPLE" level="2">
+    <card id = "18" points="6" color="PURPLE" level="2">
         <requirements>
             <resquantity resource="SERVANTS" amount="3" />
             <resquantity resource="COINS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
                 <resquantity resource="SERVANTS" amount="1"/>
@@ -306,12 +306,12 @@
         </production>
     </card>
 
-    <card points="7" color="PURPLE" level="2">
+    <card id = "19" points="7" color="PURPLE" level="2">
         <requirements>
             <resquantity resource="SERVANTS" amount="5" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="2"/>
             </materials>
@@ -322,13 +322,13 @@
         </production>
     </card>
 
-    <card points="8" color="PURPLE" level="2">
+    <card id = "20" points="8" color="PURPLE" level="2">
         <requirements>
             <resquantity resource="SERVANTS" amount="3" />
             <resquantity resource="SHIELDS" amount="3" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="1"/>
             </materials>
@@ -339,12 +339,12 @@
         </production>
     </card>
     <!-- PURPLE cards - level 3 -->
-    <card points="9" color="PURPLE" level="3">
+    <card id = "21" points="9" color="PURPLE" level="3">
         <requirements>
             <resquantity resource="SERVANTS" amount="6" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="2"/>
             </materials>
@@ -355,13 +355,13 @@
         </production>
     </card>
 
-    <card points="10" color="PURPLE" level="3">
+    <card id = "22" points="10" color="PURPLE" level="3">
         <requirements>
             <resquantity resource="SERVANTS" amount="5" />
             <resquantity resource="COINS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="1"/>
                 <resquantity resource="SHIELDS" amount="1"/>
@@ -374,12 +374,12 @@
         </production>
     </card>
 
-    <card points="11" color="PURPLE" level="3">
+    <card id = "23" points="11" color="PURPLE" level="3">
         <requirements>
             <resquantity resource="SERVANTS" amount="7" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="2"/>
             </materials>
@@ -390,13 +390,13 @@
         </production>
     </card>
 
-    <card points="12" color="PURPLE" level="3">
+    <card id = "24" points="12" color="PURPLE" level="3">
         <requirements>
             <resquantity resource="SERVANTS" amount="4" />
             <resquantity resource="SHIELDS" amount="4" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
             </materials>
@@ -410,12 +410,12 @@
 
 
     <!-- BLUE cards - level 1 -->
-    <card points="1" color="BLUE" level="1">
+    <card id = "25" points="1" color="BLUE" level="1">
         <requirements>
             <resquantity resource="COINS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="1"/>
             </materials>
@@ -425,14 +425,14 @@
         </production>
     </card>
 
-    <card points="2" color="BLUE" level="1">
+    <card id = "26" points="2" color="BLUE" level="1">
         <requirements>
             <resquantity resource="COINS" amount="1" />
             <resquantity resource="SERVANTS" amount="1" />
             <resquantity resource="STONES" amount="1" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SERVANTS" amount="1"/>
             </materials>
@@ -442,12 +442,12 @@
         </production>
     </card>
 
-    <card points="3" color="BLUE" level="1">
+    <card id = "27" points="3" color="BLUE" level="1">
         <requirements>
             <resquantity resource="COINS" amount="3" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="2"/>
             </materials>
@@ -459,13 +459,13 @@
         </production>
     </card>
 
-    <card points="4" color="BLUE" level="1">
+    <card id = "28" points="4" color="BLUE" level="1">
         <requirements>
             <resquantity resource="COINS" amount="2" />
             <resquantity resource="SERVANTS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="1"/>
                 <resquantity resource="STONES" amount="1"/>
@@ -478,12 +478,12 @@
     </card>
 
     <!-- BLUE cards - level 2 -->
-    <card points="5" color="BLUE" level="2">
+    <card id = "29" points="5" color="BLUE" level="2">
         <requirements>
             <resquantity resource="COINS" amount="4" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SERVANTS" amount="1"/>
             </materials>
@@ -493,13 +493,13 @@
         </production>
     </card>
 
-    <card points="6" color="BLUE" level="2">
+    <card id = "30" points="6" color="BLUE" level="2">
         <requirements>
             <resquantity resource="COINS" amount="3" />
             <resquantity resource="STONES" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
                 <resquantity resource="STONES" amount="1"/>
@@ -510,12 +510,12 @@
         </production>
     </card>
 
-    <card points="7" color="BLUE" level="2">
+    <card id = "31" points="7" color="BLUE" level="2">
         <requirements>
             <resquantity resource="COINS" amount="5" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SERVANTS" amount="2"/>
             </materials>
@@ -526,13 +526,13 @@
         </production>
     </card>
 
-    <card points="8" color="BLUE" level="2">
+    <card id = "32" points="8" color="BLUE" level="2">
         <requirements>
             <resquantity resource="COINS" amount="3" />
             <resquantity resource="SERVANTS" amount="3" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SERVANTS" amount="1"/>
             </materials>
@@ -543,12 +543,12 @@
         </production>
     </card>
     <!-- BLUE cards - level 3 -->
-    <card points="9" color="BLUE" level="3">
+    <card id = "33" points="9" color="BLUE" level="3">
         <requirements>
             <resquantity resource="COINS" amount="6" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SERVANTS" amount="2"/>
             </materials>
@@ -559,13 +559,13 @@
         </production>
     </card>
 
-    <card points="10" color="BLUE" level="3">
+    <card id = "34" points="10" color="BLUE" level="3">
         <requirements>
             <resquantity resource="COINS" amount="5" />
             <resquantity resource="STONES" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
                 <resquantity resource="SHIELDS" amount="1"/>
@@ -578,12 +578,12 @@
         </production>
     </card>
 
-    <card points="11" color="BLUE" level="3">
+    <card id = "35" points="11" color="BLUE" level="3">
         <requirements>
             <resquantity resource="COINS" amount="7" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="2"/>
             </materials>
@@ -594,13 +594,13 @@
         </production>
     </card>
 
-    <card points="12" color="BLUE" level="3">
+    <card id = "36" points="12" color="BLUE" level="3">
         <requirements>
             <resquantity resource="COINS" amount="4" />
             <resquantity resource="STONES" amount="4" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SERVANTS" amount="1"/>
             </materials>
@@ -614,12 +614,12 @@
 
 
     <!-- YELLOW cards - level 1 -->
-    <card points="1" color="YELLOW" level="1">
+    <card id = "37" points="1" color="YELLOW" level="1">
         <requirements>
             <resquantity resource="STONES" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SERVANTS" amount="1"/>
             </materials>
@@ -629,14 +629,14 @@
         </production>
     </card>
 
-    <card points="2" color="YELLOW" level="1">
+    <card id = "38" points="2" color="YELLOW" level="1">
         <requirements>
             <resquantity resource="SHIELDS" amount="1" />
             <resquantity resource="STONES" amount="1" />
             <resquantity resource="COINS" amount="1" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="1"/>
             </materials>
@@ -646,12 +646,12 @@
         </production>
     </card>
 
-    <card points="3" color="YELLOW" level="1">
+    <card id = "39" points="3" color="YELLOW" level="1">
         <requirements>
             <resquantity resource="STONES" amount="3" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="2"/>
             </materials>
@@ -663,13 +663,13 @@
         </production>
     </card>
 
-    <card points="4" color="YELLOW" level="1">
+    <card id = "40" points="4" color="YELLOW" level="1">
         <requirements>
             <resquantity resource="STONES" amount="2" />
             <resquantity resource="SHIELDS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="COINS" amount="1"/>
                 <resquantity resource="SERVANTS" amount="1"/>
@@ -682,12 +682,12 @@
     </card>
 
     <!-- YELLOW cards - level 2 -->
-    <card points="5" color="YELLOW" level="2">
+    <card id = "41" points="5" color="YELLOW" level="2">
         <requirements>
             <resquantity resource="STONES" amount="4" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="1"/>
             </materials>
@@ -697,13 +697,13 @@
         </production>
     </card>
 
-    <card points="6" color="YELLOW" level="2">
+    <card id = "42" points="6" color="YELLOW" level="2">
         <requirements>
             <resquantity resource="STONES" amount="3" />
             <resquantity resource="SHIELDS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="1"/>
                 <resquantity resource="SHIELDS" amount="1"/>
@@ -714,12 +714,12 @@
         </production>
     </card>
 
-    <card points="7" color="YELLOW" level="2">
+    <card id = "43" points="7" color="YELLOW" level="2">
         <requirements>
             <resquantity resource="STONES" amount="5" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="2"/>
             </materials>
@@ -730,13 +730,13 @@
         </production>
     </card>
 
-    <card points="8" color="YELLOW" level="2">
+    <card id = "44" points="8" color="YELLOW" level="2">
         <requirements>
             <resquantity resource="STONES" amount="3" />
             <resquantity resource="SERVANTS" amount="3" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="1"/>
             </materials>
@@ -747,12 +747,12 @@
         </production>
     </card>
     <!-- GREEN cards - level 3 -->
-    <card points="9" color="YELLOW" level="3">
+    <card id = "45" points="9" color="YELLOW" level="3">
         <requirements>
             <resquantity resource="STONES" amount="6" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="2"/>
             </materials>
@@ -763,13 +763,13 @@
         </production>
     </card>
 
-    <card points="10" color="YELLOW" level="3">
+    <card id = "46" points="10" color="YELLOW" level="3">
         <requirements>
             <resquantity resource="STONES" amount="5" />
             <resquantity resource="SERVANTS" amount="2" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="STONES" amount="1"/>
                 <resquantity resource="SERVANTS" amount="1"/>
@@ -782,12 +782,12 @@
         </production>
     </card>
 
-    <card points="11" color="YELLOW" level="3">
+    <card id = "47" points="11" color="YELLOW" level="3">
         <requirements>
             <resquantity resource="STONES" amount="7" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="2"/>
             </materials>
@@ -798,13 +798,13 @@
         </production>
     </card>
 
-    <card points="12" color="YELLOW" level="3">
+    <card id = "48" points="12" color="YELLOW" level="3">
         <requirements>
             <resquantity resource="STONES" amount="4" />
             <resquantity resource="SERVANTS" amount="4" />
         </requirements>
 
-        <production>
+        <production customMaterials = "0" customProducts = "0">
             <materials>
                 <resquantity resource="SHIELDS" amount="1"/>
             </materials>

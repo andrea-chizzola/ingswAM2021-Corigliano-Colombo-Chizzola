@@ -44,7 +44,7 @@ class DoProductionTest {
         products1.add(new ResQuantity(new Servant(),3));
         products1.add(new ResQuantity(new Shield(),1));
 
-        production1 = new Production(materials1, products1);
+        production1 = new Production(materials1, products1, 0, 0);
 
         productions.add(production1);
 
@@ -57,7 +57,7 @@ class DoProductionTest {
         products2.add(new ResQuantity(new Faith(),3));
         products2.add(new ResQuantity(new Stone(),1));
 
-        production2 = new Production(materials2, products2);
+        production2 = new Production(materials2, products2, 0, 0);
 
         productions.add(production2);
 

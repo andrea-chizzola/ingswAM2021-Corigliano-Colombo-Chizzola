@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <leaderCards>
-    <leader points = "2">
+    <leader id = "1" points = "2">
         <requirements>
             <cardRequirement>
                 <card color="YELLOW" level="1" amount="1"/>
@@ -14,7 +14,7 @@
         </effect>
     </leader>
     <!-- -->
-    <leader points = "3">
+    <leader id = "2" points = "3">
         <requirements>
             <resourceRequirement>
                 <resquantity amount="5" resource="COINS"/>
@@ -27,7 +27,7 @@
         </effect>
     </leader>
     <!-- -->
-    <leader points = "5">
+    <leader id = "3" points = "5">
         <requirements>
             <cardRequirement>
                 <card amount="2" color="YELLOW" level="1"/>
@@ -39,14 +39,14 @@
         </effect>
     </leader>
     <!-- -->
-    <leader points = "4">
+    <leader id = "4" points = "4">
         <requirements>
             <cardRequirement>
                 <card amount="1" color="YELLOW" level="2"/>
             </cardRequirement>
         </requirements>
         <effect>
-            <production>
+            <production customMaterials = "0" customProducts = "0">
                 <materials>
                     <resquantity amount="1" resource="SHIELDS"/>
                 </materials>
