@@ -30,6 +30,9 @@ public class NetworkBuffer {
     }
 
 
+    /**
+     * @return true if the first message in the buffer is a ping element
+     */
     public boolean getPing() {
         if(extracted.size() > 0 && extracted.get(0).equals(ping)){
             extracted.remove(0);
@@ -38,6 +41,9 @@ public class NetworkBuffer {
         return false;
     }
 
+    /**
+     * @return true if the first message in the buffer is a pong element
+     */
     public boolean getPong() {
         if(extracted.size() > 0 && extracted.get(0).equals(pong)){
             extracted.remove(0);
@@ -61,6 +67,7 @@ public class NetworkBuffer {
         extract();
     }
 
+    //aggiungere estrazione di tutte le stringhe
     /**
      * @return the oldest XML message or ping element in the buffer
      * @throws EmptyBufferException if there are no available Strings

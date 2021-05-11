@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -63,6 +64,36 @@ public class CLI implements View {
     private String[][] viewStatus;
 
     /**
+     * this attribute represents the input stream
+     */
+    private InputStream in;
+
+    /**
+     * this attribute represents the output stream
+     */
+    private PrintStream out;
+
+    /**
+     * this attribute is used to synchronize the methods that interact with the input stream
+     */
+    private final Object busyInput;
+
+    /**
+     * this attribute is true if an input is available
+     */
+    private boolean availableInput;
+
+    /**
+     * this method is used to collect the Strings that will be printed
+     */
+    StringBuilder typed;
+
+    /**
+     * this attribute is used to collect the Strings that comes from the input stream
+     */
+    StringBuilder interaction;
+
+    /**
      * this is the constructor of the class
      * @param model is an instance of the reduced model of the view
      */
@@ -72,6 +103,81 @@ public class CLI implements View {
         PLAYERS_Y = (model.getNicknames().size() + 1) * (CLIPainter.getSquareLength() + 1);
         RESOURCES_Y = (model.getnRows()+1)*(CLIPainter.getSphereLength() + 1) + 3;
         initialize();
+
+        in = System.in;
+        out = System.out;
+        availableInput = false;
+        typed = new StringBuilder();
+        interaction = new StringBuilder();
+        busyInput = new Object();
+    }
+
+    /**
+     * this method creates a thread that looks for Strings on the input Stream
+     * @param input represents the input Stream
+     */
+    private void inputReader(InputStream input){
+
+        new Thread(() ->
+        {
+            BufferedReader in = new BufferedReader(new InputStreamReader(input));
+            try {
+                String s = "";
+                while ((s = in.readLine()) != null) {
+                    System.out.println(s);
+                    typed.append(s);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                //qui sarebbe utile terminare il client e chiudere la connessione.
+                //Devi chiudere anche lo stream di input.
+            }
+        }).start();
+    }
+
+    /**
+     * this private helper is used to take an input from the Stream
+     * @param s is the String coming from the Stream
+     */
+    private void addInput(String s){
+        synchronized(busyInput){
+            typed.append(s);
+            availableInput = true;
+            busyInput.notifyAll();
+        }
+    }
+
+    /**
+     * @return the content of the input buffer
+     */
+    private String getInput(){
+        synchronized(busyInput){
+            if(!availableInput){
+                busyInput.notifyAll();
+                try{
+                    busyInput.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            availableInput=false;
+            String s = typed.toString();
+            typed.setLength(0);
+            return s;
+        }
+    }
+
+    /**
+     * this method is used to print the current status of the CLI
+     */
+    public void plot(){
+
+        for (int i = 0; i < viewStatus.length; i++) {
+            System.out.println();
+            for (int j = 0; j < viewStatus[i].length; j++) {
+                out.println(viewStatus[i][j]);
+            }
+        }
     }
 
     /**
@@ -81,6 +187,7 @@ public class CLI implements View {
     public void initialize() {
         CLIPainter.printLogo();
         CLIPainter.fill(viewStatus, 0, 0, HORIZONTAL_SIZE, VERTICAL_SIZE);
+        inputReader(in);
     }
 
     /**
@@ -306,17 +413,5 @@ public class CLI implements View {
                 production.getMaterials(), production.getProducts(),
                 production.getCustomMaterials(), production.getCustomProducts());
 
-    }
-
-    /**
-     * this method is used to print the current status of the CLI
-     */
-    public void plot(){
-        for (int i = 0; i < viewStatus.length; i++) {
-            System.out.println();
-            for (int j = 0; j < viewStatus[i].length; j++) {
-                System.out.print(viewStatus[i][j]);
-            }
-        }
     }
 }
