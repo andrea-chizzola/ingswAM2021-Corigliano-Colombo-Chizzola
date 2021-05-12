@@ -50,7 +50,52 @@ public class MessageUtilities {
         return instance;
     }
 
-    public List<Integer> getShelves(String warehouse) throws MalformedMessageException {
+    public Message.MessageType getType(String message) throws MalformedMessageException{
+        String type = MessageParser.getMessageTag(message,"messageType");
+        Message.MessageType messageType;
+        try {
+             messageType = Message.MessageType.valueOf(type.toUpperCase());
+        }
+        catch (IllegalArgumentException e){
+            throw new MalformedMessageException();
+        }
+        return messageType;
+    }
+
+    public TurnType getTurnType(String message,String tag) throws MalformedMessageException{
+        String type = MessageParser.getMessageTag(message,tag);
+        TurnType turnType;
+        try {
+            turnType = TurnType.valueOf(type.toUpperCase());
+        }
+        catch (IllegalArgumentException e){
+            throw new MalformedMessageException();
+        }
+        return turnType;
+    }
+
+    public Tray getTray(String message,String tag) throws MalformedMessageException{
+        String type = MessageParser.getMessageTag(message,tag);
+        Tray tray;
+        try {
+            tray = Tray.valueOf(type.toUpperCase());
+        }
+        catch (IllegalArgumentException e){
+            throw new MalformedMessageException();
+        }
+        return tray;
+    }
+
+    public String getBody(String message)  throws MalformedMessageException{
+        String body = MessageParser.getMessageTag(message,"body");
+        if(body == null)
+             throw new MalformedMessageException();
+        return body;
+    }
+
+    public List<Integer> getShelves(String message, String tag) throws MalformedMessageException {
+
+        String warehouse = MessageParser.getMessageTag(message,tag);
 
         List<Integer> shelves = new ArrayList<>();
         String[] string = warehouse.split(splitter);
@@ -68,7 +113,9 @@ public class MessageUtilities {
     }
 
 
-    public List<Integer> getQuantity(String warehouse) throws MalformedMessageException{
+    public List<Integer> getQuantity(String message, String tag) throws MalformedMessageException{
+
+        String warehouse = MessageParser.getMessageTag(message,tag);
 
         List<Integer> quantity = new ArrayList<>();
         String[] string = warehouse.split(splitter);
@@ -86,7 +133,9 @@ public class MessageUtilities {
     }
 
 
-    public List<ResQuantity> getResQuantityList(String messageString) throws MalformedMessageException{
+    public List<ResQuantity> getResQuantityList(String message, String tag) throws MalformedMessageException{
+
+        String messageString = MessageParser.getMessageTag(message,tag);
 
         List<ResQuantity> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
@@ -113,7 +162,9 @@ public class MessageUtilities {
         return list;
     }
 
-    public List<Marble> getMarbles(String messageString) throws MalformedMessageException{
+    public List<Marble> getMarbles(String message, String tag) throws MalformedMessageException{
+
+        String messageString = MessageParser.getMessageTag(message,tag);
 
         List<Marble> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
@@ -131,11 +182,25 @@ public class MessageUtilities {
         return list;
     }
 
-    public List<MessageAction.Action> getActions(String messageString) throws MalformedMessageException{
 
-        List<MessageAction.Action> list = new ArrayList<>();
+    public Action getAction(String message, String tag) throws MalformedMessageException{
+        String messageString = MessageParser.getMessageTag(message,tag);
+        Action action;
+        try {
+            action = Action.valueOf(messageString.toUpperCase());
+        }catch (IllegalArgumentException e){
+            throw new MalformedMessageException(e.getMessage());
+        }
+        return action;
+    }
+
+    public List<Action> getActions(String message, String tag) throws MalformedMessageException{
+
+        String messageString = MessageParser.getMessageTag(message,tag);
+
+        List<Action> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
-        MessageAction.Action action;
+        Action action;
 
         if(string.length % 3 != 0 )
             throw new MalformedMessageException();
@@ -143,7 +208,7 @@ public class MessageUtilities {
         for(int i=0; i<string.length/3; i++){
 
             try {
-                action = MessageAction.Action.valueOf(string[(i*3)+1].toUpperCase());
+                action = Action.valueOf(string[(i*3)+1].toUpperCase());
             }catch (IllegalArgumentException e){
                 throw new MalformedMessageException(e.getMessage());
             }
@@ -153,7 +218,9 @@ public class MessageUtilities {
         return list;
     }
 
-    public List<Integer> getShelvesActions(String messageString) throws MalformedMessageException{
+    public List<Integer> getShelvesActions(String message, String tag) throws MalformedMessageException{
+
+        String messageString = MessageParser.getMessageTag(message,tag);
 
         List<Integer> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
@@ -171,7 +238,9 @@ public class MessageUtilities {
         return list;
     }
 
-    public List<Resource> getResources(String messageString) throws MalformedMessageException{
+    public List<Resource> getResources(String message, String tag) throws MalformedMessageException{
+
+        String messageString = MessageParser.getMessageTag(message,tag);
 
         List<Resource> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
@@ -190,7 +259,9 @@ public class MessageUtilities {
     }
 
 
-    public CardColor getCardColor(String color) throws MalformedMessageException{
+    public CardColor getCardColor(String message, String tag) throws MalformedMessageException{
+
+        String color = MessageParser.getMessageTag(message,tag);
 
         if(!cardColor.containsKey(color.toUpperCase()))
             throw new MalformedMessageException("Wrong card color name!");
@@ -198,7 +269,9 @@ public class MessageUtilities {
         return this.cardColor.get(color.toUpperCase()).get();
     }
 
-    public Map<Integer,String> getMapIntegerString(String messageString) throws MalformedMessageException{
+    public Map<Integer,String> getMapIntegerString(String message, String tag) throws MalformedMessageException{
+
+        String messageString = MessageParser.getMessageTag(message,tag);
 
         Map<Integer,String> map = new HashMap<>();
         String[] string = messageString.split(splitter);
@@ -211,8 +284,8 @@ public class MessageUtilities {
         for(int i=0; i<string.length/2; i++){
 
             try {
-                key = parseInt(string[i]);
-                value = string[i+1];
+                key = parseInt(string[i*2]);
+                value = string[(i*2)+1];
                 map.put(key,value);
             }
             catch (NumberFormatException e){throw new MalformedMessageException("ParseInt fail!");}
@@ -220,7 +293,9 @@ public class MessageUtilities {
         return map;
     }
 
-    public Map<Integer,Boolean> getMapIntegerBoolean(String messageString) throws MalformedMessageException{
+    public Map<Integer,Boolean> getMapIntegerBoolean(String message, String tag) throws MalformedMessageException{
+
+        String messageString = MessageParser.getMessageTag(message,tag);
 
         Map<Integer,Boolean> map = new HashMap<>();
         String[] string = messageString.split(splitter);
@@ -233,13 +308,140 @@ public class MessageUtilities {
         for(int i=0; i<string.length/2; i++){
 
             try {
-                key = parseInt(string[i]);
-                value = Boolean.parseBoolean(string[i+1]);
+                key = parseInt(string[i*2]);
+                value = Boolean.parseBoolean(string[(i*2)+1]);
                 map.put(key,value);
             }catch (NumberFormatException e){throw new MalformedMessageException("ParseInt fail!");}
         }
         return map;
     }
 
+    public int getInteger(String message, String tag) throws MalformedMessageException{
+        String messageString = MessageParser.getMessageTag(message,tag);
+        int i;
+        try {
+            i = parseInt(messageString);
+        }
+        catch (NumberFormatException e){throw new MalformedMessageException("ParseInt fail!");}
+        return i;
+    }
+
+    public String getString(String message, String tag) throws MalformedMessageException{
+        String messageString = MessageParser.getMessageTag(message,tag);
+        if(messageString == null)
+            throw new MalformedMessageException("ParseInt fail!");
+        return messageString;
+    }
+
+    public boolean getBoolean(String message, String tag) throws MalformedMessageException{
+        String messageString = MessageParser.getMessageTag(message,tag);
+        return Boolean.parseBoolean(messageString);
+    }
+
+    //MARKET_SELECTION
+    public Tray getTrayMARKETSELECTION(String message) throws MalformedMessageException{
+        return getTray(message,"tray");
+    }
+    public int getNumberMARKETSELECTION(String message) throws MalformedMessageException {
+        return getInteger(message,"number");
+    }
+
+    //ACTION
+    public List<Action> getActionsACTION(String message) throws MalformedMessageException{
+        return getActions(message,"marblesActions");
+    }
+    public List<Marble> getMarblesACTION(String message) throws MalformedMessageException{
+        return getMarbles(message, "marblesActions");
+    }
+    public List<Integer> getShelvesACTION(String message) throws MalformedMessageException{
+        return getShelvesActions(message,"marblesActions");
+    }
+
+    //BUY_CARD
+    public int getSlotBUYCARD(String message) throws MalformedMessageException{
+        return getInteger(message,"slot");
+    }
+    public int getLevelBUYCARD(String message) throws MalformedMessageException{
+        return getInteger(message,"level");
+    }
+    public CardColor getColorBUYCARD(String message) throws MalformedMessageException {
+        return getCardColor(message,"color");
+    }
+    public String getIDBUYCARD(String message) throws MalformedMessageException {
+        return getString(message,"ID");
+    }
+    public List<Integer> getShelvesBUYCARD(String message) throws MalformedMessageException {
+        return getShelves(message,"warehouse");
+    }
+    public List<Integer> getQuantityBUYCARD(String message) throws MalformedMessageException {
+        return getQuantity(message,"warehouse");
+    }
+    public List<ResQuantity> getStrongBoxBUYCARD(String message) throws MalformedMessageException {
+        return getResQuantityList(message,"strongBox");
+    }
+
+    //DO_PRODUCTION
+    public boolean isPersonalProductionDOPRODUCTION(String message) throws MalformedMessageException {
+        return getBoolean(message,"personalProduction");
+    }
+    public Map<Integer, String> getDevelopmentCardsDOPRODUCTION(String message) throws MalformedMessageException{
+        return getMapIntegerString(message, "developmentCards");
+    }
+    public Map<Integer, String> getLeaderCardsDOPRODUCTION(String message) throws MalformedMessageException{
+        return getMapIntegerString(message, "leaderCards");
+    }
+    public List<ResQuantity> getChosenProductsDOPRODUCTION(String message) throws MalformedMessageException {
+        return getResQuantityList(message,"chosenProducts");
+    }
+    public List<ResQuantity> getChosenMaterialsDOPRODUCTION(String message) throws MalformedMessageException {
+        return getResQuantityList(message,"chosenMaterials");
+    }
+    public List<Integer> getShelvesDOPRODUCTION(String message) throws MalformedMessageException {
+        return getShelves(message,"warehouse");
+    }
+    public List<Integer> getQuantityDOPRODUCTION(String message) throws MalformedMessageException {
+        return getQuantity(message,"warehouse");
+    }
+    public List<ResQuantity> getStrongBoxDOPRODUCTION(String message) throws MalformedMessageException {
+        return getResQuantityList(message,"strongBox");
+    }
+
+
+    //LEADER_ACTION
+    public Map<Integer, String> getLeaderCardsLEADERACTION(String message) throws MalformedMessageException{
+        return getMapIntegerString(message, "leaderCards");
+    }
+    public Action getActionLEADERACTION(String message) throws MalformedMessageException{
+        return getAction(message,"action");
+    }
+
+    //RESOURCE
+    public List<Resource> getResourcesRESOURCE(String message) throws MalformedMessageException {
+        return getResources(message,"resources");
+    }
+    public List<Integer> getShelvesRESOURCES(String message) throws MalformedMessageException {
+        return getShelves(message,"resources");
+    }
+
+    //SELECTED_TURN
+    public TurnType getTurnTypeSELECTEDTURN(String message) throws MalformedMessageException {
+        return getTurnType(message,"turnType");
+    }
+
+    //SWAP
+    public int getSourceSWAP(String message) throws MalformedMessageException {
+        return getInteger(message,"source");
+    }
+    public int getTargetSWAP(String message) throws MalformedMessageException {
+        return getInteger(message,"target");
+    }
+
+    //UPDATE_LEADER_CARDS
+    public Map<Integer, Boolean> getLeaderStatusUPDATELEADERCARDS(String message) throws MalformedMessageException {
+        return getMapIntegerBoolean(message,"leaderStatus");
+    }
+    public Map<Integer, String> getLeaderCardsUPDATELEADERCARDS(String message) throws MalformedMessageException{
+        return getMapIntegerString(message, "leaderCards");
+    }
 
 }
