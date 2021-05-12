@@ -100,8 +100,9 @@ public interface View {
      * this method is used to catch the player's selected turn
      * @param turns is the list of available turns
      * @param player is the nickname of the current player
+     * @return a String representing the selected turn
      */
-    void selectTurnAction(LinkedList<String> turns, String player);
+    String selectTurnAction(List<String> turns, String player);
 
     /**
      * this method is used to catch the LeaderCards selected by a player
@@ -118,7 +119,7 @@ public interface View {
      * this method is used to catch the decision of a player on a selection of marbles
      * @param marbles is a set of marbles
      */
-    void marbleAction(List<Marble> marbles);
+    void marbleAction(List<Marble> marbles, List<Marble> whiteColors);
 
     /**
      * this method is used to catch the action of a player on a LeaderCard
@@ -128,7 +129,7 @@ public interface View {
     /**
      * this method is used to catch the action of a player of a shared DevelopmentCard
      */
-    void buyCardAction();
+    void buyCardAction(Map<Integer, String> decks);
 
     /**
      * this method is used to catch the action of a player on their productions
@@ -138,12 +139,17 @@ public interface View {
     /**
      * this action is used to catch the resources chosen by a player
      */
-    void getResourcesAction();
+    void getResourcesAction(int num);
 
     /**
      * this method show the player's personal production.
      */
     void showPersonalProduction();
+
+    /**
+     * this method is used to catch a swap in the Warehouse
+     */
+    void swapAction();
 
 
 }

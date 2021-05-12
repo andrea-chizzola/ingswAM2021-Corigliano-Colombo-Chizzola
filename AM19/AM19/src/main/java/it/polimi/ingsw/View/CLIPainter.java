@@ -441,5 +441,25 @@ public class CLIPainter{
         return SPHERE_LENGTH;
     }
 
+    /**
+     * @return the width of a card
+     */
+    public static int getCardWidth() {
+        return CARD_WIDTH;
+    }
+
+    /**
+     * @return the length of a DevelopmentCard
+     */
+    public static int getDevCardLength() {
+        return DEV_CARD_LENGTH;
+    }
+
+    /**
+     * @return the legnth of a LeaderCard
+     */
+    public static int getLeaderCardLength() {
+        return LEADER_CARD_LENGTH;
+    }
 }
 

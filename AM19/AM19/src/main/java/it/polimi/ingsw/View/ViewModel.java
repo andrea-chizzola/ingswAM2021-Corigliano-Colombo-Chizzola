@@ -27,6 +27,16 @@ public class ViewModel {
     private List<Marble> market;
 
     /**
+     * this attribute represents the marbles that a player has selected from the MarketBoard
+     */
+    private List<Marble> selectedMarbles;
+
+    /**
+     * this attribute represents available transformations of a white marble
+     */
+    private List<Marble> possibleWhites;
+
+    /**
      * this attribute represents the number of rows of the MarketBoard
      */
     private int nRows;
@@ -65,6 +75,11 @@ public class ViewModel {
      * this attribute represent the top card in each of the player's slots
      */
     private Map<String, List<String>> slots;
+
+    /**
+     * this attribute represents the list of leader cards owned by each player
+     */
+    private Map<String, List<String>> leaders;
 
     /**
      * this attribute represent the state of each player warehouse
@@ -111,18 +126,20 @@ public class ViewModel {
      */
     private Production personalProduction;
 
-    public Optional<List<VaticanReportSection>> getLorenzoSections() {
-        return lorenzoSections;
-    }
-
-    public String getConfigurationFile() {
-        return configurationFile;
-    }
-
     /**
      * this attribute represents the file used for configuration
      */
     private String configurationFile;
+
+    /**
+     * this attribute represents the current turn type of the player
+     */
+    private String selectedTurn;
+
+    /**
+     * this attribute represent the available turns of the current player
+     */
+    private List<String> availableTurns;
 
     public ViewModel(String file, List<String> nicknames){
         // GESTIRE CODICE DEL SERVER! I PARSER POTREBBERO FALLIRE! Il client in quel caso deve terminare con errore!
@@ -151,6 +168,7 @@ public class ViewModel {
         personalProduction = ConfigurationParser.parsePersonalProduction(file);
         this.configurationFile = file;
     }
+
 
     public Map<Integer, String> getDecks() {
         return decks;
@@ -232,12 +250,29 @@ public class ViewModel {
         this.slots = slots;
     }
 
+    public List<String> getLeaders(int playerNumber) {
+        String player = nicknames.get(playerNumber);
+        return new LinkedList<>(leaders.get(player));
+    }
+
+    public void setLeaders(Map<String, List<String>> leaders) {
+        this.leaders = leaders;
+    }
+
     public Map<String, LinkedList<ResQuantity>> getWarehouse() {
         return warehouse;
     }
 
     public void setWarehouse(Map<String, LinkedList<ResQuantity>> warehouse) {
         this.warehouse = warehouse;
+    }
+
+    public List<Integer> getShelves() {
+        return shelves;
+    }
+
+    public void setShelves(List<Integer> shelves) {
+        this.shelves = shelves;
     }
 
     public Map<String, LinkedList<ResQuantity>> getStrongbox() {
@@ -252,16 +287,24 @@ public class ViewModel {
         return actionToken;
     }
 
-    public void setActionToken(String actionToken) {
-        this.actionToken = Optional.of(actionToken);
+    public void setActionToken(Optional<String> actionToken) {
+        this.actionToken = actionToken;
     }
 
     public Optional<Integer> getLorenzoFaith() {
         return lorenzoFaith;
     }
 
-    public void setLorenzoFaith(int lorenzoFaith) {
-        this.lorenzoFaith = Optional.of(lorenzoFaith);
+    public void setLorenzoFaith(Optional<Integer> lorenzoFaith) {
+        this.lorenzoFaith = lorenzoFaith;
+    }
+
+    public Optional<List<VaticanReportSection>> getLorenzoSections() {
+        return lorenzoSections;
+    }
+
+    public void setLorenzoSections(Optional<List<VaticanReportSection>> lorenzoSections) {
+        this.lorenzoSections = lorenzoSections;
     }
 
     public List<String> getNicknames() {
@@ -280,11 +323,54 @@ public class ViewModel {
         this.currentPlayer = currentPlayer;
     }
 
-    public List<Integer> getShelves() {
-        return shelves;
-    }
-
     public Production getPersonalProduction() {
         return personalProduction;
     }
+
+    public void setPersonalProduction(Production personalProduction) {
+        this.personalProduction = personalProduction;
+    }
+
+    public String getConfigurationFile() {
+        return configurationFile;
+    }
+
+    public void setConfigurationFile(String configurationFile) {
+        this.configurationFile = configurationFile;
+    }
+
+    public List<Marble> getSelectedMarbles() {
+        return new LinkedList<>(selectedMarbles);
+    }
+
+    public void setSelectedMarbles(List<Marble> selectedMarbles) {
+        this.selectedMarbles = new LinkedList<>(selectedMarbles);
+    }
+
+    public List<Marble> getPossibleWhites() {
+        return new LinkedList<>(possibleWhites);
+    }
+
+    public void setPossibleWhites(List<Marble> possibleWhites) {
+        this.possibleWhites = new LinkedList<>(possibleWhites);
+    }
+
+
+    public String getSelectedTurn() {
+        return selectedTurn;
+    }
+
+    public void setSelectedTurn(String selectedTurn) {
+        this.selectedTurn = selectedTurn;
+    }
+
+    public List<String> getAvailableTurns() {
+        return new LinkedList<>(availableTurns);
+    }
+
+    /*public void initializeTurns(){
+        //da prendere da configuration file
+    }
+
+    public void */
 }

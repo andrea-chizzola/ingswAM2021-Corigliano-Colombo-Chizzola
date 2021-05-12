@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View;
 
+import it.polimi.ingsw.Client.ViewObserver;
 import it.polimi.ingsw.Messages.ItemStatus;
 import it.polimi.ingsw.Model.Cards.Card;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
@@ -16,7 +17,7 @@ import java.util.*;
  * this class represents a CLI. It gives all the methods to "paint" the current status of the game
  * and retrieve information from the player
  */
-public class CLI implements View {
+public class CLI implements View, SubjectView {
 
     //TO DO: put all the configuration offsets inside a file
     /**
@@ -53,6 +54,9 @@ public class CLI implements View {
 
     private final int LEADER_Y = 16;
 
+    private final int N_DECKS_X = 4;
+    private final int N_DECKS_Y = 3;
+
     /**
      * this attribute is a reference to the reduced model of the view
      */
@@ -62,6 +66,11 @@ public class CLI implements View {
      * this attribute is a matrix that contains the current state of the CLI
      */
     private String[][] viewStatus;
+
+    /**
+     * this attribute represents a matrix that contains all the cards in common decks
+     */
+    private String[][] decksStatus;
 
     /**
      * this attribute represents the input stream
@@ -94,17 +103,24 @@ public class CLI implements View {
     StringBuilder interaction;
 
     /**
+     * this attribute represents an observer of the view
+     */
+    ViewObserver observer;
+
+    /**
      * this is the constructor of the class
      * @param model is an instance of the reduced model of the view
      */
     public CLI(ViewModel model){
         this.model=model;
         viewStatus = new String[VERTICAL_SIZE][HORIZONTAL_SIZE];
+        decksStatus = new String[VERTICAL_SIZE][HORIZONTAL_SIZE];
         PLAYERS_Y = (model.getNicknames().size() + 1) * (CLIPainter.getSquareLength() + 1);
         RESOURCES_Y = (model.getnRows()+1)*(CLIPainter.getSphereLength() + 1) + 3;
         initialize();
 
-        in = System.in;
+        in = System.in; //se cambi l'input stream (permetti di settarlo come parametro della cli) puoi fare i
+        //test del client controller usando i file.
         out = System.out;
         availableInput = false;
         typed = new StringBuilder();
@@ -122,7 +138,7 @@ public class CLI implements View {
         {
             BufferedReader in = new BufferedReader(new InputStreamReader(input));
             try {
-                String s = "";
+                String s;
                 while ((s = in.readLine()) != null) {
                     System.out.println(s);
                     typed.append(s);
@@ -197,7 +213,12 @@ public class CLI implements View {
      */
     @Override
     public void showAnswer(boolean answer, String body) {
-
+        if(answer){
+            out.println("Error: "+ body + "\nYou've done something wrong, let's try again");
+        }
+        else{
+            out.println("Action successfully performed. Let's proceed further");
+        }
     }
 
     /**
@@ -207,6 +228,11 @@ public class CLI implements View {
     @Override
     public void showMarketUpdate(List<Marble> tray) {
         CLIPainter.paintMarketBoard(viewStatus, MARKET_Y, MARKET_X, tray, model.getnRows(), model.getnColumns());
+        StringBuilder market = new StringBuilder();
+        for(int i = 0; i<tray.size(); i++){
+            market.append(tray.get(i).toString()).append(",");
+        }
+        out.println("The new status of the market (ordered by rows) is:\n" + market );
     }
 
     /**
@@ -215,7 +241,13 @@ public class CLI implements View {
      */
     @Override
     public void showDecksUpdate(Map<Integer, String> decks) {
-
+        int width = CLIPainter.getCardWidth()+3, length = CLIPainter.getDevCardLength()+2;
+        CLIPainter.fill(decksStatus, 0, 0,HORIZONTAL_SIZE, VERTICAL_SIZE);
+        for(int i : decks.keySet()){
+            int row = i/N_DECKS_X, column = i%N_DECKS_X;
+            DevelopmentCard card = ConfigurationParser.getDevelopmentById(model.getConfigurationFile(), decks.get(i));
+            CLIPainter.devCardPainter(decksStatus, PLAYERS_Y + 1 + length*row, BOXES_X + width*column, card.toString());
+        }
     }
 
     /**
@@ -227,13 +259,26 @@ public class CLI implements View {
         List<ResQuantity> resources = new LinkedList<>();
         List<ResQuantity> extra = new LinkedList<>();
         int defaultSlots = model.getSlotNumber();
+
+        StringBuilder warehouseString = new StringBuilder();
+        StringBuilder extraBoxString = new StringBuilder();
         for(int i : warehouse.keySet()){
-            if(i<=defaultSlots) resources.add(warehouse.get(i));
-            else extra.add(warehouse.get(i));
+            ResQuantity r = warehouse.get(i);
+            if(i<=defaultSlots) {
+                resources.add(r);
+                warehouseString.append(r.toString()).append("/");
+            }
+            else {
+                extraBoxString.append(r.toString()).append("/");
+                extra.add(r);
+            }
         }
         extra.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
         CLIPainter.paintWarehouse(viewStatus, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, model.getShelves(), resources);
         CLIPainter.paintExtraSlots(viewStatus, EXTRA_Y+PLAYERS_Y, EXTRA_X, extra);
+
+        out.println("The new status of your boxes is:\nWarehouse: " + warehouseString);
+        if(extra.size()>0) out.println("Extra shelves: " + extraBoxString);
     }
 
     /**
@@ -322,15 +367,26 @@ public class CLI implements View {
      */
     @Override
     public void showDisconnection(String nickname) {
-
+        out.println(nickname + "has been disconnected");
     }
 
+    //MODIFY AS SOON YOU HAVE THE MESSAGES AND THE CONTROLLER
     /**
      * this method is used to add a player to the view
      */
     @Override
     public void newPlayer() {
-
+        out.println("Welcome to Masters of Renaissance, before starting playing, you should give me some information:" +
+                "\nTell me who you are: ");
+        String player = getInput();
+        out.println("Tell me if you want to start a new game (YES/NO): ");
+        String first = getInput();
+        String num;
+        if(first.equals("YES")){
+            out.println("Give me the number of players in the game: ");
+            num = getInput();
+        }
+        else num = "0";
     }
 
     /**
@@ -339,8 +395,18 @@ public class CLI implements View {
      * @param player is the nickname of the current player
      */
     @Override
-    public void selectTurnAction(LinkedList<String> turns, String player) {
-
+    public String selectTurnAction(List<String> turns, String player) {
+        StringBuilder available = new StringBuilder();
+        for(String string : turns) available.append(string).append(", ");
+        String s = "";
+        do{
+            out.println("Select your turn type; available turns: " + available);
+            s = getInput();
+            if(!turns.contains(s)) showAnswer(false, "Not existent turn type.");
+        }
+        while(!turns.contains(s));
+        //qui mando il messaggio al client
+        return s;
     }
 
     /**
@@ -357,7 +423,34 @@ public class CLI implements View {
      */
     @Override
     public void selectMarketAction() {
+        String s;
+        do {
+            out.println("Select a row or a column.\nCommand Type:- row:number or column:number");
+            s = getInput();
+        } while(!isValidMarketSelection(s));
+        //mandare messaggio al client
+    }
 
+    /**
+     * this helper method is used to check if a market selection is correct
+     * @param s is the command to be checked
+     * @return true if the command is correct, else otherwise
+     */
+    private boolean isValidMarketSelection(String s){
+
+        String selection = s.substring(0, s.length()-2);
+        int n, limit;
+
+        if(selection.equals("row")) limit = model.getnRows();
+        else if(selection.equals("column")) limit = model.getnColumns();
+        else return false;
+
+        try{
+            n = Integer.parseInt(s.substring(s.length()-1, s.length()));
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return n > 0 && n<limit;
     }
 
     /**
@@ -365,8 +458,16 @@ public class CLI implements View {
      * @param marbles is a set of marbles
      */
     @Override
-    public void marbleAction(List<Marble> marbles) {
+    public void marbleAction(List<Marble> marbles, List<Marble> whiteColors) {
+        StringBuilder selection = new StringBuilder();
+        for(int i=0; i<marbles.size(); i++){
+            selection.append(marbles.get(i).toString()).append(", ");
+        }
+        out.println("You have selected the marbles: "
+                + marbles +
+                "\n");
 
+        //DA FINIRE
     }
 
     /**
@@ -381,7 +482,7 @@ public class CLI implements View {
      * this method is used to catch the action of a player of a shared DevelopmentCard
      */
     @Override
-    public void buyCardAction() {
+    public void buyCardAction(Map<Integer, String> decks) {
 
     }
 
@@ -397,7 +498,7 @@ public class CLI implements View {
      * this action is used to catch the resources chosen by a player
      */
     @Override
-    public void getResourcesAction() {
+    public void getResourcesAction(int num) {
 
     }
 
@@ -413,5 +514,31 @@ public class CLI implements View {
                 production.getMaterials(), production.getProducts(),
                 production.getCustomMaterials(), production.getCustomProducts());
 
+    }
+
+    /**
+     * this method is used to catch a swap in the Warehouse
+     */
+    @Override
+    public void swapAction() {
+
+    }
+
+    /**
+     * this method is used to attach a Client to a view
+     * @param observer is the observer to be attached
+     */
+    @Override
+    public void attachObserver(ViewObserver observer) {
+        this.observer = observer;
+    }
+
+    /**
+     * this method is used to notify a Client of an action
+     * @param message is the String that represent the action
+     */
+    @Override
+    public void notifyObserver(String message) {
+        observer.update(message);
     }
 }
