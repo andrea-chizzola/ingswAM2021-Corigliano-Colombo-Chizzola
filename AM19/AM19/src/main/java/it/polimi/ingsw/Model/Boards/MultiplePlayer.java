@@ -1,8 +1,9 @@
 package it.polimi.ingsw.Model.Boards;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
+import it.polimi.ingsw.Messages.Enumerations.*;
+
+import java.util.*;
 
 /**
  * public class used to implement the endTurnAction method in case of a multiplayer match
@@ -20,6 +21,8 @@ public class MultiplePlayer implements CustomMode{
 
         if(gameBoard.getPlayers().indexOf(currentPlayer) == gameBoard.getPlayers().size() - 1){
             gameBoard.setCurrentPlayer(gameBoard.getPlayers().get(0));
+            if(gameBoard.isEndGameStarted())
+               gameBoard.setGameEnded();
         }else gameBoard.setCurrentPlayer(gameBoard.getPlayers().get(gameBoard.getPlayers().indexOf(currentPlayer) + 1));
 
     }
@@ -71,5 +74,18 @@ public class MultiplePlayer implements CustomMode{
 
     }
 
+    @Override
+    public Optional<Integer> showFaithLorenzo() {
+        return Optional.empty();
+    }
 
+    @Override
+    public Optional<List<ItemStatus>> showSectionsLorenzo() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<String> showTopToken() {
+        return Optional.empty();
+    }
 }

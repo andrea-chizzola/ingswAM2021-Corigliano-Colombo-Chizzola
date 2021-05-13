@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,6 +33,38 @@ public class ConfigurationParserTest {
     @Test
     public void getNumLeader(){
         assertEquals(4, ConfigurationParser.getNumLeader(file));
+    }
+
+    @Test
+    public void getInitializationResourcesTest(){
+        LinkedList<Integer> expected = new LinkedList<>();
+        LinkedList<Integer> actual = new LinkedList<>();
+        expected.add(0);
+        expected.add(1);
+        expected.add(1);
+        expected.add(2);
+
+        actual = ConfigurationParser.getInitializationResources(file);
+        for(int i=0; i<expected.size(); i++){
+            assertEquals(expected.get(i),actual.get(i));
+        }
+
+    }
+
+    @Test
+    public void getInitializationFaithTest(){
+        LinkedList<Integer> expected = new LinkedList<>();
+        LinkedList<Integer> actual = new LinkedList<>();
+        expected.add(0);
+        expected.add(0);
+        expected.add(1);
+        expected.add(1);
+
+        actual = ConfigurationParser.getInitializationFaith(file);
+        for(int i=0; i<expected.size(); i++){
+            assertEquals(expected.get(i),actual.get(i));
+        }
+
     }
 
 }
