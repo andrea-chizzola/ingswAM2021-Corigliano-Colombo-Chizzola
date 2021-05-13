@@ -1,7 +1,7 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.ViewObserver;
-import it.polimi.ingsw.Messages.ItemStatus;
+import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Model.Cards.Card;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
@@ -255,6 +255,8 @@ public class CLI implements View, SubjectView {
      * @param warehouse represent the current state of the warehouse
      */
     @Override
+    //cambiare la mappa integer - resquantity in lista di requantity
+    //COSI NON STAMPA IN ORDINE LA WAREHOUSE! SISTEMARE!
     public void showWarehouseUpdate(Map<Integer, ResQuantity> warehouse) {
         List<ResQuantity> resources = new LinkedList<>();
         List<ResQuantity> extra = new LinkedList<>();

@@ -1,13 +1,10 @@
 package it.polimi.ingsw.View;
 
-import it.polimi.ingsw.Messages.ItemStatus;
-import it.polimi.ingsw.Model.ActionTokens.Action;
 import it.polimi.ingsw.Model.Boards.FaithTrack.VaticanReportSection;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
-import it.polimi.ingsw.xmlParser.FaithTrackParser;
 
 import java.util.*;
 
@@ -89,7 +86,6 @@ public class ViewModel {
     /**
      * this attribute represent the size of the default shelves
      */
-
     private List<Integer> shelves;
     /**
      * this attribute represent the state of each player strongbox

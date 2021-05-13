@@ -1,10 +1,9 @@
 package it.polimi.ingsw.View;
 
-import it.polimi.ingsw.Messages.ItemStatus;
+import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

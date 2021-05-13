@@ -1,26 +1,9 @@
 package it.polimi.ingsw;
-import it.polimi.ingsw.Exceptions.IllegalShelfException;
-import it.polimi.ingsw.Messages.ItemStatus;
-import it.polimi.ingsw.Model.ActionTokens.Action;
-import it.polimi.ingsw.Model.Boards.Warehouse;
-import it.polimi.ingsw.Model.Cards.DevelopmentCard;
-import it.polimi.ingsw.Model.Cards.LeaderCard;
-import it.polimi.ingsw.Model.MarketBoard.Marble;
-import it.polimi.ingsw.Model.MarketBoard.MarbleBlue;
-import it.polimi.ingsw.Model.MarketBoard.MarbleGray;
-import it.polimi.ingsw.Model.MarketBoard.MarbleRed;
-import it.polimi.ingsw.Model.Resources.*;
 import it.polimi.ingsw.View.CLI;
-import it.polimi.ingsw.View.CLIColors;
-import it.polimi.ingsw.View.CLIPainter;
 import it.polimi.ingsw.View.ViewModel;
-import it.polimi.ingsw.xmlParser.ConfigurationParser;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class CLITest {
     private static CLI cli;
