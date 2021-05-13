@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Messages;
 
 import it.polimi.ingsw.Exceptions.EmptyBufferException;
+import it.polimi.ingsw.Exceptions.MalformedMessageException;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -58,11 +59,11 @@ public class NetworkBuffer {
      * @throws Exception is thrown if the current state of the buffer does not correspond to a
      * correct XML String. In that case, the buffer is emptied
      */
-    public synchronized void append(String s) throws Exception {
+    public synchronized void append(String s) throws MalformedMessageException {
         buffer.append(s);
         if(!checkString()) {
             buffer.setLength(0);
-            throw new Exception("Malformed message!");
+            throw new MalformedMessageException("Malformed message!");
         }
         extract();
     }

@@ -1,12 +1,12 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
-import it.polimi.ingsw.Messages.ConnectionListener;
+import it.polimi.ingsw.Messages.ClientConnectionListener;
 import it.polimi.ingsw.Messages.Message;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.View.ViewModel;
 
-public class ClientController implements ConnectionListener {
+public class ClientController implements ClientConnectionListener {
 
     /**
      * this attribute represents the reduced model of the Client
@@ -42,6 +42,16 @@ public class ClientController implements ConnectionListener {
        catch(MalformedMessageException e){
            e.printStackTrace();
        }
+    }
+
+    /**
+     * Notifies the listener that a player did not answer to the ping message
+     *
+     * @param nickname represents the player's nickname
+     */
+    @Override
+    public void onMissingPong(String nickname) {
+        //TO BE IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
 
     private void messageHandler(String message, String nickname) throws MalformedMessageException {
