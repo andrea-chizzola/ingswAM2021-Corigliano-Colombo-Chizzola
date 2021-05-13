@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Server.ConnectionListener;
+import it.polimi.ingsw.Messages.ClientConnectionListener;
 
 /**
  * interface containing the necessary methods to handle the connection between client and server
@@ -13,16 +13,10 @@ public interface ServerConnection {
     void closeConnection();
 
     /**
-     * Adds a new listener to the socket connection between client and server
-     * @param listener represents the new listener
-     */
-    void addListener(ConnectionListener listener);
-
-    /**
      *
      * @return returns the socket's listener
      */
-    ConnectionListener getListener();
+    ClientConnectionListener getListener();
 
     /**
      * sends a new message to the server

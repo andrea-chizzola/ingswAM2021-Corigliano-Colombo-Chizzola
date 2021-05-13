@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import it.polimi.ingsw.Exceptions.EmptyBufferException;
+import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.*;
 
 import java.io.*;
@@ -111,8 +112,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         try {
             buffer.append(read);
-        }catch (Exception e){
-            listener.onReceivedMessage(read, playerId);
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER] The message received is not in XML format.");
         }
 
         if(buffer.getPong()) pong = true;
@@ -174,7 +175,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         }
 
         server.addConnection(playerId,this);
-        startPingTimer();
+        //startPingTimer();
         String read = "";
 
         try {

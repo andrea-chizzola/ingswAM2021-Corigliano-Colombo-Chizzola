@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Controller.ConnectionListener;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.*;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
@@ -10,7 +11,7 @@ import it.polimi.ingsw.View.ViewModel;
 
 import java.util.*;
 
-public class ClientController implements ConnectionListener {
+public class ClientController implements ClientConnectionListener {
 
     /**
      * this attribute represents the reduced model of the Client
@@ -59,6 +60,11 @@ public class ClientController implements ConnectionListener {
        catch(MalformedMessageException e){
            System.out.println("[CLIENT] malformed message received. No action performed.");
        }
+    }
+
+    @Override
+    public synchronized void onMissingPong(String nickname) {
+        view.showAnswer(false, "ERROR: Missed pong", model.getPersonalNickname());
     }
 
     private void messageHandler(String message) throws MalformedMessageException {
