@@ -1,10 +1,6 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Messages.Message;
-import it.polimi.ingsw.Messages.MessageConnection;
-import it.polimi.ingsw.Messages.MessageReconnectionRequest;
-import it.polimi.ingsw.Messages.MessageReply;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -143,7 +139,7 @@ public class GamesHandler {
      * @param playersNumber represents the number of players associates to the new game (0 if the player wants to join a game)
      * @param connection represents the client's socket connection
      */
-    public synchronized void manageLobby(String nickname, boolean gameHost, int playersNumber, ClientConnection connection){
+    /*public synchronized void manageLobby(String nickname, boolean gameHost, int playersNumber, ClientConnection connection){
 
         if(!isNicknameAvailable(nickname)){
 
@@ -193,7 +189,7 @@ public class GamesHandler {
             }
         }
 
-    }
+    }*/
 
     /**
      * removes a player from the lobby
@@ -235,7 +231,7 @@ public class GamesHandler {
      * @param nickname represents the reconnecting player's nickname
      * @param connection represents the client's socket connection
      */
-    public synchronized void manageReconnection(String nickname, ClientConnection connection){
+    /*public synchronized void manageReconnection(String nickname, ClientConnection connection){
 
         //String nickname = message.getNickName();
         System.out.println("[SERVER] Nickname " + nickname + " is trying to reconnect...");
@@ -265,6 +261,6 @@ public class GamesHandler {
 
         }
 
-    }
+    }*/
 
 }
