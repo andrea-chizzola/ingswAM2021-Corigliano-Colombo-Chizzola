@@ -2,6 +2,9 @@ package it.polimi.ingsw.Model.MarketBoard;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Resources.Faith;
+import it.polimi.ingsw.Model.Resources.Resource;
+import it.polimi.ingsw.Model.Resources.Shield;
 import it.polimi.ingsw.View.CLIColors;
 
 import java.util.LinkedList;
@@ -16,10 +19,9 @@ public class MarbleRed implements Marble {
      * This method adds one faith point to the FaithTrack
      * @param board the board of the player
      * @param shelf not used
-     * @throws InvalidActionException
      */
     @Override
-    public void addResource(Board board, int shelf) throws InvalidActionException{
+    public void addResource(Board board, int shelf) {
         board.addFaith(1);
     }
 
@@ -36,6 +38,16 @@ public class MarbleRed implements Marble {
     public LinkedList<Marble> whiteTransformations(Board board) {
         LinkedList<Marble> list = new LinkedList<>();
         return list;
+    }
+
+    @Override
+    public boolean isWhite() {
+        return false;
+    }
+
+    @Override
+    public Resource getResourceAssociated() {
+        return new Faith();
     }
 
     /**

@@ -3,7 +3,6 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.View.ViewModel;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -36,6 +35,12 @@ public interface ClientStates {
 
 class Login implements ClientStates{
 
+    private boolean started;
+
+    public Login(){
+        started = false;
+    }
+
     @Override
     public boolean isTurnSelection() {
         return false;
@@ -53,11 +58,13 @@ class Login implements ClientStates{
 
     @Override
     public ClientStates nextState() {
-        return new Initialization_Leader();
+        if(!started) return this;
+        else return new Initialization_Leader();
     }
 }
 
 class Initialization_Leader implements ClientStates{
+
 
     @Override
     public boolean isTurnSelection() {
@@ -71,7 +78,7 @@ class Initialization_Leader implements ClientStates{
 
     @Override
     public void handleState(View view, ViewModel model) {
-        view.selectLeaderAction(model.getLeaders(model.getCurrentPlayer()));
+        view.selectLeaderAction(model.getLeadersID(model.getCurrentPlayer()));
     }
 
     @Override
@@ -95,9 +102,15 @@ class Initialization_Resource implements ClientStates{
 
     @Override
     public void handleState(View view, ViewModel model) {
-        //DA AGGIUNGERE IL NUMERO DI RISORSE NEI PARSER.
-        //view.getResourcesAction();
-        //implementa dopo che è stato messo i numero di risorse del turno
+        /*String currentPlayer = model.getCurrentPlayer();
+        int playerNumber, initializationResources;
+        playerNumber = model.getNicknames().indexOf(currentPlayer);
+        initializationResources = ConfigurationParser.getCapacityWarehouse(model.getConfigurationFile());
+
+        view.getResourcesAction();*/
+        //NEEDED METHOD IMPLEMENTED BY MARCO.
+        //NOTE: in case of exceptions (the player number is not right or the player name is missing, the Client terminates
+        //and notify "Missing Update".
     }
 
     @Override
@@ -143,8 +156,7 @@ class Manage_Marble implements ClientStates{
 
     @Override
     public void handleState(View view, ViewModel model) {
-        //bisogna salvare le selected marbles nel ViewModel, con anche le trasformazioni possibili
-        view.marbleAction(model.getSelectedMarbles(), model.getPossibleWhites());
+        view.showMarblesUpdate(model.getSelectedMarbles(), model.getPossibleWhites(), model.getCurrentPlayer());
     }
 
     @Override
@@ -192,7 +204,7 @@ class Buy_Card implements ClientStates{
 
     @Override
     public void handleState(View view, ViewModel model) {
-        view.buyCardAction(model.getDecks());
+        view.buyCardAction();
     }
 
     @Override
@@ -243,6 +255,11 @@ class Turn_Selection implements ClientStates{
             map.put(TurnType.TAKE_RESOURCES, Take_Resource::new);
             map.put(TurnType.DO_PRODUCTION, Do_Production::new);
         }
+
+        private boolean isTurn(String action){
+            return map.containsKey(action);
+        }
+
         private ClientStates getState(String state){
             return map.get((TurnType.valueOf(state))).get();
         }
@@ -260,14 +277,16 @@ class Turn_Selection implements ClientStates{
 
     @Override
     public void handleState(View view, ViewModel model) {
-        int player = model.getCurrentPlayer();
-        nextState = view.selectTurnAction(model.getAvailableTurns(), model.getNicknames().get(player));
+        nextState = view.selectTurnAction(model.getAvailableTurns(), model.getCurrentPlayer());
     }
 
     //qui dovresti prendere lo stato dalla ViewModel
     @Override
     public ClientStates nextState() {
         StateMapper map = new StateMapper();
+        if(!map.isTurn(nextState)){
+            //EXIT FROM CLIENT. WRONG MESSAGE UPDATE.
+        }
         return map.getState(nextState);
     }
 

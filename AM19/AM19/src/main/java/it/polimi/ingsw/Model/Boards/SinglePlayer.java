@@ -1,9 +1,13 @@
 package it.polimi.ingsw.Model.Boards;
+import it.polimi.ingsw.Messages.Enumerations.*;
 import it.polimi.ingsw.Model.Decks.ActionTokenDeck;
 import it.polimi.ingsw.Model.Boards.FaithTrack.FaithTrack;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 /**
  * public class used to implement the endTurnAction method along with the necessary methods in case of a single player match
@@ -86,7 +90,8 @@ public class SinglePlayer implements CustomMode{
     public void endTurnAction(GameBoard gameBoard){
 
         actionTokenDeck.getTop().doAction(this);
-
+        if(gameBoard.isEndGameStarted())
+           gameBoard.setGameEnded();
     }
 
     /**
@@ -123,4 +128,19 @@ public class SinglePlayer implements CustomMode{
                 + boards.get(0).getTotalPoints();
     }
 
+
+    @Override
+    public Optional<Integer> showFaithLorenzo() {
+        return Optional.of(lorenzoTrack.getPosition());
+    }
+
+    @Override
+    public Optional<List<ItemStatus>> showSectionsLorenzo() {
+        return Optional.of(gameBoard.createListItems(lorenzoTrack.getSections()));
+    }
+
+    @Override
+    public Optional<String> showTopToken() {
+        return Optional.of(actionTokenDeck.getTop().getId());
+    }
 }

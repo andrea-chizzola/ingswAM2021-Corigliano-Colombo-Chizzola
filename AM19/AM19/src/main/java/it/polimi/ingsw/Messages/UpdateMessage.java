@@ -131,6 +131,38 @@ public class UpdateMessage extends Message {
         return parser.getMapIntegerItemStatus(toXML(), "leaderStatus");
     }
 
+    /**
+     * this method returns the content of the tag "player" in the message
+     * @return a String that represent the content
+     * @throws MalformedMessageException is the message is not correctly formed
+     */
+    public String getPlayer() throws MalformedMessageException{
+        MessageUtilities parser = MessageUtilities.instance();
+        return parser.getString(toXML(), "player");
+    }
+
+    public List<String> getTurnTypes() throws MalformedMessageException {
+        MessageUtilities parser = MessageUtilities.instance();
+        return parser.getListString(toXML(), "turns");
+    }
+
+    public List<String> getNicknames() throws MalformedMessageException{
+        //modificare il messaggio FaithTrackUpdate in modo tale che nicknames e punti fede siano in tag diversi.
+        //Così ottieni una soluzione più pulita. Il codice seguente verrà sostituito a seguito di tale modfica.
+        String content = toXML();
+        String[] string = toXML().split(":");
+        List<String> nicknames = new LinkedList<>();
+
+        if(string.length%2!=0){
+            throw new MalformedMessageException();
+        }
+
+        for(int i=0; i<string.length/2;i++){
+            nicknames.add(string[i*2]);
+        }
+        return nicknames;
+    }
+
 
 
 }

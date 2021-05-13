@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.MarketBoard;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.View.CLIColors;
 
 import java.util.LinkedList;
@@ -17,7 +18,7 @@ public interface Marble {
      * @param shelf is the shelf in which we want to insert the marble
      * @throws InvalidActionException if the resource is inserted in the wrong shelf.
      */
-    void addResource(Board board, int shelf) throws InvalidActionException;
+    void addResource(Board board, int shelf);
 
     /**
      * This method allow to discard a resource.
@@ -34,8 +35,15 @@ public interface Marble {
     LinkedList<Marble> whiteTransformations(Board board);
 
     /**
+     * @return true if the marble is white, false otherwise
+     */
+    boolean isWhite();
+
+    /**
      * @return the string associated with the color of the marble
      */
     CLIColors toColor();
+
+    Resource getResourceAssociated();
 
 }

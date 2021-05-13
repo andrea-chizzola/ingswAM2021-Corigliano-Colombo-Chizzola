@@ -28,6 +28,9 @@ public class CLIPainter{
     private static final int FAVOR_LENGTH = 3;
     private static final int FAVOR_WIDTH = 7;
 
+    private static final int END_BOX_WIDTH = 60;
+    private static final int END_BOX_LENGTH = 20;
+
     private static CLIColors baseFont = CLIColors.F_BLACK;
 
     /**
@@ -432,6 +435,24 @@ public class CLIPainter{
         }
     }
 
+    public static void paintEndGameBox(String[][] target, int V_OFFSET, int H_OFFSET, Map<String, Integer> players){
+        CLIPainter.paintRectangle(target, V_OFFSET, H_OFFSET, END_BOX_WIDTH, END_BOX_LENGTH, baseFont);
+
+        StringBuilder content = new StringBuilder();
+        String winner = "";
+        int top = 0;
+
+        for(String name : players.keySet()){
+            int points = players.get(name);
+            content.append("Player: ").append(name).append(" Points: ").append(points).append("\n");
+            if(points>top){
+                winner = name;
+                top = points;
+            }
+            content.append("\nWinner: ").append(winner).append(" Points: ").append(points);
+        }
+        CLIPainter.insertString(target, 5, 5, content.toString(), baseFont);
+    }
     /**
      * @return the length of a sphere
      */
@@ -454,7 +475,7 @@ public class CLIPainter{
     }
 
     /**
-     * @return the legnth of a LeaderCard
+     * @return the length of a LeaderCard
      */
     public static int getLeaderCardLength() {
         return LEADER_CARD_LENGTH;

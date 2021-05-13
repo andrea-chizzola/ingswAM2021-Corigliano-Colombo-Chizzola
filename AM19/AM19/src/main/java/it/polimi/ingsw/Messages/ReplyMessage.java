@@ -5,12 +5,10 @@ import it.polimi.ingsw.Exceptions.MalformedMessageException;
 public class ReplyMessage extends Message {
     /**
      * creates a new message
-     *
-     * @param body        represents the body of the message
-     * @param messageType represents the type of the message
+     * @param body represents the body of the message
      */
-    public ReplyMessage(String body, MessageType messageType) {
-        super(body, messageType);
+    public ReplyMessage(String body) {
+        super(body, Message.MessageType.REPLY);
     }
 
     /**
@@ -21,5 +19,15 @@ public class ReplyMessage extends Message {
     public boolean isOk() throws MalformedMessageException {
         String check = MessageParser.getMessageTag(toXML(), "correct");
         return Boolean.parseBoolean(check);
+    }
+
+    /**
+     * this method returns the content of the tag "player" in the message
+     * @return a String that represent the content
+     * @throws MalformedMessageException is the message is not correctly formed
+     */
+    public String getPlayer() throws MalformedMessageException{
+        MessageUtilities parser = MessageUtilities.instance();
+        return parser.getString(toXML(), "player");
     }
 }

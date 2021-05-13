@@ -2,7 +2,10 @@ package it.polimi.ingsw.Model.MarketBoard;
 
 import it.polimi.ingsw.Exceptions.*;
 import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Resources.Faith;
+import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.Model.Resources.Servant;
+import it.polimi.ingsw.Model.Resources.Shield;
 import it.polimi.ingsw.View.CLIColors;
 
 import java.util.LinkedList;
@@ -15,19 +18,20 @@ public class MarblePurple implements Marble {
 
 
     /**
-     * This method adds the resource Servant to the warehouse on shelf with number 'shelf'.
+     * This method adds the resource Shield to the warehouse on shelf with number 'shelf'.
      * @param board the board of the player
      * @param shelf the number of the self
-     * @throws InvalidActionException
      */
     @Override
-    public void addResource(Board board, int shelf) throws InvalidActionException {
+    public void addResource(Board board, int shelf) {
+        /*
         try {
-            board.getWarehouse().addResource(shelf, new Servant());
+            board.getWarehouse().addResource(shelf, new Shield());
         }
         catch(IllegalShelfException e){
             throw new InvalidActionException(e.getMessage());
-        }
+        }*/
+        board.getWarehouse().insertResource(shelf, getResourceAssociated());
     }
 
     /**
@@ -45,6 +49,15 @@ public class MarblePurple implements Marble {
         return list;
     }
 
+    @Override
+    public boolean isWhite() {
+        return false;
+    }
+
+    @Override
+    public Resource getResourceAssociated() {
+        return new Servant();
+    }
     /**
      * @return the string associated with the color of the marble
      */
@@ -52,6 +65,8 @@ public class MarblePurple implements Marble {
     public CLIColors toColor() {
         return CLIColors.B_MAGENTA;
     }
+
+
 
     @Override
     public String toString() {

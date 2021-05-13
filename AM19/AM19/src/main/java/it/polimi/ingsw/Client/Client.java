@@ -44,7 +44,7 @@ public class Client implements ViewObserver{
     public void startClient(){
 
 
-        ViewModel viewModel = new ViewModel(file, new ArrayList<>()); //DA CAMBIARE IL COSTRUTTORE DELLA VIEWMODEL
+        ViewModel viewModel = new ViewModel(file); //DA CAMBIARE IL COSTRUTTORE DELLA VIEWMODEL
         String player = ""; //viewModel.getName();  DIVENTA String player = viewModel.getName(); CON METODO GETNAME DA AGGIUNGERE
 
         /*

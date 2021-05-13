@@ -440,4 +440,11 @@ public class MessageUtilities {
         String messageString = MessageParser.getMessageTag(message,tag);
         return Boolean.parseBoolean(messageString);
     }
+
+    public List<String> getListString(String message, String tag) throws MalformedMessageException{
+        String messageString = MessageParser.getMessageTag(message,tag);
+
+        String[] string = messageString.split(splitter);
+        return new ArrayList<>(Arrays.asList(string));
+    }
 }

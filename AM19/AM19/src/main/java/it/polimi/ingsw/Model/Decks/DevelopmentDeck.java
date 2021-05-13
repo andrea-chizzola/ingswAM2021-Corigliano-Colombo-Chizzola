@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model.Decks;
 
-import it.polimi.ingsw.Model.Cards.Colors.CardColor;
+import it.polimi.ingsw.Model.Cards.Colors.*;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
@@ -162,5 +162,25 @@ public class DevelopmentDeck {
      */
     public boolean isColorAvailable(CardColor cardColor){
         return getNumber(cardColor, maxLevel) > 0;
+    }
+
+    public Map<Integer,String> showDeck(){
+        Map<Integer,String> map = new HashMap<>();
+        DevelopmentCard card;
+        List<CardColor> colors = new LinkedList<>();
+        colors.add(new Green());
+        colors.add(new Blue());
+        colors.add(new Yellow());
+        colors.add(new Purple());
+
+        for(int i=1; i<maxLevel; i++){
+            for(int j=0; j<colors.size(); j++){
+                try {
+                    card = readTop(colors.get(j), i);
+                    map.put((i-1)*colors.size()+j, card.getId());
+                }catch (IllegalArgumentException e){ }
+            }
+        }
+        return map;
     }
 }
