@@ -51,6 +51,18 @@ public class MarbleWhite implements Marble {
     }
 
     @Override
+    public boolean isWhite() {
+        return true;
+    }
+
+    @Override
+    public Resource getResourceAssociated() {
+        return new Shield();
+    }
+
+
+
+    @Override
     public String toString() {
         return "MarbleWhite";
     }

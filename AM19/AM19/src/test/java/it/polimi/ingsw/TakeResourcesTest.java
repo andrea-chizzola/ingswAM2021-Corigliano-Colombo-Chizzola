@@ -32,6 +32,7 @@ class TakeResourcesTest {
 
     }
 
+    /*
     @Test
     public void insertResourcesTest(){
         TakeResources takeResources = new TakeResources();
@@ -44,7 +45,7 @@ class TakeResourcesTest {
             assertEquals(board.getWarehouse().getResource(1), new Coin());
         } catch (IllegalShelfException e){fail();}
 
-    }
+    }*/
 
 
     @Test
@@ -55,10 +56,10 @@ class TakeResourcesTest {
 
         assertEquals(board.getFaithTrack().getPosition(),0);
 
-        for(Board board1 : gameBoard.getPlayers()){
-            if(board1 != board)
-                assertEquals(board1.getFaithTrack().getPosition(),1);
-        }
+
+        assertEquals(gameBoard.getPlayers().get(1).getFaithTrack().getPosition(),1);
+        assertEquals(gameBoard.getPlayers().get(2).getFaithTrack().getPosition(),2);
+
 
     }
 }

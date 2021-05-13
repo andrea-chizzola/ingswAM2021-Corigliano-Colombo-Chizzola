@@ -5,6 +5,7 @@ import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -163,5 +164,10 @@ public class MarketBoard {
         return list;
     }
 
+    public List<Marble> showMarket(){
+        List<Marble> list = new ArrayList<>(this.tray);
+        list.add(this.slide);
+        return list;
+    }
 
 }
