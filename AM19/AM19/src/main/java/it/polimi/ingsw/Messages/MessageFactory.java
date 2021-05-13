@@ -320,7 +320,7 @@ public class MessageFactory {
         return MessageParser.createMessage(map);
     }
 
-    public static String buildActionMarble(List<Marble> marbles, List<Integer> position, List<String> action, String body)
+    /*public static String buildActionMarble(List<Marble> marbles, List<Integer> position, List<String> action, String body)
             throws MalformedMessageException {
         StringBuilder content = new StringBuilder();
         for(int i=0; i<marbles.size(); i++){
@@ -336,6 +336,15 @@ public class MessageFactory {
         map.put("body", body);
         map.put("messageType", Message.MessageType.ACTION_MARBLE.toString());
         map.put("marblesActions", content.toString());
+        return MessageParser.createMessage(map);
+    }*/
+
+    public static String buildActionMarble(String action, String body)
+            throws MalformedMessageException {
+        Map<String, String> map = new HashMap<>();
+        map.put("body", body);
+        map.put("messageType", Message.MessageType.ACTION_MARBLE.toString());
+        map.put("marblesActions", action);
         return MessageParser.createMessage(map);
     }
 

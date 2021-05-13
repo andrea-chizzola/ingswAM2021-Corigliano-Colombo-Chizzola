@@ -1,8 +1,9 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.ViewObserver;
+import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
-import it.polimi.ingsw.Model.Cards.Card;
+import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Cards.Production;
@@ -24,7 +25,7 @@ public class CLI implements View, SubjectView {
      * the following attributes represent the constants used to paint the items of the CLI
      */
     private final int VERTICAL_SIZE = 200;
-    private final int HORIZONTAL_SIZE=200;
+    private final int HORIZONTAL_SIZE = 200;
 
     private final int MARKET_X = 150;
     private final int MARKET_Y = 0;
@@ -56,6 +57,9 @@ public class CLI implements View, SubjectView {
 
     private final int N_DECKS_X = 4;
     private final int N_DECKS_Y = 3;
+
+    private final int END_X = 5;
+    private final int END_Y = 5;
 
     /**
      * this attribute is a reference to the reduced model of the view
@@ -105,7 +109,7 @@ public class CLI implements View, SubjectView {
     /**
      * this attribute represents an observer of the view
      */
-    ViewObserver observer;
+    ViewObserver viewObserver;
 
     /**
      * this is the constructor of the class
@@ -120,7 +124,7 @@ public class CLI implements View, SubjectView {
         initialize();
 
         in = System.in; //se cambi l'input stream (permetti di settarlo come parametro della cli) puoi fare i
-        //test del client controller usando i file.
+                        //test del client controller usando i file.
         out = System.out;
         availableInput = false;
         typed = new StringBuilder();
@@ -140,13 +144,11 @@ public class CLI implements View, SubjectView {
             try {
                 String s;
                 while ((s = in.readLine()) != null) {
-                    System.out.println(s);
-                    typed.append(s);
+                    addInput(s);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                //qui sarebbe utile terminare il client e chiudere la connessione.
-                //Devi chiudere anche lo stream di input.
+                //CLOSE CLIENT AND CONNECTION. CANNOT OPEN INPUT STREAM
             }
         }).start();
     }
@@ -212,7 +214,7 @@ public class CLI implements View, SubjectView {
      * @param body is the content of the message
      */
     @Override
-    public void showAnswer(boolean answer, String body) {
+    public void showAnswer(boolean answer, String body, String nickname) {
         if(answer){
             out.println("Error: "+ body + "\nYou've done something wrong, let's try again");
         }
@@ -251,20 +253,20 @@ public class CLI implements View, SubjectView {
     }
 
     /**
-     * this method is used to show an update of one's warehouse
+     * this method is used to show an update of one's warehouse and stringbox
      * @param warehouse represent the current state of the warehouse
+     * @param strongBox represent the current state of the strongbox
      */
     @Override
-    //cambiare la mappa integer - resquantity in lista di requantity
-    //COSI NON STAMPA IN ORDINE LA WAREHOUSE! SISTEMARE!
-    public void showWarehouseUpdate(Map<Integer, ResQuantity> warehouse) {
+    public void showBoxes(List<ResQuantity> warehouse, List<ResQuantity> strongBox, String nickName) {
         List<ResQuantity> resources = new LinkedList<>();
         List<ResQuantity> extra = new LinkedList<>();
         int defaultSlots = model.getSlotNumber();
 
         StringBuilder warehouseString = new StringBuilder();
         StringBuilder extraBoxString = new StringBuilder();
-        for(int i : warehouse.keySet()){
+        StringBuilder strongboxString = new StringBuilder();
+        for(int i=0; i<warehouse.size(); i++){
             ResQuantity r = warehouse.get(i);
             if(i<=defaultSlots) {
                 resources.add(r);
@@ -275,22 +277,21 @@ public class CLI implements View, SubjectView {
                 extra.add(r);
             }
         }
+
         extra.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
         CLIPainter.paintWarehouse(viewStatus, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, model.getShelves(), resources);
         CLIPainter.paintExtraSlots(viewStatus, EXTRA_Y+PLAYERS_Y, EXTRA_X, extra);
 
+        strongBox.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
+        for(ResQuantity r : strongBox){
+            strongboxString.append(r.toString()).append("/");
+        }
+        CLIPainter.paintStrongbox(viewStatus, STRONGBOX_Y+PLAYERS_Y, STRONGBOX_X, strongBox);
+
+
         out.println("The new status of your boxes is:\nWarehouse: " + warehouseString);
         if(extra.size()>0) out.println("Extra shelves: " + extraBoxString);
-    }
-
-    /**
-     * this method is used to show an update of one's strongbox
-     * @param strongBox represent the current state of the strongbox
-     */
-    @Override
-    public void showStrongboxUpdate(List<ResQuantity> strongBox) {
-        strongBox.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
-        CLIPainter.paintStrongbox(viewStatus, STRONGBOX_Y+PLAYERS_Y, STRONGBOX_X, strongBox);
+        out.println("StrongBox: " + strongboxString);
     }
 
     /**
@@ -298,28 +299,25 @@ public class CLI implements View, SubjectView {
      * @param slots represent the current state of one's card slots
      */
     @Override
-    public void showSlotsUpdate(Map<Integer, String> slots) {
+    public void showSlotsUpdate(Map<Integer, String> slots, String nickname) {
         for(int i : slots.keySet()){
             DevelopmentCard card = ConfigurationParser.getDevelopmentById(model.getConfigurationFile(), slots.get(i));
             CLIPainter.devCardPainter(viewStatus, PLAYERS_Y+1, BOXES_X + 30*(i-1)+14, card.toString());
         }
     }
 
+    //devi gestire gli errori di parsing
     /**
      * this method is used to show an update of one's LeaderCards
      * @param cards represent the current state of one's leader cards
      */
     @Override
-    public void showLeaderCards(Map<String, ItemStatus> cards) {
-        List<LeaderCard> target = new ArrayList<>();
-        for(String s: cards.keySet()){
-            LeaderCard c = ConfigurationParser.getLeaderById(model.getConfigurationFile(), s);
-            c.setStatus(true);
-            target.add(c);
-        }
-        target.sort(Comparator.comparing((Card c1) -> c1.getId()));
-        for(int i=0; i<target.size(); i++){
-            LeaderCard card = target.get(i);
+    public void showLeaderCards(Map<Integer,String> cards, Map<Integer,ItemStatus> status, String nickName){
+        List<LeaderCard> target = new LinkedList<>();
+        for(int i: cards.keySet()){
+            String id = cards.get(i);
+            LeaderCard card = ConfigurationParser.getLeaderById(model.getConfigurationFile(), id);
+            card.setStatus(status.get(i).getBoolValue());
             CLIPainter.leaderCardPainter(viewStatus, PLAYERS_Y+1+LEADER_Y, BOXES_X + 30*i+14, card.toString());
         }
     }
@@ -356,11 +354,11 @@ public class CLI implements View, SubjectView {
     /**
      * this method is used to show the points achieved at the end of the game
      * @param players contains the name of the players and the points obtained
-     * @param winner is the name of the winner
      */
     @Override
-    public void showEndGame(Map<String, Integer> players, String winner) {
-
+    public void showEndGame(Map<String, Integer> players) {
+        CLIPainter.paintEndGameBox(viewStatus, END_X, END_Y,players);
+        plot();
     }
 
     /**
@@ -378,17 +376,41 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void newPlayer() {
-        out.println("Welcome to Masters of Renaissance, before starting playing, you should give me some information:" +
-                "\nTell me who you are: ");
-        String player = getInput();
-        out.println("Tell me if you want to start a new game (YES/NO): ");
-        String first = getInput();
+        String player, first = "";
         String num;
-        if(first.equals("YES")){
-            out.println("Give me the number of players in the game: ");
-            num = getInput();
+        do {
+            out.println("Welcome to Masters of Renaissance, before starting playing, you should give me some information:" +
+                    "\nTell me who you are: ");
+            player = getInput();
+        }while(player.length()<=0);
+
+        do{
+            out.println("Tell me if you want to start a new game (true/false): ");
+            first = getInput();
+        }while(!first.equals("true") && !first.equals("false"));
+
+        if(first.equals("true")){
+            do {
+                out.println("Give me the number of players in the game: ");
+                num = getInput();
+            }while(!isInt(num));
         }
         else num = "0";
+        try {
+            viewObserver.update(MessageFactory.buildConnection("Connection request", player, Boolean.parseBoolean(first), Integer.parseInt(num)));
+        }catch(MalformedMessageException e){
+            //CLOSE CONNECTION
+        }
+
+    }
+
+    private boolean isInt(String s){
+        try{
+            Integer.parseInt(s);
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -397,14 +419,15 @@ public class CLI implements View, SubjectView {
      * @param player is the nickname of the current player
      */
     @Override
-    public String selectTurnAction(List<String> turns, String player) {
+    public String selectTurnAction(List<String> turns, String player){
+        plot();
         StringBuilder available = new StringBuilder();
         for(String string : turns) available.append(string).append(", ");
         String s = "";
         do{
             out.println("Select your turn type; available turns: " + available);
             s = getInput();
-            if(!turns.contains(s)) showAnswer(false, "Not existent turn type.");
+            if(!turns.contains(s)) showAnswer(false, "Not existent turn type.", "name");
         }
         while(!turns.contains(s));
         //qui mando il messaggio al client
@@ -416,7 +439,7 @@ public class CLI implements View, SubjectView {
      * @param cards is the list of cards given to a player
      */
     @Override
-    public void selectLeaderAction(List<String> cards) {
+    public void selectLeaderAction(Map<Integer,String> cards) {
 
     }
 
@@ -457,19 +480,32 @@ public class CLI implements View, SubjectView {
 
     /**
      * this method is used to catch the decision of a player on a selection of marbles
-     * @param marbles is a set of marbles
      */
     @Override
-    public void marbleAction(List<Marble> marbles, List<Marble> whiteColors) {
-        StringBuilder selection = new StringBuilder();
-        for(int i=0; i<marbles.size(); i++){
-            selection.append(marbles.get(i).toString()).append(", ");
-        }
-        out.println("You have selected the marbles: "
-                + marbles +
-                "\n");
+    public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName) {
+        StringBuilder builder = new StringBuilder();
 
-        //DA FINIRE
+        for(int i=0; i<marblesTray.size(); i++){
+            builder.append(marblesTray.get(i).toString()).append(", ");
+        }
+        out.println("You have selected the marbles: " + builder);
+
+        if(whiteModifications.size()>0) {
+            builder.setLength(0);
+            for (int i = 0; i < whiteModifications.size(); i++) {
+                builder.append(whiteModifications.get(i).toString()).append(", ");
+            }
+            out.println("The possible transformations for white marbles are: " + builder);
+        }
+        out.println("Type your action. Command: MarbleColor:ACTION:TargetSlot\n " +
+                "eg. MarbleBlue:INSERT:2:MarbleYellow:DISCARD:0");
+        String action = getInput();
+        try {
+            viewObserver.update(MessageFactory.buildActionMarble(action, "Marbles managing"));
+        }
+        catch(MalformedMessageException e){
+            //Close the client because of the error
+        }
     }
 
     /**
@@ -484,7 +520,7 @@ public class CLI implements View, SubjectView {
      * this method is used to catch the action of a player of a shared DevelopmentCard
      */
     @Override
-    public void buyCardAction(Map<Integer, String> decks) {
+    public void buyCardAction() {
 
     }
 
@@ -500,7 +536,7 @@ public class CLI implements View, SubjectView {
      * this action is used to catch the resources chosen by a player
      */
     @Override
-    public void getResourcesAction(int num) {
+    public void getResourcesAction() {
 
     }
 
@@ -532,7 +568,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void attachObserver(ViewObserver observer) {
-        this.observer = observer;
+        this.viewObserver = observer;
     }
 
     /**
@@ -541,6 +577,6 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void notifyObserver(String message) {
-        observer.update(message);
+        viewObserver.update(message);
     }
 }

@@ -3,8 +3,6 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.View.ViewModel;
-import it.polimi.ingsw.xmlParser.ConfigurationParser;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;

@@ -32,6 +32,7 @@ public class ClientController implements ConnectionListener {
      */
     private boolean loginPhase;
 
+
     public ClientController(ViewModel model, View view){
         this.view = view;
         this.model = model;
@@ -40,8 +41,9 @@ public class ClientController implements ConnectionListener {
     }
 
     public void start(){
-        if(loginPhase){
+        if(!loginPhase){
             state.handleState(view, model);
+            loginPhase = true;
         }
     }
 
@@ -80,7 +82,7 @@ public class ClientController implements ConnectionListener {
             if (message.isOk() && model.getCurrentPlayer().equals(self))
                 state = state.nextState();
 
-            state.handleState(view, model);
+            if(!state.isInitialization() && !state.isTurnSelection()) state.handleState(view, model);
         }
     }
 
@@ -119,6 +121,8 @@ public class ClientController implements ConnectionListener {
                 marketUpdate(message);
             case SELECTED_MARBLES:
                 selectedMarble(message);
+            default:
+                //END CONNECTION. WRONG SEQUENCE OF MESSAGES OF UNKNOWN MESSAGE
         }
     }
 
@@ -158,11 +162,13 @@ public class ClientController implements ConnectionListener {
     private void faithUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<String, Integer> faith = message.getFaithPoints();
         Map<String, List<ItemStatus>> sections = new HashMap<>();
+        List<String> nicknames = message.getNicknames();
         for(String name : faith.keySet()){
             sections.put(name, message.getSections(name));
         }
         Optional<List<ItemStatus>> lorenzoSections = message.getLorenzoSections();
         Optional<Integer> lorenzoFaith = message.getLorenzoFaith();
+        model.setNicknames(nicknames);
         view.showFaithUpdate(faith, sections, lorenzoFaith, lorenzoSections);
 
     }

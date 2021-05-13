@@ -3,7 +3,7 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,8 +22,9 @@ public interface View {
      * this method is used to show a message
      * @param answer represents the type of message
      * @param body is the content of the message
+     * @param nickName represents the nickname of involved player
      */
-    void showAnswer(boolean answer, String body);
+    void showAnswer(boolean answer, String body, String nickName);
 
     /**
      * this method is used to show an update of the marketBoard
@@ -32,34 +33,42 @@ public interface View {
     void showMarketUpdate(List<Marble> tray);
 
     /**
+     * this method is used to catch an action of the player on a set of selected marbles
+     * @param marblesTray represents the selected marbles
+     * @param whiteModifications represents the available modifications for
+     * @param nickName represents the nickname of the player who made the selection
+     */
+    //to be renamed . Magari si manda a tutti, così tutti vedono la selezione, ma solo il player specifico può agire
+    void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName);
+
+
+    /**
      * this method is used to show an update of the shared decks on the GameBoard
      * @param decks contains the top cards of each deck
      */
     void showDecksUpdate(Map<Integer,String> decks);
 
     /**
-     * this method is used to show an update of one's warehouse
+     * this method is used to show an update of one's warehouse and stringbox
      * @param warehouse represent the current state of the warehouse
-     */
-    void showWarehouseUpdate(Map<Integer, ResQuantity> warehouse);
-
-    /**
-     * this method is used to show an update of one's strongbox
      * @param strongBox represent the current state of the strongbox
+     * @param nickName represents the name of the player affected by the changes
      */
-    void showStrongboxUpdate(List<ResQuantity> strongBox);
+    void showBoxes(List<ResQuantity> warehouse, List<ResQuantity> strongBox, String nickName);
 
     /**
      * this method is used to show an update of one's card slots
      * @param slots represent the current state of one's card slots
+     * @param nickName represents the nickname of involved player
      */
-    void showSlotsUpdate(Map<Integer, String> slots);
+    void showSlotsUpdate(Map<Integer, String> slots, String nickName);
 
     /**
      * this method is used to show an update of one's LeaderCards
      * @param cards represent the current state of one's leader cards
+     * @param nickName represents the nickname of involved player
      */
-    void showLeaderCards(Map<String, ItemStatus> cards);
+    void showLeaderCards(Map<Integer,String> cards, Map<Integer,ItemStatus> status,  String nickName);
 
     /**
      * this method is used to show an update of one's FaithTrack
@@ -80,9 +89,8 @@ public interface View {
     /**
      * this method is used to show the points achieved at the end of the game
      * @param players contains the name of the players and the points obtained
-     * @param winner is the name of the winner
      */
-    void showEndGame(Map<String, Integer> players, String winner);
+    void showEndGame(Map<String, Integer> players);
 
     /**
      * this method is used to show the disconnection of a player
@@ -99,7 +107,6 @@ public interface View {
      * this method is used to catch the player's selected turn
      * @param turns is the list of available turns
      * @param player is the nickname of the current player
-     * @return a String representing the selected turn
      */
     String selectTurnAction(List<String> turns, String player);
 
@@ -107,18 +114,13 @@ public interface View {
      * this method is used to catch the LeaderCards selected by a player
      * @param cards is the list of cards given to a player
      */
-    void selectLeaderAction(List<String> cards);
+    void selectLeaderAction(Map<Integer,String> cards);
 
     /**
      * this method is used to catch the player's selected row or column of the MarketBoard
      */
     void selectMarketAction();
 
-    /**
-     * this method is used to catch the decision of a player on a selection of marbles
-     * @param marbles is a set of marbles
-     */
-    void marbleAction(List<Marble> marbles, List<Marble> whiteColors);
 
     /**
      * this method is used to catch the action of a player on a LeaderCard
@@ -128,7 +130,7 @@ public interface View {
     /**
      * this method is used to catch the action of a player of a shared DevelopmentCard
      */
-    void buyCardAction(Map<Integer, String> decks);
+    void buyCardAction();
 
     /**
      * this method is used to catch the action of a player on their productions
@@ -138,7 +140,7 @@ public interface View {
     /**
      * this action is used to catch the resources chosen by a player
      */
-    void getResourcesAction(int num);
+    void getResourcesAction();
 
     /**
      * this method show the player's personal production.
@@ -148,7 +150,6 @@ public interface View {
     /**
      * this method is used to catch a swap in the Warehouse
      */
-    void swapAction();
-
-
+    public void swapAction();
 }
+

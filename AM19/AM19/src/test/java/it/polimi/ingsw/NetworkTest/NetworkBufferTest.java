@@ -15,8 +15,8 @@ public class NetworkBufferTest {
 
     @Test
     public void appendTest1() throws Exception, EmptyBufferException {
-        buffer.append("<message>test</message>");
-        assertEquals("<message>test</message>", buffer.get());
+        buffer.append("<Message>test</Message>");
+        assertEquals("<Message>test</Message>", buffer.get());
     }
 
     @Test
@@ -38,9 +38,9 @@ public class NetworkBufferTest {
 
     @Test
     public void appendTest5() throws Exception, EmptyBufferException {
-        buffer.append("<message>test");
-        buffer.append("</message>c");
-        assertEquals("<message>test</message>", buffer.get());
+        buffer.append("<Message>test");
+        buffer.append("</Message>c");
+        assertEquals("<Message>test</Message>", buffer.get());
         assertThrows(Exception.class, () -> buffer.append("<pong/>"));
     }
 

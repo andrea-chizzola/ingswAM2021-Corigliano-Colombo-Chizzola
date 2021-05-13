@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View;
 
+import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Model.Boards.FaithTrack.VaticanReportSection;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
@@ -12,6 +13,25 @@ import java.util.*;
  * this class contains some of the information of the Model inside the client
  */
 public class ViewModel {
+
+    /**
+     * this attribute represents the name of the Client
+     */
+    private String personalNickname;
+
+    /**
+     * this attribute represents the personal production of the players
+     */
+    private Production personalProduction;
+
+    /**
+     * this attribute represents the list of players in the current game
+     */
+    private List<String> nicknames;
+    /**
+     * this attribute represents the file used for configuration
+     */
+    private String configurationFile;
 
     /**
      * this attribute represents the current state of the shared decks
@@ -76,7 +96,12 @@ public class ViewModel {
     /**
      * this attribute represents the list of leader cards owned by each player
      */
-    private Map<String, List<String>> leaders;
+    private Map<String, List<String>> leadersID;
+
+    /**
+     * this attribute represents the state of the players' LeaderCards
+     */
+    private Map<String, List<ItemStatus>> leadersStatus;
 
     /**
      * this attribute represent the state of each player warehouse
@@ -87,6 +112,7 @@ public class ViewModel {
      * this attribute represent the size of the default shelves
      */
     private List<Integer> shelves;
+
     /**
      * this attribute represent the state of each player strongbox
      */
@@ -108,24 +134,9 @@ public class ViewModel {
     private Optional<List<VaticanReportSection>> lorenzoSections;
 
     /**
-     * this attribute represent the nicknames of the players
-     */
-    private List<String> nicknames;
-
-    /**
      * this attribute represents the progressive number of the current player
      */
-    private int currentPlayer;
-
-    /**
-     * this attribute represents the personal production of the players
-     */
-    private Production personalProduction;
-
-    /**
-     * this attribute represents the file used for configuration
-     */
-    private String configurationFile;
+    private String currentPlayer;
 
     /**
      * this attribute represents the current turn type of the player
@@ -137,41 +148,63 @@ public class ViewModel {
      */
     private List<String> availableTurns;
 
-    public ViewModel(String file, List<String> nicknames){
+    public ViewModel(String file){
         // GESTIRE CODICE DEL SERVER! I PARSER POTREBBERO FALLIRE! Il client in quel caso deve terminare con errore!
-        decks = new HashMap<>();
+        //trasformare i get delle mappe in get or default
+
+        this.configurationFile = file;
+
         nRows = ConfigurationParser.parseMarketRows(file);
         nColumns = ConfigurationParser.parseMarketColumns(file);
-        market = new LinkedList<>();
         slotNumber = ConfigurationParser.getNumSlots(file);
+        shelves = ConfigurationParser.getCapacityWarehouse(file);
+        trackLength = ConfigurationParser.parseTrackLength(file);
+        trackPoints = ConfigurationParser.parseTrack(file);
+        personalProduction = ConfigurationParser.parsePersonalProduction(file);
+
+        personalNickname = "";
+        currentPlayer = "";
+        selectedTurn = "";
+
+        market = new LinkedList<>();
+        possibleWhites = new LinkedList<>();
         slots = new HashMap<>();
         warehouse = new HashMap<>();
         strongbox = new HashMap<>();
-        shelves = ConfigurationParser.getCapacityWarehouse(file);
-
-        this.nicknames = new LinkedList<>(nicknames);
-        currentPlayer = 0;
-
-        trackLength = ConfigurationParser.parseTrackLength(file);
-        trackPoints = ConfigurationParser.parseTrack(file);
         faithPoints = new HashMap<>();
-
         sections = new HashMap<>();
-        for(String player : nicknames){
-            sections.put(player, ConfigurationParser.parseReportSection(file));
-        }
-
-        personalProduction = ConfigurationParser.parsePersonalProduction(file);
-        this.configurationFile = file;
+        decks = new HashMap<>();
+        selectedMarbles = new LinkedList<>();
+        leadersID = new HashMap<>();
+        leadersStatus = new HashMap<>();
+        actionToken = Optional.empty();
+        lorenzoFaith = Optional.empty();
+        lorenzoSections = Optional.empty();
+        availableTurns = new LinkedList<>();
     }
 
+    public String getPersonalNickname() {
+        return personalNickname;
+    }
+
+    public void setPersonalNickname(String personalNickname) {
+        this.personalNickname = personalNickname;
+    }
+
+    public Production getPersonalProduction() {
+        return personalProduction;
+    }
+
+    public String getConfigurationFile() {
+        return configurationFile;
+    }
 
     public Map<Integer, String> getDecks() {
-        return decks;
+        return new HashMap<>(decks);
     }
 
     public void setDecks(Map<Integer, String> decks) {
-        this.decks = decks;
+        this.decks = new HashMap<>(decks);
     }
 
     public List<Marble> getMarket() {
@@ -179,160 +212,7 @@ public class ViewModel {
     }
 
     public void setMarket(List<Marble> market) {
-        this.market = market;
-    }
-
-    public int getnRows() {
-        return nRows;
-    }
-
-    public void setnRows(int nRows) {
-        this.nRows = nRows;
-    }
-
-    public int getnColumns() {
-        return nColumns;
-    }
-
-    public void setnColumns(int nColumns) {
-        this.nColumns = nColumns;
-    }
-
-    public int getTrackLength() {
-        return trackLength;
-    }
-
-    public void setTrackLength(int trackLength) {
-        this.trackLength = trackLength;
-    }
-
-    public List<Integer> getTrackPoints() {
-        return trackPoints;
-    }
-
-    public void setTrackPoints(List<Integer> trackPoints) {
-        this.trackPoints = trackPoints;
-    }
-
-    public Map<String, Integer> getFaithPoints() {
-        return faithPoints;
-    }
-
-    public void setFaithPoints(Map<String, Integer> faithPoints) {
-        this.faithPoints = faithPoints;
-    }
-
-    public Map<String, List<VaticanReportSection>> getSections() {
-        return sections;
-    }
-
-    public void setSections(Map<String, List<VaticanReportSection>> sections) {
-        this.sections = sections;
-    }
-
-    public int getSlotNumber() {
-        return slotNumber;
-    }
-
-    public void setSlotNumber(int slotNumber) {
-        this.slotNumber = slotNumber;
-    }
-
-    public Map<String, List<String>> getSlots() {
-        return slots;
-    }
-
-    public void setSlots(Map<String, List<String>> slots) {
-        this.slots = slots;
-    }
-
-    public List<String> getLeaders(int playerNumber) {
-        String player = nicknames.get(playerNumber);
-        return new LinkedList<>(leaders.get(player));
-    }
-
-    public void setLeaders(Map<String, List<String>> leaders) {
-        this.leaders = leaders;
-    }
-
-    public Map<String, LinkedList<ResQuantity>> getWarehouse() {
-        return warehouse;
-    }
-
-    public void setWarehouse(Map<String, LinkedList<ResQuantity>> warehouse) {
-        this.warehouse = warehouse;
-    }
-
-    public List<Integer> getShelves() {
-        return shelves;
-    }
-
-    public void setShelves(List<Integer> shelves) {
-        this.shelves = shelves;
-    }
-
-    public Map<String, LinkedList<ResQuantity>> getStrongbox() {
-        return strongbox;
-    }
-
-    public void setStrongbox(Map<String, LinkedList<ResQuantity>> strongbox) {
-        this.strongbox = strongbox;
-    }
-
-    public Optional<String> getActionToken() {
-        return actionToken;
-    }
-
-    public void setActionToken(Optional<String> actionToken) {
-        this.actionToken = actionToken;
-    }
-
-    public Optional<Integer> getLorenzoFaith() {
-        return lorenzoFaith;
-    }
-
-    public void setLorenzoFaith(Optional<Integer> lorenzoFaith) {
-        this.lorenzoFaith = lorenzoFaith;
-    }
-
-    public Optional<List<VaticanReportSection>> getLorenzoSections() {
-        return lorenzoSections;
-    }
-
-    public void setLorenzoSections(Optional<List<VaticanReportSection>> lorenzoSections) {
-        this.lorenzoSections = lorenzoSections;
-    }
-
-    public List<String> getNicknames() {
-        return nicknames;
-    }
-
-    public void setNicknames(List<String> nicknames) {
-        this.nicknames = nicknames;
-    }
-
-    public int getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(int currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    public Production getPersonalProduction() {
-        return personalProduction;
-    }
-
-    public void setPersonalProduction(Production personalProduction) {
-        this.personalProduction = personalProduction;
-    }
-
-    public String getConfigurationFile() {
-        return configurationFile;
-    }
-
-    public void setConfigurationFile(String configurationFile) {
-        this.configurationFile = configurationFile;
+        this.market = new LinkedList<>(market);
     }
 
     public List<Marble> getSelectedMarbles() {
@@ -351,6 +231,128 @@ public class ViewModel {
         this.possibleWhites = new LinkedList<>(possibleWhites);
     }
 
+    public int getnRows() {
+        return nRows;
+    }
+    public int getnColumns() {
+        return nColumns;
+    }
+
+    public int getTrackLength() {
+        return trackLength;
+    }
+
+    public List<Integer> getTrackPoints() {
+        return new LinkedList<>(trackPoints);
+    }
+
+    public Map<String, Integer> getFaithPoints() {
+        return new HashMap<>(faithPoints);
+    }
+
+    public void setFaithPoints(Map<String, Integer> faithPoints) {
+        this.faithPoints = new HashMap<>(faithPoints);
+    }
+
+    public List<VaticanReportSection> getSections(String player) {
+        return new LinkedList<>(sections.get(player));
+    }
+
+    public void setSections(List<VaticanReportSection> sections, String player) {
+       this.sections.put(player, new LinkedList<>(sections));
+    }
+
+    public int getSlotNumber() {
+        return slotNumber;
+    }
+
+    public List<String> getSlots(String player) {
+        return new LinkedList<>(slots.get(player));
+    }
+
+    public void setSlots(List<String> slots, String player) {
+        this.slots.put(player, new LinkedList<>(slots));
+    }
+
+    public Map<Integer, String> getLeadersID(String player) {
+        Map<Integer, String> leaders = new HashMap<>();
+        List<String> selection = leadersID.get(player);
+        for(int i=0; i<selection.size(); i++){
+            leaders.put(i, selection.get(i));
+        }
+        return leaders;
+    }
+
+    public void setLeadersID(List<String> leadersID, String player) {
+        this.leadersID.put(player, new LinkedList<>(leadersID));
+    }
+
+    public Map<Integer,ItemStatus> getLeadersStatus(String player) {
+
+        Map<Integer, ItemStatus> leaders = new HashMap<>();
+        List<ItemStatus> selection = leadersStatus.get(player);
+        for(int i=0; i<selection.size(); i++){
+            leaders.put(i, selection.get(i));
+        }
+        return leaders;
+    }
+
+    public void setLeadersStatus(List<ItemStatus> leadersStatus, String player) {
+        this.leadersStatus.put(player, new LinkedList<>(leadersStatus));
+    }
+
+    public LinkedList<ResQuantity> getWarehouse(String player) {
+        return new LinkedList<>(warehouse.get(player));
+    }
+
+    public void setWarehouse(List<ResQuantity> warehouse, String player) {
+        this.warehouse.put(player, new LinkedList<>(warehouse));
+    }
+
+    public List<Integer> getShelves() {
+        return shelves;
+    }
+
+    public List<ResQuantity> getStrongbox(String player) {
+        return new LinkedList<>(this.strongbox.get(player));
+    }
+
+    public void setStrongbox(List<ResQuantity> strongbox, String player) {
+        this.strongbox.put(player, new LinkedList<>(strongbox));
+    }
+
+    public Optional<String> getActionToken() {
+        return actionToken;
+    }
+
+    public void setActionToken(String actionToken) {
+        this.actionToken = Optional.of(actionToken);
+    }
+
+    public Optional<Integer> getLorenzoFaith() {
+        return lorenzoFaith;
+    }
+
+    public void setLorenzoFaith(int lorenzoFaith) {
+        this.lorenzoFaith = Optional.of(lorenzoFaith);
+    }
+
+    public Optional<List<VaticanReportSection>> getLorenzoSections() {
+        if (lorenzoSections.isEmpty()) return Optional.empty();
+        else return Optional.of(new LinkedList<>(lorenzoSections.get()));
+    }
+
+    public void setLorenzoSections(List<VaticanReportSection> lorenzoSections) {
+        this.lorenzoSections = Optional.of(new LinkedList<>(lorenzoSections));
+    }
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 
     public String getSelectedTurn() {
         return selectedTurn;
@@ -364,9 +366,23 @@ public class ViewModel {
         return new LinkedList<>(availableTurns);
     }
 
-    /*public void initializeTurns(){
-        //da prendere da configuration file
+    public void setAvailableTurns(List<String> availableTurns) {
+        this.availableTurns = new LinkedList<>(availableTurns);
     }
 
-    public void */
+    public List<String> getNicknames() {
+        return new LinkedList<>(nicknames);
+    }
+
+    public void setNicknames(List<String> nicknames) {
+        this.nicknames = new LinkedList<>(nicknames);
+    }
+
+    public void removeNickname(String nickname) {
+        if(nicknames.contains(nickname)) return;
+        nicknames.remove(nickname);
+    }
+
+
+    //la logica di controllo del turno, se vuoi metterla, va qui
 }
