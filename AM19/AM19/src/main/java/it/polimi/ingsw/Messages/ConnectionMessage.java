@@ -2,17 +2,16 @@ package it.polimi.ingsw.Messages;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 
-public class ConnectionMessage extends Message {
+public class ConnectionMessage extends Message{
     /**
      * creates a new message
      *
      * @param body        represents the body of the message
-     * @param messageType represents the type of the message
+     * @param messageType represents the body of the message
      */
     public ConnectionMessage(String body, MessageType messageType) {
         super(body, messageType);
     }
-
 
     /**
      *
@@ -46,4 +45,5 @@ public class ConnectionMessage extends Message {
         return MessageParser.getMessageTag(toXML(), "playersNumber");
 
     }
+
 }

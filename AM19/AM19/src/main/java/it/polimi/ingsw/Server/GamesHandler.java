@@ -139,12 +139,12 @@ public class GamesHandler {
      * @param playersNumber represents the number of players associates to the new game (0 if the player wants to join a game)
      * @param connection represents the client's socket connection
      */
-    /*public synchronized void manageLobby(String nickname, boolean gameHost, int playersNumber, ClientConnection connection){
+    public synchronized void manageLobby(String nickname, boolean gameHost, int playersNumber, ClientConnection connection){
 
         if(!isNicknameAvailable(nickname)){
 
             System.out.println("[SERVER] Nickname " + nickname + " is currently not available.");
-            Message error = new MessageReply("Nickname not available. Please choose another nickname and reconnect.", true);
+            //Message error = new MessageReply("Nickname not available. Please choose another nickname and reconnect.", true);
             //connection.send(error);
             connection.closeConnection();
             return;
@@ -153,7 +153,7 @@ public class GamesHandler {
         if(!gameHost && waitingConnection.size() == 0){
 
             System.out.println("[SERVER] Can't find an existing game to join.");
-            Message error = new MessageReply("Can't find an existing game to join. Reconnect and create a new one.", true);
+            //Message error = new MessageReply("Can't find an existing game to join. Reconnect and create a new one.", true);
             //connection.send(error);
             connection.closeConnection();
             return;
@@ -168,7 +168,7 @@ public class GamesHandler {
             Game game = new Game(nickname, connection, playersNumber, createId());
             addWaitingGame(game);
 
-            Message message = new MessageReply("Created a new single player game.", false);
+            //Message message = new MessageReply("Created a new single player game.", false);
             //connection.send(message);
 
         }else if(waitingConnection.size() > 0){
@@ -176,7 +176,7 @@ public class GamesHandler {
             System.out.println("[SERVER] " + nickname + " joined a game.");
             waitingConnection.get(0).addPlayer(nickname, connection);
 
-            Message message = new MessageReply("Joined a game.", false);
+            //Message message = new MessageReply("Joined a game.", false);
             //connection.send(message);
 
         }
@@ -189,7 +189,7 @@ public class GamesHandler {
             }
         }
 
-    }*/
+    }
 
     /**
      * removes a player from the lobby
@@ -231,7 +231,7 @@ public class GamesHandler {
      * @param nickname represents the reconnecting player's nickname
      * @param connection represents the client's socket connection
      */
-    /*public synchronized void manageReconnection(String nickname, ClientConnection connection){
+    public synchronized void manageReconnection(String nickname, ClientConnection connection){
 
         //String nickname = message.getNickName();
         System.out.println("[SERVER] Nickname " + nickname + " is trying to reconnect...");
@@ -245,7 +245,7 @@ public class GamesHandler {
             //connection.getListener().onReceivedMessage(new MessageReconnectionRequest(nickname), nickname);
 
             System.out.println("[SERVER] Nickname " + nickname + " was reconnected to his game.");
-            Message reply = new MessageReply("You have been reconnected to your previous game.", false);
+            //Message reply = new MessageReply("You have been reconnected to your previous game.", false);
             //connection.send(reply);
 
             //connection.send(new UpdateGame());
@@ -255,12 +255,12 @@ public class GamesHandler {
         }else{
 
             System.out.println("[SERVER] Nickname " + nickname + " was not disconnected.");
-            Message error = new MessageReply("You were not playing any match or your game is now over.", true);
+            //Message error = new MessageReply("You were not playing any match or your game is now over.", true);
             //connection.send(error);
             connection.closeConnection();
 
         }
 
-    }*/
+    }
 
 }

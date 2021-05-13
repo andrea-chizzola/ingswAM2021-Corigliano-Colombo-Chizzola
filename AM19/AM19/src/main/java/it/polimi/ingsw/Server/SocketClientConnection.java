@@ -175,7 +175,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         }
 
         server.addConnection(playerId,this);
-        //startPingTimer();
+        startPingTimer();
         String read = "";
 
         try {
