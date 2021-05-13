@@ -1,5 +1,11 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Controller.VirtualView;
+import it.polimi.ingsw.Model.Boards.GameBoardHandler;
+import it.polimi.ingsw.Controller.StateHandler;
+import it.polimi.ingsw.Model.Boards.GameBoard;
+import it.polimi.ingsw.View.View;
+
 import java.util.*;
 
 /**
@@ -8,9 +14,24 @@ import java.util.*;
 public class Game {
 
     /**
+     * server
+     */
+    private Server server;
+
+    /**
+     * configuration file path
+     */
+    private final String file = "defaultConfiguration.xml";
+
+    /**
+     * It manages the game
+     */
+    private StateHandler stateHandler;
+
+    /**
      * keeps track of the players part of the match
      */
-    private Map<String, ClientConnection> players;
+    private Map<String, String> players;
 
     /**
      * represents a unique id associated to the match
@@ -27,14 +48,28 @@ public class Game {
      */
     private boolean start;
 
-    public Game(String nickname, ClientConnection connection, int playersNumber, String id){
+    public Game(Server server, String nickname, String socketID, int playersNumber, String id){
 
+        this.server = server;
         players = new HashMap<>();
-        players.put(nickname, connection);
+        players.put(nickname, socketID);
         this.id = id;
         this.playersNumber = playersNumber;
-        start = playersNumber == 1;
+        start = (playersNumber == 1);
 
+    }
+
+    private String getNickName(String socketID){
+        for(String nickName : players.keySet()){
+            if(players.get(nickName).equals(socketID))
+                return nickName;
+        }
+        return null;
+    }
+
+    public void onReceivedMessage(String message, String socketID){
+        if(getNickName(socketID) != null)
+            stateHandler.stateHandler(message, getNickName(socketID));
     }
 
     /**
@@ -43,7 +78,7 @@ public class Game {
      * @param nickname represents the message receiver
      */
     public void send(String message, String nickname){
-        players.get(nickname).send(message);
+        server.send(players.get(nickname),message);
     }
 
     /**
@@ -51,37 +86,35 @@ public class Game {
      * @param message represents the message to send
      */
     public void sendAll(String message){
-        for(Map.Entry<String, ClientConnection> entry : players.entrySet()){
-            entry.getValue().send(message);
+        for(Map.Entry<String, String> entry : players.entrySet()){
+            server.send(entry.getValue(),message);
         }
     }
 
     /**
      * adds a new player to the game
      * @param nickname represents the nickname of the added player
-     * @param connection represents the player's socket connection
+     * @param socketID represents the player's socket connection
      */
-    public void addPlayer(String nickname, ClientConnection connection){
+    public void addPlayer(String nickname, String socketID){
 
-        players.put(nickname, connection);
+        if(start)
+            stateHandler.reconnection(nickname);
+        players.put(nickname, socketID);
         if(playersNumber == players.size()) start = true;
 
     }
 
-    /**
-     *
-     * @param nickname represents the player's nickname
-     * @return returns the socket connection related to the selected player
-     */
-    public ClientConnection getPlayerConnection(String nickname){
-        return players.get(nickname);
-    }
 
     /**
      * removes a player from the game
      * @param nickname represents the nickname of the removed player
      */
-    public void removePlayer(String nickname){ players.remove(nickname); }
+    public void removePlayer(String nickname){
+        if(start){
+            stateHandler.disconnection(nickname);
+        }
+        players.remove(nickname); }
 
     /**
      * @param nickname represents the name of the player
@@ -89,6 +122,11 @@ public class Game {
      */
     public boolean containsPlayer(String nickname){
         return players.containsKey(nickname);
+    }
+
+
+    public boolean containsSocketID(String socketID){
+        return players.containsValue(socketID);
     }
 
     /**
@@ -126,29 +164,14 @@ public class Game {
 
         System.out.println("[SERVER] Creating a new game...");
 
-        List<String> names = new ArrayList<>(players.keySet());
-        //GameBoard gameBoard = new GameBoard(names, file);       message connection ha bisogno di un file?
-        //Controller controller = new Controller();
-        //View view = new View();
-        List<ClientConnection> connections = new ArrayList<>(players.values());
-
-        for(int i = 0; i < connections.size(); i++){
-
-            //creo una virtual view per giocatore?
-            //connections.get(i).addListener(view);
-            //views.add(view);  solo se view ha metodo per creare un giocatore
-            //gameBoard.addListener(view);
-            //view.addListener(controller);
-
-        }
-
-        //ciclo for che per ogni view fa qualcosa per giocatore
+        ArrayList<String> names = new ArrayList<>(players.keySet());
+        GameBoardHandler gameBoard = new GameBoard(names, file);
+        gameBoard.giveLeaderCards(file);
+        View virtualView = new VirtualView(this,gameBoard);
+        gameBoard.attachView(virtualView);
+        this.stateHandler = new StateHandler(gameBoard, virtualView);
 
         System.out.println("[SERVER] Game is ready to start");
-
-        //sendAll(new UpdateGame());
-        //sendAll(new UpdateLeaderCards());
-        //message currentplayer a tutti o ne creo uno apposta per ciascuno? o dice il controller cosa mandare?
 
     }
 
