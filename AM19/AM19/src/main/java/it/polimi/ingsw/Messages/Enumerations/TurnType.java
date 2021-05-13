@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Messages;
+package it.polimi.ingsw.Messages.Enumerations;
 
 public enum TurnType {
     TAKE_RESOURCES,

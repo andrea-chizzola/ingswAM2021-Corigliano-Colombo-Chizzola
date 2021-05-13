@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Messages;
+package it.polimi.ingsw.Messages.Enumerations;
 
 import it.polimi.ingsw.View.CLIColors;
 
