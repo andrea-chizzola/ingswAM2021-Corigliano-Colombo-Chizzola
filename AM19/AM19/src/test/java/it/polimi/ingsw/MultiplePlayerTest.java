@@ -68,7 +68,7 @@ class MultiplePlayerTest {
 
         assertEquals(0, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
         assertEquals(1, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
-        assertEquals(1, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+        assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
 
         gameBoard.endTurnMove();
 
@@ -76,7 +76,7 @@ class MultiplePlayerTest {
 
         assertEquals(1, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
         assertEquals(1, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
-        assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+        assertEquals(3, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
 
         gameBoard.endTurnMove();
 
@@ -84,7 +84,7 @@ class MultiplePlayerTest {
 
         assertEquals(2, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
         assertEquals(2, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
-        assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+        assertEquals(3, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
 
     }
 
