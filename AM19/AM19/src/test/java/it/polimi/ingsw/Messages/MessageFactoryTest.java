@@ -30,27 +30,27 @@ class MessageFactoryTest {
 
     @Test
     void buildConnection() throws MalformedMessageException {
-        assertEquals(messageFactory.buildConnection("Connection request.", "nickname", true, 4), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>CONNECTION</messageType><nickname>nickname</nickname><playersNumber>4</playersNumber><body>Connection request.</body><gameHost>true</gameHost></Message>");
+        assertEquals(messageFactory.buildConnection("Connection request.", "nickname", true, 4), "<Message><messageType>CONNECTION</messageType><nickname>nickname</nickname><playersNumber>4</playersNumber><body>Connection request.</body><gameHost>true</gameHost></Message>");
     }
 
     @Test
     void buildDisconnection() throws MalformedMessageException {
-        assertEquals(messageFactory.buildDisconnection("Disconnection request.", "nickname"), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>DISCONNECTION</messageType><nickname>nickname</nickname><body>Disconnection request.</body></Message>");
+        assertEquals(messageFactory.buildDisconnection("Disconnection request.", "nickname"), "<Message><messageType>DISCONNECTION</messageType><nickname>nickname</nickname><body>Disconnection request.</body></Message>");
     }
 
     @Test
     void buildReconnection() throws MalformedMessageException {
-        assertEquals(messageFactory.buildReconnection("Reconnection request.", "nickname"), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>RECONNECTION</messageType><nickname>nickname</nickname><body>Reconnection request.</body></Message>");
+        assertEquals(messageFactory.buildReconnection("Reconnection request.", "nickname"), "<Message><messageType>RECONNECTION</messageType><nickname>nickname</nickname><body>Reconnection request.</body></Message>");
     }
 
     @Test
     void buildReply() throws MalformedMessageException {
-        assertEquals(messageFactory.buildReply(true, "Reply message."), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>REPLY</messageType><correct>true</correct><body>Reply message.</body></Message>");
+        assertEquals(messageFactory.buildReply(true, "Reply message."), "<Message><messageType>REPLY</messageType><correct>true</correct><body>Reply message.</body></Message>");
     }
 
     @Test
     void buildCurrentPlayer() throws MalformedMessageException {
-        assertEquals(messageFactory.buildCurrentPlayer("playerID", "nickname"), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>GAME_STATUS</messageType><currentPlayer>playerID</currentPlayer><body>nickname</body></Message>");
+        assertEquals(messageFactory.buildCurrentPlayer("playerID", "nickname"), "<Message><messageType>GAME_STATUS</messageType><currentPlayer>playerID</currentPlayer><body>nickname</body></Message>");
     }
 
     @Test
@@ -58,7 +58,7 @@ class MessageFactoryTest {
         Map<String, Integer> map = new HashMap<>();
         map.put("player1", 25);
         map.put("player2", 20);
-        assertEquals(messageFactory.buildEndGame(map, "Winner message."), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>END_GAME</messageType><body>Winner message.</body><points>player1:25:player2:20</points></Message>");
+        assertEquals(messageFactory.buildEndGame(map, "Winner message."), "<Message><messageType>END_GAME</messageType><body>Winner message.</body><points>player1:25:player2:20</points></Message>");
     }
 
     @Test
@@ -68,7 +68,7 @@ class MessageFactoryTest {
         List<ResQuantity> list = new ArrayList<>();
         list.add(res1);
         list.add(res2);
-        assertEquals(messageFactory.buildBoxUpdate(list, list, "Boxes update."), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><strongbox>coin:5:stone:9</strongbox><messageType>BOX_UPDATE</messageType><body>Boxes update.</body><warehouse>coin:5:stone:9</warehouse></Message>");
+        assertEquals(messageFactory.buildBoxUpdate(list, list, "Boxes update."), "<Message><strongbox>coin:5:stone:9</strongbox><messageType>BOX_UPDATE</messageType><body>Boxes update.</body><warehouse>coin:5:stone:9</warehouse></Message>");
 
     }
 
@@ -77,7 +77,7 @@ class MessageFactoryTest {
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "id1");
         map.put(2, "id2");
-        assertEquals(messageFactory.buildSlotsUpdate(map, "Slots update."), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>SLOTS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body>Slots update.</body></Message>");
+        assertEquals(messageFactory.buildSlotsUpdate(map, "Slots update."), "<Message><messageType>SLOTS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body>Slots update.</body></Message>");
     }
 
     @Test
@@ -85,12 +85,12 @@ class MessageFactoryTest {
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "id1");
         map.put(2, "id2");
-        assertEquals(messageFactory.buildDecksUpdate(map, "Decks update."),"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>DECKS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body>Decks update.</body></Message>");
+        assertEquals(messageFactory.buildDecksUpdate(map, "Decks update."),"<Message><messageType>DECKS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body>Decks update.</body></Message>");
     }
 
     @Test
     void buildUpdateLorenzo() throws MalformedMessageException {
-        assertEquals(messageFactory.buildUpdateLorenzo("tokenID", "Update top token.") ,"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>TOKEN_UPDATE</messageType><body>Update top token.</body><token>tokenID</token></Message>");
+        assertEquals(messageFactory.buildUpdateLorenzo("tokenID", "Update top token.") ,"<Message><messageType>TOKEN_UPDATE</messageType><body>Update top token.</body><token>tokenID</token></Message>");
     }
 
     @Test
@@ -98,7 +98,7 @@ class MessageFactoryTest {
         List<Marble> list = new ArrayList<>();
         list.add(new MarbleBlue());
         list.add(new MarbleGray());
-        assertEquals(messageFactory.buildUpdateMarket(list, "Update market"),"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><market>MarbleBlue:MarbleGray</market><messageType>MARKET_UPDATE</messageType><body>Update market</body></Message>");
+        assertEquals(messageFactory.buildUpdateMarket(list, "Update market"),"<Message><market>MarbleBlue:MarbleGray</market><messageType>MARKET_UPDATE</messageType><body>Update market</body></Message>");
     }
 
     @Test
@@ -109,7 +109,7 @@ class MessageFactoryTest {
         List<Marble> list1 = new ArrayList<>();
         list1.add(new MarblePurple());
         list1.add(new MarbleRed());
-        assertEquals(messageFactory.buildSelectedMarbles(list, list1, "Marbles selected by the user."), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><candidates>MarblePurple:MarbleRed</candidates><messageType>SELECTED_MARBLES</messageType><marbles>MarbleBlue:MarbleGray</marbles><body>Marbles selected by the user.</body></Message>");
+        assertEquals(messageFactory.buildSelectedMarbles(list, list1, "Marbles selected by the user."), "<Message><candidates>MarblePurple:MarbleRed</candidates><messageType>SELECTED_MARBLES</messageType><marbles>MarbleBlue:MarbleGray</marbles><body>Marbles selected by the user.</body></Message>");
     }
 
 }
