@@ -131,6 +131,22 @@ public class UpdateMessage extends Message {
         return parser.getMapIntegerItemStatus(toXML(), "leaderStatus");
     }
 
+    /**
+     * this method returns the content of the tag "player" in the message
+     * @return a String that represent the content
+     * @throws MalformedMessageException is the message is not correctly formed
+     */
+    public String getPlayer() throws MalformedMessageException{
+        MessageUtilities parser = MessageUtilities.instance();
+        return parser.getString(toXML(), "player");
+    }
+
+    public List<String> getTurnTypes() throws MalformedMessageException {
+        MessageUtilities parser = MessageUtilities.instance();
+        return parser.getListString(toXML(), "turns");
+    }
+
+
 
 
 }
