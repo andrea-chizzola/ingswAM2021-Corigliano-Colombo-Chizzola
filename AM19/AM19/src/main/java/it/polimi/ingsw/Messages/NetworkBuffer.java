@@ -110,7 +110,7 @@ public class NetworkBuffer {
             if(index != -1) {
                 index = index + messageEnd.length();
                 extracted.add(s.substring(0, index));
-                buffer.delete(0, index+1);
+                buffer.delete(0, index);
             }
         }
     }
@@ -121,7 +121,6 @@ public class NetworkBuffer {
      */
     private boolean checkString(){
         String s = buffer.toString();
-        if(!s.startsWith(messageStart) && !s.startsWith(ping)  && !s.startsWith(pong)) return false;
-        return true;
+        return s.startsWith(messageStart) || s.startsWith(ping) || s.startsWith(pong);
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.NetworkTest;
 import it.polimi.ingsw.Exceptions.EmptyBufferException;
+import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.NetworkBuffer;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +42,7 @@ public class NetworkBufferTest {
         buffer.append("<Message>test");
         buffer.append("</Message>c");
         assertEquals("<Message>test</Message>", buffer.get());
-        assertThrows(Exception.class, () -> buffer.append("<pong/>"));
+        assertThrows(MalformedMessageException.class, () -> buffer.append("<pong/>"));
     }
 
     @Test

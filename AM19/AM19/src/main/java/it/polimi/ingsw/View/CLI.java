@@ -473,7 +473,8 @@ public class CLI implements View, SubjectView {
         for (String selection : selections) map.put(Integer.parseInt(selection), ItemStatus.ACTIVE);
 
         try{
-            viewObserver.update(MessageFactory.buildLeaderUpdate(cards, map, "Leader cards initialization managing."));
+            viewObserver.update(MessageFactory.buildLeaderUpdate(cards, map,
+                    "Leader cards initialization managing.", model.getCurrentPlayer()));
         }catch(MalformedMessageException e){
             //exit from client
         }
