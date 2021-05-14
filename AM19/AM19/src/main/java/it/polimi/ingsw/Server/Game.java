@@ -173,6 +173,8 @@ public class Game {
 
         System.out.println("[SERVER] Game is ready to start");
 
+        return;
+
     }
 
 }

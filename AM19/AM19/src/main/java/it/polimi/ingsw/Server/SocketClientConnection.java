@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Exceptions.EmptyBufferException;
 import it.polimi.ingsw.Messages.*;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
@@ -23,12 +24,12 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private NetworkBuffer buffer;
     private PrintWriter out;
 
-    public SocketClientConnection(Socket socket, Server server, String socketID) {
+    public SocketClientConnection(Socket socket, Server server, String socketID, ConnectionListener controller) {
 
         this.socket = socket;
         this.server = server;
         this.socketID = socketID;
-        //this.listener = listener; AGGIUNGERE LISTENER A CONTRUCTOR
+        this.controller = controller;
         pong = true;
 
     }
@@ -79,8 +80,9 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     @Override
     public synchronized void send(String message) {
 
-        out.println(message);
-        out.flush();
+        //out.println(message);
+        //out.flush();
+        System.out.println(message);
 
     }
 
@@ -112,7 +114,11 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         else if(buffer.getPing()) asyncSend("<pong/>");
         else {
             try {
-                controller.onReceivedMessage(buffer.get(), socketID);
+                System.out.println("prima ");
+                String string = buffer.get();
+                System.out.println("in mezzo ");
+                controller.onReceivedMessage(string, socketID);
+                System.out.println("dopo send message " + string);
             } catch (EmptyBufferException e){
                 System.out.println("[SERVER] The buffer is empty!");
             }
@@ -166,7 +172,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         }
 
         server.addConnection(socketID,this);
-        startPingTimer();
+        //startPingTimer();
         String read = "";
 
         try {
@@ -174,7 +180,6 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             while ((read = in.readLine()) != null) {
 
                 System.out.println("[SERVER] Received: " + read);
-
                 messageHandler(read);
 
             }
