@@ -187,7 +187,9 @@ public class GamesHandler {
 
         }
 
-        for(Game game : waitingConnection){
+        int size = waitingConnection.size();
+        for(int i=0; i<size; i++){
+            Game game = waitingConnection.get(i);
             if(game.canStart()){
                 game.setUpGame();
                 addActiveGame(game);

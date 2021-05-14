@@ -22,12 +22,12 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private NetworkBuffer buffer;
     private PrintWriter out;
 
-    public SocketClientConnection(Socket socket, Server server, String socketID) {
+    public SocketClientConnection(Socket socket, Server server, String socketID, ConnectionListener controller) {
 
         this.socket = socket;
         this.server = server;
         this.socketID = socketID;
-        //this.listener = listener; AGGIUNGERE LISTENER A CONTRUCTOR
+        this.controller = controller;
         pong = true;
 
     }
@@ -65,7 +65,6 @@ public class SocketClientConnection implements ClientConnection, Runnable {
      */
     @Override
     public void addListener(ConnectionListener listener) {
-
         this.controller = listener;
 
     }
@@ -78,7 +77,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     @Override
     public synchronized void send(String message) {
 
-        out.println(message);
+        System.out.println(message);
+        //out.println(message);
         out.flush();
 
     }
@@ -166,7 +166,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         }
 
         server.addConnection(socketID,this);
-        startPingTimer();
+        //startPingTimer();
         String read = "";
 
         try {

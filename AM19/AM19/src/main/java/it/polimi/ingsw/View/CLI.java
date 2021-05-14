@@ -619,6 +619,7 @@ public class CLI implements View, SubjectView {
     @Override
     public void getResourcesAction() {
         //if(number<=0) return;
+        //mandare messaggio vuoto
 
         String selection;
         String[] sequence;

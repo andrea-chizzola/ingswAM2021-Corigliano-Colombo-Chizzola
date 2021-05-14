@@ -101,6 +101,8 @@ public class MessageUtilities {
         List<Integer> shelves = new ArrayList<>();
         String[] string = warehouse.split(splitter);
 
+        if(warehouse.equals("")) return shelves;
+
         if(string.length%2 != 0)
             throw new MalformedMessageException();
 
@@ -305,8 +307,13 @@ public class MessageUtilities {
         String[] string = messageString.split(splitter);
         String key;
 
-        if(string.length%2 != 0)
+        if(messageString.equals("")){
+            return list;
+        }
+
+        if(string.length%2 != 0) {
             throw new MalformedMessageException();
+        }
 
         for(int i=0; i<string.length/2; i++){
             key = string[(i*2)+1].toUpperCase();

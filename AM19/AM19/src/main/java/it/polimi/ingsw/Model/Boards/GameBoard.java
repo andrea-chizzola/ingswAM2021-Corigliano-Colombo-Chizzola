@@ -474,9 +474,11 @@ public class GameBoard implements GameBoardHandler {
     @Override
     public ArrayList<Marble> takeMarketRow(int row) throws InvalidActionException {
 
+        Marble white = new MarbleWhite();
         try {
             marblesMarket = getMarketBoard().getRow(row);
             virtualView.showMarketUpdate(marketBoard.showMarket());
+            virtualView.showMarblesUpdate(marblesMarket, white.whiteTransformations(currentPlayer), currentPlayer.getNickname());
             return new ArrayList<>(marblesMarket);
         }
         catch (IllegalMarketException e){throw new InvalidActionException(e.getMessage());}
@@ -513,7 +515,6 @@ public class GameBoard implements GameBoardHandler {
     public boolean actionMarbles(List<Marble> marblesPlayer, List<PlayerAction> actions, List<Integer> shelves){
 
         Marble marblePlayer;
-
         if(!checkMarbles(marblesMarket,marblesPlayer,actions,shelves))
             return false;
 
@@ -528,7 +529,6 @@ public class GameBoard implements GameBoardHandler {
         }
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
         virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
-
         return true;
     }
 
@@ -582,6 +582,7 @@ public class GameBoard implements GameBoardHandler {
         if(resources.size() != currentPlayer.getNumberResourcesInitialization())
             return false;
 
+
         if(resources.stream().anyMatch(resource -> resource.getColor().equals(ResourceColor.RED)))
             return false;
 
@@ -593,7 +594,6 @@ public class GameBoard implements GameBoardHandler {
             currentPlayer.getWarehouse().insertResource(shelves.get(i), resources.get(i));
         }
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
-
         return true;
     }
 

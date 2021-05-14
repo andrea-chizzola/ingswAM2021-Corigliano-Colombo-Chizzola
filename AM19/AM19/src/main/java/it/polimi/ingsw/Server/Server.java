@@ -115,7 +115,7 @@ public class Server {
 
                 Socket socket = serverSocket.accept();
                 System.out.println("[SERVER] Accepted new connection");
-                executor.submit(new SocketClientConnection(socket, this, createId()));
+                executor.submit(new SocketClientConnection(socket, this, createId(), controller));
 
             } catch (IOException e) {
 

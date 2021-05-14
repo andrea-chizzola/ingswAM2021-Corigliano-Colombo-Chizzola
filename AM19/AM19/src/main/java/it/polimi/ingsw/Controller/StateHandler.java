@@ -142,7 +142,7 @@ public class StateHandler {
             }
         }
         catch (MalformedMessageException e){
-            virtualView.showAnswer(false,"Malformed message!", nickname);
+            virtualView.showAnswer(false,"Malformed message", nickname);
             return false;
         }
     }
@@ -175,12 +175,16 @@ public class StateHandler {
      */
     private boolean resourceHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
+        List<Resource> lista = actionMessage.getResourcesInit();
+        List<Integer> intlist = actionMessage.getShelvesInit();
+
         if(!gameBoard.insertResources(actionMessage.getResourcesInit(),actionMessage.getShelvesInit())) {
            virtualView.showAnswer(false,"Error, incorrect initialization resources selection!", nickname);
            return false;
        }
 
        numberPlayersInit--;
+        System.out.println("DEBUG ENTRO");
        if(numberPlayersInit == 0){
            currentStates.clear();
            currentStates.add(Message.MessageType.SELECTED_TURN);
@@ -188,6 +192,7 @@ public class StateHandler {
            gameBoard.CurrentPlayer();
            return true;
        }
+        System.out.println("DEBUG ESCO");
 
        gameBoard.endTurnMove();
        currentStates.clear();

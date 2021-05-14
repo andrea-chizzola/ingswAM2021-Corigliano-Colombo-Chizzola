@@ -94,6 +94,7 @@ public class MessageFactory {
             content.append(box.get(i).getResource().toString().toLowerCase())
                     .append(splitter).append(box.get(i).getQuantity()).append(splitter);
         }
+        if(content.length()==0) return content.toString();
         return content.substring(0, content.length()-1);
     }
 
@@ -147,6 +148,7 @@ public class MessageFactory {
             content.append(target.get(i).toString())
                     .append(splitter);
         }
+        if(content.length()==0) return content.toString();
         return content.substring(0, content.length()-1);
     }
 
