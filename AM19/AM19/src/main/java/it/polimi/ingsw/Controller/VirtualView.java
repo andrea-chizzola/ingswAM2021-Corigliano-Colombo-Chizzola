@@ -86,9 +86,7 @@ public class VirtualView implements View {
     public void showBoxes(List<ResQuantity> warehouse, List<ResQuantity> strongBox, String nickName) {
         try {
             String message = MessageFactory.buildBoxUpdate(warehouse,strongBox,nickName,"update boxes");
-            System.out.println("DEBUG40");
             game.sendAll(message);
-            System.out.println("DEBUG41");
         }catch (MalformedMessageException e){e.printStackTrace();}
     }
 
