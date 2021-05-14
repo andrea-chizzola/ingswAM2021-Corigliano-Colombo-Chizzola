@@ -195,6 +195,7 @@ public class GamesHandler {
                 addActiveGame(game);
                 waitingConnection.remove(game);
             }
+            break;
         }
 
     }
@@ -216,6 +217,7 @@ public class GamesHandler {
                    return;
                default:
                    getGameBySocketID(socketID).onReceivedMessage(message, socketID);
+                   return;
 
            }
        }catch (MalformedMessageException e){
@@ -240,6 +242,7 @@ public class GamesHandler {
                 }
                 return;
             }
+            break;
         }
 
         for(Game game : activeGames){
@@ -256,6 +259,7 @@ public class GamesHandler {
                 }
                 return;
             }
+            break;
         }
 
     }
