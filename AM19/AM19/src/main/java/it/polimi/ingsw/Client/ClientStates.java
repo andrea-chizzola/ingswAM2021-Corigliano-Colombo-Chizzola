@@ -252,7 +252,7 @@ class Turn_Selection implements ClientStates{
             map = new HashMap<>();
             map.put(TurnType.MANAGE_LEADER, Manage_Leader::new);
             map.put(TurnType.BUY_CARD, Buy_Card::new);
-            map.put(TurnType.TAKE_RESOURCES, Take_Resource::new);
+            map.put(TurnType.TAKE_RESOURCES, Swap::new);
             map.put(TurnType.DO_PRODUCTION, Do_Production::new);
         }
 

@@ -110,7 +110,7 @@ public class NetworkBuffer {
             if(index != -1) {
                 index = index + messageEnd.length();
                 extracted.add(s.substring(0, index));
-                buffer.delete(0, index);
+                buffer.delete(0, index+1);
             }
         }
     }

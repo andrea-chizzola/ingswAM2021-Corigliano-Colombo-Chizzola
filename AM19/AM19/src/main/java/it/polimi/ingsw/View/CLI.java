@@ -188,12 +188,26 @@ public class CLI implements View, SubjectView {
     /**
      * this method is used to print the current status of the CLI
      */
-    public void plot(){
+    public void plotView(){
+        plot(viewStatus);
+    }
 
-        for (int i = 0; i < viewStatus.length; i++) {
-            System.out.println();
-            for (int j = 0; j < viewStatus[i].length; j++) {
-                out.println(viewStatus[i][j]);
+    /**
+     * this method is used to print the status of the shared decks
+     */
+    public void plotDecks(){
+       plot(decksStatus);
+    }
+
+    /**
+     * this helper method is used to print a matrix of Strings
+     * @param target is the matrix to be printed
+     */
+    private void plot(String[][] target){
+        for (int i = 0; i < target.length; i++) {
+            out.println();
+            for (int j = 0; j < target[i].length; j++) {
+                out.println(target[i][j]);
             }
         }
     }
@@ -358,7 +372,7 @@ public class CLI implements View, SubjectView {
     @Override
     public void showEndGame(Map<String, Integer> players) {
         CLIPainter.paintEndGameBox(viewStatus, END_X, END_Y,players);
-        plot();
+        plotView();
     }
 
     /**
@@ -420,7 +434,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public String selectTurnAction(List<String> turns, String player){
-        plot();
+        plotView();
         StringBuilder available = new StringBuilder();
         for(String string : turns) available.append(string).append(", ");
         String s = "";
@@ -430,7 +444,11 @@ public class CLI implements View, SubjectView {
             if(!turns.contains(s)) showAnswer(false, "Not existent turn type.", "name");
         }
         while(!turns.contains(s));
-        //qui mando il messaggio al client
+        try {
+            viewObserver.update(MessageFactory.buildSelectedTurn(s, "Selection of the turn type"));
+        }catch(MalformedMessageException e){
+            //exit from client
+        }
         return s;
     }
 
@@ -438,11 +456,42 @@ public class CLI implements View, SubjectView {
      * this method is used to catch the LeaderCards selected by a player
      * @param cards is the list of cards given to a player
      */
+    //put the number of default leaders from configuration file
     @Override
     public void selectLeaderAction(Map<Integer,String> cards) {
+        String action;
+        String[] selections;
+        do {
+            out.println("Select two of your cards. Command:- position1:position2\n" +
+                    "eg. type 1:2 to select cards one and two");
+            action = getInput();
+            selections = action.split(":");
+        } while (selections.length != 2 || !isIntSequence(selections, 1) || !containsKeys(cards, selections));
 
+        Map<Integer, ItemStatus> map = new HashMap<>();
+        for(int i : cards.keySet()) map.put(i, ItemStatus.DISCARDED);
+        for (String selection : selections) map.put(Integer.parseInt(selection), ItemStatus.ACTIVE);
+
+        try{
+            viewObserver.update(MessageFactory.buildLeaderUpdate(cards, map, "Leader cards initialization managing."));
+        }catch(MalformedMessageException e){
+            //exit from client
+        }
     }
 
+    private boolean isIntSequence(String[] sequence, int offset){
+        for (int i=0; i<sequence.length; i+=offset) {
+            if (!isInt(sequence[i])) return false;
+        }
+        return true;
+    }
+
+    private boolean containsKeys(Map<Integer,String> map, String[] sequence){
+        for (String s : sequence) {
+            if (!map.containsKey(s)) return false;
+        }
+        return true;
+    }
     /**
      * this method is used to catch the player's selected row or column of the MarketBoard
      */
@@ -453,7 +502,13 @@ public class CLI implements View, SubjectView {
             out.println("Select a row or a column.\nCommand Type:- row:number or column:number");
             s = getInput();
         } while(!isValidMarketSelection(s));
-        //mandare messaggio al client
+        String[] selection = s.split(":");
+        try {
+            viewObserver.update(MessageFactory.buildMarketSelection(selection[0], Integer.parseInt(selection[1])
+                    , "Selection of a row or a column from the market."));
+        }catch (MalformedMessageException e){
+            //exit from client
+        }
     }
 
     /**
@@ -463,15 +518,16 @@ public class CLI implements View, SubjectView {
      */
     private boolean isValidMarketSelection(String s){
 
-        String selection = s.substring(0, s.length()-2);
+        String[] selection = s.split(":");
+        if(selection.length!=2) return false;
         int n, limit;
 
-        if(selection.equals("row")) limit = model.getnRows();
-        else if(selection.equals("column")) limit = model.getnColumns();
+        if(selection[0].equals("row")) limit = model.getnRows();
+        else if(selection[0].equals("column")) limit = model.getnColumns();
         else return false;
 
         try{
-            n = Integer.parseInt(s.substring(s.length()-1, s.length()));
+            n = Integer.parseInt(selection[0]);
         }catch(NumberFormatException e){
             return false;
         }
@@ -497,7 +553,7 @@ public class CLI implements View, SubjectView {
             }
             out.println("The possible transformations for white marbles are: " + builder);
         }
-        out.println("Type your action. Command: MarbleColor:ACTION:TargetSlot\n " +
+        out.println("Type your action. Command:- MarbleColor:ACTION:TargetSlot\n " +
                 "eg. MarbleBlue:INSERT:2:MarbleYellow:DISCARD:0");
         String action = getInput();
         try {
@@ -513,6 +569,23 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void leaderAction() {
+        String action, player = model.getCurrentPlayer();
+        Map<Integer,String> leadersID = model.getLeadersID(player);
+        String[] sequence;
+        do {
+            out.println("It's time to put your leader cards in action. " +
+                    "\nYou can both discard and activate your cards. Command :- number:ACTION" +
+                    "\ne.g: 1:INSERT or 2:DISCARD");
+            action = getInput();
+            sequence = action.split(":");
+        }while(sequence.length!=2 && !isInt(sequence[0]) && !leadersID.containsKey(Integer.parseInt(sequence[0])));
+
+        int position = Integer.parseInt(sequence[0]);
+        try {
+            viewObserver.update(MessageFactory.buildLeaderAction(leadersID.get(position), position, sequence[1], "Action on leader"));
+        }catch(MalformedMessageException e){
+            //exit from client;
+        }
 
     }
 
@@ -521,7 +594,13 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void buyCardAction() {
-
+        plotDecks();
+        Map<Integer, String> decks = model.getDecks();
+        out.println("What about buying a new card? The decks are ordered from the left to the right." +
+                "\nGive me the slot number");
+        out.println("Now select your resources from the warehouse");
+        out.println("And finally select your resources from the strongbox");
+        //MessageFactory.buildBuyCard
     }
 
     /**
@@ -535,15 +614,34 @@ public class CLI implements View, SubjectView {
     /**
      * this action is used to catch the resources chosen by a player
      */
+    //add default initialization resources to model. Waiting Marco's push
     @Override
     public void getResourcesAction() {
+        //if(number<=0) return;
 
+        String selection;
+        String[] sequence;
+
+        do{
+            out.println("Let's get some starting resources: " +
+                    "\nYou can select" /*+ n*/ + "resources. Command:- targetSlot:resource");
+            selection = getInput();
+            sequence = selection.split(":");
+        }while(sequence.length%2!=0 && isIntSequence(sequence,2));
+
+        try{
+            viewObserver.update(MessageFactory.buildSelectedResources(selection, "Selection of resources during initialization"));
+        }catch(MalformedMessageException e){
+            //exit from client
+        }
     }
+
 
     /**
      * this method show the player's personal production.
      */
     @Override
+    //add personal production materials and products to parser or ViewModel
     public void showPersonalProduction() {
         Production production = model.getPersonalProduction();
         List<CLIColors> materials = new LinkedList<>();
@@ -559,7 +657,26 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void swapAction() {
-
+        String decision;
+        String[] selections;
+        do {
+            out.println("Would you like to perform a slot swap? [YES/NO]");
+            decision = getInput();
+        }while(!decision.toUpperCase().equals("YES") && !decision.toUpperCase().equals("NO"));
+        if(decision.toUpperCase().equals("NO")) return;
+        do{
+            out.println("Select the source and the target slots for swapping. Command:- source:target");
+            decision = getInput();
+            selections = decision.split(":");
+        }
+        while(!isIntSequence(selections,1));
+        try{
+            viewObserver.update(MessageFactory.buildSwap(Integer.parseInt(selections[0]),Integer.parseInt(selections[1])
+                    , "Swapping two shelves of the warehouse"));
+        }
+        catch(MalformedMessageException e){
+            //exit from client
+        }
     }
 
     /**

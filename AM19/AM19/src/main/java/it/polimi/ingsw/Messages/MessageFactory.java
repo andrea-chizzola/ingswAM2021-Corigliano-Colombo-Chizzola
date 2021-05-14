@@ -165,6 +165,8 @@ public class MessageFactory {
         StringBuilder faithString = new StringBuilder();
         for(String name : faith.keySet()){
             faithString.append(name)
+                    .append(splitter)
+                    .append(faith.get(name))
                     .append(splitter);
         }
         map.put("faith", faithString.substring(0, faithString.length()-1));
@@ -182,7 +184,7 @@ public class MessageFactory {
     private static String buildStatusList(List<ItemStatus> items){
         StringBuilder content = new StringBuilder();
         for(int i=0; i<items.size(); i++){
-            content.append(items.toString())
+            content.append(items.get(i).toString())
                     .append(splitter);
         }
         return content.substring(0, content.length()-1);
@@ -210,7 +212,7 @@ public class MessageFactory {
         return content.substring(0, content.length()-1);
     }
 
-    public static String buildSelectedResources(List<Resource> resources, List<Integer> shelves, String body)
+    /*public static String buildSelectedResources(List<Resource> resources, List<Integer> shelves, String body)
             throws MalformedMessageException {
         Map<String, String> map = new HashMap<>();
         StringBuilder content = new StringBuilder();
@@ -223,6 +225,15 @@ public class MessageFactory {
         map.put("body", body);
         map.put("messageType", Message.MessageType.RESOURCE.toString());
         map.put("resources", content.substring(0, content.length()-1));
+        return MessageParser.createMessage(map);
+    }*/
+
+    public static String buildSelectedResources(String content, String body)
+            throws MalformedMessageException {
+        Map<String, String> map = new HashMap<>();
+        map.put("body", body);
+        map.put("messageType", Message.MessageType.RESOURCE.toString());
+        map.put("resources", content);
         return MessageParser.createMessage(map);
     }
 
