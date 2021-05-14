@@ -6,6 +6,13 @@
     <actionTokens file = "defaultActionTokens.xml"/>
     <marketBoard file = "defaultMarketBoard.xml"/>
 
+    <initializationResources>
+        <player resources = "0" faith = "0"/>
+        <player resources = "1" faith = "0"/>
+        <player resources = "1" faith = "1"/>
+        <player resources = "2" faith = "1"/>
+    </initializationResources>
+
     <cardsLevel max = "3"/>
 
     <slot num = "3"/>

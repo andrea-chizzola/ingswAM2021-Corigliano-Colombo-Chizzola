@@ -1,7 +1,10 @@
 package it.polimi.ingsw.Model.Boards;
+import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * public class representing the strongbox associated to a player
@@ -74,6 +77,15 @@ public class StrongBox {
                 .mapToInt(Integer::intValue)
                 .sum();
 
+    }
+
+    public List<ResQuantity> showStrongBox(){
+        List<ResQuantity> list = new ArrayList<>();
+
+        for(Resource resource : resources.keySet()){
+            list.add(new ResQuantity(resource,resources.get(resource)));
+        }
+        return list;
     }
 
 }

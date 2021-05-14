@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Controller.GameController;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -27,10 +29,18 @@ public class Server {
     private ServerSocket serverSocket;
 
     /**
+     * controller
+     */
+    private ConnectionListener controller;
+
+    /**
      * contains a thread pool to manage all the clients connecting to the server
      */
     private ExecutorService executor;
 
+    /**
+     * id counter
+     */
     private AtomicLong idCounter;
 
     /**
@@ -47,6 +57,7 @@ public class Server {
         this.port = port;
         idCounter = new AtomicLong();
         activeConnections = new HashMap<>();
+        this.controller = new GameController(this);
 
     }
 
@@ -59,14 +70,6 @@ public class Server {
         activeConnections.put(id, connection);
     }
 
-    /**
-     *
-     * @param id represents the id associated to the connection
-     * @return returns the connection associated to the selected id
-     */
-    public ClientConnection getConnectionById(String id){
-        return activeConnections.get(id);
-    }
 
     /**
      *
@@ -75,6 +78,16 @@ public class Server {
     public String createId(){
         return String.valueOf(idCounter.getAndIncrement());
     }
+
+
+    public synchronized void closeConnection(String socketID){
+        activeConnections.get(socketID).closeConnection();
+    }
+
+    public synchronized void send(String socketID, String message){
+        activeConnections.get(socketID).send(message);
+    }
+
 
     /**
      * Initializes and starts the server
@@ -116,6 +129,8 @@ public class Server {
         executor.shutdown();
 
     }
+
+
 
     public static void main(String[] args ){
 

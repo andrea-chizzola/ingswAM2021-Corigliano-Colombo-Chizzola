@@ -218,6 +218,55 @@ public class ConfigurationParser{
     }
 
     /**
+     * this method returns the number of resources for the initialization of each player
+     * @param file is the name of the XML that contains the configuration files
+     * @return a LinkedList that contains the number of resources for the initialization of each player
+     */
+    public static LinkedList<Integer> getInitializationResources(String file){
+        file = path + file;
+        LinkedList<Integer> result = new LinkedList<>();
+        try {
+            Element initializationResources = (Element) getRoot(file).getElementsByTagName("initializationResources").item(0);
+            NodeList players = initializationResources.getChildNodes();
+            for (int i = 0; i < players.getLength(); i++) {
+                Node player = players.item(i);
+                if (player.getNodeType() == Node.ELEMENT_NODE) {
+                    Element number = (Element) player;
+                    result.add(parseInt(number.getAttribute("resources")));
+                }
+            }
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * this method returns the number of faith points that have to be added to each player's faithTrack during initialization
+     * @param file is the name of the XML that contains the configuration files
+     * @return a LinkedList that contains the number of faith points that have to be added to each player's faithTrack during initialization
+     */
+    public static LinkedList<Integer> getInitializationFaith(String file){
+        file = path + file;
+        LinkedList<Integer> result = new LinkedList<>();
+        try {
+            Element initializationResources = (Element) getRoot(file).getElementsByTagName("initializationResources").item(0);
+            NodeList players = initializationResources.getChildNodes();
+            for (int i = 0; i < players.getLength(); i++) {
+                Node player = players.item(i);
+                if (player.getNodeType() == Node.ELEMENT_NODE) {
+                    Element number = (Element) player;
+                    result.add(parseInt(number.getAttribute("faith")));
+                }
+            }
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    /**
      * this function is used to create a set of DevelopmentCards from a given file name (full path is not needed).
      *
      * @param file iis the name of the XML that contains the configuration files

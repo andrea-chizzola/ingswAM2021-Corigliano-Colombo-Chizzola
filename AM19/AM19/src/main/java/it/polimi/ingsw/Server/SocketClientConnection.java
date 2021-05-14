@@ -1,21 +1,12 @@
 package it.polimi.ingsw.Server;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import it.polimi.ingsw.Exceptions.EmptyBufferException;
-import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Handles server side the connection between client and server
@@ -25,17 +16,17 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private Socket socket;
     private Server server;
     private boolean pong;
-    private String playerId;
-    private ConnectionListener listener;
+    private String socketID;
+    private ConnectionListener controller;
     private BufferedReader in;
     private NetworkBuffer buffer;
     private PrintWriter out;
 
-    public SocketClientConnection(Socket socket, Server server, String playerId) {
+    public SocketClientConnection(Socket socket, Server server, String socketID) {
 
         this.socket = socket;
         this.server = server;
-        this.playerId = playerId;
+        this.socketID = socketID;
         //this.listener = listener; AGGIUNGERE LISTENER A CONTRUCTOR
         pong = true;
 
@@ -46,7 +37,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
      */
     @Override
     public ConnectionListener getListener() {
-        return listener;
+        return controller;
     }
 
     /**
@@ -75,7 +66,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     @Override
     public void addListener(ConnectionListener listener) {
 
-        this.listener = listener;
+        this.controller = listener;
 
     }
 
@@ -112,15 +103,16 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         try {
             buffer.append(read);
-        }catch (MalformedMessageException e){
-            System.out.println("[SERVER] The message received is not in XML format.");
+        }catch (Exception e){
+            controller.onReceivedMessage(read, socketID);
         }
+
 
         if(buffer.getPong()) pong = true;
         else if(buffer.getPing()) asyncSend("<pong/>");
         else {
             try {
-                listener.onReceivedMessage(buffer.get(), playerId);
+                controller.onReceivedMessage(buffer.get(), socketID);
             } catch (EmptyBufferException e){
                 System.out.println("[SERVER] The buffer is empty!");
             }
@@ -142,8 +134,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
                     pong = false;
                 } else {
                     System.out.println("[SERVER] No pong received. Client will now be disconnected.");
-                    //server.manageDisconnection(nickname);
-                    //listener.onMissingPong(playerId);
+                    controller.onMissingPong(socketID);
                     closeConnection();
                     timer.cancel();
                 }
@@ -174,8 +165,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         }
 
-        server.addConnection(playerId,this);
-        //startPingTimer();
+        server.addConnection(socketID,this);
+        startPingTimer();
         String read = "";
 
         try {
@@ -186,24 +177,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
                 messageHandler(read);
 
-
-                /*
-                String read = (String) in.readObject();
-                messageType = getType(read);
-                Message activeMessage = deserializeMessage(read, messageType);
-
-                if (activeMessage.getMessageType() == Message.MessageType.PONG) {
-                    pong = true;
-                } else if (activeMessage.getMessageType() == Message.MessageType.PING) {
-                    asyncSend(new PongMessage());
-                } else if (activeMessage.getMessageType() == Message.MessageType.DISCONNECTION) {
-                    server.manageDisconnection(nickname);
-                } else {
-                    messageHandler(activeMessage, nickname);
-                }*/
-
-
             }
+            controller.onMissingPong(socketID);
             closeConnection();
 
         } catch (IOException e) {

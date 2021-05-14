@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Boards;
 
 import it.polimi.ingsw.Exceptions.IllegalSlotException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
+import it.polimi.ingsw.Messages.Enumerations.*;
 import it.polimi.ingsw.Model.Cards.Colors.CardColor;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
@@ -10,10 +11,7 @@ import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,6 +65,11 @@ public class Board {
      */
     private Production personalProduction;
 
+    /**
+     * the number of resources that the player can choose during initialization
+     */
+    private int numberResourcesInitialization;
+
     public Board(String nickname, GameBoard gameBoard, String file) {
 
         this.nickname = nickname;
@@ -113,6 +116,21 @@ public class Board {
      */
     public Production getPersonalProduction() {
         return personalProduction;
+    }
+
+    /**
+     * This method sets the number of resources that the player can choose during initialization
+     * @param numberResourcesInitialization
+     */
+    public void setNumberResourcesInitialization(int numberResourcesInitialization) {
+        this.numberResourcesInitialization = numberResourcesInitialization;
+    }
+
+    /**
+     * @return the number of resources that the player can choose during initialization
+     */
+    public int getNumberResourcesInitialization() {
+        return numberResourcesInitialization;
     }
 
     /**
@@ -194,6 +212,35 @@ public class Board {
 
         }else throw new IndexOutOfBoundsException("Nonexistent Leader card");
 
+    }
+
+    /**
+     * removes the selected leader card from the list without adding faith points
+     * @param leaderStatus indicates the positions of the card and if they have to be removed
+     * @throws IndexOutOfBoundsException if if the leader card doesn't exist
+     */
+    public boolean discardLeaderCard(Map<Integer,Boolean> leaderStatus) {
+
+        List<Integer> list = new ArrayList<>();
+
+        if(leaderStatus.values().size() != leaders.size())
+            return false;
+
+        if(leaderStatus.keySet().stream().anyMatch(integer -> (integer < 1 || integer > leaders.size()))){
+            return false;
+        }
+
+        if(leaderStatus.values().stream().filter(aBoolean -> aBoolean == true).count() != 2){
+            return false;
+        }
+
+        list = leaderStatus.keySet().stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
+
+        for(int i : list){
+            if(!leaderStatus.get(i))
+                leaders.remove(i - 1);
+        }
+        return true;
     }
 
 
@@ -328,6 +375,40 @@ public class Board {
            throw new InvalidActionException("Card requirements not met!");
 
        return true;
+    }
+
+    public Map<Integer,String> showSlot(){
+        Map<Integer,String> map = new HashMap<>();
+        String ID;
+
+        for(int i=0; i<slots.size(); i++){
+            try {
+                ID = slots.get(i).getTop().getId();
+                map.put(i+1, ID);
+            }
+            catch (IllegalSlotException e){}
+        }
+        return map;
+    }
+
+    public Map<Integer,String> showLeaderPosition() {
+        Map<Integer, String > map = new HashMap<>();
+        String ID;
+        for(int i=0; i<leaders.size(); i++){
+            ID = leaders.get(i).getId();
+            map.put(i+1,ID);
+        }
+        return map;
+    }
+
+    public Map<Integer,ItemStatus> showLeaderStatus(){
+        Map<Integer, ItemStatus> map = new HashMap<>();
+        String ID;
+        for(int i=0; i<leaders.size(); i++){
+            ItemStatus itemStatus = leaders.get(i).getStatus() ? ItemStatus.ACTIVE : ItemStatus.INACTIVE;
+            map.put(i+1,itemStatus);
+        }
+        return map;
     }
 
 }

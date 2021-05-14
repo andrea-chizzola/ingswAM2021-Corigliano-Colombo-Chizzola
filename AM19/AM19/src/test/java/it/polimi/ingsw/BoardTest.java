@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Controller.ViewForTest;
 import it.polimi.ingsw.Exceptions.*;
 import it.polimi.ingsw.Model.Boards.*;
 import it.polimi.ingsw.Model.Cards.*;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.Model.Cards.Colors.Blue;
 import it.polimi.ingsw.Model.Cards.Colors.Green;
 import it.polimi.ingsw.Model.Cards.Colors.Purple;
 import it.polimi.ingsw.Model.Resources.*;
+import it.polimi.ingsw.View.View;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,13 +31,18 @@ class BoardTest {
     @BeforeEach
     void setUp() {
 
+
         ArrayList<String> names = new ArrayList<>();
         names.add("firstPlayer");
         names.add("secondPlayer");
         names.add("thirdPlayer");
 
         gameBoard = new GameBoard(names, file);
+        gameBoard.giveLeaderCards(file);
         board = gameBoard.getPlayers().get(0);
+
+        View view = new ViewForTest();
+        gameBoard.attachView(view);
 
         //creation of a DevelopmentCard
         Requirements requirements1 = new ResourceReqDev(new LinkedList<>());
@@ -93,7 +100,7 @@ class BoardTest {
 
         player1.addFaith(7); //1->7
         player2.addFaith(6); //2->6
-        player3.addFaith(4); //3->4
+        player3.addFaith(3); //3->4
 
         //no VaticanSections have been activated.
         assertFalse(player1.getFaithTrack().getSection(1).isDiscarded());
@@ -165,7 +172,7 @@ class BoardTest {
 
         gameBoard.getPlayers().get(0).addFaith(7); //1>7
         gameBoard.getPlayers().get(1).addFaith(6); //2>6
-        gameBoard.getPlayers().get(2).addFaith(4); //3>4
+        gameBoard.getPlayers().get(2).addFaith(3); //3>4
 
         assertTrue(!gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(0).getFaithTrack().getSection(1).getStatus());
         assertTrue(!gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).isDiscarded() && !gameBoard.getPlayers().get(1).getFaithTrack().getSection(1).getStatus());
@@ -204,7 +211,7 @@ class BoardTest {
 
         assertEquals(0, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
         assertEquals(1, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
-        assertEquals(1, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+        assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
 
         gameBoard.endTurnMove();
 
@@ -212,7 +219,7 @@ class BoardTest {
 
         assertEquals(1, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
         assertEquals(1, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
-        assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+        assertEquals(3, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
 
         gameBoard.endTurnMove();
 
@@ -220,7 +227,7 @@ class BoardTest {
 
         assertEquals(2, gameBoard.getPlayers().get(0).getFaithTrack().getPosition());
         assertEquals(2, gameBoard.getPlayers().get(1).getFaithTrack().getPosition());
-        assertEquals(2, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
+        assertEquals(3, gameBoard.getPlayers().get(2).getFaithTrack().getPosition());
 
     }
 
@@ -248,7 +255,7 @@ class BoardTest {
     void getLeaderCardException() {
 
         Exception exception;
-        exception = assertThrows(IndexOutOfBoundsException.class, () -> gameBoard.getPlayers().get(0).getLeaderCard(4));
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> gameBoard.getPlayers().get(0).getLeaderCard(5));
         assertEquals(exception.getMessage(), "Nonexistent Leader card");
 
     }
@@ -260,7 +267,7 @@ class BoardTest {
     void removeLeaderCardException() {
 
         Exception exception;
-        exception = assertThrows(IndexOutOfBoundsException.class, () -> gameBoard.getPlayers().get(0).removeLeaderCard(4));
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> gameBoard.getPlayers().get(0).removeLeaderCard(5));
         assertEquals(exception.getMessage(), "Nonexistent Leader card");
 
     }
@@ -340,7 +347,7 @@ class BoardTest {
     @Test
     void removeLeaderCardTest1(){
         //Each player receives two leader cards
-        gameBoard.giveLeaderCards(file);
+        //gameBoard.giveLeaderCards(file);
         LeaderCard leader1 = board.getLeaderCard(1);
         LeaderCard leader2 = board.getLeaderCard(2);
 
@@ -356,7 +363,7 @@ class BoardTest {
     @Test
     void removeLeaderCardTest2(){
         //Each player receives two leader cards
-        gameBoard.giveLeaderCards(file);
+        //gameBoard.giveLeaderCards(file);
 
         //The first player discard all their cards
         board.removeLeaderCard(1);
@@ -373,7 +380,7 @@ class BoardTest {
     @Test
     void removeLeaderCardTest3(){
         //Each player receives two leader cards
-        gameBoard.giveLeaderCards(file);
+        //gameBoard.giveLeaderCards(file);
 
         //The first player discard more cards than the ones he owns
         board.removeLeaderCard(1);
@@ -382,6 +389,121 @@ class BoardTest {
         board.removeLeaderCard(1);
 
         assertThrows(IndexOutOfBoundsException.class, () -> board.removeLeaderCard(2));
+
+    }
+
+    @Test
+    void initializeLeaderCards(){
+        Map<Integer,Boolean> map = new HashMap<>();
+        LeaderCard leaderCard2 = null;
+        LeaderCard leaderCard1 = null;
+        try {
+            leaderCard1 = gameBoard.getCurrentPlayer().getLeaderCard(3);
+             leaderCard2 = gameBoard.getCurrentPlayer().getLeaderCard(4);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("ciao");
+        }
+
+        map.put(1,false);
+        map.put(3,true);
+        map.put(4,true);
+        map.put(2,false);
+
+        assertTrue(gameBoard.initializeLeaderCard(map));
+
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(1).getId(),leaderCard1.getId());
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(2).getId(),leaderCard2.getId());
+
+    }
+
+    @Test
+    void initializeLeaderCards1(){
+        Map<Integer,Boolean> map = new HashMap<>();
+        LeaderCard leaderCard1 = null;
+        LeaderCard leaderCard2 = null;
+        LeaderCard leaderCard3 = null;
+        LeaderCard leaderCard4 = null;
+        try {
+            leaderCard1 = gameBoard.getCurrentPlayer().getLeaderCard(1);
+            leaderCard2 = gameBoard.getCurrentPlayer().getLeaderCard(2);
+            leaderCard3 = gameBoard.getCurrentPlayer().getLeaderCard(3);
+            leaderCard4 = gameBoard.getCurrentPlayer().getLeaderCard(4);
+        }catch (IndexOutOfBoundsException e){
+            fail();
+        }
+
+        map.put(1,true);
+        map.put(3,true);
+        map.put(4,true);
+        map.put(2,false);
+
+        assertFalse(gameBoard.initializeLeaderCard(map));
+
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(1).getId(),leaderCard1.getId());
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(2).getId(),leaderCard2.getId());
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(3).getId(),leaderCard3.getId());
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(4).getId(),leaderCard4.getId());
+
+    }
+
+    @Test
+    void initializeLeaderCards2(){
+        Map<Integer,Boolean> map = new HashMap<>();
+        LeaderCard leaderCard1 = null;
+        LeaderCard leaderCard2 = null;
+        LeaderCard leaderCard3 = null;
+        LeaderCard leaderCard4 = null;
+        try {
+            leaderCard1 = gameBoard.getCurrentPlayer().getLeaderCard(1);
+            leaderCard2 = gameBoard.getCurrentPlayer().getLeaderCard(2);
+            leaderCard3 = gameBoard.getCurrentPlayer().getLeaderCard(3);
+            leaderCard4 = gameBoard.getCurrentPlayer().getLeaderCard(4);
+        }catch (IndexOutOfBoundsException e){
+            fail();
+        }
+
+        map.put(1,false);
+        map.put(3,true);
+        map.put(4,true);
+
+
+        assertFalse(gameBoard.initializeLeaderCard(map));
+
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(1).getId(),leaderCard1.getId());
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(2).getId(),leaderCard2.getId());
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(3).getId(),leaderCard3.getId());
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(4).getId(),leaderCard4.getId());
+
+    }
+
+    @Test
+    void initializeLeaderCards3(){
+        Map<Integer,Boolean> map = new HashMap<>();
+        LeaderCard leaderCard1 = null;
+        LeaderCard leaderCard2 = null;
+        LeaderCard leaderCard3 = null;
+        LeaderCard leaderCard4 = null;
+        try {
+            leaderCard1 = gameBoard.getCurrentPlayer().getLeaderCard(1);
+            leaderCard2 = gameBoard.getCurrentPlayer().getLeaderCard(2);
+            leaderCard3 = gameBoard.getCurrentPlayer().getLeaderCard(3);
+            leaderCard4 = gameBoard.getCurrentPlayer().getLeaderCard(4);
+        }catch (IndexOutOfBoundsException e){
+            fail();
+        }
+
+        map.put(1,false);
+        //0 is out of bound
+        map.put(0,true);
+        map.put(4,true);
+        map.put(2,false);
+
+        assertFalse(gameBoard.initializeLeaderCard(map));
+
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(1).getId(),leaderCard1.getId());
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(2).getId(),leaderCard2.getId());
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(3).getId(),leaderCard3.getId());
+        assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(4).getId(),leaderCard4.getId());
 
     }
 }

@@ -55,7 +55,7 @@ public class TakeResources extends Turn {
      * @param marble
      * @param shelf the number of the shelf
      * @throws InvalidActionException if the action is invalid
-     */
+     *//*
     @Override
     public void insertResource(Board board, Marble marble, int shelf) throws InvalidActionException{
 
@@ -64,7 +64,7 @@ public class TakeResources extends Turn {
         }
         catch (InvalidActionException e){throw e;}
 
-    }
+    }*/
 
     /**
      * This method allows to discard the resource.

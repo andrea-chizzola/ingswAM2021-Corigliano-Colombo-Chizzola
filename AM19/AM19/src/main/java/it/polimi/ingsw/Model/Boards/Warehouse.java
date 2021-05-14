@@ -1,13 +1,13 @@
 package it.polimi.ingsw.Model.Boards;
 
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
+import it.polimi.ingsw.Model.Resources.Coin;
+import it.polimi.ingsw.Model.Resources.Faith;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class represents the warehouse which is a component of the board.
@@ -176,6 +176,7 @@ public class Warehouse {
      */
     private boolean addResourceDefault(int shelf, Resource resource) throws IllegalShelfException{
 
+
         if(!defaultShelf.containsKey(shelf)){
 
             if(defaultShelf.values().stream().anyMatch(resQuantity -> resQuantity.getResource().getColor().equals(resource.getColor())))
@@ -194,6 +195,7 @@ public class Warehouse {
         defaultShelf.put(shelf, new ResQuantity(defaultShelf.get(shelf).getResource(), defaultShelf.get(shelf).getQuantity() + 1));
 
         return true;
+
     }
 
     /**
@@ -215,6 +217,97 @@ public class Warehouse {
 
         extraShelf.put(shelf, new ResQuantity(extraShelf.get(shelf).getResource(), extraShelf.get(shelf).getQuantity() + 1));
 
+        return true;
+    }
+
+    public void insertResource(int shelf, Resource resource){
+        if(defaultCapacity.containsKey(shelf))
+            insertResourceDefault(shelf,resource);
+        if(extraShelf.containsKey(shelf))
+            insertResourceExtra(shelf,resource);
+    }
+
+    private void insertResourceDefault(int shelf, Resource resource){
+        if(!defaultShelf.containsKey(shelf))
+            defaultShelf.put(shelf,new ResQuantity(resource,1));
+        else
+            defaultShelf.put(shelf, new ResQuantity(resource, defaultShelf.get(shelf).getQuantity() + 1));
+    }
+
+    private void insertResourceExtra(int shelf, Resource resource){
+
+        extraShelf.put(shelf, new ResQuantity(resource, extraShelf.get(shelf).getQuantity() + 1));
+    }
+
+    public boolean checkInsertMultipleRes(List<Resource> resources, List<Integer> shelves){
+
+        HashMap<Integer,ResQuantity> map = new HashMap<>();
+        HashMap<Integer,ResQuantity> mapDefault = new HashMap<>();
+        HashMap<Integer,ResQuantity> mapExtra = new HashMap<>();
+        ResQuantity resQuantity;
+        ResQuantity res = new ResQuantity(new Coin(),0);
+
+        for(int i=0; i< resources.size(); i++){
+
+            if(resources.get(i).getColor().equals(new Faith().getColor()))
+                continue;
+            if(map.containsKey(shelves.get(i))) {
+                //cerco di inserire nello stesso shelf risorse diverse
+                if (!map.get(shelves.get(i)).getResource().getColor().equals(resources.get(i).getColor()))
+                    return false;
+            }
+            resQuantity = new ResQuantity(resources.get(i), map.getOrDefault(shelves.get(i),res).getQuantity()+1);
+            map.put(shelves.get(i),resQuantity);
+        }
+
+        for(int i : map.keySet()){
+            if(defaultCapacity.containsKey(i))
+                mapDefault.put(i,map.get(i));
+            if(extraShelf.containsKey(i))
+                mapExtra.put(i,map.get(i));
+            if(!extraShelf.containsKey(i) && !defaultCapacity.containsKey(i))
+                return false;
+        }
+
+        return (checkInsertDefault(mapDefault) && checkInsertExtra(mapExtra));
+
+    }
+
+    private boolean checkInsertDefault(HashMap<Integer,ResQuantity> mapDefault){
+
+        Map<Resource,Integer> map = new HashMap<>();
+        for(ResQuantity resQuantity : mapDefault.values()){
+            //vuol dire che ci sono due risorse uguali che cerco di inserire in shelf diversi
+            if(map.containsKey(resQuantity.getResource()))
+                return false;
+            map.put(resQuantity.getResource(),1);
+        }
+
+        for(int i : mapDefault.keySet()){
+            if(!defaultShelf.containsKey(i)){
+                if(defaultShelf.values().stream().anyMatch(resQuantity -> resQuantity.getResource().getColor().equals(mapDefault.get(i).getResource().getColor())))
+                    return false;
+                if(defaultCapacity.get(i) < mapDefault.get(i).getQuantity())
+                    return false;
+            }
+            else {
+                if (!defaultShelf.get(i).getResource().getColor().equals(mapDefault.get(i).getResource().getColor()))
+                    return false;
+                if (defaultCapacity.get(i) < defaultShelf.get(i).getQuantity() + mapDefault.get(i).getQuantity())
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkInsertExtra(HashMap<Integer,ResQuantity> mapExtra){
+
+        for(int i : mapExtra.keySet()){
+            if(!extraShelf.get(i).getResource().getColor().equals(mapExtra.get(i).getResource().getColor()))
+                return false;
+            if(extraCapacity.get(i) < extraShelf.get(i).getQuantity() + mapExtra.get(i).getQuantity())
+                return false;
+        }
         return true;
     }
 
@@ -321,5 +414,22 @@ public class Warehouse {
         }
 
         return map;
+    }
+
+    public List<ResQuantity> showWarehouse(){
+
+        List<ResQuantity> list = new LinkedList<>();
+        ResQuantity resQuantity;
+        ResQuantity defaultRes = new ResQuantity(new Coin(),0);
+
+        for(int i : defaultCapacity.keySet()){
+            resQuantity = defaultShelf.getOrDefault(i,defaultRes);
+            list.add(resQuantity);
+        }
+        for(int i : extraShelf.keySet()){
+            resQuantity = new ResQuantity(extraShelf.get(i).getResource(), extraShelf.get(i).getQuantity());
+            list.add(resQuantity);
+        }
+        return list;
     }
 }

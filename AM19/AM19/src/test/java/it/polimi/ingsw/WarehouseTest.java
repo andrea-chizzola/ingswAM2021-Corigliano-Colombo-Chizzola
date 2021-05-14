@@ -6,7 +6,9 @@ import it.polimi.ingsw.Model.Resources.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -556,5 +558,272 @@ class WarehouseTest {
         catch(IllegalShelfException e){fail();}
         exception = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(4,new Stone()));
         assertEquals(exception.getMessage(),"Wrong resource!");
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources(){
+        try{
+            warehouse.addResource(1, new Coin());
+            warehouse.addResource(2, new Stone());
+            warehouse.addResource(3, new Servant());
+
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(1);
+
+        assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
+
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources1(){
+        try{
+            warehouse.addResource(1, new Coin());
+            warehouse.addResource(2, new Stone());
+            warehouse.addResource(3, new Servant());
+            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(4);
+        resources.add(new Coin());
+        shelves.add(4);
+        resources.add(new Coin());
+        shelves.add(4);
+        resources.add(new Stone());
+        shelves.add(2);
+        resources.add(new Servant());
+        shelves.add(3);
+        resources.add(new Servant());
+        shelves.add(3);
+
+
+        assertTrue(warehouse.checkInsertMultipleRes(resources,shelves));
+
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources2(){
+        try{
+
+            warehouse.addResource(3, new Servant());
+            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(1);
+        resources.add(new Coin());
+        shelves.add(4);
+        resources.add(new Coin());
+        shelves.add(4);
+        resources.add(new Stone());
+        shelves.add(2);
+        resources.add(new Servant());
+        shelves.add(3);
+        resources.add(new Servant());
+        shelves.add(3);
+
+
+        assertTrue(warehouse.checkInsertMultipleRes(resources,shelves));
+
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources3(){
+        try{
+
+            warehouse.addResource(3, new Servant());
+            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(1);
+        resources.add(new Coin());
+        shelves.add(4);
+        resources.add(new Coin());
+        shelves.add(2);
+
+        resources.add(new Servant());
+        shelves.add(3);
+        resources.add(new Servant());
+        shelves.add(3);
+
+
+        assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
+
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources4(){
+        try{
+
+            warehouse.addResource(3, new Servant());
+            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(2);
+        resources.add(new Coin());
+        shelves.add(4);
+        resources.add(new Servant());
+        shelves.add(2);
+
+        resources.add(new Servant());
+        shelves.add(3);
+        resources.add(new Servant());
+        shelves.add(3);
+
+        assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources5(){
+        try{
+
+            warehouse.addResource(3, new Servant());
+            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Servant());
+        shelves.add(4);
+
+
+        assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources6(){
+        try{
+
+            warehouse.addResource(3, new Servant());
+            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Servant());
+        shelves.add(1);
+
+
+        assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources7(){
+        try{
+
+            warehouse.addResource(3, new Servant());
+            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(1);
+        resources.add(new Stone());
+        shelves.add(2);
+        resources.add(new Stone());
+        shelves.add(2);
+
+        assertTrue(warehouse.checkInsertMultipleRes(resources,shelves));
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources8(){
+        try{
+
+            warehouse.addResource(3, new Servant());
+            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(1);
+        resources.add(new Stone());
+        shelves.add(2);
+        resources.add(new Stone());
+        shelves.add(2);
+        resources.add(new Faith());
+        shelves.add(2);
+        resources.add(new Faith());
+        shelves.add(1);
+        resources.add(new Faith());
+        shelves.add(7);
+
+        assertTrue(warehouse.checkInsertMultipleRes(resources,shelves));
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources9(){
+
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+
+
+        assertTrue(warehouse.checkInsertMultipleRes(resources,shelves));
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources10(){
+        try{
+
+            warehouse.addResource(3, new Servant());
+            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        }
+        catch (IllegalShelfException e){
+            fail();
+        }
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+
+        resources.add(new Servant());
+        shelves.add(3);
+        resources.add(new Servant());
+        shelves.add(3);
+        resources.add(new Servant());
+        shelves.add(3);
+
+        assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Messages;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
+import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.Cards.Colors.DevColor;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
@@ -41,18 +42,25 @@ public class MessageFactory {
         return MessageParser.createMessage(map);
     }
 
-    public static String buildReply(Boolean type, String body) throws MalformedMessageException {
+    public static String buildReply(Boolean type, String body, String nickName) throws MalformedMessageException {
         Map<String, String> map = new HashMap<>();
         map.put("body", body);
         map.put("messageType", Message.MessageType.REPLY.toString());
         map.put("correct", type.toString());
+        map.put("player", nickName);
         return MessageParser.createMessage(map);
     }
 
-    public static String buildCurrentPlayer(String playerID, String body) throws MalformedMessageException {
+    public static String buildCurrentPlayer(String playerID, List<String> turns, String body) throws MalformedMessageException {
         Map<String, String> map = new HashMap<>();
         map.put("body", body);
         map.put("messageType", Message.MessageType.GAME_STATUS.toString());
+        StringBuilder content = new StringBuilder();
+        for(int i=0; i<turns.size(); i++){
+            content.append(turns.get(i))
+                    .append(splitter);
+        }
+        map.put("turns", content.substring(0, content.length()-1));
         map.put("currentPlayer", playerID);
         return MessageParser.createMessage(map);
     }
@@ -70,10 +78,11 @@ public class MessageFactory {
         return MessageParser.createMessage(map);
     }
 
-    public static String buildBoxUpdate(List<ResQuantity> warehouse, List<ResQuantity> strongbox, String body) throws MalformedMessageException {
+    public static String buildBoxUpdate(List<ResQuantity> warehouse, List<ResQuantity> strongbox, String player, String body) throws MalformedMessageException {
         Map<String, String> map = new HashMap<>();
         map.put("body", body);
         map.put("messageType", Message.MessageType.BOX_UPDATE.toString());
+        map.put("player", player);
         map.put("warehouse", buildResQuantity(warehouse));
         map.put("strongbox", buildResQuantity(strongbox));
         return MessageParser.createMessage(map);
@@ -88,10 +97,11 @@ public class MessageFactory {
         return content.substring(0, content.length()-1);
     }
 
-    public static String buildSlotsUpdate(Map<Integer, String> devCards, String body) throws MalformedMessageException {
+    public static String buildSlotsUpdate(Map<Integer, String> devCards, String player, String body) throws MalformedMessageException {
         Map<String, String> map = new HashMap<>();
         map.put("body", body);
         map.put("messageType", Message.MessageType.SLOTS_UPDATE.toString());
+        map.put("player", player);
         map.put("devCards", buildIDStringMap(devCards));
         return MessageParser.createMessage(map);
     }
@@ -140,12 +150,13 @@ public class MessageFactory {
         return content.substring(0, content.length()-1);
     }
 
-    public static String buildSelectedMarbles(List<Marble> selection, List<Marble> candidates, String body)
+    public static String buildSelectedMarbles(List<Marble> selection, List<Marble> candidates, String player, String body)
         throws MalformedMessageException{
         String selectionString = buildMarbleList(selection), candidateString = buildMarbleList(candidates);
         Map<String, String> map = new HashMap<>();
         map.put("body", body);
         map.put("messageType", Message.MessageType.SELECTED_MARBLES.toString());
+        map.put("player",player);
         map.put("marbles", selectionString);
         map.put("candidates", candidateString);
         return MessageParser.createMessage(map);
@@ -190,12 +201,13 @@ public class MessageFactory {
         return content.substring(0, content.length()-1);
     }
 
-    public static String buildLeaderUpdate(Map<Integer, String> cards, Map<Integer, ItemStatus> status, String body)
+    public static String buildLeaderUpdate(Map<Integer, String> cards, Map<Integer, ItemStatus> status, String player, String body)
             throws MalformedMessageException {
         String cardString = buildIDStringMap(cards), statusString = buildIDItemStatusMap(status);
         Map<String, String> map = new HashMap<>();
         map.put("body", body);
         map.put("messageType", Message.MessageType.UPDATE_LEADER_CARDS.toString());
+        map.put("player", player);
         map.put("leaderStatus", statusString);
         map.put("leaderCards", cardString);
         return MessageParser.createMessage(map);
