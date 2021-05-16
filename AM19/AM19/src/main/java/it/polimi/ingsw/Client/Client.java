@@ -43,26 +43,22 @@ public class Client implements ViewObserver{
 
     public void startClient(){
 
-
-        ViewModel viewModel = new ViewModel(file); //DA CAMBIARE IL COSTRUTTORE DELLA VIEWMODEL
-        String player = ""; //viewModel.getName();  DIVENTA String player = viewModel.getName(); CON METODO GETNAME DA AGGIUNGERE
-
         /*
+        ViewModel viewModel = new ViewModel(file);
+
         if(useCli){
             ui = new CLI(viewModel);
         }else ui = new GUI();
-        */
-        ui = new CLI(viewModel);
-        ClientConnectionListener clientController = new ClientController(viewModel, ui);
 
-        ui.initialize();
-
+        ui = new CLI(viewModel);*/
+        ClientConnectionListener clientController = null; //= new ClientController(viewModel, ui);
+        //ui.initialize();
 
         try {
 
             Socket socket = new Socket(ip, port);
             System.out.println("[CLIENT] Connected to server on port " + port);
-            connection = new SocketServerConnection(socket, clientController, player, this);
+            connection = new SocketServerConnection(socket, clientController,this);
             new Thread(connection).start();
 
         } catch (IOException e) {
@@ -71,8 +67,6 @@ public class Client implements ViewObserver{
             e.printStackTrace();
 
         }
-
-
 
     }
 

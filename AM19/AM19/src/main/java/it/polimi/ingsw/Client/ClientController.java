@@ -53,7 +53,7 @@ public class ClientController implements ClientConnectionListener {
     }
 
     @Override
-    public synchronized void onReceivedMessage(String message, String nickname) {
+    public synchronized void onReceivedMessage(String message) {
        try{
            messageHandler(message);
        }
@@ -63,7 +63,7 @@ public class ClientController implements ClientConnectionListener {
     }
 
     @Override
-    public synchronized void onMissingPong(String nickname) {
+    public synchronized void onMissingPong() {
         view.showAnswer(false, "ERROR: Missed pong", model.getPersonalNickname());
     }
 
