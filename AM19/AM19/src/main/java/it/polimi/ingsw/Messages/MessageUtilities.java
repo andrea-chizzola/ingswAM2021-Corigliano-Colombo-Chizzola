@@ -99,6 +99,7 @@ public class MessageUtilities {
         String warehouse = MessageParser.getMessageTag(message,tag);
 
         List<Integer> shelves = new ArrayList<>();
+        if(warehouse.length() == 0) return shelves;
         String[] string = warehouse.split(splitter);
 
         if(warehouse.equals("")) return shelves;
@@ -304,6 +305,7 @@ public class MessageUtilities {
         String messageString = MessageParser.getMessageTag(message,tag);
 
         List<Resource> list = new ArrayList<>();
+        if(messageString.length() == 0) return list;
         String[] string = messageString.split(splitter);
         String key;
 
