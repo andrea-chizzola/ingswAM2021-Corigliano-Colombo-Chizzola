@@ -8,14 +8,21 @@ public interface ConnectionListener {
     /**
      * Notifies the listener that a new message was received
      * @param message represents the message received
-     * @param Id represents the sending player's id
+     * @param socketId represents the sending player's socket id
      */
-    void onReceivedMessage(String message, String Id);
+    void onReceivedMessage(String message, String socketId);
+
+    /**
+     * adds a new connection to the active ones
+     * @param socketId represents the id associated to the connection
+     * @param connection represents the client's socket connection
+     */
+    void addActiveConnection(String socketId, ClientConnection connection);
 
     /**
      * Notifies the listener that a player did not answer to the ping message
-     * @param playerId represents the player's ID
+     * @param socketId represents the player's socket id
      */
-    void onMissingPong(String playerId);
+    void onMissingPong(String socketId);
 
 }

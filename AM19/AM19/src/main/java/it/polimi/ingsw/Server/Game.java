@@ -13,10 +13,6 @@ import java.util.*;
  */
 public class Game {
 
-    /**
-     * server
-     */
-    private Server server;
 
     /**
      * configuration file path
@@ -29,9 +25,14 @@ public class Game {
     private StateHandler stateHandler;
 
     /**
-     * keeps track of the players part of the match
+     * keeps track of the players part of the match (ID - nickname)
      */
     private Map<String, String> players;
+
+    /**
+     * keeps track of the connections associated to each player currently in the game
+     */
+    private Map<String, ClientConnection> connections;
 
     /**
      * represents a unique id associated to the match
@@ -48,28 +49,38 @@ public class Game {
      */
     private boolean start;
 
-    public Game(Server server, String nickname, String socketID, int playersNumber, String id){
+    public Game(String nickname, String socketId, ClientConnection connection, int playersNumber, String id){
 
-        this.server = server;
         players = new HashMap<>();
-        players.put(nickname, socketID);
+        connections = new HashMap<>();
+        players.put(socketId, nickname);
+        connections.put(nickname, connection);
         this.id = id;
         this.playersNumber = playersNumber;
         start = (playersNumber == 1);
 
     }
 
-    private String getNickName(String socketID){
-        for(String nickName : players.keySet()){
-            if(players.get(nickName).equals(socketID))
-                return nickName;
-        }
-        return null;
+    public Map<String, String> getPlayers() {
+        return new HashMap<>(players);
     }
 
+    /**
+     *
+     * @param socketId represents the socket's id
+     * @return returns the nickname associated to the socket id
+     */
+    public String getNickname(String socketId){
+        return players.get(socketId);
+    }
+
+    /**
+     * sends the received message to the stateHandler
+     * @param message represents the message to send
+     * @param socketID represents the sender's socket id
+     */
     public void onReceivedMessage(String message, String socketID){
-        if(getNickName(socketID) != null)
-            stateHandler.stateHandler(message, getNickName(socketID));
+        stateHandler.stateHandler(message, getNickname(socketID));
     }
 
     /**
@@ -78,7 +89,7 @@ public class Game {
      * @param nickname represents the message receiver
      */
     public void send(String message, String nickname){
-        server.send(players.get(nickname),message);
+        connections.get(nickname).send(message);
     }
 
     /**
@@ -86,48 +97,68 @@ public class Game {
      * @param message represents the message to send
      */
     public void sendAll(String message){
-        for(Map.Entry<String, String> entry : players.entrySet()){
-            server.send(entry.getValue(),message);
+        for(String player : connections.keySet()){
+            connections.get(player).send(message);
         }
     }
 
     /**
      * adds a new player to the game
      * @param nickname represents the nickname of the added player
-     * @param socketID represents the player's socket connection
+     * @param socketId represents the player's socket id
+     * @param connection represents the player's socket connection
      */
-    public void addPlayer(String nickname, String socketID){
-
+    public void addPlayer(String nickname, String socketId, ClientConnection connection){
+        /*
         if(start)
-            stateHandler.reconnection(nickname);
-        players.put(nickname, socketID);
+            stateHandler.reconnection(nickname);*/
+        players.put(socketId, nickname);
+        connections.put(nickname, connection);
         if(playersNumber == players.size()) start = true;
 
     }
 
-
     /**
      * removes a player from the game
-     * @param nickname represents the nickname of the removed player
+     * @param socketId represents the removed player's socket id
      */
-    public void removePlayer(String nickname){
+    public void removePlayer(String socketId){
+        /*
         if(start){
-            stateHandler.disconnection(nickname);
-        }
-        players.remove(nickname); }
+            stateHandler.disconnection(players.get(socketId));
+        }*/
+        String nickname = players.get(socketId);
+
+        connections.remove(nickname);
+        players.remove(socketId);
+
+    }
+
+    /**
+     *
+     * @param socketId represents the id associated to the socket connection
+     * @param nickname represents the player's nickname
+     * @return returns true if the id corresponds to to the selected nickname
+     */
+    public boolean isCorresponding(String socketId, String nickname){
+        return getNickname(socketId).equals(nickname);
+    }
 
     /**
      * @param nickname represents the name of the player
      * @return returns true if the player is part of the match
      */
     public boolean containsPlayer(String nickname){
-        return players.containsKey(nickname);
+        return connections.containsKey(nickname);
     }
 
+    /**
+     *
+     * @param socketId represents the socket's id
+     * @return returns true if the player associated to the selected id is part of the match
+     */
+    public boolean containsID(String socketId){ return players.containsKey(socketId); }
 
-    public boolean containsSocketID(String socketID){
-        return players.containsValue(socketID);
-    }
 
     /**
      *
@@ -158,6 +189,21 @@ public class Game {
     public boolean canStart(){ return getActualPlayers() == playersNumber; }
 
     /**
+     * ends the game sending each player the final message containing the final results
+     * @param message represents the end game message
+     */
+    public void endGame(String message){
+
+        System.out.println("[SERVER] Closing game...");
+        sendAll(message);
+        for(String nickname : connections.keySet()){
+            connections.get(nickname).closeConnection();
+        }
+        System.out.println("[SERVER] Game closed correctly");
+
+    }
+
+    /**
      * sets up the game creating all the necessary components
      */
     public void setUpGame(){
@@ -168,12 +214,10 @@ public class Game {
         GameBoardHandler gameBoard = new GameBoard(names, file);
         gameBoard.giveLeaderCards(file);
         View virtualView = new VirtualView(this,gameBoard);
-        gameBoard.attachView(virtualView);
-        this.stateHandler = new StateHandler(gameBoard, virtualView);
+        //gameBoard.attachView(virtualView);
+        //this.stateHandler = new StateHandler(gameBoard, virtualView);
 
         System.out.println("[SERVER] Game is ready to start");
-
-        return;
 
     }
 

@@ -1,14 +1,10 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.Controller.GameController;
+
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
@@ -29,9 +25,9 @@ public class Server {
     private ServerSocket serverSocket;
 
     /**
-     * controller
+     * represents the GamesHandler
      */
-    private ConnectionListener controller;
+    private ConnectionListener handler;
 
     /**
      * contains a thread pool to manage all the clients connecting to the server
@@ -39,14 +35,9 @@ public class Server {
     private ExecutorService executor;
 
     /**
-     * id counter
+     * represents a progressive number associated to a socket connection
      */
     private AtomicLong idCounter;
-
-    /**
-     * keeps track of the active connections associating them to a unique ID
-     */
-    private Map<String, ClientConnection> activeConnections;
 
     /**
      * creates a new server accepting clients to the port selected
@@ -56,20 +47,9 @@ public class Server {
 
         this.port = port;
         idCounter = new AtomicLong();
-        activeConnections = new HashMap<>();
-        this.controller = new GameController(this);
+        this.handler = new GamesHandler();
 
     }
-
-    /**
-     * adds a new connection to the active ones
-     * @param id represents the id associated to the connection
-     * @param connection represents the client's socket connection
-     */
-    public synchronized void addConnection(String id, ClientConnection connection){
-        activeConnections.put(id, connection);
-    }
-
 
     /**
      *
@@ -78,16 +58,6 @@ public class Server {
     public String createId(){
         return String.valueOf(idCounter.getAndIncrement());
     }
-
-
-    public synchronized void closeConnection(String socketID){
-        activeConnections.get(socketID).closeConnection();
-    }
-
-    public synchronized void send(String socketID, String message){
-        activeConnections.get(socketID).send(message);
-    }
-
 
     /**
      * Initializes and starts the server
@@ -114,8 +84,9 @@ public class Server {
             try {
 
                 Socket socket = serverSocket.accept();
-                System.out.println("[SERVER] Accepted new connection");
-                executor.submit(new SocketClientConnection(socket, this, createId(), controller));
+                String id = createId();
+                System.out.println("[SERVER] Accepted new connection (ID = "+ id + ")");
+                executor.submit(new SocketClientConnection(socket, this, id, handler));
 
             } catch (IOException e) {
 
