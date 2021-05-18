@@ -110,7 +110,7 @@ public class MessageParser {
     protected static String createXMLString(Document document) throws TransformerException {
 
         Transformer tr = TransformerFactory.newInstance().newTransformer();
-        tr.setOutputProperty("omit-xml-declaration", "yes");
+        //tr.setOutputProperty("omit-xml-declaration", "yes");
 
         StringWriter buffer = new StringWriter();
         tr.transform(new DOMSource(document), new StreamResult(buffer));

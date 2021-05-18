@@ -61,6 +61,7 @@ public class Game {
 
     }
 
+    //TODO: ELIMINARE GETTER E LE RELATIVE PRINT
     public Map<String, String> getPlayers() {
         return new HashMap<>(players);
     }
