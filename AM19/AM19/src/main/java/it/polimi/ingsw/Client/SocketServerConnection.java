@@ -155,7 +155,7 @@ public class SocketServerConnection implements ServerConnection, Runnable{
 
         }
 
-        startPingTimer();
+        //startPingTimer();
         String read = "";
 
         try {

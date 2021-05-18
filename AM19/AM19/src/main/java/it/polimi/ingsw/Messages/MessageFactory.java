@@ -85,12 +85,26 @@ public class MessageFactory {
         return MessageParser.createMessage(map);
     }
 
+    public static String buildStartGame(String body, List<String> nicknames) throws MalformedMessageException {
+        Map<String, String> map = new HashMap<>();
+        StringBuilder content = new StringBuilder();
+
+        for(int i=0; i<nicknames.size(); i++){
+            content.append(nicknames.get(i)).append(":");
+        }
+
+        map.put("body", body);
+        map.put("messageType", Message.MessageType.START_GAME.toString());
+        map.put("activePlayers", ((content.length()>0)?content.substring(0, content.length()-1):""));
+        return MessageParser.createMessage(map);
+    }
+
 
 
     //--------------------------------------CORRECTION
     //------------------------------------------------
     //------------------------------------------------
-    public static String buildSelectedMarbles(List<Marble> selection, List<Marble> candidates, String player, String body)
+    /*public static String buildSelectedMarbles(List<Marble> selection, List<Marble> candidates, String player, String body)
             throws MalformedMessageException{
         String selectionString = buildMarbleList(selection), candidateString = buildMarbleList(candidates);
         Map<String, String> map = new HashMap<>();
@@ -102,19 +116,7 @@ public class MessageFactory {
         map.put("marbles", selectionString);
         map.put("candidates", candidateString);
         return MessageParser.createMessage(map);
-    }
-
-
-    public static String buildReply(Boolean type, String body, String nickName) throws MalformedMessageException {
-        Map<String, String> map = new HashMap<>();
-        map.put("body", body);
-        map.put("messageType", Message.MessageType.REPLY.toString());
-        map.put("correct", type.toString());
-        map.put("player", nickName);
-        return MessageParser.createMessage(map);
-    }
-
-
+    }*/
 
     //--------------------------------------CORRECTION
     //------------------------------------------------

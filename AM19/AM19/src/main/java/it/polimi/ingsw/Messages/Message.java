@@ -30,6 +30,7 @@ public abstract class Message {
         FAITH_UPDATE,
         TOKEN_UPDATE,
         MARKET_UPDATE,
+        START_GAME,
         SELECTED_MARBLES;
 
     }

@@ -16,7 +16,7 @@ public class NetworkBuffer {
      */
     private List<String> extracted;
 
-    private final String messageStart = "<Message>";
+    private final String messageStart = "<?xml version=";
     private final String messageEnd = "</Message>";
     private final String ping = "<ping/>";
     private final String pong = "<pong/>";

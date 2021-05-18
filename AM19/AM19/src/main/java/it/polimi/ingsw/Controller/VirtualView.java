@@ -301,12 +301,13 @@ public class VirtualView implements View {
      * this method is used to catch a swap in the warehouse
      */
     @Override
-    public void swapAction() {
+    public boolean swapAction() {
         try {
             String nickName = gameBoardHandler.currentPlayerNickname();
             String message = MessageFactory.buildGameStatus(true,"swap action", nickName,TurnType.SWAP);
             game.send(message,nickName);
         }catch (MalformedMessageException e){ e.printStackTrace();}
+        return true;
     }
 
 

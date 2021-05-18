@@ -109,29 +109,29 @@ public class CLI_ClientController_Test {
         //LOGIN COMPLETED DURING THE SETUP. UPDATE OF THE VIEWMODEL
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         //END OF BEGINNING UPDATES. BEGIN OF LEADER SELECTION
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         //END OF INITIALIZATION LEADERS. BEGIN OF INITIALIZATION RESOURCES
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
    }
 
 
@@ -157,24 +157,24 @@ public class CLI_ClientController_Test {
         for(int i=0; i<22; i++){
             message = server.readLine();
             //System.out.println(message);
-            controller.onReceivedMessage(message, "Davide");
+            controller.onReceivedMessage(message);
         }
         //INITIALIZATION OF MY LEADER CARDS
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         //LEADER CARDS UPDATE
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         //RESOURCE SELECTION
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         //RESOURCES UPDATE
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         //FINAL PLOT TO CHECK IF UPDATES ARE CORRECT
         cli.plotView();
@@ -202,7 +202,7 @@ public class CLI_ClientController_Test {
         for(int i=0; i<27; i++){
             message = server.readLine();
             //System.out.println(message);
-            controller.onReceivedMessage(message, "Davide");
+            controller.onReceivedMessage(message);
         }
     }
 
@@ -229,51 +229,51 @@ public class CLI_ClientController_Test {
         for(int i=0; i<16; i++){
             message = server.readLine();
             //System.out.println(message);
-            controller.onReceivedMessage(message, "Davide");
+            controller.onReceivedMessage(message);
         }
         //DAVIDE SELECTS HIS TURN. HE CHOOSES TO TAKE SOMETHING FROM MARKETBOARD
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         //FIRST, DAVIDE PERFORMS A SWAP
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         //UPDATE OF WAREHOUSE
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         //DAVIDE PERFORMS ANOTHER SWAP
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         //UPDATE OF WAREHOUSE
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         //DAVIDE STOPS DOING SWAPS
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         //DAVIDE SELECTS ROW 2 OF THE MARKET AND RECEIVE 4 MARBLES. HE PUT THEM INSIDE THE WAREHOUSE
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         //THE INSERTION IS NOT CORRECT. DAVIDE RECEIVE AN ERROR. HE HAS TO PERFORM THE ACTION AGAIN
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         //THE OPERATION IS PERFORMED. THE MODEL IS UPDATED
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         message = server.readLine();
         //System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         cli.plotView();
 
@@ -306,23 +306,23 @@ public class CLI_ClientController_Test {
         for(int i=0; i<16; i++){
             message = server.readLine();
             System.out.println(message);
-            controller.onReceivedMessage(message, "Davide");
+            controller.onReceivedMessage(message);
         }
 
         //DAVIDE SELECTS HIS TURN. HE CHOOSES TO BUY A CARD
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         //DAVIDE CHOOSES HIS CARD.
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         //UPDATE OF DAVIDE's SLOTS
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         cli.plotView();
     }
@@ -351,23 +351,23 @@ public class CLI_ClientController_Test {
         for(int i=0; i<16; i++){
             message = server.readLine();
             System.out.println(message);
-            controller.onReceivedMessage(message, "Davide");
+            controller.onReceivedMessage(message);
         }
 
         //DAVIDE SELECTS HIS TURN. HE CHOOSES TO MANAGE HIS LEADER CARDS
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         //DAVIDE CHOOSES TO ACTIVATE HIS FIRST LEADER CARD AND DISCARD THE SECOND
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         //UPDATE OF DAVIDE's CARDS
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         cli.plotView();
     }
@@ -396,26 +396,26 @@ public class CLI_ClientController_Test {
         for(int i=0; i<16; i++){
             message = server.readLine();
             System.out.println(message);
-            controller.onReceivedMessage(message, "Davide");
+            controller.onReceivedMessage(message);
         }
 
         //DAVIDE SELECTS HIS TURN. HE CHOOSES TO USE HIS PRODUCTIONS AND DEV CARDS
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         //DAVIDE CHOOSES TO ACTIVATE HIS FIRST TWO DEVELOPMENT CARDS, HIS FIRST LEADER CARD, AND HIS PERSONAL PRODUCTION
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         //UPDATE OF DAVIDE'S RESOURCES
         message = server.readLine();
         System.out.println(message);
-        controller.onReceivedMessage(message, "Davide");
+        controller.onReceivedMessage(message);
 
         cli.plotView();
     }

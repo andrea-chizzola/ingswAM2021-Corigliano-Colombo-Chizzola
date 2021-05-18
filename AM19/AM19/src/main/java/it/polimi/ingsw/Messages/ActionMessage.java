@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Messages;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
+import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.PlayerAction;
 import it.polimi.ingsw.Messages.Enumerations.TraySelection;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -136,6 +138,14 @@ public class ActionMessage extends Message {
     //UPDATE_LEADER_CARDS
     public Map<Integer, Boolean> getLeaderCardStatus() throws MalformedMessageException {
         MessageUtilities parser = MessageUtilities.instance();
-        return parser.getMapIntegerBoolean(toXML(),"leaderStatus");
+
+        Map<Integer, ItemStatus> map = parser.getMapIntegerItemStatus(toXML(),"leaderStatus");
+        Map<Integer,Boolean> mapBoolean = new HashMap<>();
+
+        for(int i : map.keySet()){
+            mapBoolean.put(i,map.get(i).getBoolValue());
+        }
+        return mapBoolean;
+        //return parser.getMapIntegerBoolean(toXML(),"leaderStatus");
     }
 }

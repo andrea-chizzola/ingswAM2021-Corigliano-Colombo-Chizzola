@@ -270,13 +270,13 @@ public class CLIPainter{
      */
     public static void paintMarketBoard
             (String[][] target, int V_OFFSET, int H_OFFSET, List<Marble> marbles, int nRows, int nColumns){
-        int width, length, c=1;
+        int width, length, c=0;
         width = (SPHERE_WIDTH + 1) * nColumns + 3;
         length = (SPHERE_LENGTH + 1) * (nRows+1) + 1;
         insertString(target, V_OFFSET, H_OFFSET, "Market board:", baseFont);
         paintRectangle(target, V_OFFSET+1, H_OFFSET, width, length, baseFont);
 
-        spherePainter(target, V_OFFSET+2, H_OFFSET+width/2-SPHERE_WIDTH/2, " ",  marbles.get(0).toColor(), baseFont);
+        spherePainter(target, V_OFFSET+2, H_OFFSET+width/2-SPHERE_WIDTH/2, " ",  marbles.get(marbles.size()-1).toColor(), baseFont);
         for(int i=0; i<nColumns; i++){
             for(int j=0; j<nRows; j++){
                 spherePainter(target, V_OFFSET+2+(j+1)*(SPHERE_LENGTH+1),

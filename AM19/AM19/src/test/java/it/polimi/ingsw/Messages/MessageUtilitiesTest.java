@@ -160,7 +160,7 @@ class MessageUtilitiesTest {
         list.add(new ResQuantity(new Coin(), 5));
         list.add(new ResQuantity(new Stone(), 9));
         try {
-            assertEquals(list, instance.getResQuantityList("<Message><strongbox>coins:5:stones:9</strongbox><warehouse>1:5:2:9</warehouse></Message>", "strongbox"));
+            assertEquals(list, instance.getResQuantityList("<Message><strongbox>coin:5:stone:9</strongbox><warehouse>1:5:2:9</warehouse></Message>", "strongbox"));
         } catch (MalformedMessageException e) {
             fail();
         }
@@ -306,7 +306,7 @@ class MessageUtilitiesTest {
         list.add(new Coin());
         list.add(new Faith());
         try {
-            List<Resource> listMessage = instance.getResources("<Message><resources>1:coins:2:faith</resources></Message>", "resources");
+            List<Resource> listMessage = instance.getResources("<Message><resources>1:coin:2:faith</resources></Message>", "resources");
             for (int i=0; i<list.size(); i++) {
                 assertEquals(list.get(i).getColor(), listMessage.get(i).getColor());
             }

@@ -728,7 +728,7 @@ public class CLI implements View, SubjectView {
         out.println("Select your custom resources:");
         customResources = helpResSequence();
 
-        out.println("Select your custom resources:");
+        out.println("Select your custom products:");
         customProducts = helpResSequence();
 
         out.println("What is a production without some waste of resources?");

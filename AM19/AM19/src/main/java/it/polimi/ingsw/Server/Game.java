@@ -2,6 +2,8 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.MessageHandler;
 import it.polimi.ingsw.Controller.VirtualView;
+import it.polimi.ingsw.Exceptions.MalformedMessageException;
+import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Boards.GameBoardHandler;
 import it.polimi.ingsw.Controller.MessageHandler;
 import it.polimi.ingsw.Model.Boards.GameBoard;
@@ -213,8 +215,13 @@ public class Game {
         System.out.println("[SERVER] Creating a new game...");
 
         ArrayList<String> names = new ArrayList<>(players.values());
-        GameBoardHandler gameBoard = new GameBoard(names, file);
+        try {
+            sendAll(MessageFactory.buildStartGame("Game is starting", names));
+        } catch (MalformedMessageException e) {
+            //TERMINA IL GAME
+        }
 
+        GameBoardHandler gameBoard = new GameBoard(names, file);
         //gameBoard.giveLeaderCards(file);
 
         View virtualView = new VirtualView(this,gameBoard);

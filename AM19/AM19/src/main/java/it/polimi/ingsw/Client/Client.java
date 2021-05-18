@@ -24,6 +24,7 @@ public class Client implements ViewObserver{
     private int port;
     private boolean useCli;
     private View ui;
+    private ClientController clientController;
 
     public Client(String ip, int port, boolean useCli) {
         this.ip = ip;
@@ -43,20 +44,19 @@ public class Client implements ViewObserver{
 
     public void startClient(){
 
-        /*
+
         ViewModel viewModel = new ViewModel(file);
 
         if(useCli){
-            ui = new CLI(viewModel);
+            ui = new CLI(viewModel, System.in, System.out);
+            CLI cli = (CLI) ui;
+            cli.attachObserver(this);
         }else{
-            ui = new GUI();
-            launch();
+            /*ui = new GUI();
+            launch();*/
         }
-        
-        ui = new CLI(viewModel);*/
-        ClientConnectionListener clientController = null; //= new ClientController(viewModel, ui);
-        //ui.initialize();
 
+        clientController = new ClientController(viewModel, ui);
         try {
 
             Socket socket = new Socket(ip, port);
@@ -70,6 +70,8 @@ public class Client implements ViewObserver{
             e.printStackTrace();
 
         }
+        
+        clientController.start();
 
     }
 

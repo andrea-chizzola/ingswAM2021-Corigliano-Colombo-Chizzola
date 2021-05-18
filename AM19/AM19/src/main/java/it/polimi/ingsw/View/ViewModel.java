@@ -271,6 +271,8 @@ public class ViewModel {
     }
 
     public Map<Integer,String> getSlots(String player) {
+        System.out.println("DEBUG");
+        if(!slots.containsKey(player)) return new HashMap<>();
         return new HashMap<>(slots.get(player));
     }
 

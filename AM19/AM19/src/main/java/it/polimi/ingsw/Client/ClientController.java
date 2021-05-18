@@ -61,16 +61,18 @@ public class ClientController implements ClientConnectionListener {
     }
 
     @Override
-    public synchronized void onReceivedMessage(String message, String nickname) {
+    public synchronized void onReceivedMessage(String message) {
        try{
            checkStart();
            MessageUtilities parser = MessageUtilities.instance();
            Message.MessageType type = parser.getType(message);
            if(type == Message.MessageType.GAME_STATUS)
                messageHandler(new GameStatusMessage(message));
-           else {
+           else if(type == Message.MessageType.REPLY){
+               loginHandler(new ReplyMessage(message));
+           }
+           else{
                updateHandler(new UpdateMessage(message, type));
-
            }
        }
        catch(MalformedMessageException e){
@@ -79,8 +81,16 @@ public class ClientController implements ClientConnectionListener {
        }
     }
 
+    private void loginHandler(ReplyMessage reply) throws MalformedMessageException {
+        if(!loggedIn && !reply.isOk()){
+            //termino il client. Il login non è mai avvenuto
+            System.out.println("[Client] Cannot connect you to a game. Closing connection...");
+        }
+        loggedIn = true;
+    }
+
     @Override
-    public synchronized void onMissingPong(String nickname) {
+    public synchronized void onMissingPong() {
         view.showGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
     }
 
@@ -101,8 +111,6 @@ public class ClientController implements ClientConnectionListener {
             System.out.println("CIAO");
         }
 
-        loginHandler(message.isOk());
-
         view.showGameStatus(message.isOk(), message.getBody(), self, status);
         if (model.getCurrentPlayer().equals(self)){
 
@@ -120,14 +128,6 @@ public class ClientController implements ClientConnectionListener {
 
 
         }
-    }
-
-    private void loginHandler(boolean reply){
-        if(!loggedIn && !reply){
-            //termino il client. Il login non è mai avvenuto
-            System.out.println("[Client] Cannot connect you to a game. Closing connection...");
-        }
-        loggedIn = true;
     }
 
     private void actionHandler(TurnType type, GameStatusMessage message) throws MalformedMessageException {
@@ -253,6 +253,10 @@ public class ClientController implements ClientConnectionListener {
                 marketUpdate(message);
                 break;
             }
+            case START_GAME: {
+                List<String> nicknames = message.getNicknames();
+                model.setNicknames(nicknames);
+            }
             default:
                 //END CONNECTION. WRONG SEQUENCE OF MESSAGES OF UNKNOWN MESSAGE
                 break;
@@ -301,7 +305,6 @@ public class ClientController implements ClientConnectionListener {
     private void faithUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<String, Integer> faith = message.getFaithPoints();
         Map<String, List<ItemStatus>> sections = new HashMap<>();
-        List<String> nicknames = message.getNicknames();
         for(String name : faith.keySet()){
             sections.put(name, message.getSections(name));
             model.setSections(message.getSections(name), model.getCurrentPlayer());
@@ -309,7 +312,6 @@ public class ClientController implements ClientConnectionListener {
         Optional<List<ItemStatus>> lorenzoSections = message.getLorenzoSections();
         Optional<Integer> lorenzoFaith = message.getLorenzoFaith();
         model.setFaithPoints(faith);
-        model.setNicknames(nicknames);
         lorenzoFaith.ifPresent(integer -> model.setLorenzoFaith(integer));
         lorenzoSections.ifPresent(itemStatuses -> model.setLorenzoSections(itemStatuses));
 
