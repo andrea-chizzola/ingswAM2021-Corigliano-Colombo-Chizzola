@@ -22,6 +22,8 @@ public class Server {
     /**
      * represents the server socket
      */
+
+
     private ServerSocket serverSocket;
 
     /**

@@ -124,6 +124,9 @@ public class MessageUtilities {
         List<Integer> quantity = new ArrayList<>();
         String[] string = warehouse.split(splitter);
 
+        if(warehouse.equals("")){
+            return quantity;
+        }
         if(string.length%2 != 0)
             throw new MalformedMessageException();
 
@@ -146,6 +149,10 @@ public class MessageUtilities {
         String key;
         int value;
         ResQuantity resQuantity;
+
+        if(messageString.equals("")){
+            return list;
+        }
 
         if(string.length%2 != 0)
             throw new MalformedMessageException();
@@ -198,6 +205,10 @@ public class MessageUtilities {
         List<Marble> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
 
+        if(messageString.equals("")){
+            return list;
+        }
+
         if(string.length % 3 != 0 )
             throw new MalformedMessageException();
 
@@ -216,6 +227,10 @@ public class MessageUtilities {
 
         List<Marble> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
+
+        if(messageString.equals("")){
+            return list;
+        }
 
         for(int i=0; i<string.length; i++){
 
@@ -247,6 +262,10 @@ public class MessageUtilities {
         String[] string = messageString.split(splitter);
         PlayerAction action;
 
+        if(messageString.equals("")){
+            return list;
+        }
+
         if(string.length % 3 != 0 )
             throw new MalformedMessageException();
 
@@ -269,6 +288,9 @@ public class MessageUtilities {
         String[] string = messageString.split(splitter);
         ItemStatus item;
 
+        if(messageString.equals("")){
+            return list;
+        }
         for(int i=0; i<string.length; i++){
             try{
                 item = ItemStatus.valueOf(string[i].toUpperCase());
@@ -286,6 +308,10 @@ public class MessageUtilities {
 
         List<Integer> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
+
+        if(messageString.equals("")){
+            return list;
+        }
 
         if(string.length % 3 != 0 )
             throw new MalformedMessageException();
@@ -346,6 +372,9 @@ public class MessageUtilities {
         int key;
         String value;
 
+        if(messageString.equals("")){
+            return map;
+        }
         if(string.length%2 != 0)
             throw new MalformedMessageException();
 
@@ -366,6 +395,9 @@ public class MessageUtilities {
         Map<String, Integer> table = new HashMap<>();
         String[] string = content.split(splitter);
 
+        if(content.equals("")){
+            return table;
+        }
         if(string.length%2 != 0)
             throw new MalformedMessageException();
 
@@ -388,6 +420,10 @@ public class MessageUtilities {
         int key;
         boolean value;
 
+        if(messageString.equals("")){
+            return map;
+        }
+
         if(string.length%2 != 0)
             throw new MalformedMessageException();
 
@@ -409,6 +445,9 @@ public class MessageUtilities {
         ItemStatus item;
         int number;
 
+        if(messageString.equals("")){
+            return map;
+        }
         if(string.length%2!=0) throw new MalformedMessageException();
         for(int i=0; i<string.length/2; i++){
 

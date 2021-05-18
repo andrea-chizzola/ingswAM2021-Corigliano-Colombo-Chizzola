@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
+import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.View;
@@ -18,17 +19,6 @@ public class ViewForTest implements View {
 
     }
 
-    /**
-     * this method is used to show a message
-     *
-     * @param answer   represents the type of message
-     * @param body     is the content of the message
-     * @param nickName represents the nickname of involved player
-     */
-    @Override
-    public void showAnswer(boolean answer, String body, String nickName) {
-
-    }
 
     /**
      * this method is used to show an update of the marketBoard
@@ -161,11 +151,9 @@ public class ViewForTest implements View {
 
     /**
      * this method is used to catch the LeaderCards selected by a player
-     *
-     * @param cards is the list of cards given to a player
      */
     @Override
-    public void selectLeaderAction(Map<Integer, String> cards) {
+    public void selectLeaderAction() {
 
     }
 
@@ -222,6 +210,19 @@ public class ViewForTest implements View {
      */
     @Override
     public void swapAction() {
+
+    }
+
+    /**
+     * this method is used to show a message
+     *
+     * @param answer   represents the type of message
+     * @param body     is the content of the message
+     * @param nickName represents the nickname of involved player
+     * @param state
+     */
+    @Override
+    public void showGameStatus(boolean answer, String body, String nickName, TurnType state) {
 
     }
 }

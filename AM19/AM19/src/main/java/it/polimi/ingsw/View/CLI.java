@@ -3,6 +3,7 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Client.ViewObserver;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
+import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
@@ -226,7 +227,7 @@ public class CLI implements View, SubjectView {
      * this method is used to show a message
      * @param answer represents the type of message
      * @param body is the content of the message
-     */
+     *//*
     @Override
     public void showAnswer(boolean answer, String body, String nickname) {
         if(answer){
@@ -235,7 +236,7 @@ public class CLI implements View, SubjectView {
         else{
             out.println("Action successfully performed. Let's proceed further");
         }
-    }
+    }*/
 
     /**
      * this method is used to show an update of the marketBoard
@@ -441,7 +442,7 @@ public class CLI implements View, SubjectView {
         do{
             out.println("Select your turn type; available turns: " + available);
             s = getInput();
-            if(!turns.contains(s)) showAnswer(false, "Not existent turn type.", "name");
+            //if(!turns.contains(s)) showAnswer(false, "Not existent turn type.", "name");
         }
         while(!turns.contains(s));
         try {
@@ -451,12 +452,13 @@ public class CLI implements View, SubjectView {
         }
         return s;
     }
-
+/*
     /**
      * this method is used to catch the LeaderCards selected by a player
      * @param cards is the list of cards given to a player
      */
     //put the number of default leaders from configuration file
+    /*
     @Override
     public void selectLeaderAction(Map<Integer,String> cards) {
         String action;
@@ -478,7 +480,7 @@ public class CLI implements View, SubjectView {
         }catch(MalformedMessageException e){
             //exit from client
         }
-    }
+    }*/
 
     private boolean isIntSequence(String[] sequence, int offset){
         for (int i=0; i<sequence.length; i+=offset) {
@@ -697,5 +699,26 @@ public class CLI implements View, SubjectView {
     @Override
     public void notifyObserver(String message) {
         viewObserver.update(message);
+    }
+
+    /**
+     * this method is used to show a message
+     *
+     * @param answer   represents the type of message
+     * @param body     is the content of the message
+     * @param nickName represents the nickname of involved player
+     * @param state
+     */
+    @Override
+    public void showGameStatus(boolean answer, String body, String nickName, TurnType state) {
+
+    }
+
+    /**
+     * this method is used to catch the LeaderCards selected by a player
+     */
+    @Override
+    public void selectLeaderAction() {
+
     }
 }

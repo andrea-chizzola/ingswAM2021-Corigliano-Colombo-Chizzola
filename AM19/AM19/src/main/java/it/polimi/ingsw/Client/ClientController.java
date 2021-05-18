@@ -11,26 +11,17 @@ import it.polimi.ingsw.View.ViewModel;
 
 import java.util.*;
 
-public class ClientController implements ClientConnectionListener {
+public class ClientController /*implements ClientConnectionListener*/ {
+/*
 
-    /**
-     * this attribute represents the reduced model of the Client
-     */
     private ViewModel model;
 
-    /**
-     * this attribute represents the view of the Client
-     */
+
     private View view;
 
-    /**
-     * this state represents the current state of the Client
-     */
+
     private ClientStates state;
 
-    /**
-     * this attribute is true if the player has not logged in
-     */
     private boolean loginPhase;
 
 
@@ -194,6 +185,6 @@ public class ClientController implements ClientConnectionListener {
         List<Marble> candidates = message.getCandidateWhite();
         view.showMarblesUpdate(selected, candidates, model.getCurrentPlayer());
     }
-
+*/
 }
 

@@ -82,6 +82,7 @@ public class GamesHandler implements ConnectionListener{
      */
     public Game getGameBySocketID(String socketID){
 
+
         for(Game game : waitingConnection){
             if(game.containsID(socketID)){
                 return game;

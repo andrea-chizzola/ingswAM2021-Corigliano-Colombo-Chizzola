@@ -69,6 +69,7 @@ public class UpdateMessage extends Message {
         return parser.getMarbleList(toString(),"market");
     }
 
+    /*
     public List<Marble> getSelectedMarbles() throws MalformedMessageException {
         MessageUtilities parser = MessageUtilities.instance();
         return parser.getMarbleList(toString(),"marbles");
@@ -78,6 +79,7 @@ public class UpdateMessage extends Message {
         MessageUtilities parser = MessageUtilities.instance();
         return parser.getMarbleList(toString(),"candidates");
     }
+    */
 
     public Map<String, Integer> getFaithPoints() throws MalformedMessageException {
         MessageUtilities parser = MessageUtilities.instance();
@@ -141,10 +143,10 @@ public class UpdateMessage extends Message {
         return parser.getString(toXML(), "player");
     }
 
-    public List<String> getTurnTypes() throws MalformedMessageException {
+    /*public List<String> getTurnTypes() throws MalformedMessageException {
         MessageUtilities parser = MessageUtilities.instance();
         return parser.getListString(toXML(), "turns");
-    }
+    }*/
 
     public List<String> getNicknames() throws MalformedMessageException{
         //modificare il messaggio FaithTrackUpdate in modo tale che nicknames e punti fede siano in tag diversi.
