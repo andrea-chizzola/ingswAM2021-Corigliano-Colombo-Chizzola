@@ -36,12 +36,12 @@ public class VirtualView implements View {
      * @param body   is the content of the message
      */
     @Override
-    public void showAnswer(boolean answer, String body, String nickName) {
+    public void showGameStatus(boolean answer, String body, String nickName, TurnType status) {
 
-        try {
+        /*try {
             String message = MessageFactory.buildReply(answer,body,nickName);
             game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){ e.printStackTrace();}*/
 
     }
 
@@ -202,18 +202,17 @@ public class VirtualView implements View {
     /**
      * this method is used to catch the LeaderCards selected by a player
      *
-     * @param cards is the list of cards given to a player
      */
     @Override
-    public void selectLeaderAction(Map<Integer,String> cards) {
-        try {
+    public void selectLeaderAction() {
+        /*try {
             Map<Integer,ItemStatus> map = new HashMap<>();
             for(Integer i : cards.keySet()){
                 map.put(i,ItemStatus.INACTIVE);
             }
             String message = MessageFactory.buildLeaderUpdate(cards,map, gameBoardHandler.currentPlayer(), "leader cards to choose");
             game.send(message,gameBoardHandler.currentPlayer());
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){ e.printStackTrace();}*/
     }
 
     /**
@@ -221,11 +220,11 @@ public class VirtualView implements View {
      */
     @Override
     public void selectMarketAction() {
-        try {
+        /*try {
             String nickName = gameBoardHandler.currentPlayer();
             String message = MessageFactory.buildReply(true,"select market", nickName);
             game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){ e.printStackTrace();}*/
     }
 
 
@@ -234,11 +233,11 @@ public class VirtualView implements View {
      */
     @Override
     public void leaderAction() {
-        try {
+        /*try {
             String nickName = gameBoardHandler.currentPlayer();
             String message = MessageFactory.buildReply(true,"leader action", nickName);
             game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){ e.printStackTrace();}*/
     }
 
     /**
@@ -246,11 +245,11 @@ public class VirtualView implements View {
      */
     @Override
     public void buyCardAction() {
-        try {
+        /*try {
             String nickName = gameBoardHandler.currentPlayer();
             String message = MessageFactory.buildReply(true,"buy card", nickName);
             game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){ e.printStackTrace();}*/
     }
 
     /**
@@ -258,11 +257,11 @@ public class VirtualView implements View {
      */
     @Override
     public void doProductionsAction() {
-        try {
+        /*try {
             String nickName = gameBoardHandler.currentPlayer();
             String message = MessageFactory.buildReply(true,"do production", nickName);
             game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){ e.printStackTrace();}*/
     }
 
     /**
@@ -270,23 +269,24 @@ public class VirtualView implements View {
      */
     @Override
     public void getResourcesAction() {
-        try {
+        /*try {
             String nickName = gameBoardHandler.currentPlayer();
             String message = MessageFactory.buildReply(true,"get resources", nickName);
             game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){ e.printStackTrace();}*/
     }
 
     /**
      * this method is used to catch a swap in the warehouse
      */
     @Override
-    public void swapAction() {
-        try {
+    public boolean swapAction() {
+        /*try {
             String nickName = gameBoardHandler.currentPlayer();
             String message = MessageFactory.buildReply(true,"swap action", nickName);
             game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){ e.printStackTrace();}*/
+        return true;
     }
 
 

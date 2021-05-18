@@ -1,6 +1,20 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.CLITest;
+import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
+import it.polimi.ingsw.Model.ActionTokens.Action;
+import it.polimi.ingsw.Model.Cards.DevelopmentCard;
+import it.polimi.ingsw.Model.Cards.LeaderCard;
+import it.polimi.ingsw.Model.MarketBoard.Marble;
+import it.polimi.ingsw.Model.MarketBoard.MarbleBlue;
+import it.polimi.ingsw.Model.MarketBoard.MarbleGray;
+import it.polimi.ingsw.Model.MarketBoard.MarbleRed;
+import it.polimi.ingsw.Model.Resources.*;
 import it.polimi.ingsw.View.CLI;
 import it.polimi.ingsw.View.ViewModel;
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.util.*;
@@ -10,13 +24,15 @@ public class CLITest {
     private ViewModel model;
     private List<String> players;
 
-    /*@BeforeEach
+    @BeforeEach
     public void initializeTest(){
         players = new LinkedList<>();
         players.add("test1");
         players.add("test2");
-        model = new ViewModel("defaultConfiguration.xml", players);
-        cli = new CLI(model);
+        model = new ViewModel("defaultConfiguration.xml");
+        model.setNicknames(players);
+        cli = new CLI(model, System.in, System.out);
+        cli.initialize();
         System.out.println(" ");
     }
 
@@ -38,20 +54,20 @@ public class CLITest {
         sections.put("test2", test2);
         cli.showFaithUpdate(faith, sections, Optional.empty(), Optional.empty());
 
-        Map<Integer, ResQuantity> warehouse = new HashMap<>();
-        warehouse.put(1, new ResQuantity(new Coin(), 1));
-        warehouse.put(2, new ResQuantity(new Faith(), 1));
-        warehouse.put(3, new ResQuantity(new Stone(), 2));
-        warehouse.put(4, new ResQuantity(new Coin(),5));
-        warehouse.put(5, new ResQuantity(new Stone(),3));
-        cli.showWarehouseUpdate(warehouse);
+        List<ResQuantity> warehouse = new LinkedList<>();
+        warehouse.add(new ResQuantity(new Coin(), 1));
+        warehouse.add(new ResQuantity(new Faith(), 1));
+        warehouse.add(new ResQuantity(new Stone(), 2));
+        warehouse.add(new ResQuantity(new Coin(),5));
+        warehouse.add(new ResQuantity(new Stone(),3));
 
-        List<ResQuantity> status = new LinkedList<>();
-        status.add(new ResQuantity(new Coin(),5));
-        status.add(new ResQuantity(new Stone(),3));
-        status.add(new ResQuantity(new Servant(),8));
-        status.add(new ResQuantity(new Shield(),4));
-        cli.showStrongboxUpdate(status);
+        List<ResQuantity> strongbox = new LinkedList<>();
+        strongbox.add(new ResQuantity(new Coin(),5));
+        strongbox.add(new ResQuantity(new Stone(),3));
+        strongbox.add(new ResQuantity(new Servant(),8));
+        strongbox.add(new ResQuantity(new Shield(),4));
+
+        cli.showBoxes(warehouse, strongbox, "test");
 
         List<Marble> marbles = new LinkedList<>();
         marbles.add(new MarbleBlue());
@@ -79,21 +95,29 @@ public class CLITest {
         slots.put(1, cardsD.get(5).getId());
         slots.put(2, cardsD.get(1).getId());
         slots.put(3, cardsD.get(2).getId());
-        cli.showSlotsUpdate(slots);
+        cli.showSlotsUpdate(slots, "test2");
 
-        Map<String, ItemStatus> leaders = new HashMap<>();
-        leaders.put("1", ItemStatus.ACTIVE);
-        leaders.put("2", ItemStatus.INACTIVE);
-        cli.showLeaderCards(leaders);
-
-
+        Map<Integer, String> leaders = new HashMap<>();
+        Map<Integer, ItemStatus> status = new HashMap<>();
+        status.put(1, ItemStatus.ACTIVE);
+        status.put(2, ItemStatus.INACTIVE);
+        leaders.put(1, "1");
+        leaders.put(2, "2");
+        cli.showLeaderCards(leaders, status, "test3");
 
         cli.showTopToken(Optional.of("1"));
 
-        cli.plot();
-    }*/
+        cli.plotView();
 
-    private static String[][] viewStatus;
+        leaders.put(3, "3");
+        leaders.put(4, "4");
+        status.put(3, ItemStatus.ACTIVE);
+        status.put(4, ItemStatus.INACTIVE);
+        cli.showLeaderCards(leaders, status, "test4");
+        cli.plotView();
+    }
+
+    /*private static String[][] viewStatus;
 
     private static InputStream in;
     private static PrintStream out;
@@ -107,9 +131,9 @@ public class CLITest {
     //StringBuilder reply;
     static StringBuilder interaction;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {*/
 
-        in = System.in;
+        /*in = System.in;
         out = System.out;
         availableInput = false;
         availableInteraction = false;
@@ -124,7 +148,7 @@ public class CLITest {
         viewStatus[0][0] = "1";
         viewStatus[1][0] = "2";
         viewStatus[0][1] = "3";
-        viewStatus[1][1] = "4";
+        viewStatus[1][1] = "4";*
 
         //serve un altro mutex per lo stream di input. Il thread aggiunge
         //stringhe a typed. Per estrarre devo essere sicuro di essere sincronizzato.
@@ -135,14 +159,14 @@ public class CLITest {
         //magari puoi usare di nuovo busyView come mutex. Non credo ne serva un altro
 
 
-        inputReader(in);
+       /* inputReader(in);
         //outputWriter(out);
 
         out.println("Input Test: ");
         out.println("Type something: ");
         out.println(getInput());
         out.println("Type again: ");
-        out.println(getInput());
+        out.println(getInput());*/
 
         /*out.println("We are done with the input, let's try with the output");
         out.println("Let's to a test output print");
@@ -198,13 +222,13 @@ public class CLITest {
         addInteraction("Let's put the two together");
         completedUpdate();
         addInteraction("CommandTest");
-        addInteraction("Did you pass the output test?");*/
+        addInteraction("Did you pass the output test?");
 
 
 
-    }
+    }*/
 
-    private static void inputReader(InputStream input){
+    /*private static void inputReader(InputStream input){
 
         new Thread(() ->
         {

@@ -68,8 +68,8 @@ public class Game {
     }
 
     public void onReceivedMessage(String message, String socketID){
-        if(getNickName(socketID) != null)
-            stateHandler.stateHandler(message, getNickName(socketID));
+        //if(getNickName(socketID) != null)
+            //stateHandler.stateHandler(message, getNickName(socketID));
     }
 
     /**
@@ -98,10 +98,10 @@ public class Game {
      */
     public void addPlayer(String nickname, String socketID){
 
-        if(start)
+        /*if(start)
             stateHandler.reconnection(nickname);
         players.put(nickname, socketID);
-        if(playersNumber == players.size()) start = true;
+        if(playersNumber == players.size()) start = true;*/
 
     }
 
@@ -111,10 +111,10 @@ public class Game {
      * @param nickname represents the nickname of the removed player
      */
     public void removePlayer(String nickname){
-        if(start){
+        /*if(start){
             stateHandler.disconnection(nickname);
         }
-        players.remove(nickname); }
+        players.remove(nickname);*/ }
 
     /**
      * @param nickname represents the name of the player
@@ -162,7 +162,7 @@ public class Game {
      */
     public void setUpGame(){
 
-        System.out.println("[SERVER] Creating a new game...");
+        /*System.out.println("[SERVER] Creating a new game...");
 
         ArrayList<String> names = new ArrayList<>(players.keySet());
         GameBoardHandler gameBoard = new GameBoard(names, file);
@@ -173,7 +173,7 @@ public class Game {
 
         System.out.println("[SERVER] Game is ready to start");
 
-        return;
+        return;*/
 
     }
 

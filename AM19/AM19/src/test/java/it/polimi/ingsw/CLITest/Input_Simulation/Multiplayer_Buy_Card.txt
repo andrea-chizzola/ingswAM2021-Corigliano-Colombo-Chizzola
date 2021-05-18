@@ -1,0 +1,8 @@
+Davide
+YES
+2
+2:3
+BUY_CARD
+1:2
+1:1
+shield:30:stone:30

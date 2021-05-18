@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
+import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.Boards.FaithTrack.VaticanReportSection;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
@@ -81,7 +82,7 @@ public class ViewModel {
     /**
      * this attribute represent the state of the players' VaticanSections
      */
-    private Map<String, List<VaticanReportSection>> sections;
+    private Map<String, List<ItemStatus>> sections;
 
     /**
      * this attribute represents the number of slots of each player
@@ -91,17 +92,17 @@ public class ViewModel {
     /**
      * this attribute represent the top card in each of the player's slots
      */
-    private Map<String, List<String>> slots;
+    private Map<String, Map<Integer, String>> slots;
 
     /**
      * this attribute represents the list of leader cards owned by each player
      */
-    private Map<String, List<String>> leadersID;
+    private Map<String, Map<Integer,String>> leadersID;
 
     /**
      * this attribute represents the state of the players' LeaderCards
      */
-    private Map<String, List<ItemStatus>> leadersStatus;
+    private Map<String, Map<Integer,ItemStatus>> leadersStatus;
 
     /**
      * this attribute represent the state of each player warehouse
@@ -131,7 +132,7 @@ public class ViewModel {
     /**
      * this attribute represents the state of Lorenzo's vatican report sections
      */
-    private Optional<List<VaticanReportSection>> lorenzoSections;
+    private Optional<List<ItemStatus>> lorenzoSections;
 
     /**
      * this attribute represents the progressive number of the current player
@@ -147,6 +148,8 @@ public class ViewModel {
      * this attribute represent the available turns of the current player
      */
     private List<String> availableTurns;
+
+    private TurnType modelState;
 
     public ViewModel(String file){
         // GESTIRE CODICE DEL SERVER! I PARSER POTREBBERO FALLIRE! Il client in quel caso deve terminare con errore!
@@ -181,6 +184,7 @@ public class ViewModel {
         lorenzoFaith = Optional.empty();
         lorenzoSections = Optional.empty();
         availableTurns = new LinkedList<>();
+
     }
 
     public String getPersonalNickname() {
@@ -254,11 +258,11 @@ public class ViewModel {
         this.faithPoints = new HashMap<>(faithPoints);
     }
 
-    public List<VaticanReportSection> getSections(String player) {
+    public List<ItemStatus> getSections(String player) {
         return new LinkedList<>(sections.get(player));
     }
 
-    public void setSections(List<VaticanReportSection> sections, String player) {
+    public void setSections(List<ItemStatus> sections, String player) {
        this.sections.put(player, new LinkedList<>(sections));
     }
 
@@ -266,39 +270,28 @@ public class ViewModel {
         return slotNumber;
     }
 
-    public List<String> getSlots(String player) {
-        return new LinkedList<>(slots.get(player));
+    public Map<Integer,String> getSlots(String player) {
+        return new HashMap<>(slots.get(player));
     }
 
-    public void setSlots(List<String> slots, String player) {
-        this.slots.put(player, new LinkedList<>(slots));
+    public void setSlots(Map<Integer,String> slots, String player) {
+        this.slots.put(player, new HashMap<>(slots));
     }
 
     public Map<Integer, String> getLeadersID(String player) {
-        Map<Integer, String> leaders = new HashMap<>();
-        List<String> selection = leadersID.get(player);
-        for(int i=0; i<selection.size(); i++){
-            leaders.put(i, selection.get(i));
-        }
-        return leaders;
+        return new HashMap<>(leadersID.get(player));
     }
 
-    public void setLeadersID(List<String> leadersID, String player) {
-        this.leadersID.put(player, new LinkedList<>(leadersID));
+    public void setLeadersID(Map<Integer, String> leadersID, String player) {
+        this.leadersID.put(player, new HashMap<>(leadersID));
     }
 
     public Map<Integer,ItemStatus> getLeadersStatus(String player) {
-
-        Map<Integer, ItemStatus> leaders = new HashMap<>();
-        List<ItemStatus> selection = leadersStatus.get(player);
-        for(int i=0; i<selection.size(); i++){
-            leaders.put(i, selection.get(i));
-        }
-        return leaders;
+        return new HashMap<>(leadersStatus.get(player));
     }
 
-    public void setLeadersStatus(List<ItemStatus> leadersStatus, String player) {
-        this.leadersStatus.put(player, new LinkedList<>(leadersStatus));
+    public void setLeadersStatus(Map<Integer,ItemStatus> leadersStatus, String player) {
+        this.leadersStatus.put(player, new HashMap<>(leadersStatus));
     }
 
     public LinkedList<ResQuantity> getWarehouse(String player) {
@@ -337,12 +330,12 @@ public class ViewModel {
         this.lorenzoFaith = Optional.of(lorenzoFaith);
     }
 
-    public Optional<List<VaticanReportSection>> getLorenzoSections() {
+    public Optional<List<ItemStatus>> getLorenzoSections() {
         if (lorenzoSections.isEmpty()) return Optional.empty();
         else return Optional.of(new LinkedList<>(lorenzoSections.get()));
     }
 
-    public void setLorenzoSections(List<VaticanReportSection> lorenzoSections) {
+    public void setLorenzoSections(List<ItemStatus> lorenzoSections) {
         this.lorenzoSections = Optional.of(new LinkedList<>(lorenzoSections));
     }
 
@@ -381,6 +374,14 @@ public class ViewModel {
     public void removeNickname(String nickname) {
         if(nicknames.contains(nickname)) return;
         nicknames.remove(nickname);
+    }
+
+    public TurnType getModelState() {
+        return modelState;
+    }
+
+    public void setModelState(TurnType modelState) {
+        this.modelState = modelState;
     }
 
 

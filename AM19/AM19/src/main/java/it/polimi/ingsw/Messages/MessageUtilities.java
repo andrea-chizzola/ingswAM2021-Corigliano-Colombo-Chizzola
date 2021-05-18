@@ -23,11 +23,11 @@ public class MessageUtilities {
     private static final String splitter = ":";
 
     private MessageUtilities() {
-        resources.put("COINS", Coin::new);
-        resources.put("SERVANTS", Servant::new);
-        resources.put("STONES", Stone::new);
+        resources.put("COIN", Coin::new);
+        resources.put("SERVANT", Servant::new);
+        resources.put("STONE", Stone::new);
         resources.put("FAITH", Faith::new);
-        resources.put("SHIELDS", Shield::new);
+        resources.put("SHIELD", Shield::new);
 
         marbles.put("MARBLEBLUE", MarbleBlue::new);
         marbles.put("MARBLEGRAY", MarbleGray::new);
@@ -123,6 +123,9 @@ public class MessageUtilities {
         List<Integer> quantity = new ArrayList<>();
         String[] string = warehouse.split(splitter);
 
+        if(warehouse.equals("")){
+            return quantity;
+        }
         if(string.length%2 != 0)
             throw new MalformedMessageException();
 
@@ -145,6 +148,10 @@ public class MessageUtilities {
         String key;
         int value;
         ResQuantity resQuantity;
+
+        if(messageString.equals("")){
+            return list;
+        }
 
         if(string.length%2 != 0)
             throw new MalformedMessageException();
@@ -197,6 +204,10 @@ public class MessageUtilities {
         List<Marble> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
 
+        if(messageString.equals("")){
+            return list;
+        }
+
         if(string.length % 3 != 0 )
             throw new MalformedMessageException();
 
@@ -215,9 +226,12 @@ public class MessageUtilities {
 
         List<Marble> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
+        System.out.println("Debug");
+        if(messageString.equals("")){
+            return list;
+        }
 
         for(int i=0; i<string.length; i++){
-
             if(!marbles.containsKey(string[i].toUpperCase()))
                 throw new MalformedMessageException("Wrong marble name!");
 
@@ -246,6 +260,10 @@ public class MessageUtilities {
         String[] string = messageString.split(splitter);
         PlayerAction action;
 
+        if(messageString.equals("")){
+            return list;
+        }
+
         if(string.length % 3 != 0 )
             throw new MalformedMessageException();
 
@@ -268,6 +286,9 @@ public class MessageUtilities {
         String[] string = messageString.split(splitter);
         ItemStatus item;
 
+        if(messageString.equals("")){
+            return list;
+        }
         for(int i=0; i<string.length; i++){
             try{
                 item = ItemStatus.valueOf(string[i].toUpperCase());
@@ -285,6 +306,10 @@ public class MessageUtilities {
 
         List<Integer> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
+
+        if(messageString.equals("")){
+            return list;
+        }
 
         if(string.length % 3 != 0 )
             throw new MalformedMessageException();
@@ -344,6 +369,9 @@ public class MessageUtilities {
         int key;
         String value;
 
+        if(messageString.equals("")){
+            return map;
+        }
         if(string.length%2 != 0)
             throw new MalformedMessageException();
 
@@ -364,13 +392,16 @@ public class MessageUtilities {
         Map<String, Integer> table = new HashMap<>();
         String[] string = content.split(splitter);
 
+        if(content.equals("")){
+            return table;
+        }
         if(string.length%2 != 0)
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/2; i++){
-            table.put(string[i], parseInt(string[i*2]));
+            table.put(string[i*2], parseInt(string[i*2+1]));
             try {
-                table.put(string[i], parseInt(string[i*2]));
+                table.put(string[i*2], parseInt(string[i*2+1]));
             }
             catch (NumberFormatException e){throw new MalformedMessageException("ParseInt fail!");}
         }
@@ -385,6 +416,10 @@ public class MessageUtilities {
         String[] string = messageString.split(splitter);
         int key;
         boolean value;
+
+        if(messageString.equals("")){
+            return map;
+        }
 
         if(string.length%2 != 0)
             throw new MalformedMessageException();
@@ -407,6 +442,9 @@ public class MessageUtilities {
         ItemStatus item;
         int number;
 
+        if(messageString.equals("")){
+            return map;
+        }
         if(string.length%2!=0) throw new MalformedMessageException();
         for(int i=0; i<string.length/2; i++){
 

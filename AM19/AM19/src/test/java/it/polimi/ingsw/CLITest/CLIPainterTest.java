@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.CLITest;
 
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;

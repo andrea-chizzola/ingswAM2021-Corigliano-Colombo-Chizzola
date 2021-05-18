@@ -52,7 +52,7 @@ public class Client implements ViewObserver{
             ui = new CLI(viewModel);
         }else ui = new GUI();
         */
-        ui = new CLI(viewModel);
+        //ui = new CLI(viewModel);
         ClientConnectionListener clientController = new ClientController(viewModel, ui);
 
         ui.initialize();

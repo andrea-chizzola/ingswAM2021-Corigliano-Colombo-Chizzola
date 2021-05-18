@@ -290,7 +290,7 @@ public class GameBoard implements GameBoardHandler {
         //giveLeaderCards("defaultConfiguration.xml");
         virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
         for(Board board : players) {
-            virtualView.selectLeaderAction(board.showLeaderPosition());
+            //virtualView.selectLeaderAction(board.showLeaderPosition());
         }
     }
 

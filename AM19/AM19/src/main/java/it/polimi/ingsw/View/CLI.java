@@ -3,6 +3,7 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Client.ViewObserver;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
+import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
@@ -24,7 +25,8 @@ public class CLI implements View, SubjectView {
     /**
      * the following attributes represent the constants used to paint the items of the CLI
      */
-    private final int VERTICAL_SIZE = 200;
+    private final int VIEW_VERTICAL_SIZE = 55;
+    private final int DECKS_VERTICAL_SIZE = 80;
     private final int HORIZONTAL_SIZE = 200;
 
     private final int MARKET_X = 150;
@@ -58,8 +60,8 @@ public class CLI implements View, SubjectView {
     private final int N_DECKS_X = 4;
     private final int N_DECKS_Y = 3;
 
-    private final int END_X = 5;
-    private final int END_Y = 5;
+    private final int END_X = 53;
+    private final int END_Y = 19;
 
     /**
      * this attribute is a reference to the reduced model of the view
@@ -69,7 +71,7 @@ public class CLI implements View, SubjectView {
     /**
      * this attribute is a matrix that contains the current state of the CLI
      */
-    private String[][] viewStatus;
+    protected String[][] viewStatus;
 
     /**
      * this attribute represents a matrix that contains all the cards in common decks
@@ -89,17 +91,17 @@ public class CLI implements View, SubjectView {
     /**
      * this attribute is used to synchronize the methods that interact with the input stream
      */
-    private final Object busyInput;
+    protected final Object busyInput;
 
     /**
      * this attribute is true if an input is available
      */
-    private boolean availableInput;
+    protected boolean availableInput;
 
     /**
      * this method is used to collect the Strings that will be printed
      */
-    StringBuilder typed;
+    protected StringBuilder typed;
 
     /**
      * this attribute is used to collect the Strings that comes from the input stream
@@ -115,17 +117,15 @@ public class CLI implements View, SubjectView {
      * this is the constructor of the class
      * @param model is an instance of the reduced model of the view
      */
-    public CLI(ViewModel model){
+    public CLI(ViewModel model, InputStream in, PrintStream out){
         this.model=model;
-        viewStatus = new String[VERTICAL_SIZE][HORIZONTAL_SIZE];
-        decksStatus = new String[VERTICAL_SIZE][HORIZONTAL_SIZE];
-        PLAYERS_Y = (model.getNicknames().size() + 1) * (CLIPainter.getSquareLength() + 1);
+        viewStatus = new String[VIEW_VERTICAL_SIZE][HORIZONTAL_SIZE];
+        decksStatus = new String[DECKS_VERTICAL_SIZE][HORIZONTAL_SIZE];
+        PLAYERS_Y = (4 + 1) * (CLIPainter.getSquareLength() + 1);
         RESOURCES_Y = (model.getnRows()+1)*(CLIPainter.getSphereLength() + 1) + 3;
-        initialize();
 
-        in = System.in; //se cambi l'input stream (permetti di settarlo come parametro della cli) puoi fare i
-                        //test del client controller usando i file.
-        out = System.out;
+        this.in = in;
+        this.out = out;
         availableInput = false;
         typed = new StringBuilder();
         interaction = new StringBuilder();
@@ -136,17 +136,19 @@ public class CLI implements View, SubjectView {
      * this method creates a thread that looks for Strings on the input Stream
      * @param input represents the input Stream
      */
-    private void inputReader(InputStream input){
+    protected void inputReader(InputStream input){
 
         new Thread(() ->
         {
-            BufferedReader in = new BufferedReader(new InputStreamReader(input));
             try {
-                String s;
+                BufferedReader in = new BufferedReader(new InputStreamReader(input));
+                String s = "";
                 while ((s = in.readLine()) != null) {
                     addInput(s);
+                    //System.out.println(s);
                 }
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
+                System.out.println("Cannot open the input stream of CLI");
                 e.printStackTrace();
                 //CLOSE CLIENT AND CONNECTION. CANNOT OPEN INPUT STREAM
             }
@@ -157,7 +159,7 @@ public class CLI implements View, SubjectView {
      * this private helper is used to take an input from the Stream
      * @param s is the String coming from the Stream
      */
-    private void addInput(String s){
+    protected void addInput(String s){
         synchronized(busyInput){
             typed.append(s);
             availableInput = true;
@@ -168,7 +170,8 @@ public class CLI implements View, SubjectView {
     /**
      * @return the content of the input buffer
      */
-    private String getInput(){
+    //da modificare togliendo la notifyAll. Non serve a niente.
+    protected String getInput(){
         synchronized(busyInput){
             if(!availableInput){
                 busyInput.notifyAll();
@@ -205,9 +208,9 @@ public class CLI implements View, SubjectView {
      */
     private void plot(String[][] target){
         for (int i = 0; i < target.length; i++) {
-            out.println();
+            System.out.println();
             for (int j = 0; j < target[i].length; j++) {
-                out.println(target[i][j]);
+                System.out.print(target[i][j]);
             }
         }
     }
@@ -218,7 +221,18 @@ public class CLI implements View, SubjectView {
     @Override
     public void initialize() {
         CLIPainter.printLogo();
-        CLIPainter.fill(viewStatus, 0, 0, HORIZONTAL_SIZE, VERTICAL_SIZE);
+        CLIPainter.fill(viewStatus, 0, 0, HORIZONTAL_SIZE, VIEW_VERTICAL_SIZE);
+        CLIPainter.fill(decksStatus, 0, 0, HORIZONTAL_SIZE, DECKS_VERTICAL_SIZE);
+        /*CLIPainter.paintWarehouse(viewStatus, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, model.getShelves(), new LinkedList<>());
+        CLIPainter.paintExtraSlots(viewStatus, EXTRA_Y+PLAYERS_Y, EXTRA_X, new LinkedList<>());
+        CLIPainter.paintStrongbox(viewStatus, STRONGBOX_Y+PLAYERS_Y, STRONGBOX_X, new LinkedList<>());
+        showPersonalProduction();
+
+        int nSlots = model.getSlotNumber();
+        for(int i=0; i<nSlots; i++){
+            CLIPainter.devCardPainter(viewStatus, PLAYERS_Y+1, BOXES_X + 30*i+20, "EMPTY");
+        }*/
+
         inputReader(in);
     }
 
@@ -228,12 +242,12 @@ public class CLI implements View, SubjectView {
      * @param body is the content of the message
      */
     @Override
-    public void showAnswer(boolean answer, String body, String nickname) {
-        if(answer){
-            out.println("Error: "+ body + "\nYou've done something wrong, let's try again");
+    public void showGameStatus(boolean answer, String body, String nickname, TurnType state) {
+        if(!answer){
+            out.println("Error during: " + state + "\nYou've done something wrong, let's try again");
         }
         else{
-            out.println("Action successfully performed. Let's proceed further");
+            out.println("Action successfully performed. Let's proceed further.");
         }
     }
 
@@ -258,9 +272,9 @@ public class CLI implements View, SubjectView {
     @Override
     public void showDecksUpdate(Map<Integer, String> decks) {
         int width = CLIPainter.getCardWidth()+3, length = CLIPainter.getDevCardLength()+2;
-        CLIPainter.fill(decksStatus, 0, 0,HORIZONTAL_SIZE, VERTICAL_SIZE);
+        CLIPainter.fill(decksStatus, 0, 0,HORIZONTAL_SIZE, DECKS_VERTICAL_SIZE);
         for(int i : decks.keySet()){
-            int row = i/N_DECKS_X, column = i%N_DECKS_X;
+            int row = i/N_DECKS_X,column = i%N_DECKS_X;
             DevelopmentCard card = ConfigurationParser.getDevelopmentById(model.getConfigurationFile(), decks.get(i));
             CLIPainter.devCardPainter(decksStatus, PLAYERS_Y + 1 + length*row, BOXES_X + width*column, card.toString());
         }
@@ -273,6 +287,8 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void showBoxes(List<ResQuantity> warehouse, List<ResQuantity> strongBox, String nickName) {
+
+        if(!nickName.equals(model.getPersonalNickname())) return;
         List<ResQuantity> resources = new LinkedList<>();
         List<ResQuantity> extra = new LinkedList<>();
         int defaultSlots = model.getSlotNumber();
@@ -284,10 +300,12 @@ public class CLI implements View, SubjectView {
             ResQuantity r = warehouse.get(i);
             if(i<=defaultSlots) {
                 resources.add(r);
-                warehouseString.append(r.toString()).append("/");
+                if(r.getQuantity()>0) warehouseString.append(r.toString());
+                else warehouseString.append("EMPTY");
+                warehouseString.append(" | ");
             }
             else {
-                extraBoxString.append(r.toString()).append("/");
+                extraBoxString.append(r.toString()).append(" | ");
                 extra.add(r);
             }
         }
@@ -298,14 +316,14 @@ public class CLI implements View, SubjectView {
 
         strongBox.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
         for(ResQuantity r : strongBox){
-            strongboxString.append(r.toString()).append("/");
+            strongboxString.append(r.toString()).append(" / ");
         }
         CLIPainter.paintStrongbox(viewStatus, STRONGBOX_Y+PLAYERS_Y, STRONGBOX_X, strongBox);
 
 
         out.println("The new status of your boxes is:\nWarehouse: " + warehouseString);
         if(extra.size()>0) out.println("Extra shelves: " + extraBoxString);
-        out.println("StrongBox: " + strongboxString);
+        if(strongboxString.length()>0) out.println("StrongBox: " + strongboxString);
     }
 
     /**
@@ -314,9 +332,10 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void showSlotsUpdate(Map<Integer, String> slots, String nickname) {
+        if(!nickname.equals(model.getPersonalNickname())) return;
         for(int i : slots.keySet()){
             DevelopmentCard card = ConfigurationParser.getDevelopmentById(model.getConfigurationFile(), slots.get(i));
-            CLIPainter.devCardPainter(viewStatus, PLAYERS_Y+1, BOXES_X + 30*(i-1)+14, card.toString());
+            CLIPainter.devCardPainter(viewStatus, PLAYERS_Y+1, BOXES_X + 30*(i-1)+20, card.toString());
         }
     }
 
@@ -327,12 +346,17 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void showLeaderCards(Map<Integer,String> cards, Map<Integer,ItemStatus> status, String nickName){
-        List<LeaderCard> target = new LinkedList<>();
-        for(int i: cards.keySet()){
-            String id = cards.get(i);
-            LeaderCard card = ConfigurationParser.getLeaderById(model.getConfigurationFile(), id);
-            card.setStatus(status.get(i).getBoolValue());
-            CLIPainter.leaderCardPainter(viewStatus, PLAYERS_Y+1+LEADER_Y, BOXES_X + 30*i+14, card.toString());
+        if(!nickName.equals(model.getPersonalNickname())) return;
+        int num = ConfigurationParser.getNumLeader(model.getConfigurationFile());
+
+        for(int i=1; i<=num; i++){
+            if(cards.containsKey(i)) {
+                String id = cards.get(i);
+                LeaderCard card = ConfigurationParser.getLeaderById(model.getConfigurationFile(), id);
+                card.setStatus(status.get(i).getBoolValue());
+                CLIPainter.leaderCardPainter(viewStatus, PLAYERS_Y + 1 + LEADER_Y, BOXES_X + 28 * (i - 1) + 8, card.toString());
+            }
+            else CLIPainter.leaderCardPainter(viewStatus, PLAYERS_Y + 1 + LEADER_Y, BOXES_X + 28 * (i - 1) + 8, "EMPTY");
         }
     }
 
@@ -346,12 +370,17 @@ public class CLI implements View, SubjectView {
     @Override
     public void showFaithUpdate(Map<String, Integer> faith, Map<String, List<ItemStatus>> sections,
                                 Optional<Integer> faithLorenzo, Optional<List<ItemStatus>> sectionsLorenzo) {
+
+        List<String> names = model.getNicknames();
         if(faithLorenzo.isPresent() && sectionsLorenzo.isPresent()){
             faith.put("Lorenzo", faithLorenzo.get());
             sections.put("Lorenzo", new LinkedList<>(sectionsLorenzo.get()));
+            names.add("Lorenzo");
+            System.out.println("Debug");
         }
+        PLAYERS_Y = (names.size() + 1) * (CLIPainter.getSquareLength() + 1);
         CLIPainter.paintFaithTrack (viewStatus, FAITHTRACK_Y, FAITHTRACK_X,
-                model.getTrackPoints(), model.getNicknames(), faith, sections);
+                model.getTrackPoints(), names, faith, sections);
     }
 
     /**
@@ -371,7 +400,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void showEndGame(Map<String, Integer> players) {
-        CLIPainter.paintEndGameBox(viewStatus, END_X, END_Y,players);
+        CLIPainter.paintEndGameBox(viewStatus, END_Y, END_X, players);
         plotView();
     }
 
@@ -399,8 +428,8 @@ public class CLI implements View, SubjectView {
         }while(player.length()<=0);
 
         do{
-            out.println("Tell me if you want to start a new game (true/false): ");
-            first = getInput();
+            out.println("Tell me if you want to start a new game [YES/NO]: ");
+            first = getAssertion(getInput());
         }while(!first.equals("true") && !first.equals("false"));
 
         if(first.equals("true")){
@@ -410,6 +439,8 @@ public class CLI implements View, SubjectView {
             }while(!isInt(num));
         }
         else num = "0";
+        model.setPersonalNickname(player);
+        model.setCurrentPlayer(player);
         try {
             viewObserver.update(MessageFactory.buildConnection("Connection request", player, Boolean.parseBoolean(first), Integer.parseInt(num)));
         }catch(MalformedMessageException e){
@@ -418,6 +449,11 @@ public class CLI implements View, SubjectView {
 
     }
 
+    private String getAssertion(String assertion){
+        if(assertion.equals("YES")) return "true";
+        if(assertion.equals("NO")) return "false";
+        else return "wrong input";
+    }
     private boolean isInt(String s){
         try{
             Integer.parseInt(s);
@@ -437,11 +473,13 @@ public class CLI implements View, SubjectView {
         plotView();
         StringBuilder available = new StringBuilder();
         for(String string : turns) available.append(string).append(", ");
+        available.append("EXIT");
         String s = "";
         do{
-            out.println("Select your turn type; available turns: " + available);
+            out.println("\nSelect your turn type; available turns: " + available);
             s = getInput();
-            if(!turns.contains(s)) showAnswer(false, "Not existent turn type.", "name");
+            if(!turns.contains(s))
+                showGameStatus(false, "Not existent turn type.", "name", model.getModelState());
         }
         while(!turns.contains(s));
         try {
@@ -454,19 +492,20 @@ public class CLI implements View, SubjectView {
 
     /**
      * this method is used to catch the LeaderCards selected by a player
-     * @param cards is the list of cards given to a player
      */
     //put the number of default leaders from configuration file
     @Override
-    public void selectLeaderAction(Map<Integer,String> cards) {
+    public void selectLeaderAction() {
         String action;
         String[] selections;
+        Map<Integer, String> cards = model.getLeadersID(model.getCurrentPlayer());
+        plotView();
         do {
-            out.println("Select two of your cards. Command:- position1:position2\n" +
+            out.println("\nSelect two of your cards. Command:- position1:position2\n" +
                     "eg. type 1:2 to select cards one and two");
             action = getInput();
             selections = action.split(":");
-        } while (selections.length != 2 || !isIntSequence(selections, 1) || !containsKeys(cards, selections));
+        } while (selections.length != 2 && !isIntSequence(selections, 1) && !containsKeys(cards, selections));
 
         Map<Integer, ItemStatus> map = new HashMap<>();
         for(int i : cards.keySet()) map.put(i, ItemStatus.DISCARDED);
@@ -499,6 +538,7 @@ public class CLI implements View, SubjectView {
     @Override
     public void selectMarketAction() {
         String s;
+        out.println("Select your resources from the market. Choose wisely");
         do {
             out.println("Select a row or a column.\nCommand Type:- row:number or column:number");
             s = getInput();
@@ -528,7 +568,7 @@ public class CLI implements View, SubjectView {
         else return false;
 
         try{
-            n = Integer.parseInt(selection[0]);
+            n = Integer.parseInt(selection[1]);
         }catch(NumberFormatException e){
             return false;
         }
@@ -549,8 +589,8 @@ public class CLI implements View, SubjectView {
 
         if(whiteModifications.size()>0) {
             builder.setLength(0);
-            for (int i = 0; i < whiteModifications.size(); i++) {
-                builder.append(whiteModifications.get(i).toString()).append(", ");
+            for (Marble whiteModification : whiteModifications) {
+                builder.append(whiteModification.toString()).append(", ");
             }
             out.println("The possible transformations for white marbles are: " + builder);
         }
@@ -594,23 +634,140 @@ public class CLI implements View, SubjectView {
      * this method is used to catch the action of a player of a shared DevelopmentCard
      */
     @Override
-    public void buyCardAction() {
+    public void buyCardAction() throws MalformedMessageException {
         plotDecks();
-        Map<Integer, String> decks = model.getDecks();
-        out.println("What about buying a new card? The decks are ordered from the left to the right." +
-                "\nGive me the slot number");
-        out.println("Now select your resources from the warehouse");
-        out.println("And finally select your resources from the strongbox");
-        //MessageFactory.buildBuyCard
+        String[] selection;
+        String action;
+        String warehouse;
+        String strongbox;
+        String file = model.getConfigurationFile();
+
+        out.println("\nWhat about buying a new card? The decks are ordered from the left to the right.");
+        do{
+            out.println("Give me the card position and the target slot. Command :- position:slot");
+            action = getInput();
+            selection = action.split(":");
+        }while(!isCardOK(selection));
+        int position = Integer.parseInt(selection[0]), slot = Integer.parseInt(selection[1]);
+        String id = model.getDecks().get(position-1);
+        System.out.println("Debug");
+        DevelopmentCard card = ConfigurationParser.getDevelopmentById(file, id);
+
+
+        out.println("Now select your resources from the warehouse.");
+        warehouse = helpWarehouse();
+
+        out.println("You can also get something from your strongbox.");
+        strongbox = helpResSequence();
+
+        viewObserver.update(MessageFactory.buildBuyCard(card.getCardColor().getColor(),
+                card.getCardLevel(), slot, id,"Buy card", warehouse, strongbox));
+    }
+
+    private String helpWarehouse(){
+
+        String action;
+        String[] selection;
+        do{
+            out.println("Give me the resources and quantities. Command :- shelf:quantity");
+            action = getInput();
+            selection = action.split(":");
+        }while(selection.length%2!=0 && !isIntSequence(selection, 1));
+
+        return action;
+    }
+
+    private String helpResSequence(){
+        String action;
+        String[] selection;
+        do{
+            out.println("Give me the resources and quantities. Command :- resource:quantity");
+            action = getInput();
+            selection = action.split(":");
+        }while(selection.length%2!=0 && !isIntSequence(selection, 2));
+
+        return action;
+    }
+    /**
+     * this private helper is used to check if a has been correctly selected
+     * @param target the sequence to be check
+     * @return true if the sequence has been correctly formed, false otherwise;
+     */
+    private boolean isCardOK(String[] target){
+
+        if (target.length!=2 && !isIntSequence(target, 1)) return false;
+
+        int position = Integer.parseInt(target[0]), selected = Integer.parseInt(target[1]);
+        return model.getDecks().containsKey(position) && selected <= model.getSlotNumber();
     }
 
     /**
      * this method is used to catch the action of a player on their productions
      */
     @Override
-    public void doProductionsAction() {
+    public void doProductionsAction() throws MalformedMessageException {
+        String action, warehouse, strongbox, customResources, customProducts, leaders = "", developments = "";
+        boolean decision;
+        out.println("So you want to produce some resources... good choice. Let's start");
+
+        do{
+            out.println("Do you want to use your personal production? [YES/NO]");
+            action = getAssertion(getInput());
+        }while(!action.equals("true") && !action.equals("false"));
+
+        decision = Boolean.parseBoolean(action);
+
+        if(model.getLeadersID(model.getCurrentPlayer()).keySet().size()>1) {
+            out.println("What about leader cards? Select them. Command:- card1:card2... [positions]");
+            leaders = helpCards(model.getLeadersID(model.getCurrentPlayer()));
+        }
+        if(model.getSlots(model.getCurrentPlayer()).keySet().size()>1) {
+            out.println("Don't forget your development cards! Select them. Command:- card1:card2... [positions]");
+            developments = helpCards(model.getSlots(model.getCurrentPlayer()));
+        }
+        out.println("Select your custom resources:");
+        customResources = helpResSequence();
+
+        out.println("Select your custom resources:");
+        customProducts = helpResSequence();
+
+        out.println("What is a production without some waste of resources?");
+        out.println("Now select your resources from the warehouse.");
+        warehouse = helpWarehouse();
+        out.println("You can also get something from your strongbox.");
+        strongbox = helpResSequence();
+
+        viewObserver.update(MessageFactory.BuildDoProduction(decision,developments,
+                leaders,customResources,customProducts,warehouse, strongbox, "Do production"));
 
     }
+
+    private String helpCards(Map<Integer, String> cards){
+        String action, file = model.getConfigurationFile();
+        String[] selection;
+        StringBuilder sequence = new StringBuilder();
+        out.println("Select your cards. Command:- position1:position2:...");
+        do{
+            action = getInput();
+            selection = action.split(":");
+        }while(!action.isEmpty()  && !isIntSequence(selection,1) && !containsCard(selection, cards));
+
+        if(action.isEmpty()) return action;
+        for(String s : selection){
+            int position = Integer.parseInt(s);
+            sequence.append(position).append(":").append(cards.get(position)).append(":");
+        }
+        return sequence.substring(0, sequence.length()-1);
+    }
+
+    private boolean containsCard(String[] selection, Map<Integer, String> cards){
+        for (String s : selection) {
+            int position = Integer.parseInt(s);
+            if (!cards.containsKey(position)) return false;
+        }
+        return true;
+    }
+
 
     /**
      * this action is used to catch the resources chosen by a player
@@ -618,18 +775,22 @@ public class CLI implements View, SubjectView {
     //add default initialization resources to model. Waiting Marco's push
     @Override
     public void getResourcesAction() {
-        //if(number<=0) return;
-        //mandare messaggio vuoto
+        int playerPosition, number;
+        String file = model.getConfigurationFile(), self = model.getPersonalNickname(), selection = "";
+        playerPosition = model.getNicknames().indexOf(self);
+        number = ConfigurationParser.getInitializationResources(file).get(playerPosition);
 
-        String selection;
-        String[] sequence;
+        plotView();
 
-        do{
-            out.println("Let's get some starting resources: " +
-                    "\nYou can select" /*+ n*/ + "resources. Command:- targetSlot:resource");
-            selection = getInput();
-            sequence = selection.split(":");
-        }while(sequence.length%2!=0 && isIntSequence(sequence,2));
+        if(number>0) {
+            String[] sequence;
+            do {
+                out.println("\nLet's get some starting resources:" +
+                        "\nYou can select" + number + "resources. Command:- targetSlot:resource");
+                selection = getInput();
+                sequence = selection.split(":");
+            } while (sequence.length % 2 != 0 && isIntSequence(sequence, 2));
+        }
 
         try{
             viewObserver.update(MessageFactory.buildSelectedResources(selection, "Selection of resources during initialization"));
@@ -646,8 +807,6 @@ public class CLI implements View, SubjectView {
     //add personal production materials and products to parser or ViewModel
     public void showPersonalProduction() {
         Production production = model.getPersonalProduction();
-        List<CLIColors> materials = new LinkedList<>();
-        List<CLIColors> products = new LinkedList<>();
         CLIPainter.paintPersonalProduction(viewStatus, PRODUCTION_Y + RESOURCES_Y, PRODUCTION_X,
                 production.getMaterials(), production.getProducts(),
                 production.getCustomMaterials(), production.getCustomProducts());
@@ -658,14 +817,14 @@ public class CLI implements View, SubjectView {
      * this method is used to catch a swap in the Warehouse
      */
     @Override
-    public void swapAction() {
+    public boolean swapAction() {
         String decision;
         String[] selections;
         do {
             out.println("Would you like to perform a slot swap? [YES/NO]");
             decision = getInput();
         }while(!decision.toUpperCase().equals("YES") && !decision.toUpperCase().equals("NO"));
-        if(decision.toUpperCase().equals("NO")) return;
+        if(decision.toUpperCase().equals("NO")) return false;
         do{
             out.println("Select the source and the target slots for swapping. Command:- source:target");
             decision = getInput();
@@ -679,6 +838,7 @@ public class CLI implements View, SubjectView {
         catch(MalformedMessageException e){
             //exit from client
         }
+        return true;
     }
 
     /**

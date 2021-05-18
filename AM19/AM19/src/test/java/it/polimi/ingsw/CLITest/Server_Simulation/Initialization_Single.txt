@@ -1,0 +1,7 @@
+<Message><body>Update players FaithTrack</body><messageType>FAITH_UPDATE</messageType><faith>Davide:0</faith><DavideSections>inactive:inactive:inactive</DavideSections><LorenzoFaith>1</LorenzoFaith><LorenzoSections>inactive:inactive:inactive</LorenzoSections><activePlayers>Davide</activePlayers></Message>
+<Message><body>Update top token</body>><messageType>TOKEN_UPDATE</messageType><token>1</token></Message>
+<Message><body>Update common decks</body><messageType>DECKS_UPDATE</messageType>><devCards>0:12:1:1:2:2:3:3:4:4:5:5:6:6:7:7:8:8:9:9:10:10:11:11</devCards></Message>
+<Message><body>Update Market</body><messageType>MARKET_UPDATE</messageType><market>MarbleBlue:MarbleBlue:MarbleGray:MarbleRed:MarbleWhite:MarblePurple:MarblePurple:MarbleBlue:MarbleBlue:MarbleGray:MarbleRed:MarbleWhite:MarblePurple</market></Message>
+<Message><body>Leader cards initialization managing.</body><messageType>UPDATE_LEADER_CARDS</messageType><leaderStatus>1:inactive:2:inactive:3:inactive:4:inactive</leaderStatus><leaderCards>1:11:2:3:3:4:4:14</leaderCards><player>Davide</player></Message>
+<Message><body>game status</body><messageType>GAME_STATUS</messageType><state>INITIALIZATION_LEADERS</state><correct>true</correct><player>Davide</player></Message>
+<Message><body>game status</body><messageType>GAME_STATUS</messageType><state>INITIALIZATION_RESOURCE</state><correct>true><currentPlayer>Davide</currentPlayer></correct></Message>

@@ -33,7 +33,7 @@ public interface ClientStates {
     ClientStates nextState();
 }
 
-class Login implements ClientStates{
+/*class Login implements ClientStates{
 
     private boolean started;
 
@@ -102,18 +102,17 @@ class Initialization_Resource implements ClientStates{
 
     @Override
     public void handleState(View view, ViewModel model) {
-        /*String currentPlayer = model.getCurrentPlayer();
+        String currentPlayer = model.getCurrentPlayer();
         int playerNumber, initializationResources;
         playerNumber = model.getNicknames().indexOf(currentPlayer);
         initializationResources = ConfigurationParser.getCapacityWarehouse(model.getConfigurationFile());
 
-        view.getResourcesAction();*/
+        view.getResourcesAction();
         //NEEDED METHOD IMPLEMENTED BY MARCO.
         //NOTE: in case of exceptions (the player number is not right or the player name is missing, the Client terminates
         //and notify "Missing Update".
     }
 
-    @Override
     public ClientStates nextState() {
         return new Turn_Selection();
     }
@@ -314,5 +313,5 @@ class Swap implements ClientStates{
         return new Take_Resource();
     }
 
-}
+}*/
 

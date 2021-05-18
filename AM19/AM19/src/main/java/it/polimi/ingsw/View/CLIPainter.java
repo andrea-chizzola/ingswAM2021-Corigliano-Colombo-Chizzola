@@ -72,7 +72,7 @@ public class CLIPainter{
      */
     private static void cardPainter
         (String[][] target, int V_OFFSET, int H_OFFSET, String content, int length){
-
+        fill(target, V_OFFSET, H_OFFSET, CARD_WIDTH, length);
         paintRectangle(target,V_OFFSET, H_OFFSET, CARD_WIDTH, length, baseFont);
         insertString(target, V_OFFSET + 1, H_OFFSET +2, content, baseFont);
     }
@@ -138,13 +138,20 @@ public class CLIPainter{
             (String[][] target, int V_OFFSET, int H_OFFSET, List<Integer> structure, List<ResQuantity> resources){
         insertString(target, V_OFFSET, H_OFFSET, "Personal Warehouse:", baseFont);
         CLIColors inside;
+        int quantity;
+
         for(int i=0; i<structure.size(); i++){
-            int n = resources.get(i).getQuantity();
+            if(resources.size()>i) {
+                quantity = resources.get(i).getQuantity();
+                inside = resources.get(i).getResource().toColor();
+            }
+            else {
+                quantity=0;
+                inside = CLIColors.B_WHITE;
+            }
+
             for(int j=0; j<structure.get(i); j++) {
-                if(n>0) {
-                    inside = resources.get(i).getResource().toColor();
-                    n--;
-                }
+                if(quantity>0) quantity--;
                 else inside = CLIColors.B_WHITE;
                 spherePainter(target, (V_OFFSET+2)+i*(SPHERE_LENGTH+1), H_OFFSET+j*(SPHERE_WIDTH+1),
                         " ", inside, baseFont);
@@ -325,7 +332,7 @@ public class CLIPainter{
         for(int i=0; i<num; i++){
             List<ItemStatus> section = sections.get(players.get(i));
             StringBuilder status = new StringBuilder();
-            status.append("player").append(i+1).append(": ");
+            status.append(players.get(i)).append(" n^").append(i+1).append(": ");
             int size = insertString(target,V_OFFSET + i * (SQUARE_LENGTH+1), H_OFFSET, status.toString(), baseFont);
             for(int j=0; j<section.size(); j++){
                 target[V_OFFSET + i * (SQUARE_LENGTH+1)][H_OFFSET +size+j*2] = section.get(j).getFaithSymbol();
@@ -372,6 +379,7 @@ public class CLIPainter{
         int width, length;
         width = (SPHERE_WIDTH + 1) * 2 + 7;
         length = status.size()+2;
+        fill(target, V_OFFSET*1, H_OFFSET, width, length);
         paintRectangle(target, V_OFFSET+1, H_OFFSET, width, length, baseFont);
         insertString(target, V_OFFSET, H_OFFSET, title, baseFont);
         for(int i=0; i<status.size(); i++){
@@ -436,7 +444,8 @@ public class CLIPainter{
     }
 
     public static void paintEndGameBox(String[][] target, int V_OFFSET, int H_OFFSET, Map<String, Integer> players){
-        CLIPainter.paintRectangle(target, V_OFFSET, H_OFFSET, END_BOX_WIDTH, END_BOX_LENGTH, baseFont);
+        fill(target, V_OFFSET, H_OFFSET, END_BOX_WIDTH, END_BOX_LENGTH);
+        paintRectangle(target, V_OFFSET, H_OFFSET, END_BOX_WIDTH, END_BOX_LENGTH, baseFont);
 
         StringBuilder content = new StringBuilder();
         String winner = "";
@@ -449,9 +458,9 @@ public class CLIPainter{
                 winner = name;
                 top = points;
             }
-            content.append("\nWinner: ").append(winner).append(" Points: ").append(points);
         }
-        CLIPainter.insertString(target, 5, 5, content.toString(), baseFont);
+        content.append("\nWinner: ").append(winner).append(" Points: ").append(top);
+        CLIPainter.insertString(target, V_OFFSET + 7, H_OFFSET + 15, content.toString(), baseFont);
     }
     /**
      * @return the length of a sphere

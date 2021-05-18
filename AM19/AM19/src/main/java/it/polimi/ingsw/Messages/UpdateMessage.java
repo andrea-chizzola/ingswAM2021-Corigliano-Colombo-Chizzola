@@ -66,9 +66,10 @@ public class UpdateMessage extends Message {
 
     public List<Marble> getMarketUpdate() throws MalformedMessageException {
         MessageUtilities parser = MessageUtilities.instance();
-        return parser.getMarbleList(toString(),"market");
+            return parser.getMarbleList(toXML(),"market");
     }
 
+    /*
     public List<Marble> getSelectedMarbles() throws MalformedMessageException {
         MessageUtilities parser = MessageUtilities.instance();
         return parser.getMarbleList(toString(),"marbles");
@@ -78,6 +79,7 @@ public class UpdateMessage extends Message {
         MessageUtilities parser = MessageUtilities.instance();
         return parser.getMarbleList(toString(),"candidates");
     }
+    */
 
     public Map<String, Integer> getFaithPoints() throws MalformedMessageException {
         MessageUtilities parser = MessageUtilities.instance();
@@ -112,7 +114,7 @@ public class UpdateMessage extends Message {
         List<ItemStatus> list;
 
         try{
-            list = parser.getStatusList(toXML(), "nicknameSections");
+            list = parser.getStatusList(toXML(), "LorenzoSections");
         }
         catch(MalformedMessageException e){
             return Optional.empty();
@@ -141,24 +143,18 @@ public class UpdateMessage extends Message {
         return parser.getString(toXML(), "player");
     }
 
-    public List<String> getTurnTypes() throws MalformedMessageException {
+    /*public List<String> getTurnTypes() throws MalformedMessageException {
         MessageUtilities parser = MessageUtilities.instance();
         return parser.getListString(toXML(), "turns");
-    }
+    }*/
 
     public List<String> getNicknames() throws MalformedMessageException{
-        //modificare il messaggio FaithTrackUpdate in modo tale che nicknames e punti fede siano in tag diversi.
-        //Così ottieni una soluzione più pulita. Il codice seguente verrà sostituito a seguito di tale modfica.
-        String content = toXML();
-        String[] string = toXML().split(":");
+        String players = MessageParser.getMessageTag(toXML(), "activePlayers");
+        String[] string = players.split(":");
         List<String> nicknames = new LinkedList<>();
 
-        if(string.length%2!=0){
-            throw new MalformedMessageException();
-        }
-
-        for(int i=0; i<string.length/2;i++){
-            nicknames.add(string[i*2]);
+        for(int i=0; i<string.length;i++){
+            nicknames.add(string[i]);
         }
         return nicknames;
     }

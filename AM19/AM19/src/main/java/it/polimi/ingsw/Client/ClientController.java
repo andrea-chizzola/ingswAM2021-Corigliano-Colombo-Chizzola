@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Controller.ConnectionListener;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.*;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
+import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.View;
@@ -24,111 +24,238 @@ public class ClientController implements ClientConnectionListener {
     private View view;
 
     /**
-     * this state represents the current state of the Client
+     * this attribute is true if the controller has not been started
      */
-    private ClientStates state;
+    private boolean notStarted;
 
     /**
-     * this attribute is true if the player has not logged in
+     * this attribute is true if the login has been successful
      */
-    private boolean loginPhase;
+    private boolean loggedIn;
 
+    /**
+     * this attribute is true if the update has already been received
+     */
+    private boolean alreadyUpdated;
+
+    /**
+     * this attribute is true if the player don't want to perform other swaps
+     */
+    private boolean availableSwap;
 
     public ClientController(ViewModel model, View view){
         this.view = view;
         this.model = model;
-        this.state = new Login();
-        loginPhase = false;
+        notStarted = false;
+        alreadyUpdated = false;
+        loggedIn = false;
+        availableSwap = true;
     }
 
-    public void start(){
-        if(!loginPhase){
-            state.handleState(view, model);
-            loginPhase = true;
+    public synchronized void start(){
+        if(!notStarted){
+            view.initialize();
+            view.newPlayer();
+            notStarted = false;
         }
-    }
-
-    protected void setState(ClientStates state){
-        this.state = state;
     }
 
     @Override
     public synchronized void onReceivedMessage(String message, String nickname) {
        try{
-           messageHandler(message);
+           checkStart();
+           MessageUtilities parser = MessageUtilities.instance();
+           Message.MessageType type = parser.getType(message);
+           if(type == Message.MessageType.GAME_STATUS)
+               messageHandler(new GameStatusMessage(message));
+           else {
+               updateHandler(new UpdateMessage(message, type));
+
+           }
        }
        catch(MalformedMessageException e){
-           System.out.println("[CLIENT] malformed message received. No action performed.");
+           System.out.println("[CLIENT] Malformed message received. No action performed.");
+           e.printStackTrace();
        }
     }
 
     @Override
     public synchronized void onMissingPong(String nickname) {
-        view.showAnswer(false, "ERROR: Missed pong", model.getPersonalNickname());
+        view.showGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
     }
 
-    private void messageHandler(String message) throws MalformedMessageException {
-
-        MessageUtilities parser = MessageUtilities.instance();
-
-        Message.MessageType type = parser.getType(message);
-        if(type == Message.MessageType.REPLY)
-            stateHandler(new ReplyMessage(message));
-        else if(type == Message.MessageType.GAME_STATUS)
-            turnSelectionHandler(new UpdateMessage(message, type));
-        else updateHandler(new UpdateMessage(message, type));
-    }
-
-    private void stateHandler(ReplyMessage message) throws MalformedMessageException {
-        String recipient = message.getPlayer(), self = model.getPersonalNickname();
-
-        if(self.equals(recipient)) {
-            view.showAnswer(message.isOk(), message.getBody(), self);
-
-            if (message.isOk() && model.getCurrentPlayer().equals(self))
-                state = state.nextState();
-
-            if(!state.isInitialization() && !state.isTurnSelection()) state.handleState(view, model);
+    private void checkStart(){
+        if(notStarted){
+            //termino il client. Il login non è mai avvenuto
+            System.out.println("[Client] the controller has not been started. Closing connection...");
         }
     }
 
-    private void turnSelectionHandler(UpdateMessage message) throws MalformedMessageException {
+    private void messageHandler(GameStatusMessage message) throws MalformedMessageException {
+        String self = model.getPersonalNickname();
+        TurnType status = message.getStatus();
 
-        String current = message.getCurrentPlayer();
-        List<String> turns = message.getTurnTypes();
-        model.setAvailableTurns(new LinkedList<>(turns));
+        //da mettere in un sottometodo
+        if(status == TurnType.INITIALIZATION_LEADERS || status == TurnType.TURN_SELECTION){
+            model.setCurrentPlayer(message.getPlayer());
+            System.out.println("CIAO");
+        }
 
-        if(current.equals(model.getPersonalNickname()) && (state.isTurnSelection() || state.isInitialization())){
-            model.setCurrentPlayer(current);
-            state.handleState(view, model);
+        loginHandler(message.isOk());
+
+        view.showGameStatus(message.isOk(), message.getBody(), self, status);
+        if (model.getCurrentPlayer().equals(self)){
+
+            if (message.isOk()) {
+                model.setModelState(message.getStatus());
+                actionHandler(message.getStatus(), message);
+                return;
+            }
+
+            if(message.getStatus() != TurnType.WRONG_STATE)
+                model.setModelState(message.getStatus());
+
+            alreadyUpdated = true;
+            actionHandler(model.getModelState(), message);
+
+
+        }
+    }
+
+    private void loginHandler(boolean reply){
+        if(!loggedIn && !reply){
+            //termino il client. Il login non è mai avvenuto
+            System.out.println("[Client] Cannot connect you to a game. Closing connection...");
+        }
+        loggedIn = true;
+    }
+
+    private void actionHandler(TurnType type, GameStatusMessage message) throws MalformedMessageException {
+        switch(type){
+            case INITIALIZATION_LEADERS: {
+                view.selectLeaderAction();
+                break;
+            }
+            case INITIALIZATION_RESOURCE: {
+                view.getResourcesAction();
+                break;
+            }
+            case SWAP: {
+                swapHandler();
+                break;
+            }
+            case TAKE_RESOURCES: {
+                view.selectMarketAction();
+                break;
+            }
+            case MANAGE_MARBLE: {
+                manageMarbleHandler(message);
+                break;
+            }
+            case MANAGE_LEADER: {
+                view.leaderAction();
+                break;
+            }
+            case BUY_CARD: {
+                view.buyCardAction();
+                break;
+            }
+            case DO_PRODUCTION: {
+                view.doProductionsAction();
+                break;
+            }
+            case TURN_SELECTION: {
+                turnSelectionHandler(message);
+                break;
+            }
+                //aggiungi wrong state
+            default:
+                break;
+                //END CONNECTION BECAUSE OF WRONG MESSAGE FROM SERVER
+        }
+        alreadyUpdated = false;
+        model.setModelState(type);
+    }
+
+    private void turnSelectionHandler(GameStatusMessage message) throws MalformedMessageException {
+
+        String current = message.getPlayer();
+        model.setCurrentPlayer(current);
+        availableSwap = true;
+
+        if(!alreadyUpdated) {
+            List<String> turns = message.getTurnTypes();
+            model.setAvailableTurns(new LinkedList<>(turns));
+        }
+
+        if(current.equals(model.getPersonalNickname())){
+            view.selectTurnAction(model.getAvailableTurns(), model.getCurrentPlayer());
         }
         else model.setCurrentPlayer(current);
     }
 
-    //gestione update dello ViewModel. Chiama i setter del model usando i setter. Qui gestisco anche il messaggio
-    //di disconnessione proveniente dal server. Tra i turni della CLI, devo dare anche la possibilità di sconnettersi
+    private void manageMarbleHandler(GameStatusMessage message) throws MalformedMessageException {
+
+        if(!alreadyUpdated) {
+            List<Marble> selected = message.getSelectedMarbles();
+            List<Marble> candidates = message.getCandidateWhite();
+            model.setSelectedMarbles(selected);
+            model.setPossibleWhites(candidates);
+        }
+        view.showMarblesUpdate(model.getSelectedMarbles(), model.getPossibleWhites(), model.getCurrentPlayer());
+    }
+
+    private void swapHandler(){
+        if(availableSwap)
+            availableSwap = view.swapAction();
+        if(!availableSwap) {
+            view.selectMarketAction();
+            availableSwap = true;
+        }
+    }
+
     private void updateHandler(UpdateMessage message) throws MalformedMessageException{
+
         switch(message.getMessageType()){
-            case DISCONNECTION:
+            case DISCONNECTION: {
                 disconnectionUpdate(message);
-            case END_GAME:
+                break;
+            }
+            case UPDATE_LEADER_CARDS: {
+                leadersUpdate(message);
+                break;
+            }
+            case END_GAME: {
                 endGameUpdate(message);
-            case BOX_UPDATE:
+                break;
+            }
+            case BOX_UPDATE: {
                 boxUpdate(message);
-            case SLOTS_UPDATE:
+                break;
+            }
+            case SLOTS_UPDATE: {
                 slotsUpdate(message);
-            case DECKS_UPDATE:
+                break;
+            }
+            case DECKS_UPDATE: {
                 decksUpdate(message);
-            case FAITH_UPDATE:
+                break;
+            }
+            case FAITH_UPDATE: {
                 faithUpdate(message);
-            case TOKEN_UPDATE:
+                break;
+            }
+            case TOKEN_UPDATE: {
                 tokenUpdate(message);
-            case MARKET_UPDATE:
+                break;
+            }
+            case MARKET_UPDATE: {
                 marketUpdate(message);
-            case SELECTED_MARBLES:
-                selectedMarble(message);
+                break;
+            }
             default:
                 //END CONNECTION. WRONG SEQUENCE OF MESSAGES OF UNKNOWN MESSAGE
+                break;
         }
     }
 
@@ -150,18 +277,24 @@ public class ClientController implements ClientConnectionListener {
 
     private void boxUpdate(UpdateMessage message) throws MalformedMessageException {
         List<ResQuantity> warehouse, strongbox;
+        String player = message.getPlayer();
         warehouse = message.getWarehouseUpdate();
         strongbox = message.getStrongboxUpdate();
-        view.showBoxes(warehouse, strongbox, model.getCurrentPlayer());
+        model.setWarehouse(warehouse, player);
+        model.setStrongbox(strongbox, player);
+        view.showBoxes(warehouse, strongbox, player);
     }
 
     private void slotsUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<Integer, String> slots = message.getSlotsUpdate();
-        view.showSlotsUpdate(slots, model.getCurrentPlayer());
+        String player = message.getPlayer();
+        model.setSlots(slots, player);
+        view.showSlotsUpdate(slots, player);
     }
 
     private void decksUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<Integer, String> decks = message.getDecksUpdate();
+        model.setDecks(decks);
         view.showDecksUpdate(decks);
     }
 
@@ -171,29 +304,40 @@ public class ClientController implements ClientConnectionListener {
         List<String> nicknames = message.getNicknames();
         for(String name : faith.keySet()){
             sections.put(name, message.getSections(name));
+            model.setSections(message.getSections(name), model.getCurrentPlayer());
         }
         Optional<List<ItemStatus>> lorenzoSections = message.getLorenzoSections();
         Optional<Integer> lorenzoFaith = message.getLorenzoFaith();
+        model.setFaithPoints(faith);
         model.setNicknames(nicknames);
+        lorenzoFaith.ifPresent(integer -> model.setLorenzoFaith(integer));
+        lorenzoSections.ifPresent(itemStatuses -> model.setLorenzoSections(itemStatuses));
+
         view.showFaithUpdate(faith, sections, lorenzoFaith, lorenzoSections);
 
     }
 
     private void tokenUpdate(UpdateMessage message) throws MalformedMessageException {
         String token = message.getTopToken();
-        view.showTopToken(Optional.of(token));
+        if(token.length() != 0) {
+            model.setActionToken(token);
+            view.showTopToken(Optional.of(token));
+        }
     }
 
     private void marketUpdate(UpdateMessage message) throws MalformedMessageException {
         List<Marble> tray = message.getMarketUpdate();
+        model.setMarket(tray);
         view.showMarketUpdate(tray);
     }
 
-    private void selectedMarble(UpdateMessage message) throws MalformedMessageException {
-        List<Marble> selected = message.getSelectedMarbles();
-        List<Marble> candidates = message.getCandidateWhite();
-        view.showMarblesUpdate(selected, candidates, model.getCurrentPlayer());
+    private void leadersUpdate(UpdateMessage message) throws MalformedMessageException{
+        Map<Integer, ItemStatus> status = message.getLeaderCardsStatus();
+        Map<Integer, String> cards = message.getLeaderCardsUpdate();
+        String player = message.getPlayer();
+        model.setLeadersID(cards, player);
+        model.setLeadersStatus(status, player);
+        view.showLeaderCards(cards, status, player);
     }
-
 }
 

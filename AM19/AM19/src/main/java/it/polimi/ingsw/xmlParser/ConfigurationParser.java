@@ -31,9 +31,9 @@ public class ConfigurationParser{
     /**
      * this attribute represents the path of a generic XML file in the project
      */
-    //private static final String path = "src/main/resources/XML/";
+    private static final String path = "src/main/resources/XML/";
 
-    private static final String path = "AM19/AM19/src/main/resources/XML/";
+    //private static final String path = "AM19/AM19/src/main/resources/XML/";
     /**
      * this attribute represents the element faitTrack in the XML file
      */

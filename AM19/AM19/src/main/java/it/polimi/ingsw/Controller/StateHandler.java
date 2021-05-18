@@ -47,7 +47,7 @@ public class StateHandler {
      * @param gameBoard the gameBoardHandler
      * @param virtualView the virtual view
      */
-    public StateHandler(GameBoardHandler gameBoard, View virtualView) {
+    /*public StateHandler(GameBoardHandler gameBoard, View virtualView) {
 
         this.gameBoard = gameBoard;
         this.numberPlayersInit = gameBoard.getNumPlayers();
@@ -65,7 +65,7 @@ public class StateHandler {
 
     public boolean reconnection(String nickName){
         return reconnectionHandler(nickName);
-    }
+    }*/
 
 
     /**
@@ -74,7 +74,7 @@ public class StateHandler {
      * @param nickname the nickname of the player that sent the message
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    public boolean stateHandler(String message, String nickname) {
+    /*public boolean stateHandler(String message, String nickname) {
 
         ActionMessage actionMessage;
         try {
@@ -145,14 +145,14 @@ public class StateHandler {
             virtualView.showAnswer(false,"Malformed message", nickname);
             return false;
         }
-    }
+    }*/
 
     /**
      * Handler of the message MessageUpdateLeaderCards
      * @param actionMessage the message from the player
      * @return true if there are no errors, false otherwise
      */
-    private boolean updateLeaderCardsHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    /*private boolean updateLeaderCardsHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         Map<Integer,Boolean> leaderStatus = actionMessage.getLeaderCardStatus();
 
@@ -165,7 +165,7 @@ public class StateHandler {
         currentStates.add(Message.MessageType.RESOURCE);
         virtualView.getResourcesAction();
         return true;
-    }
+    }*/
 
 
     /**
@@ -173,7 +173,7 @@ public class StateHandler {
      * @param actionMessage the message from the player
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    private boolean resourceHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    /*private boolean resourceHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         List<Resource> lista = actionMessage.getResourcesInit();
         List<Integer> intlist = actionMessage.getShelvesInit();
@@ -200,14 +200,14 @@ public class StateHandler {
        virtualView.showAnswer(true,"resources selected correctly", nickname);
        gameBoard.CurrentPlayer();
        return true;
-    }
+    }*/
 
     /**
      * Handler of the message MessageSelectedTurn
      * @param actionMessage the message from the player
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    private boolean selectedTurnHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    /*private boolean selectedTurnHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         if(!gameBoard.isPossibleTurn(actionMessage.getTurnTypeSelection())){
             virtualView.showAnswer(false, "You can't play this turn now!", nickname);
@@ -254,14 +254,14 @@ public class StateHandler {
                 //non deve mai capitare
                 return false;
         }
-    }
+    }*/
 
     /**
      * Handler of the message MessageSwap
      * @param actionMessage the message from the player
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    private boolean swapHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    /*private boolean swapHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
         try {
             gameBoard.swapWarehouse(actionMessage.getSourceSwap(), actionMessage.getTargetSwap());
             virtualView.swapAction();
@@ -272,14 +272,14 @@ public class StateHandler {
             return false;
         }
         //gli stati futuri possibili rimangono sia swap sia MarketSelection
-    }
+    }*/
 
     /**
      * Handler of the message MessageMarketSelection
      * @param actionMessage the message from the player
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    private boolean marketSelectionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    /*private boolean marketSelectionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         try {
             //può essere null l'attributo enumerativo del messaggio??
@@ -299,14 +299,14 @@ public class StateHandler {
             return false;
         }
 
-    }
+    }*/
 
     /**
      * Handler of the message MessageAction
      * @param actionMessage the message from the player
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    private boolean actionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    /*private boolean actionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
         List<Marble> messageMarbles = actionMessage.getMarbleFromAction();
         List<PlayerAction> actions = actionMessage.getMarbleActions();
         List<Integer> shelves = actionMessage.getMarblesSelectedShelves();
@@ -323,14 +323,14 @@ public class StateHandler {
         virtualView.showAnswer(true,"Correct marbles selection!", nickname);
         gameBoard.CurrentPlayer();
         return true;
-    }
+    }*/
 
     /**
      * Handler of the message MessageLeaderAction
      * @param actionMessage the message from the player
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    private boolean leaderActionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    /*private boolean leaderActionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         int pos = actionMessage.getSelectedLeaderCards().keySet().iterator().next();
         try {
@@ -352,14 +352,14 @@ public class StateHandler {
             gameBoard.CurrentPlayer();
             return false;
         }
-    }
+    }*/
 
     /**
      * Handler of the message MessageBuyCard
      * @param actionMessage the message from the player
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    private boolean buyCardHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    /*private boolean buyCardHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         ArrayList<Integer> shelves = new ArrayList<>(actionMessage.getSelectedWarehouseShelves());
         ArrayList<Integer> quantity = new ArrayList<>(actionMessage.getSelectedWarehouseQuantity());
@@ -382,14 +382,14 @@ public class StateHandler {
             gameBoard.CurrentPlayer();
             return false;
         }
-    }
+    }*/
 
     /**
      * Handler of the message MessageDoProduction
      * @param actionMessage the message from the player
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    private boolean doProductionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    /*private boolean doProductionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         ArrayList<Production> productions = new ArrayList<>();
         int numberChoiceProducts = 0;
@@ -481,7 +481,7 @@ public class StateHandler {
             return false;
         }
 
-    }
+    }*/
 
     /**
      * Handler of the message MessageConnection
@@ -489,7 +489,7 @@ public class StateHandler {
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
     //mancano da gestire le disconnessioni durante l'inizializzazione
-    private boolean disconnectionHandler(String nickname) {
+    /*private boolean disconnectionHandler(String nickname) {
 
         if(gameBoard.isCurrentPlayer(nickname)){
 
@@ -514,9 +514,9 @@ public class StateHandler {
      * @param nickname
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    private boolean reconnectionHandler(String nickname){
+    /*private boolean reconnectionHandler(String nickname){
         return gameBoard.reconnectPlayer(nickname);
-    }
+    }*/
 
 
 
@@ -525,7 +525,7 @@ public class StateHandler {
      * @param strongbox
      * @return an ArrayList or resQuantity that meets the requirements for the parameter strongbox
      */
-    private ArrayList<ResQuantity> createCorrectStrongbox(List<ResQuantity> strongbox){
+    /*private ArrayList<ResQuantity> createCorrectStrongbox(List<ResQuantity> strongbox){
 
         Map<Resource,Integer> map = new HashMap<>();
         ArrayList<ResQuantity> list = new ArrayList<>();
@@ -540,6 +540,6 @@ public class StateHandler {
             list.add(new ResQuantity(resource,map.get(resource)));
         }
         return list;
-    }
+    }*/
 
 }
