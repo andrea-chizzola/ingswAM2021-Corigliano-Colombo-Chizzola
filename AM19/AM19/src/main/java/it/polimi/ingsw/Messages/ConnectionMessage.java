@@ -29,9 +29,10 @@ public class ConnectionMessage extends Message{
      * @return the player's decision to create a game or join an existing one
      * @throws MalformedMessageException if the file does not contain this information
      */
-    public String getGameHost() throws MalformedMessageException{
+    public boolean getGameHost() throws MalformedMessageException{
 
-        return MessageParser.getMessageTag(toXML(), "gameHost");
+        MessageUtilities parser = MessageUtilities.instance();
+        return parser.getBoolean(toXML(), "gameHost");
 
     }
 
@@ -40,9 +41,10 @@ public class ConnectionMessage extends Message{
      * @return the number of players required for the new game
      * @throws MalformedMessageException MalformedMessageException if the file does not contain this information
      */
-    public String getPlayersNumber() throws MalformedMessageException{
+    public int getPlayersNumber() throws MalformedMessageException{
 
-        return MessageParser.getMessageTag(toXML(), "playersNumber");
+        MessageUtilities parser = MessageUtilities.instance();
+        return parser.getInteger(toXML(), "playersNumber");
 
     }
 

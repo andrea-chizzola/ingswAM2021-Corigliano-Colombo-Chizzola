@@ -16,17 +16,23 @@ import java.util.Map;
 public interface GameBoardHandler {
 
 
-    public void giveLeaderCards(String file);
+    //public void giveLeaderCards(String file);
+
+    /**
+     * This method distributes the leader cards and updates the view
+     * @param file configuration file
+     */
+    void initializeGame(String file);
 
     /**
      * @return the number of the players
      */
-    public int getNumPlayers();
+    int getNumPlayers();
 
     /**
      * @return the nickname of the current player
      */
-    String currentPlayer();
+    String currentPlayerNickname();
 
     /**
      * this method checks if the nickname belongs to the current player
@@ -199,6 +205,6 @@ public interface GameBoardHandler {
      */
     public void removeCard(int position) throws InvalidActionException;
 
-    public void CurrentPlayer();
+    public void currentPlayer();
 
 }

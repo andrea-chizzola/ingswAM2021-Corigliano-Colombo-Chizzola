@@ -83,6 +83,7 @@ public class MessageParser {
     protected static String createMessage(Map<String, String> elements) throws MalformedMessageException {
         String message;
         try {
+
             Document document = createNewDocument();
             Element root = document.createElement("Message");
             Element e;
@@ -92,13 +93,15 @@ public class MessageParser {
                 e.appendChild(document.createTextNode(elements.get(s)));
                 root.appendChild(e);
             }
+
             document.appendChild(root);
             message = createXMLString(document);
+
         }catch(ParserConfigurationException | TransformerException e){
             throw new MalformedMessageException("Error during the creation of the message");
         }
-        return message;
 
+        return message;
     }
 
     /**
@@ -110,7 +113,7 @@ public class MessageParser {
     protected static String createXMLString(Document document) throws TransformerException {
 
         Transformer tr = TransformerFactory.newInstance().newTransformer();
-        tr.setOutputProperty("omit-xml-declaration", "yes");
+        //tr.setOutputProperty("omit-xml-declaration", "yes");
 
         StringWriter buffer = new StringWriter();
         tr.transform(new DOMSource(document), new StreamResult(buffer));

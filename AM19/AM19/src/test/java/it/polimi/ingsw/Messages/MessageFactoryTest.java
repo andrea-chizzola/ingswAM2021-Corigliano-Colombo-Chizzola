@@ -28,87 +28,256 @@ class MessageFactoryTest {
         messageFactory = null;
     }
 /*
-    @Test
-    void buildConnection() throws MalformedMessageException {
-        assertEquals(messageFactory.buildConnection("Connection request.", "nickname", true, 4), "<Message><messageType>CONNECTION</messageType><nickname>nickname</nickname><playersNumber>4</playersNumber><body>Connection request.</body><gameHost>true</gameHost></Message>");
-    }
-
-    @Test
-    void buildDisconnection() throws MalformedMessageException {
-        assertEquals(messageFactory.buildDisconnection("Disconnection request.", "nickname"), "<Message><messageType>DISCONNECTION</messageType><nickname>nickname</nickname><body>Disconnection request.</body></Message>");
-    }
-
-    @Test
-    void buildReconnection() throws MalformedMessageException {
-        assertEquals(messageFactory.buildReconnection("Reconnection request.", "nickname"), "<Message><messageType>RECONNECTION</messageType><nickname>nickname</nickname><body>Reconnection request.</body></Message>");
-    }
 
     @Test
     void buildReply() throws MalformedMessageException {
         assertEquals(messageFactory.buildReply(true, "Reply message."), "<Message><messageType>REPLY</messageType><correct>true</correct><body>Reply message.</body></Message>");
     }
 
+*//*
     @Test
-    void buildCurrentPlayer() throws MalformedMessageException {
-        assertEquals(messageFactory.buildCurrentPlayer("playerID", "nickname"), "<Message><messageType>GAME_STATUS</messageType><currentPlayer>playerID</currentPlayer><body>nickname</body></Message>");
+    void buildCurrentPlayerTest(){
+        String playerID = "pippo";
+        String body = "no body";
+        String actualMessage = "";
+        List<String> turns = new LinkedList<>();
+        turns.add("TAKE_RESOURCES");
+        turns.add("MANAGE_MARBLE");
+        turns.add("MANAGE_LEADER");
+
+        String expectedMessage = "<Message><messageType>GAME_STATUS</messageType><correct>true</correct><currentPlayer>pippo</currentPlayer><state>TURN_SELECTION</state><body>no body</body><turns>TAKE_RESOURCES:MANAGE_MARBLE:MANAGE_LEADER</turns></Message>";
+        try {
+             actualMessage = MessageFactory.buildCurrentPlayer(playerID,turns,body);
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+
+        assertEquals(expectedMessage,actualMessage);
     }
 
     @Test
-    void buildEndGame() throws MalformedMessageException {
+    void buildCurrentPlayerTestEmptyList(){
+        String playerID = "pippo";
+        String body = "no body";
+        String actualMessage = "";
+        List<String> turns = new LinkedList<>();
+
+        String expectedMessage = "<Message><messageType>GAME_STATUS</messageType><correct>true</correct><currentPlayer>pippo</currentPlayer><state>TURN_SELECTION</state><body>no body</body><turns/></Message>";
+        try {
+            actualMessage = MessageFactory.buildCurrentPlayer(playerID,turns,body);
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+
+        assertEquals(expectedMessage,actualMessage);
+    }
+
+    @Test
+    void buildConnection()  {
+        try {
+            assertEquals(messageFactory.buildConnection("Connection request.", "nickname", true, 4), "<Message><messageType>CONNECTION</messageType><nickname>nickname</nickname><playersNumber>4</playersNumber><body>Connection request.</body><gameHost>true</gameHost></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildDisconnection()  {
+        try {
+            assertEquals(messageFactory.buildDisconnection("Disconnection request.", "nickname"), "<Message><messageType>DISCONNECTION</messageType><nickname>nickname</nickname><body>Disconnection request.</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildReconnection()  {
+        try {
+            assertEquals(messageFactory.buildReconnection("Reconnection request.", "nickname"),
+                    "<Message><messageType>RECONNECTION</messageType><nickname>nickname</nickname><body>Reconnection request.</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildEndGame() {
         Map<String, Integer> map = new HashMap<>();
         map.put("player1", 25);
         map.put("player2", 20);
-        assertEquals(messageFactory.buildEndGame(map, "Winner message."), "<Message><messageType>END_GAME</messageType><body>Winner message.</body><points>player1:25:player2:20</points></Message>");
+        try {
+            assertEquals(messageFactory.buildEndGame(map, "Winner message."),
+                    "<Message><messageType>END_GAME</messageType><body>Winner message.</body><points>player1:25:player2:20</points></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
     }
 
     @Test
-    void buildBoxUpdate() throws MalformedMessageException {
+    void buildEndGameEmptyMap()  {
+        Map<String, Integer> map = new HashMap<>();
+        try {
+            assertEquals(messageFactory.buildEndGame(map, "Winner message."),
+                    "<Message><messageType>END_GAME</messageType><body>Winner message.</body><points/></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildBoxUpdate()  {
         ResQuantity res1 = new ResQuantity(new Coin(), 5);
         ResQuantity res2 = new ResQuantity(new Stone(), 9);
         List<ResQuantity> list = new ArrayList<>();
         list.add(res1);
         list.add(res2);
-        assertEquals(messageFactory.buildBoxUpdate(list, list, "Boxes update."), "<Message><strongbox>coin:5:stone:9</strongbox><messageType>BOX_UPDATE</messageType><body>Boxes update.</body><warehouse>coin:5:stone:9</warehouse></Message>");
+        try {
+            assertEquals(messageFactory.buildBoxUpdate(list, list, "pippo","Boxes update."),
+                    "<Message><strongbox>coin:5:stone:9</strongbox><messageType>BOX_UPDATE</messageType><body>Boxes update.</body><warehouse>coin:5:stone:9</warehouse><player>pippo</player></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
 
     }
 
     @Test
-    void buildSlotsUpdate() throws MalformedMessageException {
+    void buildBoxUpdateEmpty()  {
+
+        List<ResQuantity> list = new ArrayList<>();
+
+        try {
+            assertEquals(messageFactory.buildBoxUpdate(list, list, "pippo","Boxes update."),
+                    "<Message><strongbox/><messageType>BOX_UPDATE</messageType><body>Boxes update.</body><warehouse/><player>pippo</player></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+
+    }
+
+    @Test
+    void buildSlotsUpdate()  {
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "id1");
         map.put(2, "id2");
-        assertEquals(messageFactory.buildSlotsUpdate(map, "Slots update."), "<Message><messageType>SLOTS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body>Slots update.</body></Message>");
+        try {
+            assertEquals(messageFactory.buildSlotsUpdate(map, "pippo","Slots update."),
+                    "<Message><messageType>SLOTS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body>Slots update.</body><player>pippo</player></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
     }
 
     @Test
-    void buildDecksUpdate() throws MalformedMessageException {
+    void buildSlotsUpdateEmptyMap()  {
+        Map<Integer, String> map = new HashMap<>();
+
+        try {
+            assertEquals(messageFactory.buildSlotsUpdate(map, "pippo","Slots update."),
+                    "<Message><messageType>SLOTS_UPDATE</messageType><devCards/><body>Slots update.</body><player>pippo</player></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildDecksUpdate()  {
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "id1");
         map.put(2, "id2");
-        assertEquals(messageFactory.buildDecksUpdate(map, "Decks update."),"<Message><messageType>DECKS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body>Decks update.</body></Message>");
+        try {
+            assertEquals(messageFactory.buildDecksUpdate(map, "Decks update."),
+                    "<Message><messageType>DECKS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body>Decks update.</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
     }
 
     @Test
-    void buildUpdateLorenzo() throws MalformedMessageException {
-        assertEquals(messageFactory.buildUpdateLorenzo("tokenID", "Update top token.") ,"<Message><messageType>TOKEN_UPDATE</messageType><body>Update top token.</body><token>tokenID</token></Message>");
+    void buildDecksUpdateEmptyBody()  {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "id1");
+        map.put(2, "id2");
+        try {
+            assertEquals(messageFactory.buildDecksUpdate(map, ""),
+                    "<Message><messageType>DECKS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body/></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
     }
 
     @Test
-    void buildUpdateMarket() throws MalformedMessageException {
+    void buildDecksUpdateEmptyMap() {
+        Map<Integer, String> map = new HashMap<>();
+
+        try {
+            assertEquals(messageFactory.buildDecksUpdate(map, "Decks update."),
+                    "<Message><messageType>DECKS_UPDATE</messageType><devCards/><body>Decks update.</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+
+    @Test
+    void buildUpdateLorenzo()  {
+        try {
+            assertEquals(messageFactory.buildUpdateLorenzo("tokenID", "Update top token.")
+                    ,"<Message><messageType>TOKEN_UPDATE</messageType><body>Update top token.</body><token>tokenID</token></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildUpdateMarket() {
         List<Marble> list = new ArrayList<>();
         list.add(new MarbleBlue());
         list.add(new MarbleGray());
-        assertEquals(messageFactory.buildUpdateMarket(list, "Update market"),"<Message><market>MarbleBlue:MarbleGray</market><messageType>MARKET_UPDATE</messageType><body>Update market</body></Message>");
+        try {
+            assertEquals(messageFactory.buildUpdateMarket(list, "Update market"),
+                    "<Message><market>MarbleBlue:MarbleGray</market><messageType>MARKET_UPDATE</messageType><body>Update market</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
     }
 
     @Test
-    void buildSelectedMarbles() throws MalformedMessageException {
+    void buildUpdateMarketEmpty()  {
+        List<Marble> list = new ArrayList<>();
+        try {
+            assertEquals(messageFactory.buildUpdateMarket(list, "Update market"),
+                    "<Message><market/><messageType>MARKET_UPDATE</messageType><body>Update market</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildSelectedMarbles()  {
         List<Marble> list = new ArrayList<>();
         list.add(new MarbleBlue());
         list.add(new MarbleGray());
         List<Marble> list1 = new ArrayList<>();
         list1.add(new MarblePurple());
         list1.add(new MarbleRed());
-        assertEquals(messageFactory.buildSelectedMarbles(list, list1, "Marbles selected by the user."), "<Message><candidates>MarblePurple:MarbleRed</candidates><messageType>SELECTED_MARBLES</messageType><marbles>MarbleBlue:MarbleGray</marbles><body>Marbles selected by the user.</body></Message>");
+        try {
+            assertEquals(messageFactory.buildSelectedMarbles(list, list1, "pippo", "Marbles selected by the user."),
+                    "<Message><candidates>MarblePurple:MarbleRed</candidates><messageType>GAME_STATUS</messageType><correct>true</correct><marbles>MarbleBlue:MarbleGray</marbles><state>MANAGE_MARBLE</state><body>Marbles selected by the user.</body><player>pippo</player></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
     }
-*/}
+
+    @Test
+    void buildSelectedMarblesEmptyLists()  {
+        List<Marble> list = new ArrayList<>();
+        List<Marble> list1 = new ArrayList<>();
+
+        try {
+            assertEquals(messageFactory.buildSelectedMarbles(list, list1, "pippo", "Marbles selected by the user."),
+                    "<Message><candidates/><messageType>GAME_STATUS</messageType><correct>true</correct><marbles/><state>MANAGE_MARBLE</state><body>Marbles selected by the user.</body><player>pippo</player></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }*/
+}

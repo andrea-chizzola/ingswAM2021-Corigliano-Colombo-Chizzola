@@ -5,6 +5,7 @@ import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.*;
 import it.polimi.ingsw.Messages.Enumerations.PlayerAction;
 import it.polimi.ingsw.Messages.Enumerations.TraySelection;
+import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.Boards.GameBoardHandler;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
@@ -16,11 +17,10 @@ import it.polimi.ingsw.View.View;
 import java.util.*;
 
 
-
 /**
- * This class represents the FSM which implements the logic of the controller
+ * This class handles the messages and makes the model evolve
  */
-public class StateHandler {
+public class MessageHandler {
 
     /**
      * the model of the game
@@ -33,9 +33,9 @@ public class StateHandler {
     private View virtualView;
 
     /**
-     * the possible current state
+     * the possible current messages
      */
-    private LinkedList<Message.MessageType> currentStates;
+    private LinkedList<Message.MessageType> currentMessage;
 
     /**
      * the number of players whose initialization is missing
@@ -47,25 +47,18 @@ public class StateHandler {
      * @param gameBoard the gameBoardHandler
      * @param virtualView the virtual view
      */
-    /*public StateHandler(GameBoardHandler gameBoard, View virtualView) {
+    public MessageHandler(GameBoardHandler gameBoard, View virtualView) {
 
         this.gameBoard = gameBoard;
         this.numberPlayersInit = gameBoard.getNumPlayers();
         this.virtualView = virtualView;
-        this.currentStates = new LinkedList<>();
-        this.currentStates.add(Message.MessageType.UPDATE_LEADER_CARDS);
+        this.currentMessage = new LinkedList<>();
+        this.currentMessage.add(Message.MessageType.UPDATE_LEADER_CARDS);
         this.gameBoard.setStartPossibleTurn();
-        virtualView.showAnswer(true,"start initialization", gameBoard.currentPlayer());
-        gameBoard.CurrentPlayer();
-    }
 
-    public boolean disconnection(String nickName){
-        return disconnectionHandler(nickName);
-    }
+        virtualView.selectLeaderAction();
 
-    public boolean reconnection(String nickName){
-        return reconnectionHandler(nickName);
-    }*/
+    }
 
 
     /**
@@ -74,20 +67,20 @@ public class StateHandler {
      * @param nickname the nickname of the player that sent the message
      * @return true if the message was correct and the state has successful evolved, false otherwise
      */
-    /*public boolean stateHandler(String message, String nickname) {
+    public boolean messageHandler(String message, String nickname) {
 
         ActionMessage actionMessage;
         try {
 
             if (!gameBoard.isCurrentPlayer(nickname)) {
-                virtualView.showAnswer(false,"It's not your turn!", nickname);
+                virtualView.showGameStatus(false,"It's not your turn!", nickname,TurnType.WRONG_STATE);
                 return false;
             }
 
             Message.MessageType type = MessageUtilities.instance().getType(message);
 
-            if (currentStates.stream().noneMatch(messageType -> messageType.equals(type))) {
-                virtualView.showAnswer(false, "Message not expected!", nickname);
+            if (currentMessage.stream().noneMatch(messageType -> messageType.equals(type))) {
+                virtualView.showGameStatus(false, "Message not expected!", nickname, TurnType.WRONG_STATE);
                 return false;
             }
 
@@ -136,201 +129,213 @@ public class StateHandler {
                     return reconnectionHandler(nickname);
 
                 default:
-                    virtualView.showAnswer(false,"Message not expected!", nickname);
+                    virtualView.showGameStatus(false,"Message not expected!", nickname, TurnType.WRONG_STATE);
                     return false;
-
             }
         }
         catch (MalformedMessageException e){
-            virtualView.showAnswer(false,"Malformed message", nickname);
+            virtualView.showGameStatus(false,"Malformed message", nickname, TurnType.WRONG_STATE);
             return false;
         }
-    }*/
+    }
+
+    /**
+     * Handler of the message MessageConnection
+     * @param nickName nickname of the player
+     * @return true if the message was correct, false otherwise
+     */
+    public boolean disconnection(String nickName){
+        return disconnectionHandler(nickName);
+    }
+
+    /**
+     * Handler of the message MessageConnection
+     * @param nickName nickname of the player
+     * @return true if the message was correct, false otherwise
+     */
+    public boolean reconnection(String nickName){
+        return reconnectionHandler(nickName);
+    }
 
     /**
      * Handler of the message MessageUpdateLeaderCards
      * @param actionMessage the message from the player
+     * @param nickname the nickname of the player
      * @return true if there are no errors, false otherwise
      */
-    /*private boolean updateLeaderCardsHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    private boolean updateLeaderCardsHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         Map<Integer,Boolean> leaderStatus = actionMessage.getLeaderCardStatus();
 
         if(!gameBoard.initializeLeaderCard(leaderStatus)) {
-            virtualView.showAnswer(false,"Error, incorrect update leader cards!", nickname);
+            virtualView.showGameStatus(false,"Error, incorrect update leader cards!", nickname, TurnType.INITIALIZATION_LEADERS);
             return false;
         }
 
-        currentStates.clear();
-        currentStates.add(Message.MessageType.RESOURCE);
+        currentMessage.clear();
+        currentMessage.add(Message.MessageType.RESOURCE);
         virtualView.getResourcesAction();
         return true;
-    }*/
+    }
 
 
     /**
      * Handler of the message MessageResource
      * @param actionMessage the message from the player
-     * @return true if the message was correct and the state has successful evolved, false otherwise
+     * @param nickname the nickname of the player
+     * @return true if the message was correct, false otherwise
      */
-    /*private boolean resourceHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
-
-        List<Resource> lista = actionMessage.getResourcesInit();
-        List<Integer> intlist = actionMessage.getShelvesInit();
+    private boolean resourceHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         if(!gameBoard.insertResources(actionMessage.getResourcesInit(),actionMessage.getShelvesInit())) {
-           virtualView.showAnswer(false,"Error, incorrect initialization resources selection!", nickname);
+           virtualView.showGameStatus(false,"Error, incorrect initialization resources selection!", nickname, TurnType.INITIALIZATION_RESOURCE);
            return false;
-       }
+        }
 
-       numberPlayersInit--;
-        System.out.println("DEBUG ENTRO");
-       if(numberPlayersInit == 0){
-           currentStates.clear();
-           currentStates.add(Message.MessageType.SELECTED_TURN);
-           virtualView.showAnswer(true,"resources selected correctly", nickname);
-           gameBoard.CurrentPlayer();
-           return true;
-       }
-        System.out.println("DEBUG ESCO");
+        numberPlayersInit--;
 
-       gameBoard.endTurnMove();
-       currentStates.clear();
-       currentStates.add(Message.MessageType.UPDATE_LEADER_CARDS);
-       virtualView.showAnswer(true,"resources selected correctly", nickname);
-       gameBoard.CurrentPlayer();
-       return true;
-    }*/
+        currentMessage.clear();
+        if(numberPlayersInit == 0){
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            gameBoard.endTurnMove();
+            gameBoard.currentPlayer();
+        }
+        else{
+            currentMessage.add(Message.MessageType.UPDATE_LEADER_CARDS);
+            gameBoard.endTurnMove();
+            virtualView.selectLeaderAction();
+        }
+
+        return true;
+    }
 
     /**
      * Handler of the message MessageSelectedTurn
      * @param actionMessage the message from the player
-     * @return true if the message was correct and the state has successful evolved, false otherwise
+     * @param nickname the nickname of the player
+     * @return true if the message was correct, false otherwise
      */
-    /*private boolean selectedTurnHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    private boolean selectedTurnHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         if(!gameBoard.isPossibleTurn(actionMessage.getTurnTypeSelection())){
-            virtualView.showAnswer(false, "You can't play this turn now!", nickname);
+            virtualView.showGameStatus(false, "You can't play this turn now!", nickname,TurnType.TURN_SELECTION);
             return false;
         }
         switch (actionMessage.getTurnTypeSelection()){
             case MANAGE_LEADER:
-                currentStates.clear();
-                currentStates.add(Message.MessageType.LEADER_ACTION);
+                currentMessage.clear();
+                currentMessage.add(Message.MessageType.LEADER_ACTION);
                 virtualView.leaderAction();
                 return true;
             case TAKE_RESOURCES:
-                currentStates.clear();
-                currentStates.add(Message.MessageType.MARKET_SELECTION);
-                currentStates.add(Message.MessageType.SWAP);
-                virtualView.selectMarketAction();
+                currentMessage.clear();
+                currentMessage.add(Message.MessageType.MARKET_SELECTION);
+                currentMessage.add(Message.MessageType.SWAP);
+                virtualView.swapAction();
                 return true;
             case BUY_CARD:
-                currentStates.clear();
-                currentStates.add(Message.MessageType.BUY_CARD);
+                currentMessage.clear();
+                currentMessage.add(Message.MessageType.BUY_CARD);
                 virtualView.buyCardAction();
                 return true;
             case DO_PRODUCTION:
-                currentStates.clear();
-                currentStates.add(Message.MessageType.DO_PRODUCTION);
+                currentMessage.clear();
+                currentMessage.add(Message.MessageType.DO_PRODUCTION);
                 virtualView.doProductionsAction();
                 return true;
             case EXIT:
                 gameBoard.endTurnMove();
 
                 if(gameBoard.isGameEnded()) {
-
                     //chusura di tutto
                     return true;
                 }
 
                 gameBoard.setStartPossibleTurn();
-                currentStates.clear();
-                currentStates.add(Message.MessageType.SELECTED_TURN);
-                gameBoard.CurrentPlayer();
-
+                currentMessage.clear();
+                currentMessage.add(Message.MessageType.SELECTED_TURN);
+                gameBoard.currentPlayer();
                 return true;
+
             default:
-                //non deve mai capitare
                 return false;
         }
-    }*/
+    }
 
     /**
      * Handler of the message MessageSwap
      * @param actionMessage the message from the player
-     * @return true if the message was correct and the state has successful evolved, false otherwise
+     * @param nickname the nickname of the player
+     * @return true if the message was correct, false otherwise
      */
-    /*private boolean swapHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    private boolean swapHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
         try {
             gameBoard.swapWarehouse(actionMessage.getSourceSwap(), actionMessage.getTargetSwap());
             virtualView.swapAction();
             return true;
         }
         catch (InvalidActionException e){
-            virtualView.showAnswer(false,e.getMessage(), nickname);
+            virtualView.showGameStatus(false,e.getMessage(), nickname, TurnType.SWAP);
             return false;
         }
-        //gli stati futuri possibili rimangono sia swap sia MarketSelection
-    }*/
+    }
 
     /**
      * Handler of the message MessageMarketSelection
      * @param actionMessage the message from the player
-     * @return true if the message was correct and the state has successful evolved, false otherwise
+     * @param nickname the nickname of the player
+     * @return true if the message was correct, false otherwise
      */
-    /*private boolean marketSelectionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    private boolean marketSelectionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         try {
-            //può essere null l'attributo enumerativo del messaggio??
             if(actionMessage.getSelectedMarketTray().equals(TraySelection.ROW))
                 gameBoard.takeMarketRow(actionMessage.getSelectedMarketNumber());
+
             if(actionMessage.getSelectedMarketTray().equals(TraySelection.COLUMN))
                 gameBoard.takeMarketColumn(actionMessage.getSelectedMarketNumber());
 
-            currentStates.clear();
-            currentStates.add(Message.MessageType.ACTION_MARBLE);
-            virtualView.showAnswer(true,"Correct market selection", nickname);
-            return true;
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.ACTION_MARBLE);
 
+            return true;
         }
         catch (InvalidActionException e){
-            virtualView.showAnswer(false,e.getMessage(), nickname);
+            virtualView.showGameStatus(false,e.getMessage(), nickname,TurnType.TAKE_RESOURCES);
             return false;
         }
-
-    }*/
+    }
 
     /**
      * Handler of the message MessageAction
      * @param actionMessage the message from the player
-     * @return true if the message was correct and the state has successful evolved, false otherwise
+     * @param nickname the nickname of the player
+     * @return true if the message was correct, false otherwise
      */
-    /*private boolean actionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    private boolean actionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
         List<Marble> messageMarbles = actionMessage.getMarbleFromAction();
         List<PlayerAction> actions = actionMessage.getMarbleActions();
         List<Integer> shelves = actionMessage.getMarblesSelectedShelves();
 
         if(!gameBoard.actionMarbles(messageMarbles,actions,shelves)){
-            virtualView.showAnswer(false,"Wrong marbles selection!", nickname);
-            gameBoard.CurrentPlayer();
+            virtualView.showGameStatus(false,"Wrong marbles selection!", nickname,TurnType.MANAGE_MARBLE);
             return false;
         }
 
         gameBoard.setMiddlePossibleTurn();
-        currentStates.clear();
-        currentStates.add(Message.MessageType.SELECTED_TURN);
-        virtualView.showAnswer(true,"Correct marbles selection!", nickname);
-        gameBoard.CurrentPlayer();
+        currentMessage.clear();
+        currentMessage.add(Message.MessageType.SELECTED_TURN);
+        gameBoard.currentPlayer();
         return true;
-    }*/
+    }
 
     /**
      * Handler of the message MessageLeaderAction
      * @param actionMessage the message from the player
-     * @return true if the message was correct and the state has successful evolved, false otherwise
+     * @param nickname the nickname of the player
+     * @return true if the message was correct, false otherwise
      */
-    /*private boolean leaderActionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    private boolean leaderActionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         int pos = actionMessage.getSelectedLeaderCards().keySet().iterator().next();
         try {
@@ -338,28 +343,26 @@ public class StateHandler {
                 gameBoard.activateCard(pos);
             if(actionMessage.getLeaderCardAction().equals(PlayerAction.DISCARD))
                 gameBoard.removeCard(pos);
-            currentStates.clear();
-            currentStates.add(Message.MessageType.SELECTED_TURN);
-            virtualView.showAnswer(true,"Correct leader action", nickname);
-            gameBoard.CurrentPlayer();
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            gameBoard.currentPlayer();
             return true;
         }
         catch (InvalidActionException e){
-
-            currentStates.clear();
-            currentStates.add(Message.MessageType.SELECTED_TURN);
-            virtualView.showAnswer(false,e.getMessage(), nickname);
-            gameBoard.CurrentPlayer();
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            virtualView.showGameStatus(false,e.getMessage(), nickname,TurnType.TURN_SELECTION);
             return false;
         }
-    }*/
+    }
 
     /**
      * Handler of the message MessageBuyCard
      * @param actionMessage the message from the player
-     * @return true if the message was correct and the state has successful evolved, false otherwise
+     * @param nickname the nickname of the player
+     * @return true if the message was correct, false otherwise
      */
-    /*private boolean buyCardHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    private boolean buyCardHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         ArrayList<Integer> shelves = new ArrayList<>(actionMessage.getSelectedWarehouseShelves());
         ArrayList<Integer> quantity = new ArrayList<>(actionMessage.getSelectedWarehouseQuantity());
@@ -368,34 +371,34 @@ public class StateHandler {
         try {
             gameBoard.buyCard(actionMessage.getTargetSlotDevelopmentCard(), actionMessage.getDevelopmentCardColor(), actionMessage.getDevelopmentCardLevel(), shelves,quantity,strongbox);
             gameBoard.setMiddlePossibleTurn();
-            currentStates.clear();
-            currentStates.add(Message.MessageType.SELECTED_TURN);
-            virtualView.showAnswer(true,"Correct buy card", nickname);
-            gameBoard.CurrentPlayer();
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            gameBoard.currentPlayer();
             return true;
         }
         catch (InvalidActionException e){
 
-            currentStates.clear();
-            currentStates.add(Message.MessageType.SELECTED_TURN);
-            virtualView.showAnswer(false,e.getMessage(), nickname);
-            gameBoard.CurrentPlayer();
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            virtualView.showGameStatus(false,e.getMessage(), nickname, TurnType.TURN_SELECTION);
+            gameBoard.currentPlayer();
             return false;
         }
-    }*/
+    }
 
     /**
      * Handler of the message MessageDoProduction
      * @param actionMessage the message from the player
-     * @return true if the message was correct and the state has successful evolved, false otherwise
+     * @param nickname the nickname of the player
+     * @return true if the message was correct, false otherwise
      */
-    /*private boolean doProductionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
+    private boolean doProductionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         ArrayList<Production> productions = new ArrayList<>();
         int numberChoiceProducts = 0;
         int numberChoiceMaterials = 0;
 
-        //controllo produzioni carte development
+        //check development cards
         for(int i : actionMessage.getActivatedDevelopmentCards().keySet()){
             try {
                 Production production = gameBoard.getDevProduction(i);
@@ -403,16 +406,15 @@ public class StateHandler {
             }
             catch (InvalidActionException e){
 
-                currentStates.clear();
-                currentStates.add(Message.MessageType.SELECTED_TURN);
-                virtualView.showAnswer(false,e.getMessage(), nickname);
-                gameBoard.CurrentPlayer();
+                currentMessage.clear();
+                currentMessage.add(Message.MessageType.SELECTED_TURN);
+                virtualView.showGameStatus(false,e.getMessage(), nickname, TurnType.TURN_SELECTION);
 
                 return false;
             }
         }
 
-        //controllo produzioni carte leader
+        //check leader cards
         for(int i : actionMessage.getSelectedLeaderCards().keySet()){
             try {
                 Production production = gameBoard.getLeaderProduction(i);
@@ -422,43 +424,42 @@ public class StateHandler {
             }
             catch (InvalidActionException e){
 
-                currentStates.clear();
-                currentStates.add(Message.MessageType.SELECTED_TURN);
-                virtualView.showAnswer(false,e.getMessage(), nickname);
-                gameBoard.CurrentPlayer();
+                currentMessage.clear();
+                currentMessage.add(Message.MessageType.SELECTED_TURN);
+                virtualView.showGameStatus(false,e.getMessage(), nickname, TurnType.TURN_SELECTION);
                 return false;
             }
         }
 
-        //gestisco la produzione della board
+        //personal board production
         if(actionMessage.isPersonalProduction()){
             numberChoiceProducts += gameBoard.getBoardProduction().getCustomProducts();
             numberChoiceMaterials += gameBoard.getBoardProduction().getCustomMaterials();
-            //importante non inizializzare mai le production con array vuoti
             productions.add(gameBoard.getBoardProduction());
         }
 
-        //controllo che le quantità di risorse a scelta siano corrette
-        //controllo che lo stream() faccia zero nel caso di lista vuota
+        //check of number chosen resources
         if(numberChoiceMaterials != actionMessage.getChosenMaterials().stream().mapToInt(ResQuantity::getQuantity).sum()) {
-            virtualView.showAnswer(false, "Wrong chosen materials!", nickname);
-            gameBoard.CurrentPlayer();
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            virtualView.showGameStatus(false,"wrong chosen materials!", nickname, TurnType.TURN_SELECTION);
             return false;
         }
         if(numberChoiceProducts != actionMessage.getChosenProducts().stream().mapToInt(ResQuantity::getQuantity).sum()) {
-            virtualView.showAnswer(false, "Wrong chosen products!", nickname);
-            gameBoard.CurrentPlayer();
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            virtualView.showGameStatus(false,"wrong chosen products!", nickname, TurnType.TURN_SELECTION);
             return false;
         }
 
-        //creo produzioni a scelta
+        //creating new production
         LinkedList<ResQuantity> materials = new LinkedList<>(actionMessage.getChosenMaterials());
         LinkedList<ResQuantity> products = new LinkedList<>(actionMessage.getChosenProducts());
         Production choiceProduction = new Production(materials,products,0,0);
 
         productions.add(choiceProduction);
 
-        //creo arraylist di risorse selezionate
+        //selected resources
         ArrayList<Integer> shelves = new ArrayList<>(actionMessage.getSelectedWarehouseShelves());
         ArrayList<Integer> quantity = new ArrayList<>(actionMessage.getSelectedWarehouseQuantity());
         ArrayList<ResQuantity> strongbox = createCorrectStrongbox(actionMessage.getSelectedStrongBoxQuantity());
@@ -466,31 +467,31 @@ public class StateHandler {
         try {
             gameBoard.doProduction(productions, shelves,quantity,strongbox);
             gameBoard.setMiddlePossibleTurn();
-            currentStates.clear();
-            currentStates.add(Message.MessageType.SELECTED_TURN);
-            virtualView.showAnswer(true,"Correct do production", nickname);
-            gameBoard.CurrentPlayer();
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            gameBoard.currentPlayer();
             return true;
         }
         catch (InvalidActionException e){
 
-            currentStates.clear();
-            currentStates.add(Message.MessageType.SELECTED_TURN);
-            virtualView.showAnswer(false,e.getMessage(), nickname);
-            gameBoard.CurrentPlayer();
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            virtualView.showGameStatus(false,e.getMessage(), nickname, TurnType.TURN_SELECTION);
             return false;
         }
 
-    }*/
+    }
 
     /**
-     * Handler of the message MessageConnection
-     * @param nickname
-     * @return true if the message was correct and the state has successful evolved, false otherwise
+     * Handler of the message MessageDisconnection
+     * @param nickname the nickname of the player
+     * @return true if the message was correct, false otherwise
      */
-    //mancano da gestire le disconnessioni durante l'inizializzazione
-    /*private boolean disconnectionHandler(String nickname) {
+    private boolean disconnectionHandler(String nickname) {
 
+        if(numberPlayersInit != 0){
+            //game.endGame();
+        }
         if(gameBoard.isCurrentPlayer(nickname)){
 
             virtualView.showDisconnection(nickname);
@@ -501,8 +502,10 @@ public class StateHandler {
             }
 
             gameBoard.setStartPossibleTurn();
-            currentStates.clear();
-            currentStates.add(Message.MessageType.SELECTED_TURN);
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            //chiamato sul nuovo current player, ho gia fatto la end turn move
+            gameBoard.currentPlayer();
 
         }
         virtualView.showDisconnection(nickname);
@@ -512,11 +515,11 @@ public class StateHandler {
     /**
      * Handler of the message MessageConnection
      * @param nickname
-     * @return true if the message was correct and the state has successful evolved, false otherwise
+     * @return true if the message was correct, false otherwise
      */
-    /*private boolean reconnectionHandler(String nickname){
+    private boolean reconnectionHandler(String nickname){
         return gameBoard.reconnectPlayer(nickname);
-    }*/
+    }
 
 
 
@@ -525,7 +528,7 @@ public class StateHandler {
      * @param strongbox
      * @return an ArrayList or resQuantity that meets the requirements for the parameter strongbox
      */
-    /*private ArrayList<ResQuantity> createCorrectStrongbox(List<ResQuantity> strongbox){
+    private ArrayList<ResQuantity> createCorrectStrongbox(List<ResQuantity> strongbox){
 
         Map<Resource,Integer> map = new HashMap<>();
         ArrayList<ResQuantity> list = new ArrayList<>();
@@ -540,6 +543,6 @@ public class StateHandler {
             list.add(new ResQuantity(resource,map.get(resource)));
         }
         return list;
-    }*/
+    }
 
 }

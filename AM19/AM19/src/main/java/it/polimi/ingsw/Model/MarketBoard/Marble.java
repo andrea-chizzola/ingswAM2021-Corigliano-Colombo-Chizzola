@@ -27,6 +27,14 @@ public interface Marble {
     void discard(Board board);
 
     /**
+     * This method checks if the the marble passed as parameter is among those allowed
+     * @param marble marble
+     * @param board the board of the player
+     * @return true if the the marble passed as parameter is among those allowed, false otherwise
+     */
+    boolean checkMarble(Marble marble, Board board);
+
+    /**
      * This method returns a LinkedList of Marble which contains all the marbles that can be used instead of the white one.
      * If there are not marbles that can be used instead of the white one the LinkedList is empty.
      * @param board is the board of the player
@@ -34,10 +42,6 @@ public interface Marble {
      */
     LinkedList<Marble> whiteTransformations(Board board);
 
-    /**
-     * @return true if the marble is white, false otherwise
-     */
-    boolean isWhite();
 
     /**
      * @return the string associated with the color of the marble

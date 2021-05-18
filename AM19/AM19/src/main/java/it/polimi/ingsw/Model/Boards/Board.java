@@ -386,7 +386,8 @@ public class Board {
                 ID = slots.get(i).getTop().getId();
                 map.put(i+1, ID);
             }
-            catch (IllegalSlotException e){}
+            catch (IllegalSlotException e){
+            }
         }
         return map;
     }

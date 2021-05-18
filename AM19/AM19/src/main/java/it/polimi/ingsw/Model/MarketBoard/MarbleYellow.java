@@ -23,13 +23,7 @@ public class MarbleYellow implements Marble {
      */
     @Override
     public void addResource(Board board, int shelf) {
-        /*
-        try {
-            board.getWarehouse().addResource(shelf, new Shield());
-        }
-        catch(IllegalShelfException e){
-            throw new InvalidActionException(e.getMessage());
-        }*/
+
         board.getWarehouse().insertResource(shelf, getResourceAssociated());
     }
 
@@ -48,9 +42,17 @@ public class MarbleYellow implements Marble {
         return list;
     }
 
+
+    /**
+     * This method checks if the the marble passed as parameter is among those allowed
+     *
+     * @param marble marble
+     * @param board  the board of the player
+     * @return true if the the marble passed as parameter is among those allowed, false otherwise
+     */
     @Override
-    public boolean isWhite() {
-        return false;
+    public boolean checkMarble(Marble marble, Board board) {
+        return marble.toString().equals(this.toString());
     }
 
     @Override

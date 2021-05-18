@@ -78,7 +78,7 @@ class Initialization_Leader implements ClientStates{
 
     @Override
     public void handleState(View view, ViewModel model) {
-        view.selectLeaderAction(model.getLeadersID(model.getCurrentPlayer()));
+        //view.selectLeaderAction(model.getLeadersID(model.getCurrentPlayer()));
     }
 
     @Override

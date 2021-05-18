@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Exceptions.EmptyBufferException;
 import it.polimi.ingsw.Messages.*;
+import it.polimi.ingsw.Exceptions.MalformedMessageException;
 
 import java.io.*;
 import java.net.Socket;
@@ -16,18 +17,18 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private Socket socket;
     private Server server;
     private boolean pong;
-    private String socketID;
-    private ConnectionListener controller;
+    private final String socketID;
+    private ConnectionListener handler;
     private BufferedReader in;
     private NetworkBuffer buffer;
     private PrintWriter out;
 
-    public SocketClientConnection(Socket socket, Server server, String socketID, ConnectionListener controller) {
+    public SocketClientConnection(Socket socket, Server server, String socketID, ConnectionListener handler) {
 
         this.socket = socket;
         this.server = server;
         this.socketID = socketID;
-        this.controller = controller;
+        this.handler = handler;
         pong = true;
 
     }
@@ -37,7 +38,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
      */
     @Override
     public ConnectionListener getListener() {
-        return controller;
+        return handler;
     }
 
     /**
@@ -65,7 +66,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
      */
     @Override
     public void addListener(ConnectionListener listener) {
-        this.controller = listener;
+        this.handler = listener;
 
     }
 
@@ -77,9 +78,9 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     @Override
     public synchronized void send(String message) {
 
-        System.out.println(message);
-        //out.println(message);
+        out.println(message);
         out.flush();
+        //System.out.println(message);
 
     }
 
@@ -103,16 +104,16 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         try {
             buffer.append(read);
-        }catch (Exception e){
-            controller.onReceivedMessage(read, socketID);
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER] The message received is not in XML format.");
         }
-
 
         if(buffer.getPong()) pong = true;
         else if(buffer.getPing()) asyncSend("<pong/>");
         else {
             try {
-                controller.onReceivedMessage(buffer.get(), socketID);
+                String string = buffer.get();
+                handler.onReceivedMessage(string, socketID);
             } catch (EmptyBufferException e){
                 System.out.println("[SERVER] The buffer is empty!");
             }
@@ -134,8 +135,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
                     pong = false;
                 } else {
                     System.out.println("[SERVER] No pong received. Client will now be disconnected.");
-                    controller.onMissingPong(socketID);
-                    closeConnection();
+                    handler.onMissingPong(socketID);
+                    //closeConnection();
                     timer.cancel();
                 }
 
@@ -165,7 +166,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         }
 
-        server.addConnection(socketID,this);
+        handler.addActiveConnection(socketID, this);
         //startPingTimer();
         String read = "";
 
@@ -174,11 +175,10 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             while ((read = in.readLine()) != null) {
 
                 System.out.println("[SERVER] Received: " + read);
-
                 messageHandler(read);
 
             }
-            controller.onMissingPong(socketID);
+            handler.onMissingPong(socketID);
             closeConnection();
 
         } catch (IOException e) {

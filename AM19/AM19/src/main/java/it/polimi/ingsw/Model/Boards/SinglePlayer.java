@@ -29,6 +29,8 @@ public class SinglePlayer implements CustomMode{
      */
     private ActionTokenDeck actionTokenDeck;
 
+    private boolean initialization;
+
     /**
      * creates all the necessary attributes for a single player match
      * @param gameBoard represents the game board
@@ -39,7 +41,7 @@ public class SinglePlayer implements CustomMode{
         lorenzoTrack = ConfigurationParser.parseFaithTrack(file);
         actionTokenDeck = new ActionTokenDeck(file);
         this.gameBoard = gameBoard;
-
+        initialization = true;
     }
 
     /**
@@ -89,7 +91,9 @@ public class SinglePlayer implements CustomMode{
     @Override
     public void endTurnAction(GameBoard gameBoard){
 
-        actionTokenDeck.getTop().doAction(this);
+        //if(!initialization)
+            actionTokenDeck.getTop().doAction(this);
+        //initialization = false;
         if(gameBoard.isEndGameStarted())
            gameBoard.setGameEnded();
     }

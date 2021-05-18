@@ -252,7 +252,7 @@ public class Warehouse {
             if(resources.get(i).getColor().equals(new Faith().getColor()))
                 continue;
             if(map.containsKey(shelves.get(i))) {
-                //cerco di inserire nello stesso shelf risorse diverse
+                //different resources in the same shelf
                 if (!map.get(shelves.get(i)).getResource().getColor().equals(resources.get(i).getColor()))
                     return false;
             }
@@ -416,6 +416,10 @@ public class Warehouse {
         return map;
     }
 
+    /**
+     * This method is useful to show the status of the warehouse
+     * @return a List of ResQuantity which represents the status of the warehouse
+     */
     public List<ResQuantity> showWarehouse(){
 
         List<ResQuantity> list = new LinkedList<>();

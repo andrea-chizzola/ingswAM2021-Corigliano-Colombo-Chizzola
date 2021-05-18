@@ -49,6 +49,16 @@
           <version>5.8.0-M1</version>
           <scope>compile</scope>
       </dependency>
+      <dependency>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-controls</artifactId>
+          <version>13</version>
+      </dependency>
+      <dependency>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-fxml</artifactId>
+          <version>13</version>
+      </dependency>
   </dependencies>
 
   <build>
@@ -102,6 +112,14 @@
               <configuration>
                   <source>11</source>
                   <target>11</target>
+              </configuration>
+          </plugin>
+          <plugin>
+              <groupId>org.openjfx</groupId>
+              <artifactId>javafx-maven-plugin</artifactId>
+              <version>0.0.4</version>
+              <configuration>
+                  <mainClass>it.polimi.ingsw.App</mainClass>
               </configuration>
           </plugin>
       </plugins>

@@ -22,17 +22,15 @@ public class SocketServerConnection implements ServerConnection, Runnable{
     private Client client;
     private boolean pong;
     private ClientConnectionListener clientController;
-    private String player;
     private BufferedReader in;
     private NetworkBuffer buffer;
     private PrintWriter out;
 
-    public SocketServerConnection(Socket socket, ClientConnectionListener clientController, String player, Client client){
+    public SocketServerConnection(Socket socket, ClientConnectionListener clientController, Client client){
 
         this.socket = socket;
         this.client = client;
         this.clientController = clientController;
-        this. player = player;
         pong = true;
 
     }
@@ -103,14 +101,14 @@ public class SocketServerConnection implements ServerConnection, Runnable{
                     pong = false;
                 } else {
                     System.out.println("[CLIENT] No pong received. Client will now be disconnected.");
-                    clientController.onMissingPong(player);
+                    clientController.onMissingPong();
                     closeConnection();
                     timer.cancel();
                 }
 
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 10000);
+        timer.scheduleAtFixedRate(task, 0, 7500);
 
     }
 
@@ -130,7 +128,7 @@ public class SocketServerConnection implements ServerConnection, Runnable{
         else if(buffer.getPing()) asyncSend("<pong/>");
         else {
             try {
-                clientController.onReceivedMessage(buffer.get(), player);
+                clientController.onReceivedMessage(buffer.get());
             } catch (EmptyBufferException e){
                 System.out.println("[SERVER] The buffer is empty!");
             }

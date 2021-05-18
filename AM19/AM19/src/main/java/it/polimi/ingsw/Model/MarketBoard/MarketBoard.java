@@ -164,6 +164,9 @@ public class MarketBoard {
         return list;
     }
 
+    /**
+     * @return a list of marbles which represents the market and the slide (the marble in the last posistion)
+     */
     public List<Marble> showMarket(){
         List<Marble> list = new ArrayList<>(this.tray);
         list.add(this.slide);
