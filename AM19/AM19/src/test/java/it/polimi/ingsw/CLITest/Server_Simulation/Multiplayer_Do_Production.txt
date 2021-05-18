@@ -16,4 +16,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><Message><messageType>TOKEN_UPDATE</messageType><body>token</body><token/></Message>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><Message><leaderStatus>1:ACTIVE</leaderStatus><messageType>UPDATE_LEADER_CARDS</messageType><body>update leader cards</body><leaderCards>1:10</leaderCards><player>Davide</player></Message>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><Message><messageType>GAME_STATUS</messageType><correct>true</correct><player>Davide</player><state>TURN_SELECTION</state><body>current player</body><turns>DO_PRODUCTION:BUY_CARD:TAKE_RESOURCES:MANAGE_LEADER</turns></Message>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Message><messageType>GAME_STATUS</messageType><correct>true</correct><player>Davide</player><state>DO_PRODUCTION</state><body>current player</body></Message>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><Message><strongbox>coin:29:servant:30:stone:28:shield:29</strongbox><messageType>BOX_UPDATE</messageType><body>update boxes</body><warehouse>coin:0:coin:0:coin:0</warehouse><player>Davide</player></Message>

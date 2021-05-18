@@ -70,7 +70,7 @@ class MessageUtilitiesTest {
         List<ResQuantity> list = new ArrayList<>();
         list.add(new ResQuantity(new Coin(), 5));
         list.add(new ResQuantity(new Stone(), 9));
-        assertEquals(list, instance.getResQuantityList("<Message><strongbox>coins:5:stones:9</strongbox><messageType>BOX_UPDATE</messageType><body>Boxes update.</body><warehouse>coins:5:stones:9</warehouse></Message>", "warehouse"));
+        assertEquals(list, instance.getResQuantityList("<Message><strongbox>coin:5:stone:9</strongbox><messageType>BOX_UPDATE</messageType><body>Boxes update.</body><warehouse>coin:5:stone:9</warehouse></Message>", "warehouse"));
     }
 
     @Test

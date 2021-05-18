@@ -408,6 +408,9 @@ public class CLI_ClientController_Test {
         message = server.readLine();
         System.out.println(message);
         controller.onReceivedMessage(message, "Davide");
+        message = server.readLine();
+        System.out.println(message);
+        controller.onReceivedMessage(message, "Davide");
 
         //UPDATE OF DAVIDE'S RESOURCES
         message = server.readLine();
