@@ -112,7 +112,7 @@ public class ResQuantity {
         Map<Resource, Integer> reqMap = new HashMap<>();
 
         for(ResQuantity resQuantity : strongbox){
-            if(board.getStrongBox().getQuantity(resQuantity.getResource()) < resQuantity.getQuantity())
+            if(board.getStrongBox().getQuantity(resQuantity.getResource()) < resQuantity.getQuantity() || resQuantity.getQuantity()<0)
                 throw new InvalidActionException("Selected more resources than are present!");
 
             reqMap.put(resQuantity.getResource(), resQuantity.getQuantity());

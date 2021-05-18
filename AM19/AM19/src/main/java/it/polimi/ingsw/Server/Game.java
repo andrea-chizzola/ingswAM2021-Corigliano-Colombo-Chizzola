@@ -1,8 +1,9 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Controller.MessageHandler;
 import it.polimi.ingsw.Controller.VirtualView;
 import it.polimi.ingsw.Model.Boards.GameBoardHandler;
-import it.polimi.ingsw.Controller.StateHandler;
+import it.polimi.ingsw.Controller.MessageHandler;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.View.View;
 
@@ -22,7 +23,7 @@ public class Game {
     /**
      * It manages the game
      */
-    private StateHandler stateHandler;
+    private MessageHandler messageHandler;
 
     /**
      * keeps track of the players part of the match (ID - nickname)
@@ -80,7 +81,7 @@ public class Game {
      * @param socketID represents the sender's socket id
      */
     public void onReceivedMessage(String message, String socketID){
-        stateHandler.stateHandler(message, getNickname(socketID));
+        messageHandler.messageHandler(message, getNickname(socketID));
     }
 
     /**
@@ -109,9 +110,9 @@ public class Game {
      * @param connection represents the player's socket connection
      */
     public void addPlayer(String nickname, String socketId, ClientConnection connection){
-        /*
+
         if(start)
-            stateHandler.reconnection(nickname);*/
+            messageHandler.reconnection(nickname);
         players.put(socketId, nickname);
         connections.put(nickname, connection);
         if(playersNumber == players.size()) start = true;
@@ -123,10 +124,10 @@ public class Game {
      * @param socketId represents the removed player's socket id
      */
     public void removePlayer(String socketId){
-        /*
+
         if(start){
-            stateHandler.disconnection(players.get(socketId));
-        }*/
+            messageHandler.disconnection(players.get(socketId));
+        }
         String nickname = players.get(socketId);
 
         connections.remove(nickname);
@@ -210,12 +211,18 @@ public class Game {
 
         System.out.println("[SERVER] Creating a new game...");
 
-        ArrayList<String> names = new ArrayList<>(players.keySet());
+        ArrayList<String> names = new ArrayList<>(players.values());
         GameBoardHandler gameBoard = new GameBoard(names, file);
-        gameBoard.giveLeaderCards(file);
+
+        //gameBoard.giveLeaderCards(file);
+
         View virtualView = new VirtualView(this,gameBoard);
-        //gameBoard.attachView(virtualView);
-        //this.stateHandler = new StateHandler(gameBoard, virtualView);
+
+        gameBoard.attachView(virtualView);
+        gameBoard.initializeGame(file);
+
+        this.messageHandler = new MessageHandler(gameBoard, virtualView);
+
 
         System.out.println("[SERVER] Game is ready to start");
 

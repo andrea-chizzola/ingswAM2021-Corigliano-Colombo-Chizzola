@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DoProductionTest {
     private Production production1;
     private  Production production2;
+    private Production production3;
     private Board board;
     private  ArrayList<Production> productions;
     private  final String file = "defaultConfiguration.xml";
@@ -60,6 +61,19 @@ class DoProductionTest {
         production2 = new Production(materials2, products2, 0, 0);
 
         productions.add(production2);
+
+        //creation of a production with faith in products
+        LinkedList<ResQuantity> materials3 = new LinkedList<>();
+        materials3.add(new ResQuantity(new Coin(),1));
+        materials3.add(new ResQuantity(new Stone(), 2));
+        materials3.add(new ResQuantity(new Shield(), 1));
+
+        LinkedList<ResQuantity> products3 = new LinkedList<>();
+        products3.add(new ResQuantity(new Coin(),1));
+        products3.add(new ResQuantity(new Stone(),1));
+
+        production3 = new Production(materials3, products3, 0, 0);
+
 
         //initialization of Warehouse and StrongBox
         //Warehouse: Quantity:Shelf:Resource
@@ -128,6 +142,92 @@ class DoProductionTest {
         assertEquals(board.getFaithTrack().getPosition(), 3);
 
     }
+
+    @Test
+    public void testDoProductionOnlyStrongBox(){
+        ArrayList<Integer> shelves = new ArrayList<>();
+        ArrayList<Integer> quantity = new ArrayList<>();
+        ArrayList<ResQuantity> strongBox = new ArrayList<>();
+        strongBox.add(new ResQuantity(new Coin(), 1));
+        strongBox.add(new ResQuantity(new Stone(), 2));
+        strongBox.add(new ResQuantity(new Shield(), 1));
+        ArrayList<Production> list = new ArrayList<>();
+        list.add(production3);
+        DoProduction action = new DoProduction();
+        try {
+
+            action.doProduction(board,list,shelves,quantity,strongBox);
+        }catch (InvalidActionException e){fail();}
+
+        try {
+            assertEquals(board.getWarehouse().getQuantity(1), 1);
+            assertEquals(board.getWarehouse().getResource(1), new Coin());
+            assertEquals(board.getWarehouse().getQuantity(2), 1);
+            assertEquals(board.getWarehouse().getResource(2), new Servant());
+            assertEquals(board.getWarehouse().getQuantity(3), 2);
+            assertEquals(board.getWarehouse().getResource(3), new Stone());
+            assertEquals(board.getWarehouse().getQuantity(4), 1);
+            assertEquals(board.getWarehouse().getResource(4), new Shield());
+            assertEquals(board.getWarehouse().getQuantity(5), 0);
+            assertEquals(board.getWarehouse().getResource(5), new Coin());
+
+        }catch (IllegalShelfException e){fail();}
+
+
+        assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getQuantity(6));
+
+        assertEquals(board.getStrongBox().getQuantity(new Coin()), 10);
+        assertEquals(board.getStrongBox().getQuantity(new Shield()), 4);
+        assertEquals(board.getStrongBox().getQuantity(new Stone()), 2);
+        assertEquals(board.getStrongBox().getQuantity(new Servant()), 1);
+        assertEquals(board.getFaithTrack().getPosition(), 0);
+
+    }
+
+
+    @Test
+    public void testDoProductionOnlyWarehouse(){
+        ArrayList<Integer> shelves = new ArrayList<>();
+        shelves.add(1);
+        shelves.add(3);
+        shelves.add(4);
+        ArrayList<Integer> quantity = new ArrayList<>();
+        quantity.add(1);
+        quantity.add(2);
+        quantity.add(1);
+        ArrayList<ResQuantity> strongBox = new ArrayList<>();
+
+        ArrayList<Production> list = new ArrayList<>();
+        list.add(production3);
+        DoProduction action = new DoProduction();
+        try {
+
+            action.doProduction(board,list,shelves,quantity,strongBox);
+        }catch (InvalidActionException e){System.out.println(e.getMessage());}
+
+        try {
+            assertEquals(board.getWarehouse().getQuantity(2), 1);
+            assertEquals(board.getWarehouse().getResource(2), new Servant());
+            assertEquals(board.getWarehouse().getQuantity(4), 0);
+            assertEquals(board.getWarehouse().getResource(4), new Shield());
+            assertEquals(board.getWarehouse().getQuantity(5), 0);
+            assertEquals(board.getWarehouse().getResource(5), new Coin());
+
+        }catch (IllegalShelfException e){fail();}
+
+
+        assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getQuantity(1));
+        assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getQuantity(3));
+        assertThrows(IllegalShelfException.class, () -> board.getWarehouse().getQuantity(6));
+
+        assertEquals(board.getStrongBox().getQuantity(new Coin()), 11);
+        assertEquals(board.getStrongBox().getQuantity(new Shield()), 5);
+        assertEquals(board.getStrongBox().getQuantity(new Stone()), 4);
+        assertEquals(board.getStrongBox().getQuantity(new Servant()), 1);
+        assertEquals(board.getFaithTrack().getPosition(), 0);
+
+    }
+
 
     @Test
     public void DoProductionTestTooManyResources() {

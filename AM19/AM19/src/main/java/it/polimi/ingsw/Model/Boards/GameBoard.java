@@ -35,10 +35,9 @@ public class GameBoard implements GameBoardHandler {
     private ArrayList<Board> players;
 
     /**
-     * this map associates an Integer to each Board.
-     * the integer represents the position of the player.
+     * arraylist of the disconnected players
      */
-    private Map<Board,Integer> disconnectedPlayers;
+    private ArrayList<Board> disconnectedPlayers;
 
     /**
      * indicates the current player
@@ -81,14 +80,9 @@ public class GameBoard implements GameBoardHandler {
     private LeaderDeck leaderDeck;
 
     /**
-     * it represents the production of the personal boards
-     */
-    private Production boardProduction;
-
-    /**
      * it represents the marbles taken by the current player from the marketBoard
      */
-    ArrayList<Marble> marblesMarket;
+    private ArrayList<Marble> marblesMarket;
 
     /**
      * this map associates a boolean to each type of turn.
@@ -96,7 +90,7 @@ public class GameBoard implements GameBoardHandler {
      */
     private Map<TurnType, Boolean> possibleTurn;
 
-    public GameBoard(ArrayList<String> nicknames, String file) {  //fix board test
+    public GameBoard(ArrayList<String> nicknames, String file) {
 
         developmentDeck = new DevelopmentDeck(file);
         leaderDeck = new LeaderDeck(file);
@@ -128,12 +122,8 @@ public class GameBoard implements GameBoardHandler {
             customMode = new SinglePlayer(this, file);
         }
 
-        //aggiungere production di board
         possibleTurn = new HashMap<>();
-        disconnectedPlayers = new HashMap<>();
-
-        //giveLeaderCards(file);
-
+        disconnectedPlayers = new ArrayList<>();
     }
 
     /**
@@ -262,7 +252,6 @@ public class GameBoard implements GameBoardHandler {
      * this method gives a number of leader cards to each player
      * @param file is the name of the XML file that contains the number of initial leader cards of each player
      */
-    @Override
     public void giveLeaderCards(String file){
         int num = ConfigurationParser.getNumLeader(file);
         for(Board board : players){
@@ -278,43 +267,58 @@ public class GameBoard implements GameBoardHandler {
         for(Board board : players){
             map.put(board.getNickname(),board.getTotalPoints());
         }
-        for(Board board : disconnectedPlayers.keySet()){
+        for(Board board : disconnectedPlayers){
             map.put(board.getNickname(),board.getTotalPoints());
         }
         return map;
     }
 
+    //methods of interface GameBoardHandler
 
+    /**
+     * this method attaches the view to the model
+     * @param virtualView the observer of the model
+     */
+    @Override
     public void attachView(View virtualView){
+
         this.virtualView = virtualView;
-        //giveLeaderCards("defaultConfiguration.xml");
+    }
+
+    /**
+     * This method distributes the leader cards and updates the view
+     * @param file configuration file
+     */
+    @Override
+    public void initializeGame(String file){
+        giveLeaderCards(file);
         virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
+        virtualView.showDecksUpdate(developmentDeck.showDeck());
+        virtualView.showMarketUpdate(marketBoard.showMarket());
+
         for(Board board : players) {
-            virtualView.selectLeaderAction(board.showLeaderPosition());
+            virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
         }
     }
 
-    //methods of interface GameBoardHandler
 
     /**
      * @return the nickname of the current player
      */
     @Override
-    //da sistemare
-    public String currentPlayer() {
+    public String currentPlayerNickname() {
         return currentPlayer.getNickname();
     }
 
     /**
      * this method checks if the nickname belongs to the current player
-     * @param nickname the nickname of the palyer
+     * @param nickname the nickname of the player
      * @return true if the nickname belongs to the current player, false otherwise
      */
     @Override
     public boolean isCurrentPlayer(String nickname) {
         return nickname.equals(currentPlayer.getNickname());
     }
-
 
     /**
      * this method manages the end of the turn of a player and sets the new current player
@@ -325,6 +329,12 @@ public class GameBoard implements GameBoardHandler {
         customMode.endTurnAction(this);
         if(gameEnded){
             virtualView.showEndGame(getTotalPoints());
+            //devo far terminare tutto, come?
+        }
+        virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
+        if(players.size() == 1 && disconnectedPlayers.size()==0) {
+            virtualView.showTopToken(customMode.showTopToken());
+            virtualView.showDecksUpdate(developmentDeck.showDeck());
         }
     }
 
@@ -335,7 +345,6 @@ public class GameBoard implements GameBoardHandler {
     public boolean isGameEnded() {
         return gameEnded;
     }
-
 
     /**
      * @param turnType the type of the turn
@@ -438,7 +447,8 @@ public class GameBoard implements GameBoardHandler {
 
         for(int i=0; i<players.size(); i++){
             if(players.get(i).getNickname().equals(nickname)){
-                disconnectedPlayers.put(players.get(i),i);
+                disconnectedPlayers.add(players.get(i));
+                virtualView.showDisconnection(players.get(i).getNickname());
                 players.remove(i);
                 return true;
             }
@@ -454,13 +464,14 @@ public class GameBoard implements GameBoardHandler {
     @Override
     public boolean reconnectPlayer(String nickname) {
 
-        int index;
+        for(int i=0; i<disconnectedPlayers.size(); i++){
 
-        for(Board board : disconnectedPlayers.keySet()){
+            Board board = disconnectedPlayers.get(i);
+
             if(board.getNickname().equals(nickname)){
-                index = disconnectedPlayers.get(board) > players.size() ? players.size() : disconnectedPlayers.get(board);
-                players.add(index,board);
-                disconnectedPlayers.remove(board);
+
+                players.add(board);
+                disconnectedPlayers.remove(i);
                 return true;
             }
         }
@@ -475,9 +486,9 @@ public class GameBoard implements GameBoardHandler {
     @Override
     public ArrayList<Marble> takeMarketRow(int row) throws InvalidActionException {
 
-        Marble white = new MarbleWhite();
         try {
-            marblesMarket = getMarketBoard().getRow(row);
+            Marble white = new MarbleWhite();
+            marblesMarket = getMarketBoard().takeRow(row);
             virtualView.showMarketUpdate(marketBoard.showMarket());
             virtualView.showMarblesUpdate(marblesMarket, white.whiteTransformations(currentPlayer), currentPlayer.getNickname());
             return new ArrayList<>(marblesMarket);
@@ -494,9 +505,9 @@ public class GameBoard implements GameBoardHandler {
     @Override
     public ArrayList<Marble> takeMarketColumn(int column) throws InvalidActionException {
 
-        Marble white = new MarbleWhite();
         try {
-            marblesMarket = getMarketBoard().getColumn(column);
+            Marble white = new MarbleWhite();
+            marblesMarket = getMarketBoard().takeColumn(column);
             virtualView.showMarketUpdate(marketBoard.showMarket());
             virtualView.showMarblesUpdate(marblesMarket, white.whiteTransformations(currentPlayer), currentPlayer.getNickname());
             return new ArrayList<>(marblesMarket);
@@ -504,7 +515,6 @@ public class GameBoard implements GameBoardHandler {
         catch (IllegalMarketException e){throw new InvalidActionException(e.getMessage());}
 
     }
-
 
     /**
      * This method manages the actions that have to be performed on each marble
@@ -516,10 +526,11 @@ public class GameBoard implements GameBoardHandler {
     public boolean actionMarbles(List<Marble> marblesPlayer, List<PlayerAction> actions, List<Integer> shelves){
 
         Marble marblePlayer;
-        if(!checkMarbles(marblesMarket,marblesPlayer,actions,shelves))
+        if(!checkMarbles(marblesMarket,marblesPlayer,actions,shelves)) {
             return false;
-
+        }
         for(int i=0; i<marblesMarket.size(); i++){
+
             marblePlayer = marblesPlayer.get(i);
 
             if(actions.get(i).equals(PlayerAction.INSERT))
@@ -528,6 +539,7 @@ public class GameBoard implements GameBoardHandler {
             if(actions.get(i).equals(PlayerAction.DISCARD))
                 marblePlayer.discard(currentPlayer);
         }
+
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
         virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
         return true;
@@ -551,23 +563,19 @@ public class GameBoard implements GameBoardHandler {
         for(int i=0; i<marbles.size(); i++){
             marble = marbles.get(i);
             marblePlayer = marblesPlayer.get(i);
-            if(marble.isWhite() && actions.get(i).equals(PlayerAction.INSERT)) {
-                if(!marble.whiteTransformations(currentPlayer).contains(marblePlayer))
-                    return false;
-            }      //stream().anyMatch(marble1 -> marble1.toString().equals(marblePlayer.toString()));
-            else {
-                if (!marble.toString().equals(marblePlayer.toString()))
-                    return false;
-            }
-            if(actions.get(i).equals(PlayerAction.INSERT) && !marblePlayer.isWhite()) {
+
+            if(!marble.checkMarble(marblePlayer,currentPlayer))
+                return false;
+
+            if(actions.get(i).equals(PlayerAction.INSERT)) {
                 resources.add(marblePlayer.getResourceAssociated());
                 shelf.add(shelves.get(i));
             }
         }
 
-        if(!currentPlayer.getWarehouse().checkInsertMultipleRes(resources,shelves))
+        if(!currentPlayer.getWarehouse().checkInsertMultipleRes(resources,shelf)) {
             return false;
-
+        }
         return true;
     }
 
@@ -583,7 +591,6 @@ public class GameBoard implements GameBoardHandler {
         if(resources.size() != currentPlayer.getNumberResourcesInitialization())
             return false;
 
-
         if(resources.stream().anyMatch(resource -> resource.getColor().equals(ResourceColor.RED)))
             return false;
 
@@ -595,6 +602,7 @@ public class GameBoard implements GameBoardHandler {
             currentPlayer.getWarehouse().insertResource(shelves.get(i), resources.get(i));
         }
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
+
         return true;
     }
 
@@ -656,7 +664,6 @@ public class GameBoard implements GameBoardHandler {
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
         virtualView.showSlotsUpdate(currentPlayer.showSlot(), currentPlayer.getNickname());
         virtualView.showDecksUpdate(developmentDeck.showDeck());
-
     }
 
     /**
@@ -690,7 +697,8 @@ public class GameBoard implements GameBoardHandler {
             production.addProducts(board);
 
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
-        virtualView.showSlotsUpdate(currentPlayer.showSlot(), currentPlayer.getNickname());
+        //dovrei mattere update faith, alcune production danno come prodotto la fede
+
 
     }
 
@@ -737,24 +745,38 @@ public class GameBoard implements GameBoardHandler {
         catch (IndexOutOfBoundsException e){throw new InvalidActionException(e.getMessage());}
     }
 
+    @Override
+    /**
+     *
+     */
+    public void currentPlayer() {
+        LinkedList<String> turns = new LinkedList<>();
+        for(TurnType turnType : possibleTurn.keySet()){
+            if(possibleTurn.get(turnType))
+                turns.add(turnType.toString());
+        }
+        virtualView.selectTurnAction(turns,currentPlayer.getNickname());
+    }
+
 
     /**
      * @return map(String-Integer) which represents nickname and total points
      */
-    public Map<String, Integer> showFaith(){
+    private Map<String, Integer> showFaith(){
         Map<String,Integer> map = new HashMap<>();
         for(Board board : players){
             map.put(board.getNickname(),board.getFaithTrack().getPosition());
         }
-        for(Board board : disconnectedPlayers.keySet()){
+        for(Board board : disconnectedPlayers){
             map.put(board.getNickname(),board.getFaithTrack().getPosition());
         }
         return map;
     }
 
-
-    public Map<String, List<ItemStatus>> showSections(){
-
+    /**
+     * @return map(String, List of ItemStatus) which represents the sections of the players
+     */
+    private Map<String, List<ItemStatus>> showSections(){
         Map<String,List<ItemStatus>> map = new HashMap<>();
         List<VaticanReportSection> vatican;
 
@@ -763,7 +785,7 @@ public class GameBoard implements GameBoardHandler {
             vatican = board.getFaithTrack().getSections();
             map.put(board.getNickname(),createListItems(vatican));
         }
-        for(Board board : disconnectedPlayers.keySet()){
+        for(Board board : disconnectedPlayers){
 
             vatican = board.getFaithTrack().getSections();
             map.put(board.getNickname(),createListItems(vatican));
@@ -772,7 +794,7 @@ public class GameBoard implements GameBoardHandler {
     }
 
 
-    List<ItemStatus> createListItems(List<VaticanReportSection> vatican){
+    public List<ItemStatus> createListItems(List<VaticanReportSection> vatican){
         List<ItemStatus> list = new ArrayList<>();
         for(VaticanReportSection vaticanReportSection : vatican) {
             if (vaticanReportSection.isDiscarded())
@@ -784,17 +806,5 @@ public class GameBoard implements GameBoardHandler {
         }
         return list;
     }
-
-
-    @Override
-    public void CurrentPlayer() {
-        LinkedList<String> turns = new LinkedList<>();
-        for(TurnType turnType : possibleTurn.keySet()){
-            if(possibleTurn.get(turnType))
-                turns.add(turnType.toString());
-        }
-        virtualView.selectTurnAction(turns,currentPlayer.getNickname());
-    }
-
 
 }

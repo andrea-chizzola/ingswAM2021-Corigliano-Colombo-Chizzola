@@ -50,14 +50,26 @@ public class MarbleWhite implements Marble {
         return CLIColors.B_WHITE;
     }
 
+
+    /**
+     * This method checks if the the marble passed as parameter is among those allowed
+     *
+     * @param marble marble
+     * @param board  the board of the player
+     * @return true if the the marble passed as parameter is among those allowed, false otherwise
+     */
     @Override
-    public boolean isWhite() {
-        return true;
+    public boolean checkMarble(Marble marble, Board board) {
+
+        if(marble.toString().equals(this.toString()) ||
+            this.whiteTransformations(board).contains(marble))
+            return true;
+        return false;
     }
 
     @Override
     public Resource getResourceAssociated() {
-        return new Shield();
+        return new Faith();
     }
 
 

@@ -164,6 +164,9 @@ public class DevelopmentDeck {
         return getNumber(cardColor, maxLevel) > 0;
     }
 
+    /**
+     * @return Map of (Integer,String) which represents the cards on the top of all the decks
+     */
     public Map<Integer,String> showDeck(){
         Map<Integer,String> map = new HashMap<>();
         DevelopmentCard card;
@@ -173,14 +176,15 @@ public class DevelopmentDeck {
         colors.add(new Yellow());
         colors.add(new Purple());
 
-        for(int i=1; i<maxLevel; i++){
+        for(int i=1; i<=maxLevel; i++){
             for(int j=0; j<colors.size(); j++){
                 try {
                     card = readTop(colors.get(j), i);
                     map.put((i-1)*colors.size()+j, card.getId());
-                }catch (IllegalArgumentException e){ }
+                }catch (IllegalArgumentException e){e.printStackTrace();}
             }
         }
+
         return map;
     }
 }

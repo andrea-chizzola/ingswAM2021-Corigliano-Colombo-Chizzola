@@ -826,4 +826,23 @@ class WarehouseTest {
 
         assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
     }
+
+    @Test
+    public void testCheckInsertMultipleResources11(){
+
+
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(3);
+        resources.add(new Stone());
+        shelves.add(2);
+        resources.add(new Coin());
+        shelves.add(3);
+
+
+        assertTrue(warehouse.checkInsertMultipleRes(resources,shelves));
+    }
 }

@@ -126,4 +126,55 @@ class GameBoardTest {
     }
 
 
+    @Test
+    void disconnectionTest(){
+        assertTrue(gameBoard.disconnectPlayer("firstPlayer"));
+        assertTrue(gameBoard.getPlayers().size()==3);
+        assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
+        assertEquals(gameBoard.getPlayers().get(1).getNickname(),"thirdPlayer");
+        assertEquals(gameBoard.getPlayers().get(2).getNickname(),"fourthPlayer");
+    }
+
+    @Test
+    void disconnectionTest2(){
+        assertTrue(gameBoard.disconnectPlayer("firstPlayer"));
+        assertTrue(gameBoard.disconnectPlayer("thirdPlayer"));
+        assertTrue(gameBoard.getPlayers().size()==2);
+        assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
+        assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
+    }
+
+    @Test
+    void reconnectionTest1(){
+        assertTrue(gameBoard.disconnectPlayer("thirdPlayer"));
+        assertTrue(gameBoard.disconnectPlayer("firstPlayer"));
+        assertTrue(gameBoard.getPlayers().size()==2);
+        assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
+        assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
+        assertTrue(gameBoard.reconnectPlayer("firstPlayer"));
+        assertTrue(gameBoard.getPlayers().size()==3);
+        assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
+        assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
+        assertEquals(gameBoard.getPlayers().get(2).getNickname(),"firstPlayer");
+    }
+
+    @Test
+    void reconnectionTest2(){
+        assertTrue(gameBoard.disconnectPlayer("thirdPlayer"));
+        assertTrue(gameBoard.disconnectPlayer("firstPlayer"));
+        assertTrue(gameBoard.disconnectPlayer("fourthPlayer"));
+        assertTrue(gameBoard.getPlayers().size()==1);
+        assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
+
+        assertTrue(gameBoard.reconnectPlayer("fourthPlayer"));
+        assertTrue(gameBoard.reconnectPlayer("thirdPlayer"));
+        assertTrue(gameBoard.reconnectPlayer("firstPlayer"));
+
+        assertTrue(gameBoard.getPlayers().size()==4);
+        assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
+        assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
+        assertEquals(gameBoard.getPlayers().get(2).getNickname(),"thirdPlayer");
+        assertEquals(gameBoard.getPlayers().get(3).getNickname(),"firstPlayer");
+    }
+
 }
