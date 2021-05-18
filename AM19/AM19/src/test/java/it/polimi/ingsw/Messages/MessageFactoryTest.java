@@ -34,7 +34,7 @@ class MessageFactoryTest {
         assertEquals(messageFactory.buildReply(true, "Reply message."), "<Message><messageType>REPLY</messageType><correct>true</correct><body>Reply message.</body></Message>");
     }
 
-*/
+*//*
     @Test
     void buildCurrentPlayerTest(){
         String playerID = "pippo";
@@ -279,5 +279,5 @@ class MessageFactoryTest {
         } catch (MalformedMessageException e) {
             fail();
         }
-    }
+    }*/
 }

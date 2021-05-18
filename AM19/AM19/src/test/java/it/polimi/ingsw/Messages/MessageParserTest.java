@@ -77,7 +77,7 @@ class MessageParserTest {
         exception1 = assertThrows(MalformedMessageException.class, () -> MessageParser.getMessageTag(file,"body"));
         assertEquals("Parsing failure!", exception1.getMessage());
     }
-
+/*
     @Test
     void testCreateMessage(){
         Map<String,String> map = new HashMap<>();
@@ -114,7 +114,7 @@ class MessageParserTest {
         }
         assertEquals("",name);
     }
-
+*/
 
 
 }
