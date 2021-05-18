@@ -50,7 +50,7 @@ public class GamesHandler implements ConnectionListener{
      *
      * @return returns a new Id associated to the client's connection
      */
-    public String createId(){
+    private String createId(){
         return String.valueOf(idCounter.getAndIncrement());
     }
 
@@ -59,7 +59,7 @@ public class GamesHandler implements ConnectionListener{
      * @param gameId represents the game id
      * @return returns the game related to the selected id
      */
-    public Game getGameById(String gameId){
+    private Game getGameById(String gameId){
 
         for(Game game : waitingConnection){
             if(game.getId().equals(gameId)){
@@ -80,7 +80,7 @@ public class GamesHandler implements ConnectionListener{
      * @param socketID represents the id associated to the connection
      * @return returns the game containing the player associated to the selected connection id
      */
-    public Game getGameBySocketID(String socketID){
+    private Game getGameBySocketID(String socketID){
 
 
         for(Game game : waitingConnection){
@@ -103,7 +103,7 @@ public class GamesHandler implements ConnectionListener{
      * @param nickname represents the player's nickname
      * @param gameId represents the game id
      */
-    public void addInactivePlayer(String nickname, String gameId){
+    private void addInactivePlayer(String nickname, String gameId){
         inactivePlayers.put(nickname, gameId);
     }
 
@@ -145,7 +145,7 @@ public class GamesHandler implements ConnectionListener{
      * removes the connection associated to the selected id
      * @param socketID represents the id related to the socket connection
      */
-    public void removeActiveConnection(String socketID){
+    private void removeActiveConnection(String socketID){
         activeConnections.remove(socketID);
     }
 
@@ -154,7 +154,7 @@ public class GamesHandler implements ConnectionListener{
      * @param socketId represents the id related to the socket connection
      * @return returns the connection associated to the selected id
      */
-    public ClientConnection getConnection(String socketId){
+    private ClientConnection getConnection(String socketId){
         return activeConnections.get(socketId);
     }
 
@@ -164,7 +164,7 @@ public class GamesHandler implements ConnectionListener{
      * @param nickname represents the selected nickname
      * @return returns true if the selected nickname is currently available
      */
-    public boolean isNicknameAvailable(String nickname){
+    private boolean isNicknameAvailable(String nickname){
 
         if(inactivePlayers.containsKey(nickname)) return false;
 
@@ -185,11 +185,30 @@ public class GamesHandler implements ConnectionListener{
     }
 
     /**
+     * checks if the selected nickname is an empty string
+     * @param nickname represents the selected nickname
+     * @throws MalformedMessageException if the nickname equals an empty string
+     */
+    private void checkNickname(String nickname) throws MalformedMessageException {
+        if(nickname.equals("")) throw new MalformedMessageException();
+    }
+
+    /**
+     * checks if the selected players number is correct
+     * @param gameHost indicates if the player wants to create a new game
+     * @param playersNumber represents the selected number of players
+     * @throws MalformedMessageException if the selected parameters are not correct
+     */
+    private void checkConnectionParameters(boolean gameHost, int playersNumber) throws MalformedMessageException {
+        if(gameHost && !(playersNumber > 0 && playersNumber <= 4)) throw new MalformedMessageException();
+    }
+
+    /**
      *
      * @param socketId represents the socket's id
      * @return returns true if the player associated to the selected id is currently in a started game
      */
-    public boolean isPlaying(String socketId){
+    private boolean isPlaying(String socketId){
 
         for(Game game : activeGames){
             if(game.containsID(socketId)) return true;
@@ -203,7 +222,7 @@ public class GamesHandler implements ConnectionListener{
      * @param socketId represents the socket's id
      * @return returns true if the player associated to the selected id is currently waiting for a game to start
      */
-    public boolean isWaiting(String socketId){
+    private boolean isWaiting(String socketId){
 
         for(Game game : waitingConnection) {
             if (game.containsID(socketId)) return true;
@@ -260,16 +279,20 @@ public class GamesHandler implements ConnectionListener{
                     String connectionNickname = connectionMessage.getNickname();
                     boolean gameHost = connectionMessage.getGameHost();
                     int playersNumber = connectionMessage.getPlayersNumber();
+                    checkNickname(connectionNickname);
+                    checkConnectionParameters(gameHost, playersNumber);
                     manageLobby(connectionNickname, gameHost, playersNumber, socketID);
                     return;
                 case DISCONNECTION:
                     ConnectionMessage disconnectionMessage = new ConnectionMessage(message, Message.MessageType.DISCONNECTION);
                     String disconnectionNickname = disconnectionMessage.getNickname();
+                    checkNickname(disconnectionNickname);
                     manageDisconnection(disconnectionNickname, socketID);
                     return;
                 case RECONNECTION:
                     ConnectionMessage reconnectionMessage = new ConnectionMessage(message, Message.MessageType.CONNECTION);
                     String reconnectionNickname = reconnectionMessage.getNickname();
+                    checkNickname(reconnectionNickname);
                     manageReconnection(reconnectionNickname, socketID);
                     return;
                 default:
@@ -281,7 +304,7 @@ public class GamesHandler implements ConnectionListener{
             }
         }catch (MalformedMessageException e){
             System.out.println("[SERVER] Received a malformed message!");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
