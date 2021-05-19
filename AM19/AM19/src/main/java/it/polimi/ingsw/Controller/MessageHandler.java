@@ -490,7 +490,8 @@ public class MessageHandler {
     private boolean disconnectionHandler(String nickname) {
 
         if(numberPlayersInit != 0){
-            //game.endGame();
+            //va rivisto ,può dare problemi
+            virtualView.showEndGame(new HashMap<>());
         }
         if(gameBoard.isCurrentPlayer(nickname)){
 
