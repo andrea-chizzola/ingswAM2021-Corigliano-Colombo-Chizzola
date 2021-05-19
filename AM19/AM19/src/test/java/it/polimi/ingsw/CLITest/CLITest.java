@@ -40,6 +40,8 @@ public class CLITest {
     public void mainSightTest(){
         Map<String, Integer> faith = new HashMap<>();
         Map<String, List<ItemStatus>> sections = new HashMap<>();
+        model.setPersonalNickname("test1");
+
         faith.put("test1", 1);
         faith.put("test2", 19);
         List<ItemStatus> test1 = new LinkedList<>();
@@ -67,7 +69,7 @@ public class CLITest {
         strongbox.add(new ResQuantity(new Servant(),8));
         strongbox.add(new ResQuantity(new Shield(),4));
 
-        cli.showBoxes(warehouse, strongbox, "test");
+        cli.showBoxes(warehouse, strongbox, "test1");
 
         List<Marble> marbles = new LinkedList<>();
         marbles.add(new MarbleBlue());
@@ -95,7 +97,7 @@ public class CLITest {
         slots.put(1, cardsD.get(5).getId());
         slots.put(2, cardsD.get(1).getId());
         slots.put(3, cardsD.get(2).getId());
-        cli.showSlotsUpdate(slots, "test2");
+        cli.showSlotsUpdate(slots, "test1");
 
         Map<Integer, String> leaders = new HashMap<>();
         Map<Integer, ItemStatus> status = new HashMap<>();
@@ -103,7 +105,7 @@ public class CLITest {
         status.put(2, ItemStatus.INACTIVE);
         leaders.put(1, "1");
         leaders.put(2, "2");
-        cli.showLeaderCards(leaders, status, "test3");
+        cli.showLeaderCards(leaders, status, "test1");
 
         cli.showTopToken(Optional.of("1"));
 
@@ -113,7 +115,7 @@ public class CLITest {
         leaders.put(4, "4");
         status.put(3, ItemStatus.ACTIVE);
         status.put(4, ItemStatus.INACTIVE);
-        cli.showLeaderCards(leaders, status, "test4");
+        cli.showLeaderCards(leaders, status, "test1");
         cli.plotView();
     }
 

@@ -52,6 +52,7 @@ public class ClientController implements ClientConnectionListener {
         availableSwap = true;
     }
 
+    //start è da mettere nel metodo che sarà chiamato nella run del thread!
     public synchronized void start(){
         if(!notStarted){
             view.initialize();

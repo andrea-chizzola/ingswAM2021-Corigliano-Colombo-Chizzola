@@ -390,6 +390,7 @@ public class CLI implements View, SubjectView {
     @Override
     public void showTopToken(Optional<String> action) {
         if(action.isEmpty()) return;
+        //fare il controllo che il top token corrisponda a qualcosa di esistente
         String content = ConfigurationParser.getActionTokenById(model.getConfigurationFile(), action.get()).toString();
         CLIPainter.paintToken(viewStatus,TOKEN_Y+RESOURCES_Y+PERSONAL_Y, TOKEN_X, content);
     }
