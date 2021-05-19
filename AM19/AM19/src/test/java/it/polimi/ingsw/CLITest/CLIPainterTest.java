@@ -130,8 +130,20 @@ public class CLIPainterTest {
         test2.add(ItemStatus.DISCARDED);
         sections.put("test1", test1);
         sections.put("test2", test2);
-
-        CLIPainter.paintFaithTrack(test, 0,0 , track, players, faith, sections);
+        List<Integer> start = new LinkedList<>();
+        start.add(5);
+        start.add(12);
+        start.add(19);
+        List<Integer> end = new LinkedList<>();
+        end.add(8);
+        end.add(16);
+        end.add(24);
+        List<Integer> sectionPoints = new LinkedList<>();
+        sectionPoints.add(2);
+        sectionPoints.add(3);
+        sectionPoints.add(4);
+        CLIPainter.paintFaithTrack(test, 0,0 , track,
+                players, faith, sections, start, end, sectionPoints);
         plot(test);
 
     }

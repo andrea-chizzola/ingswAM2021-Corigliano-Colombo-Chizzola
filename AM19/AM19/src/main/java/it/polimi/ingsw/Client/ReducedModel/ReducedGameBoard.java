@@ -143,7 +143,7 @@ public class ReducedGameBoard {
      * @return the name of the active players
      */
     public List<String> getNicknames() {
-        return nicknames;
+        return new LinkedList<>(nicknames);
     }
 
     /**

@@ -26,8 +26,9 @@ public class CLI implements View, SubjectView {
      * the following attributes represent the constants used to paint the items of the CLI
      */
     private final int VIEW_VERTICAL_SIZE = 55;
-    private final int DECKS_VERTICAL_SIZE = 80;
+    private final int DECKS_VERTICAL_SIZE = 55;
     private final int HORIZONTAL_SIZE = 200;
+    private final int VERTICAL_SIZE = 32;
 
     private final int MARKET_X = 150;
     private final int MARKET_Y = 0;
@@ -121,7 +122,6 @@ public class CLI implements View, SubjectView {
         this.model=model;
         viewStatus = new String[VIEW_VERTICAL_SIZE][HORIZONTAL_SIZE];
         decksStatus = new String[DECKS_VERTICAL_SIZE][HORIZONTAL_SIZE];
-        PLAYERS_Y = (4 + 1) * (CLIPainter.getSquareLength() + 1);
         RESOURCES_Y = (model.getConfiguration().getnRows()+1)*(CLIPainter.getSphereLength() + 1) + 3;
 
         this.in = in;
@@ -130,6 +130,9 @@ public class CLI implements View, SubjectView {
         typed = new StringBuilder();
         interaction = new StringBuilder();
         busyInput = new Object();
+        inputReader(in);
+
+        CLIPainter.printLogo();
     }
 
     /**
@@ -220,20 +223,21 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void initialize() {
-        CLIPainter.printLogo();
-        CLIPainter.fill(viewStatus, 0, 0, HORIZONTAL_SIZE, VIEW_VERTICAL_SIZE);
+        List<Integer> shelves = model.getConfiguration().getShelves();
+        int nSlots = model.getConfiguration().getSlotNumber();
+        int nPlayers = model.getNicknames().size();
+        PLAYERS_Y = (((nPlayers == 1)? 2 : nPlayers) + 1) * (CLIPainter.getSquareLength() + 1);
+        viewStatus = new String[VERTICAL_SIZE+PLAYERS_Y][HORIZONTAL_SIZE];
+
+        CLIPainter.fill(viewStatus, 0, 0, HORIZONTAL_SIZE, VERTICAL_SIZE+PLAYERS_Y);
         CLIPainter.fill(decksStatus, 0, 0, HORIZONTAL_SIZE, DECKS_VERTICAL_SIZE);
-        /*CLIPainter.paintWarehouse(viewStatus, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, model.getShelves(), new LinkedList<>());
+        CLIPainter.paintWarehouse(viewStatus, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, shelves, new LinkedList<>());
         CLIPainter.paintExtraSlots(viewStatus, EXTRA_Y+PLAYERS_Y, EXTRA_X, new LinkedList<>());
         CLIPainter.paintStrongbox(viewStatus, STRONGBOX_Y+PLAYERS_Y, STRONGBOX_X, new LinkedList<>());
         showPersonalProduction();
 
-        int nSlots = model.getSlotNumber();
-        for(int i=0; i<nSlots; i++){
+        for(int i=0; i<nSlots; i++)
             CLIPainter.devCardPainter(viewStatus, PLAYERS_Y+1, BOXES_X + 30*i+20, "EMPTY");
-        }*/
-
-        inputReader(in);
     }
 
     /**
@@ -275,9 +279,9 @@ public class CLI implements View, SubjectView {
         int width = CLIPainter.getCardWidth()+3, length = CLIPainter.getDevCardLength()+2;
         CLIPainter.fill(decksStatus, 0, 0,HORIZONTAL_SIZE, DECKS_VERTICAL_SIZE);
         for(int i : decks.keySet()){
-            int row = i/N_DECKS_X,column = i%N_DECKS_X;
+            int row = i/N_DECKS_X, column = i%N_DECKS_X;
             DevelopmentCard card = model.getConfiguration().getDevelopmentCard(decks.get(i));
-            CLIPainter.devCardPainter(decksStatus, PLAYERS_Y + 1 + length*row, BOXES_X + width*column, card.toString());
+            CLIPainter.devCardPainter(decksStatus, 1 + length*row, BOXES_X + width*column, card.toString());
         }
     }
 
@@ -372,6 +376,11 @@ public class CLI implements View, SubjectView {
     public void showFaithUpdate(Map<String, Integer> faith, Map<String, List<ItemStatus>> sections,
                                 Optional<Integer> faithLorenzo, Optional<List<ItemStatus>> sectionsLorenzo) {
 
+        List<Integer> start = model.getConfiguration().getSectionsStart(),
+                end = model.getConfiguration().getSectionsEnd(),
+                points = model.getConfiguration().getSectionsPoints(),
+                faithTrack = model.getConfiguration().getTrackPoints();
+
         List<String> names = model.getNicknames();
         if(faithLorenzo.isPresent() && sectionsLorenzo.isPresent()){
             faith.put("Lorenzo", faithLorenzo.get());
@@ -379,9 +388,8 @@ public class CLI implements View, SubjectView {
             names.add("Lorenzo");
             System.out.println("Debug");
         }
-        PLAYERS_Y = (names.size() + 1) * (CLIPainter.getSquareLength() + 1);
         CLIPainter.paintFaithTrack (viewStatus, FAITHTRACK_Y, FAITHTRACK_X,
-                model.getConfiguration().getTrackPoints(), names, faith, sections);
+                faithTrack, names, faith, sections, start, end, points);
     }
 
     /**
@@ -421,7 +429,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void newPlayer() {
-        String player, first = "";
+        String player, first = "", reconnect = "";
         String num;
         do {
             out.println("Welcome to Masters of Renaissance, before starting playing, you should give me some information:" +
@@ -441,10 +449,22 @@ public class CLI implements View, SubjectView {
             }while(!isInt(num));
         }
         else num = "0";
+
+        if(first.equals("false")){
+            do{
+                out.println("Do you want to reconnect to an existing game? [YES/NO]");
+                reconnect = getAssertion(getInput());
+            }while(!reconnect.equals("true") && !reconnect.equals("false"));
+        }
+
         model.setPersonalNickname(player);
         model.setCurrentPlayer(player);
+
         try {
-            viewObserver.update(MessageFactory.buildConnection("Connection request", player, Boolean.parseBoolean(first), Integer.parseInt(num)));
+            if(reconnect.equals("true"))
+                viewObserver.update(MessageFactory.buildReconnection("Reconnection request", player));
+            else
+                viewObserver.update(MessageFactory.buildConnection("Connection request", player, Boolean.parseBoolean(first), Integer.parseInt(num)));
         }catch(MalformedMessageException e){
             //CLOSE CONNECTION
         }
@@ -475,13 +495,14 @@ public class CLI implements View, SubjectView {
         plotView();
         StringBuilder available = new StringBuilder();
         for(String string : turns) available.append(string).append(", ");
-        available.append("EXIT");
+        available.append("SHOW_DECKS");
         String s = "";
         do{
             out.println("\nSelect your turn type; available turns: " + available);
             s = getInput();
             if(!turns.contains(s))
                 showGameStatus(false, "Not existent turn type.", "name", model.getModelState());
+            if(s.equals("SHOW_DECKS")) plotDecks();
         }
         while(!turns.contains(s));
         try {

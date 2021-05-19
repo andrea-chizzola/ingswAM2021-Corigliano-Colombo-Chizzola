@@ -4,6 +4,7 @@ import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -277,8 +278,8 @@ public class CLIPainter{
         paintRectangle(target, V_OFFSET+1, H_OFFSET, width, length, baseFont);
 
         spherePainter(target, V_OFFSET+2, H_OFFSET+width/2-SPHERE_WIDTH/2, " ",  marbles.get(marbles.size()-1).toColor(), baseFont);
-        for(int i=0; i<nColumns; i++){
-            for(int j=0; j<nRows; j++){
+        for(int j=0; j<nRows; j++){
+            for(int i=0; i<nColumns; i++){
                 spherePainter(target, V_OFFSET+2+(j+1)*(SPHERE_LENGTH+1),
                         H_OFFSET+2+i*(SPHERE_WIDTH+1), " ", marbles.get(c).toColor(), baseFont);
                 c++;
@@ -297,11 +298,29 @@ public class CLIPainter{
      * @param players is a list of the names of the players
      * @param faith is a map that contains the faith achieved by the players
      * @param sections is the status of the player's vatican sections
+     * @param start is the start of the vatican report sections
+     * @param end is the end of the vatican report sections
+     * @param sectionPoints are the points of each pope favor
      */
+    //separare questo metodo in due metodi.  Uno per la faithtrack, uno per le section status e uno per i pope favor
     public static void paintFaithTrack
             (String[][] target, int V_OFFSET, int H_OFFSET, List<Integer> trackPoints, List<String> players,
-             Map<String, Integer> faith, Map<String, List<ItemStatus>> sections){
-        int length = trackPoints.size(), num = players.size(), val, big=0, offset=0, position;
+             Map<String, Integer> faith, Map<String, List<ItemStatus>> sections, List<Integer> start, List<Integer> end,
+            List<Integer> sectionPoints){
+        int length = trackPoints.size(), num = players.size(), val, big=0, offset=0, position, from=0, to=0;
+        String background = CLIColors.B_BLUE.getColor();
+        List<String> coloredPoints = new LinkedList<>();
+
+        //suppongo che le sezioni papali siano separate almeno da una cella. Questo codice è da mettere in un helper.
+        for(int i=0; i < trackPoints.size(); i++){
+            String value = "";
+            if(i>=start.get(from) && i<=end.get(to)) value = background + value;
+            if(i>end.get(to)){
+                from++;
+                to++;
+            }
+            coloredPoints.add(value);
+        }
 
         // drawing FaithTracks and player's position
         for(int i=0; i<length; i++){
@@ -314,17 +333,17 @@ public class CLIPainter{
                         baseFont.getColor() + "║";
                 if(position == i) {
                     target[V_OFFSET + j * (SQUARE_LENGTH+1) + 2][H_OFFSET + i*SQUARE_WIDTH + 2 + big] =
-                            baseFont.getColor() + CLIColors.F_BLUE.getColor() + "✘";
+                            baseFont.getColor() + CLIColors.F_RED.getColor() + "✘";
                 }
                 else if(val<10) {
                     target[V_OFFSET + j * (SQUARE_LENGTH+1) + 2][H_OFFSET + i*SQUARE_WIDTH + 2 + big] =
-                            baseFont.getColor() + ((val == 0) ? " " : String.valueOf(val));
+                            baseFont.getColor() + coloredPoints.get(i) + ((val == 0) ? " " : String.valueOf(val));
                 }
                 else{
                     target[V_OFFSET + j * (SQUARE_LENGTH+1) + 2][H_OFFSET + i*SQUARE_WIDTH + big + 1] =
-                            baseFont.getColor() + val/10;
+                            baseFont.getColor() + coloredPoints.get(i) + val/10;
                     target[V_OFFSET + j * (SQUARE_LENGTH+1) + 2][H_OFFSET + i*SQUARE_WIDTH + big + 2] =
-                            baseFont.getColor() + val%10;
+                            baseFont.getColor() + coloredPoints.get(i) + val%10;
                 }
             }
         }
@@ -346,10 +365,10 @@ public class CLIPainter{
         totalHOffset = SQUARE_WIDTH*trackPoints.size()/2 - 3*FAVOR_WIDTH/2;
         totalVOffset = (SQUARE_LENGTH+1)*players.size() + 1;
         insertString(target, totalVOffset+V_OFFSET - 1, H_OFFSET, "Vatican Report Section Favors: ", baseFont);
-        for(int i=0; i<3; i++){
+        for(int i=0; i<sectionPoints.size(); i++){
             paintRectangle(target,totalVOffset+V_OFFSET,
                     totalHOffset + H_OFFSET+i*(FAVOR_WIDTH+2), FAVOR_WIDTH, FAVOR_LENGTH, baseFont);
-            target[totalVOffset+V_OFFSET+ FAVOR_LENGTH/2][totalHOffset + H_OFFSET+i*(FAVOR_WIDTH+2) + FAVOR_WIDTH/2] = "1";
+            target[totalVOffset+V_OFFSET+ FAVOR_LENGTH/2][totalHOffset + H_OFFSET+i*(FAVOR_WIDTH+2) + FAVOR_WIDTH/2] = sectionPoints.get(i).toString();
         }
     }
 

@@ -55,7 +55,6 @@ public class ClientController implements ClientConnectionListener {
     //start è da mettere nel metodo che sarà chiamato nella run del thread!
     public synchronized void start(){
         if(!notStarted){
-            view.initialize();
             view.newPlayer();
             notStarted = false;
         }
@@ -257,6 +256,8 @@ public class ClientController implements ClientConnectionListener {
             case START_GAME: {
                 List<String> nicknames = message.getNicknames();
                 model.initializeNicknames(nicknames);
+                view.initialize();
+                break;
             }
             default:
                 //END CONNECTION. WRONG SEQUENCE OF MESSAGES OF UNKNOWN MESSAGE
