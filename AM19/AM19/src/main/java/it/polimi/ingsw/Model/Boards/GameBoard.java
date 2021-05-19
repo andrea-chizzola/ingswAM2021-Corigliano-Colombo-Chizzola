@@ -329,7 +329,6 @@ public class GameBoard implements GameBoardHandler {
         customMode.endTurnAction(this);
         if(gameEnded){
             virtualView.showEndGame(getTotalPoints());
-            //devo far terminare tutto, come?
         }
         virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
         if(players.size() == 1 && disconnectedPlayers.size()==0) {
@@ -488,7 +487,7 @@ public class GameBoard implements GameBoardHandler {
 
         try {
             Marble white = new MarbleWhite();
-            marblesMarket = getMarketBoard().takeRow(row);
+            marblesMarket = getMarketBoard().takeRow(row-1);
             virtualView.showMarketUpdate(marketBoard.showMarket());
             virtualView.showMarblesUpdate(marblesMarket, white.whiteTransformations(currentPlayer), currentPlayer.getNickname());
             return new ArrayList<>(marblesMarket);
@@ -507,7 +506,7 @@ public class GameBoard implements GameBoardHandler {
 
         try {
             Marble white = new MarbleWhite();
-            marblesMarket = getMarketBoard().takeColumn(column);
+            marblesMarket = getMarketBoard().takeColumn(column-1);
             virtualView.showMarketUpdate(marketBoard.showMarket());
             virtualView.showMarblesUpdate(marblesMarket, white.whiteTransformations(currentPlayer), currentPlayer.getNickname());
             return new ArrayList<>(marblesMarket);

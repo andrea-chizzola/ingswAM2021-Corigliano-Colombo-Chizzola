@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.PatternSyntaxException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -189,6 +190,14 @@ class MessageUtilitiesTest {
         } catch (MalformedMessageException e) {
             fail();
         }
+    }
+
+    @Test
+    void getMarbleActionMalformadMessage()  {
+
+        String message = "<Message><marblesActions>::::</marblesActions></Message>";
+        Exception exception1;
+        exception1 = assertThrows(MalformedMessageException.class, () -> instance.getMarbleFromAction(message,"marblesActions"));
     }
 
     @Test

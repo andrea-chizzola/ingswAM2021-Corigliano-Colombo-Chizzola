@@ -80,7 +80,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         out.println(message);
         out.flush();
-        //System.out.println(message);
+        System.out.println(message);
 
     }
 

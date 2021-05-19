@@ -104,7 +104,7 @@ public class MessageUtilities {
 
         if(warehouse.equals("")) return shelves;
 
-        if(string.length%2 != 0)
+        if(string.length%2 != 0 || string.length == 0)
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/2; i++){
@@ -127,7 +127,7 @@ public class MessageUtilities {
         if(warehouse.equals("")){
             return quantity;
         }
-        if(string.length%2 != 0)
+        if(string.length%2 != 0 || string.length == 0)
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/2; i++){
@@ -154,7 +154,7 @@ public class MessageUtilities {
             return list;
         }
 
-        if(string.length%2 != 0)
+        if(string.length%2 != 0 || string.length == 0)
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/2; i++){
@@ -209,7 +209,7 @@ public class MessageUtilities {
             return list;
         }
 
-        if(string.length % 3 != 0 )
+        if(string.length % 3 != 0 || string.length == 0)
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/3; i++){
@@ -232,7 +232,7 @@ public class MessageUtilities {
             return list;
         }
 
-        if(messageString.equals("")){
+        if(string.length == 0){
             return list;
         }
 
@@ -269,7 +269,7 @@ public class MessageUtilities {
             return list;
         }
 
-        if(string.length % 3 != 0 )
+        if(string.length % 3 != 0 || string.length == 0)
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/3; i++){
@@ -291,7 +291,7 @@ public class MessageUtilities {
         String[] string = messageString.split(splitter);
         ItemStatus item;
 
-        if(messageString.equals("")){
+        if(messageString.equals("") || string.length == 0){
             return list;
         }
         for(int i=0; i<string.length; i++){
@@ -316,7 +316,7 @@ public class MessageUtilities {
             return list;
         }
 
-        if(string.length % 3 != 0 )
+        if(string.length % 3 != 0 || string.length == 0)
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/3; i++){
@@ -342,7 +342,7 @@ public class MessageUtilities {
             return list;
         }
 
-        if(string.length%2 != 0) {
+        if(string.length%2 != 0 || string.length == 0) {
             throw new MalformedMessageException();
         }
 
@@ -378,7 +378,7 @@ public class MessageUtilities {
         if(messageString.equals("")){
             return map;
         }
-        if(string.length%2 != 0)
+        if(string.length%2 != 0 || string.length == 0)
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/2; i++){
@@ -401,7 +401,7 @@ public class MessageUtilities {
         if(content.equals("")){
             return table;
         }
-        if(string.length%2 != 0)
+        if(string.length%2 != 0 || string.length == 0)
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/2; i++){
@@ -427,7 +427,7 @@ public class MessageUtilities {
             return map;
         }
 
-        if(string.length%2 != 0)
+        if(string.length%2 != 0 || string.length == 0)
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/2; i++){
@@ -451,7 +451,7 @@ public class MessageUtilities {
         if(messageString.equals("")){
             return map;
         }
-        if(string.length%2!=0) throw new MalformedMessageException();
+        if(string.length%2!=0 || string.length == 0) throw new MalformedMessageException();
         for(int i=0; i<string.length/2; i++){
 
             try{
