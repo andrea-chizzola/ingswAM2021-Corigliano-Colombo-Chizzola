@@ -55,6 +55,7 @@ public class Client implements ViewObserver{
         }
 
         clientController = new ClientController(reducedModel, ui);
+
         try {
 
             Socket socket = new Socket(ip, port);
@@ -69,7 +70,7 @@ public class Client implements ViewObserver{
 
         }
         
-        clientController.start();
+        clientController.runController();
 
     }
 

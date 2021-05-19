@@ -155,13 +155,13 @@ public class SocketServerConnection implements ServerConnection, Runnable{
 
         }
 
-        //startPingTimer();
+        startPingTimer();
         String read = "";
 
         try {
             while ((read = in.readLine()) != null){
 
-                System.out.println("[CLIENT] Received: " + read);
+                //System.out.println("[CLIENT] Received: " + read);
                 messageHandler(read);
 
             }

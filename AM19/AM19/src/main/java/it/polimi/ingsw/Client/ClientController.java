@@ -43,6 +43,10 @@ public class ClientController implements ClientConnectionListener {
      */
     private boolean availableSwap;
 
+    private boolean isActive;
+
+    private String receivedMessage;
+
     public ClientController(ReducedGameBoard model, View view){
         this.view = view;
         this.model = model;
@@ -50,6 +54,8 @@ public class ClientController implements ClientConnectionListener {
         alreadyUpdated = false;
         loggedIn = false;
         availableSwap = true;
+        isActive = true;
+        receivedMessage = "";
     }
 
     //start è da mettere nel metodo che sarà chiamato nella run del thread!
@@ -60,8 +66,48 @@ public class ClientController implements ClientConnectionListener {
         }
     }
 
+    public void runController(){
+        new Thread(() -> {
+            start();
+            while(isActive) {
+                synchronized (this) {
+                    while (receivedMessage.equals("")) {
+                        try {
+                            wait();
+                        } catch (InterruptedException e) {
+                            System.err.println("[CLIENT] Error occurred while suspending thread");
+                            e.printStackTrace();
+                        }
+                    }
+
+                    try {
+                        checkStart();
+                        MessageUtilities parser = MessageUtilities.instance();
+                        Message.MessageType type = parser.getType(receivedMessage);
+                        if (type == Message.MessageType.GAME_STATUS)
+                            messageHandler(new GameStatusMessage(receivedMessage));
+                        else if (type == Message.MessageType.REPLY) {
+                            loginHandler(new ReplyMessage(receivedMessage));
+                        } else {
+                            updateHandler(new UpdateMessage(receivedMessage, type));
+                        }
+                        receivedMessage = "";
+
+                    } catch (MalformedMessageException e) {
+                        System.out.println("[CLIENT] Malformed message received. No action performed.");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
     @Override
     public synchronized void onReceivedMessage(String message) {
+        receivedMessage = message;
+        //setActive(true);
+        this.notifyAll();
+        /*
        try{
            checkStart();
            MessageUtilities parser = MessageUtilities.instance();
@@ -78,7 +124,7 @@ public class ClientController implements ClientConnectionListener {
        catch(MalformedMessageException e){
            System.out.println("[CLIENT] Malformed message received. No action performed.");
            e.printStackTrace();
-       }
+       }*/
     }
 
     private void loginHandler(ReplyMessage reply) throws MalformedMessageException {
@@ -91,7 +137,16 @@ public class ClientController implements ClientConnectionListener {
 
     @Override
     public synchronized void onMissingPong() {
-        view.showGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
+        //view.showGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
+        //view.showGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
+        try {
+            receivedMessage = MessageFactory.buildGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
+            //setActive(true);
+            this.notifyAll();
+        } catch (MalformedMessageException e) {
+            System.out.println("[CLIENT] cannot create the missing pong message");
+            e.printStackTrace();
+        }
     }
 
     private void checkStart(){
