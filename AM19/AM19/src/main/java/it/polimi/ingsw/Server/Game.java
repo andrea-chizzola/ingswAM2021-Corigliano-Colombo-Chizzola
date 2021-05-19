@@ -22,6 +22,8 @@ public class Game {
      */
     private final String file = "defaultConfiguration.xml";
 
+    private GamesHandler gamesHandler;
+
     /**
      * It manages the game
      */
@@ -52,8 +54,9 @@ public class Game {
      */
     private boolean start;
 
-    public Game(String nickname, String socketId, ClientConnection connection, int playersNumber, String id){
+    public Game(GamesHandler gamesHandler, String nickname, String socketId, ClientConnection connection, int playersNumber, String id){
 
+        this.gamesHandler = gamesHandler;
         players = new HashMap<>();
         connections = new HashMap<>();
         players.put(socketId, nickname);
@@ -193,17 +196,16 @@ public class Game {
     public boolean canStart(){ return getActualPlayers() == playersNumber; }
 
     /**
-     * ends the game sending each player the final message containing the final results
-     * @param message represents the end game message
+     * ends the game closing the socket connections and removing it from the GamesHandler
      */
-    public void endGame(String message){
+    public void endGame(){
 
         System.out.println("[SERVER] Closing game...");
-        sendAll(message);
         for(String nickname : connections.keySet()){
             connections.get(nickname).closeConnection();
         }
-        System.out.println("[SERVER] Game closed correctly");
+        gamesHandler.removeGame(getId(), new ArrayList<>(players.keySet()));
+        System.out.println("[SERVER] Game " + getId() + " closed correctly");
 
     }
 

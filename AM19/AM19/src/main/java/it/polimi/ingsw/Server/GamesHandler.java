@@ -232,6 +232,29 @@ public class GamesHandler implements ConnectionListener{
     }
 
     /**
+     * removes the game when over
+     * @param gameId represents the id tof the game to remove
+     * @param playersId contains the id of the players in the selected game
+     */
+    public void removeGame(String gameId, ArrayList<String> playersId){
+
+        clearInactivePlayers(gameId);
+
+        for(String id : playersId){
+            removeActiveConnection(id);
+        }
+
+        List<Game> removed = new ArrayList<>();
+        for(Game game : activeGames){
+            if(game.getId().equals(gameId)){
+                removed.add(game);
+            }
+        }
+        activeGames.removeAll(removed);
+
+    }
+
+    /**
      * adds a new connection to the active ones
      * @param socketId represents the id associated to the connection
      * @param connection represents the client's socket connection
@@ -361,7 +384,7 @@ public class GamesHandler implements ConnectionListener{
         if(gameHost){
 
             System.out.println("[SERVER] " + nickname + " created a new game.");
-            Game game = new Game(nickname, socketID, getConnection(socketID), playersNumber, createId());
+            Game game = new Game(this, nickname, socketID, getConnection(socketID), playersNumber, createId());
             addWaitingGame(game);
 
             try {
