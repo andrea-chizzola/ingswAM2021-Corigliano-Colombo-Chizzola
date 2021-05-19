@@ -45,7 +45,7 @@ public class ClientController implements ClientConnectionListener {
 
     private boolean isActive;
 
-    private String receivedMessage;
+    private LinkedList<String> receivedMessages;
 
     public ClientController(ReducedGameBoard model, View view){
         this.view = view;
@@ -55,7 +55,7 @@ public class ClientController implements ClientConnectionListener {
         loggedIn = false;
         availableSwap = true;
         isActive = true;
-        receivedMessage = "";
+        receivedMessages = new LinkedList<>();
     }
 
     //start è da mettere nel metodo che sarà chiamato nella run del thread!
@@ -71,7 +71,7 @@ public class ClientController implements ClientConnectionListener {
             start();
             while(isActive) {
                 synchronized (this) {
-                    while (receivedMessage.equals("")) {
+                    while (receivedMessages.size() == 0) {
                         try {
                             wait();
                         } catch (InterruptedException e) {
@@ -83,15 +83,15 @@ public class ClientController implements ClientConnectionListener {
                     try {
                         checkStart();
                         MessageUtilities parser = MessageUtilities.instance();
-                        Message.MessageType type = parser.getType(receivedMessage);
+                        Message.MessageType type = parser.getType(receivedMessages.getFirst());
                         if (type == Message.MessageType.GAME_STATUS)
-                            messageHandler(new GameStatusMessage(receivedMessage));
+                            messageHandler(new GameStatusMessage(receivedMessages.getFirst()));
                         else if (type == Message.MessageType.REPLY) {
-                            loginHandler(new ReplyMessage(receivedMessage));
+                            loginHandler(new ReplyMessage(receivedMessages.getFirst()));
                         } else {
-                            updateHandler(new UpdateMessage(receivedMessage, type));
+                            updateHandler(new UpdateMessage(receivedMessages.getFirst(), type));
                         }
-                        receivedMessage = "";
+                        receivedMessages.remove(0);
 
                     } catch (MalformedMessageException e) {
                         System.out.println("[CLIENT] Malformed message received. No action performed.");
@@ -104,7 +104,7 @@ public class ClientController implements ClientConnectionListener {
 
     @Override
     public synchronized void onReceivedMessage(String message) {
-        receivedMessage = message;
+        receivedMessages.add(message);
         //setActive(true);
         this.notifyAll();
         /*
@@ -140,7 +140,7 @@ public class ClientController implements ClientConnectionListener {
         //view.showGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
         //view.showGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
         try {
-            receivedMessage = MessageFactory.buildGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
+            receivedMessages.add(MessageFactory.buildGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE));
             //setActive(true);
             this.notifyAll();
         } catch (MalformedMessageException e) {
