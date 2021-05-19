@@ -1,13 +1,11 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Messages.ClientConnectionListener;
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.View.CLI;
 import it.polimi.ingsw.View.View;
-import it.polimi.ingsw.View.ViewModel;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,10 +43,10 @@ public class Client implements ViewObserver{
     public void startClient(){
 
 
-        ViewModel viewModel = new ViewModel(file);
+        ReducedGameBoard reducedModel = new ReducedGameBoard(file);
 
         if(useCli){
-            ui = new CLI(viewModel, System.in, System.out);
+            ui = new CLI(reducedModel, System.in, System.out);
             CLI cli = (CLI) ui;
             cli.attachObserver(this);
         }else{
@@ -56,7 +54,7 @@ public class Client implements ViewObserver{
             launch();*/
         }
 
-        clientController = new ClientController(viewModel, ui);
+        clientController = new ClientController(reducedModel, ui);
         try {
 
             Socket socket = new Socket(ip, port);

@@ -1,9 +1,9 @@
 package it.polimi.ingsw.CLITest;
 
 import it.polimi.ingsw.Client.ClientController;
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Client.ViewObserver;
 import it.polimi.ingsw.View.CLI;
-import it.polimi.ingsw.View.ViewModel;
 import org.junit.jupiter.api.*;
 
 import java.io.*;
@@ -11,7 +11,7 @@ import java.io.*;
 public class CLI_ClientController_Test {
     private InputStream player;
     private BufferedReader server;
-    private ViewModel model;
+    private ReducedGameBoard model;
     private ClientController controller;
     private TestCLI cli;
     private String typing;
@@ -31,7 +31,7 @@ public class CLI_ClientController_Test {
     private class TestCLI extends CLI{
 
         //ho messo a protected viewStatus, addInput, getInput, InputReader, busyInput, typed
-        public TestCLI(ViewModel model, InputStream in, PrintStream out) {
+        public TestCLI(ReducedGameBoard model, InputStream in, PrintStream out) {
             super(model, in, out);
         }
 
@@ -98,7 +98,7 @@ public class CLI_ClientController_Test {
         String message;
 
         //SetUp of the ViewModel, CLI, and CLIController
-        model = new ViewModel("defaultConfiguration.xml");
+        model = new ReducedGameBoard("defaultConfiguration.xml");
         cli = new TestCLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
@@ -145,7 +145,7 @@ public class CLI_ClientController_Test {
         String message;
 
         //SetUp of the ViewModel, CLI, and CLIController
-        model = new ViewModel("defaultConfiguration.xml");
+        model = new ReducedGameBoard("defaultConfiguration.xml");
         cli = new TestCLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
@@ -190,7 +190,7 @@ public class CLI_ClientController_Test {
         String message;
 
         //SetUp of the ViewModel, CLI, and CLIController
-        model = new ViewModel("defaultConfiguration.xml");
+        model = new ReducedGameBoard("defaultConfiguration.xml");
         cli = new TestCLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
@@ -216,7 +216,7 @@ public class CLI_ClientController_Test {
         String message;
 
         //SetUp of the ViewModel, CLI, and CLIController
-        model = new ViewModel("defaultConfiguration.xml");
+        model = new ReducedGameBoard("defaultConfiguration.xml");
         cli = new TestCLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
@@ -293,7 +293,7 @@ public class CLI_ClientController_Test {
         String message;
 
         //SetUp of the ViewModel, CLI, and CLIController
-        model = new ViewModel("defaultConfiguration.xml");
+        model = new ReducedGameBoard("defaultConfiguration.xml");
         cli = new TestCLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
@@ -338,7 +338,7 @@ public class CLI_ClientController_Test {
         String message;
 
         //SetUp of the ViewModel, CLI, and CLIController
-        model = new ViewModel("defaultConfiguration.xml");
+        model = new ReducedGameBoard("defaultConfiguration.xml");
         cli = new TestCLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
@@ -383,7 +383,7 @@ public class CLI_ClientController_Test {
         String message;
 
         //SetUp of the ViewModel, CLI, and CLIController
-        model = new ViewModel("defaultConfiguration.xml");
+        model = new ReducedGameBoard("defaultConfiguration.xml");
         cli = new TestCLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);

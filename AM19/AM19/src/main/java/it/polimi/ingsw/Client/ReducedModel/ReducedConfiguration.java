@@ -80,6 +80,10 @@ public class ReducedConfiguration {
      */
     private List<Integer> initialResources;
 
+    /**
+     * this attribute represents the number of leaders given to each player at the beginning of the game
+     */
+    private int numLeader;
 
     public ReducedConfiguration(String file){
         // GESTIRE CODICE DEL SERVER! I PARSER POTREBBERO FALLIRE! Il client in quel caso deve terminare con errore!
@@ -99,6 +103,7 @@ public class ReducedConfiguration {
         actionTokenList = ConfigurationParser.parseActionTokens(file);
         sections = ConfigurationParser.parseReportSection(file);
         initialResources = ConfigurationParser.getInitializationResources(file);
+        numLeader = ConfigurationParser.getNumLeader(file);
 
     }
 
@@ -276,4 +281,13 @@ public class ReducedConfiguration {
     public List<Integer> getInitialResources() {
         return new LinkedList<>(initialResources);
     }
+
+    /**
+     *
+     * @return the number of leader given to each player at the beginning of the game
+     */
+    public int getNumLeader() {
+        return numLeader;
+    }
+
 }

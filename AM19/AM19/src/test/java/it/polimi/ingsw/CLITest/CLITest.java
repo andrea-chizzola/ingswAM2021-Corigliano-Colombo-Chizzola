@@ -1,4 +1,5 @@
 package it.polimi.ingsw.CLITest;
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Model.ActionTokens.Action;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
@@ -9,7 +10,6 @@ import it.polimi.ingsw.Model.MarketBoard.MarbleGray;
 import it.polimi.ingsw.Model.MarketBoard.MarbleRed;
 import it.polimi.ingsw.Model.Resources.*;
 import it.polimi.ingsw.View.CLI;
-import it.polimi.ingsw.View.ViewModel;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import java.util.*;
 
 public class CLITest {
     private static CLI cli;
-    private ViewModel model;
+    private ReducedGameBoard model;
     private List<String> players;
 
     @BeforeEach
@@ -29,8 +29,8 @@ public class CLITest {
         players = new LinkedList<>();
         players.add("test1");
         players.add("test2");
-        model = new ViewModel("defaultConfiguration.xml");
-        model.setNicknames(players);
+        model = new ReducedGameBoard("defaultConfiguration.xml");
+        model.initializeNicknames(players);
         cli = new CLI(model, System.in, System.out);
         cli.initialize();
         System.out.println(" ");

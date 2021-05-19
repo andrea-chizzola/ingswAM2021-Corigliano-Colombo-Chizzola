@@ -79,8 +79,13 @@ public class ReducedGameBoard {
      */
     private Map<String, ReducedBoard> boards;
 
+    /**
+     * this attribute represents an object that contains the configuration of the game
+     */
+    ReducedConfiguration reducedConfiguration;
 
-    public ReducedGameBoard(){
+
+    public ReducedGameBoard(String file){
 
         personalNickname = "";
         currentPlayer = "";
@@ -96,6 +101,8 @@ public class ReducedGameBoard {
         lorenzoSections = Optional.empty();
         availableTurns = new LinkedList<>();
         nicknames = new LinkedList<>();
+        reducedConfiguration = new ReducedConfiguration(file);
+        boards = new HashMap<>();
 
     }
 
@@ -327,4 +334,13 @@ public class ReducedGameBoard {
         if(nicknames.contains(nickname)) return;
         nicknames.remove(nickname);
     }
+
+    /**
+     *
+     * @return the configuration information of the game
+     */
+    public ReducedConfiguration getConfiguration() {
+        return reducedConfiguration;
+    }
+
 }

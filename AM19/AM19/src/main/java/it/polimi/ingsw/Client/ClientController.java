@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.*;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
@@ -7,7 +8,6 @@ import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.View;
-import it.polimi.ingsw.View.ViewModel;
 
 import java.util.*;
 
@@ -16,7 +16,7 @@ public class ClientController implements ClientConnectionListener {
     /**
      * this attribute represents the reduced model of the Client
      */
-    private ViewModel model;
+    private ReducedGameBoard model;
 
     /**
      * this attribute represents the view of the Client
@@ -43,7 +43,7 @@ public class ClientController implements ClientConnectionListener {
      */
     private boolean availableSwap;
 
-    public ClientController(ViewModel model, View view){
+    public ClientController(ReducedGameBoard model, View view){
         this.view = view;
         this.model = model;
         notStarted = false;
@@ -256,7 +256,7 @@ public class ClientController implements ClientConnectionListener {
             }
             case START_GAME: {
                 List<String> nicknames = message.getNicknames();
-                model.setNicknames(nicknames);
+                model.initializeNicknames(nicknames);
             }
             default:
                 //END CONNECTION. WRONG SEQUENCE OF MESSAGES OF UNKNOWN MESSAGE
@@ -281,19 +281,19 @@ public class ClientController implements ClientConnectionListener {
     }
 
     private void boxUpdate(UpdateMessage message) throws MalformedMessageException {
-        List<ResQuantity> warehouse, strongbox;
         String player = message.getPlayer();
-        warehouse = message.getWarehouseUpdate();
-        strongbox = message.getStrongboxUpdate();
-        model.setWarehouse(warehouse, player);
-        model.setStrongbox(strongbox, player);
+        List<ResQuantity> warehouse = message.getWarehouseUpdate();
+        List<ResQuantity> strongbox = message.getStrongboxUpdate();
+
+        model.getBoard(player).setWarehouse(warehouse);
+        model.getBoard(player).setStrongbox(strongbox);
         view.showBoxes(warehouse, strongbox, player);
     }
 
     private void slotsUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<Integer, String> slots = message.getSlotsUpdate();
         String player = message.getPlayer();
-        model.setSlots(slots, player);
+        model.getBoard(player).setSlots(slots);
         view.showSlotsUpdate(slots, player);
     }
 
@@ -304,20 +304,21 @@ public class ClientController implements ClientConnectionListener {
     }
 
     private void faithUpdate(UpdateMessage message) throws MalformedMessageException {
-        Map<String, Integer> faith = message.getFaithPoints();
-        Map<String, List<ItemStatus>> sections = new HashMap<>();
-        for(String name : faith.keySet()){
-            sections.put(name, message.getSections(name));
-            model.setSections(message.getSections(name), model.getCurrentPlayer());
-        }
+
         Optional<List<ItemStatus>> lorenzoSections = message.getLorenzoSections();
         Optional<Integer> lorenzoFaith = message.getLorenzoFaith();
-        model.setFaithPoints(faith);
         lorenzoFaith.ifPresent(integer -> model.setLorenzoFaith(integer));
         lorenzoSections.ifPresent(itemStatuses -> model.setLorenzoSections(itemStatuses));
 
-        view.showFaithUpdate(faith, sections, lorenzoFaith, lorenzoSections);
+        Map<String, List<ItemStatus>> sections = new HashMap<>();
+        Map<String, Integer> faith = message.getFaithPoints();
 
+        for(String name : faith.keySet()){
+            sections.put(name, message.getSections(name));
+            model.getBoard(name).setSections(message.getSections(name));
+            model.getBoard(name).setFaithPoints(faith.get(name));
+        }
+        view.showFaithUpdate(faith, sections, lorenzoFaith, lorenzoSections);
     }
 
     private void tokenUpdate(UpdateMessage message) throws MalformedMessageException {
@@ -338,8 +339,8 @@ public class ClientController implements ClientConnectionListener {
         Map<Integer, ItemStatus> status = message.getLeaderCardsStatus();
         Map<Integer, String> cards = message.getLeaderCardsUpdate();
         String player = message.getPlayer();
-        model.setLeadersID(cards, player);
-        model.setLeadersStatus(status, player);
+        model.getBoard(player).setLeadersID(cards);
+        model.getBoard(player).setLeadersStatus(status);
         view.showLeaderCards(cards, status, player);
     }
 }

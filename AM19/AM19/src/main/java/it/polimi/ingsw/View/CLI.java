@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Client.ViewObserver;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
@@ -10,7 +11,6 @@ import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
 import java.io.*;
 import java.util.*;
@@ -66,7 +66,7 @@ public class CLI implements View, SubjectView {
     /**
      * this attribute is a reference to the reduced model of the view
      */
-    private ViewModel model;
+    private ReducedGameBoard model;
 
     /**
      * this attribute is a matrix that contains the current state of the CLI
@@ -117,12 +117,12 @@ public class CLI implements View, SubjectView {
      * this is the constructor of the class
      * @param model is an instance of the reduced model of the view
      */
-    public CLI(ViewModel model, InputStream in, PrintStream out){
+    public CLI(ReducedGameBoard model, InputStream in, PrintStream out){
         this.model=model;
         viewStatus = new String[VIEW_VERTICAL_SIZE][HORIZONTAL_SIZE];
         decksStatus = new String[DECKS_VERTICAL_SIZE][HORIZONTAL_SIZE];
         PLAYERS_Y = (4 + 1) * (CLIPainter.getSquareLength() + 1);
-        RESOURCES_Y = (model.getnRows()+1)*(CLIPainter.getSphereLength() + 1) + 3;
+        RESOURCES_Y = (model.getConfiguration().getnRows()+1)*(CLIPainter.getSphereLength() + 1) + 3;
 
         this.in = in;
         this.out = out;
@@ -257,7 +257,8 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void showMarketUpdate(List<Marble> tray) {
-        CLIPainter.paintMarketBoard(viewStatus, MARKET_Y, MARKET_X, tray, model.getnRows(), model.getnColumns());
+        int nRows = model.getConfiguration().getnRows(), nColumns = model.getConfiguration().getnColumns();
+        CLIPainter.paintMarketBoard(viewStatus, MARKET_Y, MARKET_X, tray, nRows, nColumns);
         StringBuilder market = new StringBuilder();
         for(int i = 0; i<tray.size(); i++){
             market.append(tray.get(i).toString()).append(",");
@@ -275,7 +276,7 @@ public class CLI implements View, SubjectView {
         CLIPainter.fill(decksStatus, 0, 0,HORIZONTAL_SIZE, DECKS_VERTICAL_SIZE);
         for(int i : decks.keySet()){
             int row = i/N_DECKS_X,column = i%N_DECKS_X;
-            DevelopmentCard card = ConfigurationParser.getDevelopmentById(model.getConfigurationFile(), decks.get(i));
+            DevelopmentCard card = model.getConfiguration().getDevelopmentCard(decks.get(i));
             CLIPainter.devCardPainter(decksStatus, PLAYERS_Y + 1 + length*row, BOXES_X + width*column, card.toString());
         }
     }
@@ -291,7 +292,7 @@ public class CLI implements View, SubjectView {
         if(!nickName.equals(model.getPersonalNickname())) return;
         List<ResQuantity> resources = new LinkedList<>();
         List<ResQuantity> extra = new LinkedList<>();
-        int defaultSlots = model.getSlotNumber();
+        int defaultSlots = model.getConfiguration().getSlotNumber();
 
         StringBuilder warehouseString = new StringBuilder();
         StringBuilder extraBoxString = new StringBuilder();
@@ -311,7 +312,7 @@ public class CLI implements View, SubjectView {
         }
 
         extra.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
-        CLIPainter.paintWarehouse(viewStatus, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, model.getShelves(), resources);
+        CLIPainter.paintWarehouse(viewStatus, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, model.getConfiguration().getShelves(), resources);
         CLIPainter.paintExtraSlots(viewStatus, EXTRA_Y+PLAYERS_Y, EXTRA_X, extra);
 
         strongBox.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
@@ -334,7 +335,7 @@ public class CLI implements View, SubjectView {
     public void showSlotsUpdate(Map<Integer, String> slots, String nickname) {
         if(!nickname.equals(model.getPersonalNickname())) return;
         for(int i : slots.keySet()){
-            DevelopmentCard card = ConfigurationParser.getDevelopmentById(model.getConfigurationFile(), slots.get(i));
+            DevelopmentCard card = model.getConfiguration().getDevelopmentCard(slots.get(i));
             CLIPainter.devCardPainter(viewStatus, PLAYERS_Y+1, BOXES_X + 30*(i-1)+20, card.toString());
         }
     }
@@ -347,12 +348,12 @@ public class CLI implements View, SubjectView {
     @Override
     public void showLeaderCards(Map<Integer,String> cards, Map<Integer,ItemStatus> status, String nickName){
         if(!nickName.equals(model.getPersonalNickname())) return;
-        int num = ConfigurationParser.getNumLeader(model.getConfigurationFile());
+        int num = model.getConfiguration().getNumLeader();
 
         for(int i=1; i<=num; i++){
             if(cards.containsKey(i)) {
                 String id = cards.get(i);
-                LeaderCard card = ConfigurationParser.getLeaderById(model.getConfigurationFile(), id);
+                LeaderCard card = model.getConfiguration().getLeaderCard(id);
                 card.setStatus(status.get(i).getBoolValue());
                 CLIPainter.leaderCardPainter(viewStatus, PLAYERS_Y + 1 + LEADER_Y, BOXES_X + 28 * (i - 1) + 8, card.toString());
             }
@@ -380,7 +381,7 @@ public class CLI implements View, SubjectView {
         }
         PLAYERS_Y = (names.size() + 1) * (CLIPainter.getSquareLength() + 1);
         CLIPainter.paintFaithTrack (viewStatus, FAITHTRACK_Y, FAITHTRACK_X,
-                model.getTrackPoints(), names, faith, sections);
+                model.getConfiguration().getTrackPoints(), names, faith, sections);
     }
 
     /**
@@ -391,7 +392,7 @@ public class CLI implements View, SubjectView {
     public void showTopToken(Optional<String> action) {
         if(action.isEmpty()) return;
         //fare il controllo che il top token corrisponda a qualcosa di esistente
-        String content = ConfigurationParser.getActionTokenById(model.getConfigurationFile(), action.get()).toString();
+        String content = model.getConfiguration().getActionTokenCard(action.get()).toString();
         CLIPainter.paintToken(viewStatus,TOKEN_Y+RESOURCES_Y+PERSONAL_Y, TOKEN_X, content);
     }
 
@@ -499,7 +500,7 @@ public class CLI implements View, SubjectView {
     public void selectLeaderAction() {
         String action;
         String[] selections;
-        Map<Integer, String> cards = model.getLeadersID(model.getCurrentPlayer());
+        Map<Integer, String> cards = model.getBoard(model.getCurrentPlayer()).getLeadersID();
         plotView();
         do {
             out.println("\nSelect two of your cards. Command:- position1:position2\n" +
@@ -564,8 +565,8 @@ public class CLI implements View, SubjectView {
         if(selection.length!=2) return false;
         int n, limit;
 
-        if(selection[0].equals("row")) limit = model.getnRows();
-        else if(selection[0].equals("column")) limit = model.getnColumns();
+        if(selection[0].equals("row")) limit = model.getConfiguration().getnRows();
+        else if(selection[0].equals("column")) limit = model.getConfiguration().getnColumns();
         else return false;
 
         try{
@@ -573,7 +574,7 @@ public class CLI implements View, SubjectView {
         }catch(NumberFormatException e){
             return false;
         }
-        return n > 0 && n<limit;
+        return n > 0 && n<=limit;
     }
 
     /**
@@ -612,7 +613,7 @@ public class CLI implements View, SubjectView {
     @Override
     public void leaderAction() {
         String action, player = model.getCurrentPlayer();
-        Map<Integer,String> leadersID = model.getLeadersID(player);
+        Map<Integer,String> leadersID = model.getBoard(player).getLeadersID();
         String[] sequence;
         do {
             out.println("It's time to put your leader cards in action. " +
@@ -641,7 +642,6 @@ public class CLI implements View, SubjectView {
         String action;
         String warehouse;
         String strongbox;
-        String file = model.getConfigurationFile();
 
         out.println("\nWhat about buying a new card? The decks are ordered from the left to the right.");
         do{
@@ -652,7 +652,7 @@ public class CLI implements View, SubjectView {
         int position = Integer.parseInt(selection[0]), slot = Integer.parseInt(selection[1]);
         String id = model.getDecks().get(position-1);
         System.out.println("Debug");
-        DevelopmentCard card = ConfigurationParser.getDevelopmentById(file, id);
+        DevelopmentCard card = model.getConfiguration().getDevelopmentCard(id);
 
 
         out.println("Now select your resources from the warehouse.");
@@ -696,10 +696,10 @@ public class CLI implements View, SubjectView {
      */
     private boolean isCardOK(String[] target){
 
-        if (target.length!=2 && !isIntSequence(target, 1)) return false;
+        if (target.length!=2 || !isIntSequence(target, 1)) return false;
 
         int position = Integer.parseInt(target[0]), selected = Integer.parseInt(target[1]);
-        return model.getDecks().containsKey(position) && selected <= model.getSlotNumber();
+        return model.getDecks().containsKey(position) && selected <= model.getConfiguration().getSlotNumber();
     }
 
     /**
@@ -718,13 +718,13 @@ public class CLI implements View, SubjectView {
 
         decision = Boolean.parseBoolean(action);
 
-        if(model.getLeadersID(model.getCurrentPlayer()).keySet().size()>1) {
+        if(model.getBoard(model.getCurrentPlayer()).getLeadersID().keySet().size()>1) {
             out.println("What about leader cards? Select them. Command:- card1:card2... [positions]");
-            leaders = helpCards(model.getLeadersID(model.getCurrentPlayer()));
+            leaders = helpCards(model.getBoard(model.getCurrentPlayer()).getLeadersID());
         }
-        if(model.getSlots(model.getCurrentPlayer()).keySet().size()>1) {
+        if(model.getBoard(model.getCurrentPlayer()).getSlots().keySet().size()>1) {
             out.println("Don't forget your development cards! Select them. Command:- card1:card2... [positions]");
-            developments = helpCards(model.getSlots(model.getCurrentPlayer()));
+            developments = helpCards(model.getBoard(model.getCurrentPlayer()).getSlots());
         }
         out.println("Select your custom resources:");
         customResources = helpResSequence();
@@ -744,7 +744,7 @@ public class CLI implements View, SubjectView {
     }
 
     private String helpCards(Map<Integer, String> cards){
-        String action, file = model.getConfigurationFile();
+        String action;
         String[] selection;
         StringBuilder sequence = new StringBuilder();
         out.println("Select your cards. Command:- position1:position2:...");
@@ -777,9 +777,9 @@ public class CLI implements View, SubjectView {
     @Override
     public void getResourcesAction() {
         int playerPosition, number;
-        String file = model.getConfigurationFile(), self = model.getPersonalNickname(), selection = "";
+        String self = model.getPersonalNickname(), selection = "";
         playerPosition = model.getNicknames().indexOf(self);
-        number = ConfigurationParser.getInitializationResources(file).get(playerPosition);
+        number = model.getConfiguration().getInitialResources().get(playerPosition);
 
         plotView();
 
@@ -807,7 +807,7 @@ public class CLI implements View, SubjectView {
     @Override
     //add personal production materials and products to parser or ViewModel
     public void showPersonalProduction() {
-        Production production = model.getPersonalProduction();
+        Production production = model.getConfiguration().getPersonalProduction();
         CLIPainter.paintPersonalProduction(viewStatus, PRODUCTION_Y + RESOURCES_Y, PRODUCTION_X,
                 production.getMaterials(), production.getProducts(),
                 production.getCustomMaterials(), production.getCustomProducts());
