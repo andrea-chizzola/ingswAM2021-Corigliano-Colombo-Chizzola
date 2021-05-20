@@ -381,7 +381,6 @@ public class MessageHandler {
             currentMessage.clear();
             currentMessage.add(Message.MessageType.SELECTED_TURN);
             virtualView.showGameStatus(false,e.getMessage(), nickname, TurnType.TURN_SELECTION);
-            gameBoard.currentPlayer();
             return false;
         }
     }
@@ -395,11 +394,13 @@ public class MessageHandler {
     private boolean doProductionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         ArrayList<Production> productions = new ArrayList<>();
+        boolean productionDone = false;
         int numberChoiceProducts = 0;
         int numberChoiceMaterials = 0;
 
         //check development cards
         for(int i : actionMessage.getActivatedDevelopmentCards().keySet()){
+            productionDone = true;
             try {
                 Production production = gameBoard.getDevProduction(i);
                 productions.add(production);
@@ -416,6 +417,7 @@ public class MessageHandler {
 
         //check leader cards
         for(int i : actionMessage.getSelectedLeaderCards().keySet()){
+            productionDone = true;
             try {
                 Production production = gameBoard.getLeaderProduction(i);
                 productions.add(production);
@@ -433,6 +435,7 @@ public class MessageHandler {
 
         //personal board production
         if(actionMessage.isPersonalProduction()){
+            productionDone = true;
             numberChoiceProducts += gameBoard.getBoardProduction().getCustomProducts();
             numberChoiceMaterials += gameBoard.getBoardProduction().getCustomMaterials();
             productions.add(gameBoard.getBoardProduction());
@@ -458,6 +461,13 @@ public class MessageHandler {
         Production choiceProduction = new Production(materials,products,0,0);
 
         productions.add(choiceProduction);
+
+        if(!productionDone){
+            currentMessage.clear();
+            currentMessage.add(Message.MessageType.SELECTED_TURN);
+            virtualView.showGameStatus(false,"No productions have been chosen", nickname, TurnType.TURN_SELECTION);
+            return false;
+        }
 
         //selected resources
         ArrayList<Integer> shelves = new ArrayList<>(actionMessage.getSelectedWarehouseShelves());

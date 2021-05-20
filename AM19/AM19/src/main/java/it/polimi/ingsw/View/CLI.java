@@ -11,6 +11,7 @@ import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.Model.Turn.TakeResources;
 
 import java.io.*;
 import java.util.*;
@@ -446,7 +447,7 @@ public class CLI implements View, SubjectView {
             do {
                 out.println("Give me the number of players in the game: ");
                 num = getInput();
-            }while(!isInt(num));
+            }while(!isInt(num) || Integer.parseInt(num)<=0 || Integer.parseInt(num)>4);
         }
         else num = "0";
 
@@ -532,7 +533,9 @@ public class CLI implements View, SubjectView {
 
         Map<Integer, ItemStatus> map = new HashMap<>();
         for(int i : cards.keySet()) map.put(i, ItemStatus.DISCARDED);
-        for (String selection : selections) map.put(Integer.parseInt(selection), ItemStatus.ACTIVE);
+        try {
+            for (String selection : selections) map.put(Integer.parseInt(selection), ItemStatus.ACTIVE);
+        }catch (NumberFormatException e){}
 
         try{
             viewObserver.update(MessageFactory.buildLeaderUpdate(cards, map,
@@ -586,8 +589,8 @@ public class CLI implements View, SubjectView {
         if(selection.length!=2) return false;
         int n, limit;
 
-        if(selection[0].equals("row")) limit = model.getConfiguration().getnRows();
-        else if(selection[0].equals("column")) limit = model.getConfiguration().getnColumns();
+        if(selection[0].toUpperCase().equals("ROW")) limit = model.getConfiguration().getnRows();
+        else if(selection[0].toUpperCase().equals("COLUMN")) limit = model.getConfiguration().getnColumns();
         else return false;
 
         try{
@@ -635,16 +638,22 @@ public class CLI implements View, SubjectView {
     public void leaderAction() {
         String action, player = model.getCurrentPlayer();
         Map<Integer,String> leadersID = model.getBoard(player).getLeadersID();
-        String[] sequence;
-        do {
-            out.println("It's time to put your leader cards in action. " +
-                    "\nYou can both discard and activate your cards. Command :- number:ACTION" +
-                    "\ne.g: 1:INSERT or 2:DISCARD");
-            action = getInput();
-            sequence = action.split(":");
-        }while(sequence.length!=2 && !isInt(sequence[0]) && !leadersID.containsKey(Integer.parseInt(sequence[0])));
+        String[] sequence = new String[1];
+        int position = -1;
+        try {
+            do {
+                out.println("It's time to put your leader cards in action. " +
+                        "\nYou can both discard and activate your cards. Command :- number:ACTION" +
+                        "\ne.g: 1:INSERT or 2:DISCARD");
+                action = getInput();
+                sequence = action.split(":");
+            }while(sequence.length!=2 || !isInt(sequence[0]) || !leadersID.containsKey(Integer.parseInt(sequence[0])));
 
-        int position = Integer.parseInt(sequence[0]);
+            position = Integer.parseInt(sequence[0]);
+        }catch (IndexOutOfBoundsException | NumberFormatException e){
+           // return;
+        }
+
         try {
             viewObserver.update(MessageFactory.buildLeaderAction(leadersID.get(position), position, sequence[1], "Action on leader"));
         }catch(MalformedMessageException e){
@@ -691,10 +700,10 @@ public class CLI implements View, SubjectView {
         String action;
         String[] selection;
         do{
-            out.println("Give me the resources and quantities. Command :- shelf:quantity");
+            out.println("Give me the resources and quantities. Command :- shelf:quantity or press ENTER to skip");
             action = getInput();
             selection = action.split(":");
-        }while(selection.length%2!=0 && !isIntSequence(selection, 1));
+        }while(!action.isEmpty() && (selection.length%2!=0 && !isIntSequence(selection, 1)));
 
         return action;
     }
@@ -703,10 +712,10 @@ public class CLI implements View, SubjectView {
         String action;
         String[] selection;
         do{
-            out.println("Give me the resources and quantities. Command :- resource:quantity");
+            out.println("Give me the resources and quantities. Command :- resource:quantity  or press ENTER to skip");
             action = getInput();
             selection = action.split(":");
-        }while(selection.length%2!=0 && !isIntSequence(selection, 2));
+        }while(!action.isEmpty() && (selection.length%2!=0 || !isIntSequence(selection, 2)));
 
         return action;
     }
@@ -768,25 +777,32 @@ public class CLI implements View, SubjectView {
         String action;
         String[] selection;
         StringBuilder sequence = new StringBuilder();
-        out.println("Select your cards. Command:- position1:position2:...");
+        //out.println("Select your cards. Command:- position1:position2:...");
         do{
+            out.println("Select your cards. Command:- position1:position2:... or ENTER to skip");
             action = getInput();
             selection = action.split(":");
-        }while(!action.isEmpty()  && !isIntSequence(selection,1) && !containsCard(selection, cards));
+        }while(!action.isEmpty()  && (!isIntSequence(selection,1) || !containsCard(selection, cards)));
 
+        if(selection.length == 0) return "";
         if(action.isEmpty()) return action;
         for(String s : selection){
             int position = Integer.parseInt(s);
             sequence.append(position).append(":").append(cards.get(position)).append(":");
         }
-        return sequence.substring(0, sequence.length()-1);
+        return sequence.equals("")? "":sequence.substring(0, sequence.length()-1);
     }
 
     private boolean containsCard(String[] selection, Map<Integer, String> cards){
-        for (String s : selection) {
-            int position = Integer.parseInt(s);
-            if (!cards.containsKey(position)) return false;
+        try {
+            for (String s : selection) {
+                int position = Integer.parseInt(s);
+                if (!cards.containsKey(position)) return false;
+            }
+        }catch (NumberFormatException | NullPointerException e){
+            return false;
         }
+
         return true;
     }
 
