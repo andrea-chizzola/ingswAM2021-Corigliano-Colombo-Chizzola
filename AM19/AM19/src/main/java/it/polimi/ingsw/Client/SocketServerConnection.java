@@ -50,6 +50,7 @@ public class SocketServerConnection implements ServerConnection, Runnable{
         } catch (IOException e) {
             System.err.println("[CONNECTION] Error when closing socket");
         }
+        System.exit(0);
 
     }
 

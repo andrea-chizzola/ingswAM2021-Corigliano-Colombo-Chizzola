@@ -92,17 +92,17 @@ public class CLI implements View, SubjectView {
     /**
      * this attribute is used to synchronize the methods that interact with the input stream
      */
-    protected final Object busyInput;
+    private final Object busyInput;
 
     /**
      * this attribute is true if an input is available
      */
-    protected boolean availableInput;
+    private boolean availableInput;
 
     /**
      * this method is used to collect the Strings that will be printed
      */
-    protected StringBuilder typed;
+    private StringBuilder typed;
 
     /**
      * this attribute is used to collect the Strings that comes from the input stream
@@ -139,7 +139,7 @@ public class CLI implements View, SubjectView {
      * this method creates a thread that looks for Strings on the input Stream
      * @param input represents the input Stream
      */
-    protected void inputReader(InputStream input){
+    private void inputReader(InputStream input){
 
         new Thread(() ->
         {
@@ -162,22 +162,31 @@ public class CLI implements View, SubjectView {
      * this private helper is used to take an input from the Stream
      * @param s is the String coming from the Stream
      */
-    protected void addInput(String s){
+    private void addInput(String s){
         synchronized(busyInput){
             typed.append(s);
             availableInput = true;
             busyInput.notifyAll();
+
+            //CODE FOR TESTS
+            /*try {
+                busyInput.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+            //---------------------
         }
     }
 
     /**
      * @return the content of the input buffer
      */
-    //da modificare togliendo la notifyAll. Non serve a niente.
-    protected String getInput(){
+    private String getInput(){
         synchronized(busyInput){
-            if(!availableInput){
-                busyInput.notifyAll();
+            while(!availableInput){
+                //CODE FOR TESTS
+                //busyInput.notifyAll();
+                //------------------
                 try{
                     busyInput.wait();
                 } catch (InterruptedException e) {
@@ -386,7 +395,6 @@ public class CLI implements View, SubjectView {
             faith.put("Lorenzo", faithLorenzo.get());
             sections.put("Lorenzo", new LinkedList<>(sectionsLorenzo.get()));
             names.add("Lorenzo");
-            System.out.println("Debug");
         }
         CLIPainter.paintFaithTrack (viewStatus, FAITHTRACK_Y, FAITHTRACK_X,
                 faithTrack, names, faith, sections, start, end, points);
@@ -471,11 +479,22 @@ public class CLI implements View, SubjectView {
 
     }
 
+    /**
+     * this method is used to check whether an assertion is correct
+     * @param assertion is String containing an assertion of the type "YES" or "NO"
+     * @return the String "true" if the assertion is "YES", "false" is the assertion is "NO", and "wrong input" otherwise
+     */
     private String getAssertion(String assertion){
         if(assertion.equals("YES")) return "true";
         if(assertion.equals("NO")) return "false";
         else return "wrong input";
     }
+
+    /**
+     * this method is used to check if a String is a correct representation of an integer
+     * @param s is the String to be checked
+     * @return return true if the String is a correct representation of an integer, false otherwise
+     */
     private boolean isInt(String s){
         try{
             Integer.parseInt(s);
@@ -495,7 +514,8 @@ public class CLI implements View, SubjectView {
         plotView();
         StringBuilder available = new StringBuilder();
         for(String string : turns) available.append(string).append(", ");
-        available.append("SHOW_DECKS");
+        available.append("SHOW_DECKS").append(", DISCONNECT");
+        turns.add("DISCONNECT");
         String s = "";
         do{
             out.println("\nSelect your turn type; available turns: " + available);
@@ -506,7 +526,10 @@ public class CLI implements View, SubjectView {
         }
         while(!turns.contains(s));
         try {
-            viewObserver.update(MessageFactory.buildSelectedTurn(s, "Selection of the turn type"));
+            if(s.equals("DISCONNECT"))
+                viewObserver.update(MessageFactory.buildDisconnection("I want to be disconnected", model.getPersonalNickname()));
+            else
+                viewObserver.update(MessageFactory.buildSelectedTurn(s, "Selection of the turn type"));
         }catch(MalformedMessageException e){
             //exit from client
         }
@@ -542,6 +565,12 @@ public class CLI implements View, SubjectView {
         }
     }
 
+    /**
+     * this method is used to check if an array of String is a correct representation of sequence of integer
+     * @param sequence is the array to be checked
+     * @param offset is the offset between the strings in the array
+     * @return true if the array is a correct representation of a sequence of integer with the given offset
+     */
     private boolean isIntSequence(String[] sequence, int offset){
         for (int i=0; i<sequence.length; i+=offset) {
             if (!isInt(sequence[i])) return false;
@@ -549,6 +578,12 @@ public class CLI implements View, SubjectView {
         return true;
     }
 
+    /**
+     * this method is used to check if the KeySet of a map contains all the String in an array of Strings
+     * @param map is the map to be checked
+     * @param sequence is the sequence to be checked
+     * @return true if the map contains all the Strings, false otherwise
+     */
     private boolean containsKeys(Map<Integer,String> map, String[] sequence){
         for (String s : sequence) {
             if (!map.containsKey(s)) return false;
@@ -682,10 +717,16 @@ public class CLI implements View, SubjectView {
         out.println("You can also get something from your strongbox.");
         strongbox = helpResSequence();
 
-        viewObserver.update(MessageFactory.buildBuyCard(card.getCardColor().getColor(),
-                card.getCardLevel(), slot, id,"Buy card", warehouse, strongbox));
+        String message = MessageFactory.buildBuyCard(card.getCardColor().getColor(),
+                card.getCardLevel(), slot, id,"Buy card", warehouse, strongbox);
+
+        viewObserver.update(message);
     }
 
+    /**
+     * this helper method is used to build a selection in the warehouse
+     * @return a String that represents the selection
+     */
     private String helpWarehouse(){
 
         String action;
@@ -699,6 +740,10 @@ public class CLI implements View, SubjectView {
         return action;
     }
 
+    /**
+     * this helper method is used to build a selection in the strongbox
+     * @return a String that represents the selection
+     */
     private String helpResSequence(){
         String action;
         String[] selection;
@@ -764,6 +809,11 @@ public class CLI implements View, SubjectView {
 
     }
 
+    /**
+     * this helper method is used to select a list of cards. The cards must be contained in the map cards
+     * @param cards is a map of positions and cards IDs
+     * @return a Strin that represents the selected cards
+     */
     private String helpCards(Map<Integer, String> cards){
         String action;
         String[] selection;
@@ -782,6 +832,14 @@ public class CLI implements View, SubjectView {
         return sequence.substring(0, sequence.length()-1);
     }
 
+    /**
+     * this helper method checks if an array of Strings is a correct
+     * sequence of integer and if the KeySet of a map
+     * contains all these integers
+     * @param selection is the array to be checked
+     * @param cards is the map to be checked
+     * @return true if the map contains all the integers represented by the Strings in the array
+     */
     private boolean containsCard(String[] selection, Map<Integer, String> cards){
         for (String s : selection) {
             int position = Integer.parseInt(s);
@@ -792,9 +850,8 @@ public class CLI implements View, SubjectView {
 
 
     /**
-     * this action is used to catch the resources chosen by a player
+     * this method is used to catch the resources chosen by a player
      */
-    //add default initialization resources to model. Waiting Marco's push
     @Override
     public void getResourcesAction() {
         int playerPosition, number;

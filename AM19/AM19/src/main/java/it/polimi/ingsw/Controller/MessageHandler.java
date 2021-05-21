@@ -381,7 +381,7 @@ public class MessageHandler {
             currentMessage.clear();
             currentMessage.add(Message.MessageType.SELECTED_TURN);
             virtualView.showGameStatus(false,e.getMessage(), nickname, TurnType.TURN_SELECTION);
-            gameBoard.currentPlayer();
+            //gameBoard.currentPlayer();
             return false;
         }
     }

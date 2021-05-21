@@ -112,6 +112,13 @@ public class VaticanReportSection {
 
     }
 
+    /**
+     * @return the value of the pope favour in the section
+     */
+    public int getPopeFavourValue(){
+        return popeFavor.getVictoryPoints();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
