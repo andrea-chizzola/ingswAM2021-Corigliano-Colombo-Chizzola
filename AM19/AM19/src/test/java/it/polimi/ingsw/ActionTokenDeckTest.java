@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.ActionTokens.Action;
 import it.polimi.ingsw.Model.Decks.ActionTokenDeck;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,9 +61,7 @@ class ActionTokenDeckTest {
     @Test
     @DisplayName("Get top test")
     void getTop() {
-
         assertSame(actionTokenDeck1.getTop(), actionTokenDeck1.getUnusedActionTokens().readTop());
-
     }
 
     @Test

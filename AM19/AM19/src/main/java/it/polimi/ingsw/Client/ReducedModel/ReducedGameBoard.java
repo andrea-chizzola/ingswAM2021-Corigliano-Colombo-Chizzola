@@ -162,7 +162,7 @@ public class ReducedGameBoard {
      * @return a map that contains the positions and the IDs of the top cards in the shared decks
      */
     public Map<Integer, String> getDecks() {
-        return decks;
+        return new HashMap<>(decks);
     }
 
     /**
@@ -170,7 +170,7 @@ public class ReducedGameBoard {
      * @param decks is a map that contains the positions and the IDs of each top card in the shared decks
      */
     public void setDecks(Map<Integer, String> decks) {
-        this.decks = decks;
+        this.decks = new HashMap<>(decks);
     }
 
     /**
@@ -178,7 +178,7 @@ public class ReducedGameBoard {
      * @return a list that contains the current state of the market board
      */
     public List<Marble> getMarket() {
-        return market;
+        return new LinkedList<>(market);
     }
 
     /**
@@ -186,7 +186,7 @@ public class ReducedGameBoard {
      * @param market is a list that contains the current state of the marketboard
      */
     public void setMarket(List<Marble> market) {
-        this.market = market;
+        this.market = new LinkedList<>(market);
     }
 
     /**
@@ -194,7 +194,7 @@ public class ReducedGameBoard {
      * @return the marbles selected by a player during a marble selection sequence
      */
     public List<Marble> getSelectedMarbles() {
-        return selectedMarbles;
+        return new LinkedList<>(selectedMarbles);
     }
 
     /**
@@ -202,7 +202,7 @@ public class ReducedGameBoard {
      * @param selectedMarbles is a list that contains the marbles selected
      */
     public void setSelectedMarbles(List<Marble> selectedMarbles) {
-        this.selectedMarbles = selectedMarbles;
+        this.selectedMarbles = new LinkedList<>(selectedMarbles);
     }
 
     /**
@@ -210,7 +210,7 @@ public class ReducedGameBoard {
      * @return a list that contains the possible transformations of a white marble
      */
     public List<Marble> getPossibleWhites() {
-        return possibleWhites;
+        return new LinkedList<>(possibleWhites);
     }
 
     /**
@@ -290,7 +290,7 @@ public class ReducedGameBoard {
      * @return the list of currently available turns
      */
     public List<String> getAvailableTurns() {
-        return availableTurns;
+        return new LinkedList<>(availableTurns);
     }
 
     /**

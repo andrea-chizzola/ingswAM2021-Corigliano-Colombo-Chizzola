@@ -1,4 +1,5 @@
 package it.polimi.ingsw.CLITest;
+
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Model.ActionTokens.Action;
@@ -11,12 +12,9 @@ import it.polimi.ingsw.Model.MarketBoard.MarbleRed;
 import it.polimi.ingsw.Model.Resources.*;
 import it.polimi.ingsw.View.CLI;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
 import java.util.*;
 
 public class CLITest {

@@ -227,7 +227,6 @@ public class MessageUtilities {
 
         List<Marble> list = new ArrayList<>();
         String[] string = messageString.split(splitter);
-        System.out.println("Debug");
         if(messageString.equals("")){
             return list;
         }
