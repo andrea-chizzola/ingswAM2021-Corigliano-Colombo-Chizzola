@@ -404,6 +404,8 @@ public class GameBoard implements GameBoardHandler {
     @Override
     public Production getLeaderProduction(int position) throws InvalidActionException {
         try {
+            if(!currentPlayer.getLeaderCard(position).getStatus())
+                throw new InvalidActionException("You are doing a production of an inactive leader card!");
             Production production = currentPlayer.getLeaderCard(position).getSpecialEffect().getProduction();
             return production;
         }
@@ -559,6 +561,9 @@ public class GameBoard implements GameBoardHandler {
         ArrayList<Resource> resources = new ArrayList<>();
         ArrayList<Integer> shelf = new ArrayList<>();
 
+        if(marbles.size() != marblesPlayer.size())
+            return false;
+
         for(int i=0; i<marbles.size(); i++){
             marble = marbles.get(i);
             marblePlayer = marblesPlayer.get(i);
@@ -696,8 +701,7 @@ public class GameBoard implements GameBoardHandler {
             production.addProducts(board);
 
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
-        //dovrei mattere update faith, alcune production danno come prodotto la fede
-
+        virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
 
     }
 
