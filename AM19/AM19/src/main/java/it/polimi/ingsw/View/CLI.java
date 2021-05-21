@@ -715,7 +715,7 @@ public class CLI implements View, SubjectView {
             out.println("Give me the resources and quantities. Command :- resource:quantity  or press ENTER to skip");
             action = getInput();
             selection = action.split(":");
-        }while(!action.isEmpty() && (selection.length%2!=0 || !isIntSequence(selection, 2)));
+        }while(!action.isEmpty() && (selection.length%2!=0 /*|| !isIntSequence(selection, 2)*/));
 
         return action;
     }
@@ -756,7 +756,7 @@ public class CLI implements View, SubjectView {
             out.println("Don't forget your development cards! Select them. Command:- card1:card2... [positions]");
             developments = helpCards(model.getBoard(model.getCurrentPlayer()).getSlots());
         }
-        out.println("Select your custom resources:");
+        out.println("Select your custom materials:");
         customResources = helpResSequence();
 
         out.println("Select your custom products:");
