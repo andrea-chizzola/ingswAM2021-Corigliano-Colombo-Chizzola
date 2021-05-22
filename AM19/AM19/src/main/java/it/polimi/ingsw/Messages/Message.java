@@ -9,6 +9,8 @@ public abstract class Message {
         UPDATE_LEADER_CARDS,  //initialization of leader cards
         RESOURCE, //initialization resources
         SELECTED_TURN, //select turn type
+        EXIT,
+
         BUY_CARD, //buy a development card
         DO_PRODUCTION, //do production (unique message)
         LEADER_ACTION, //manage leader cards

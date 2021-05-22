@@ -20,6 +20,8 @@ public interface View {
      */
     void initialize();
 
+    public void reply(boolean answer, String body, String nickName);
+
     /**
      * this method is used to show a message
      * @param answer represents the type of message
@@ -28,6 +30,13 @@ public interface View {
      * @param nickName represents the current state of the game
      */
     void showGameStatus(boolean answer, String body, String nickName, TurnType state);
+
+    /**
+     * this method is used to catch the player's selected turn
+     * @param turns is the list of available turns
+     * @param player is the nickname of the current player
+     */
+    void showAvailableTurns(List<String> turns, String player);
 
     /**
      * this method is used to show an update of the marketBoard
@@ -106,12 +115,6 @@ public interface View {
      */
     void newPlayer();
 
-    /**
-     * this method is used to catch the player's selected turn
-     * @param turns is the list of available turns
-     * @param player is the nickname of the current player
-     */
-    String selectTurnAction(List<String> turns, String player);
 
     /**
      * this method is used to catch the LeaderCards selected by a player

@@ -74,15 +74,12 @@ class BoardTest {
         //Initialization of Warehouse and Strongbox of firstPlayer
         Warehouse warehouse = board.getWarehouse();
         StrongBox strongBox = board.getStrongBox();
-        try{
-            warehouse.addResource(1, new Coin());
-            warehouse.addResource(2, new Servant());
-            warehouse.addResource(3, new Shield());
-            warehouse.addResource(3, new Shield());
-        }
-        catch(IllegalShelfException e){
-            e.printStackTrace();
-        }
+
+        warehouse.insertResource(1, new Coin());
+        warehouse.insertResource(2, new Servant());
+        warehouse.insertResource(3, new Shield());
+        warehouse.insertResource(3, new Shield());
+
         strongBox.addResource(new Shield(),3);
         strongBox.addResource(new Stone(), 4);
     }
@@ -401,7 +398,7 @@ class BoardTest {
             leaderCard1 = gameBoard.getCurrentPlayer().getLeaderCard(3);
              leaderCard2 = gameBoard.getCurrentPlayer().getLeaderCard(4);
         }catch (IndexOutOfBoundsException e){
-            System.out.println("ciao");
+            fail();
         }
 
         map.put(1,false);
@@ -409,7 +406,13 @@ class BoardTest {
         map.put(4,true);
         map.put(2,false);
 
-        assertTrue(gameBoard.initializeLeaderCard(map));
+        try {
+            //assertTrue(gameBoard.initializeLeaderCard(map));
+            gameBoard.initializeLeaderCard(map);
+        } catch (InvalidActionException e) {
+            fail();
+        }
+        assertTrue(gameBoard.getCurrentPlayer().isLeadersInitialized());
 
         assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(1).getId(),leaderCard1.getId());
         assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(2).getId(),leaderCard2.getId());
@@ -437,7 +440,9 @@ class BoardTest {
         map.put(4,true);
         map.put(2,false);
 
-        assertFalse(gameBoard.initializeLeaderCard(map));
+        assertThrows(InvalidActionException.class, () -> gameBoard.initializeLeaderCard(map));
+        //assertFalse(gameBoard.initializeLeaderCard(map));
+        assertFalse(gameBoard.getCurrentPlayer().isLeadersInitialized());
 
         assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(1).getId(),leaderCard1.getId());
         assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(2).getId(),leaderCard2.getId());
@@ -467,7 +472,9 @@ class BoardTest {
         map.put(4,true);
 
 
-        assertFalse(gameBoard.initializeLeaderCard(map));
+        assertThrows(InvalidActionException.class, () -> gameBoard.initializeLeaderCard(map));
+        //assertFalse(gameBoard.initializeLeaderCard(map));
+        assertFalse(gameBoard.getCurrentPlayer().isLeadersInitialized());
 
         assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(1).getId(),leaderCard1.getId());
         assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(2).getId(),leaderCard2.getId());
@@ -498,7 +505,9 @@ class BoardTest {
         map.put(4,true);
         map.put(2,false);
 
-        assertFalse(gameBoard.initializeLeaderCard(map));
+        assertThrows(InvalidActionException.class, () -> gameBoard.initializeLeaderCard(map));
+        //assertFalse(gameBoard.initializeLeaderCard(map));
+        assertFalse(gameBoard.getCurrentPlayer().isLeadersInitialized());
 
         assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(1).getId(),leaderCard1.getId());
         assertEquals(gameBoard.getCurrentPlayer().getLeaderCard(2).getId(),leaderCard2.getId());

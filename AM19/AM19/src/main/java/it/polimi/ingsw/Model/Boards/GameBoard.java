@@ -85,10 +85,9 @@ public class GameBoard implements GameBoardHandler {
     private ArrayList<Marble> marblesMarket;
 
     /**
-     * this map associates a boolean to each type of turn.
-     * the boolean is true if the turn is allowed, false otherwise
+     * it represents the turns that the current player can do
      */
-    private Map<TurnType, Boolean> possibleTurn;
+    private List<TurnType> correctTurns;
 
     public GameBoard(ArrayList<String> nicknames, String file) {
 
@@ -122,8 +121,9 @@ public class GameBoard implements GameBoardHandler {
             customMode = new SinglePlayer(this, file);
         }
 
-        possibleTurn = new HashMap<>();
         disconnectedPlayers = new ArrayList<>();
+
+        correctTurns = new ArrayList<>();
     }
 
     /**
@@ -178,13 +178,6 @@ public class GameBoard implements GameBoardHandler {
         return players;
     }
 
-
-    /**
-     * @return returns the number of players
-     */
-    public int getNumPlayers(){
-        return nPlayers;
-    }
 
     /**
      * @return returns the market board
@@ -245,7 +238,6 @@ public class GameBoard implements GameBoardHandler {
     public void addFaithToOthers(int amount){
 
         customMode.addFaithToOthers(amount, this);
-
     }
 
     /**
@@ -271,6 +263,63 @@ public class GameBoard implements GameBoardHandler {
             map.put(board.getNickname(),board.getTotalPoints());
         }
         return map;
+    }
+
+    /**
+     * @return true if all the players' boards have been initialized, false otherwise
+     */
+    private boolean isAllInitialized(){
+
+        for(Board board : players){
+            if(!board.isLeadersInitialized() || !board.isResourcesInitialized())
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * check if it is possible to play a turn
+     * @param turn the type of turn
+     * @throws InvalidActionException if it is not possible to play the turn
+     */
+    private void checkTurn(TurnType turn) throws InvalidActionException{
+        if(!isAllInitialized())
+            throw new InvalidActionException("Initialization not ended!");
+        if(!correctTurns.contains(turn))
+            throw new InvalidActionException("You can't do this action now!");
+    }
+
+    public void setStartTurns(){
+        correctTurns.clear();
+        correctTurns.add(TurnType.SWAP);
+        correctTurns.add(TurnType.TAKE_RESOURCES);
+        correctTurns.add(TurnType.MANAGE_LEADER);
+        correctTurns.add(TurnType.BUY_CARD);
+        correctTurns.add(TurnType.DO_PRODUCTION);
+    }
+
+    public void setMiddleTurns(){
+        correctTurns.clear();
+        correctTurns.add(TurnType.SWAP);
+        correctTurns.add(TurnType.MANAGE_LEADER);
+        correctTurns.add(TurnType.EXIT);
+    }
+
+    /**
+     * this method manages the end of the turn of a player and sets the new current player
+     */
+    public void endTurnMove(){
+
+        customMode.endTurnAction(this);
+        if(gameEnded){
+            virtualView.showEndGame(getTotalPoints());
+        }
+        virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
+        if(players.size() == 1 && disconnectedPlayers.size()==0) {
+            virtualView.showTopToken(customMode.showTopToken());
+            virtualView.showDecksUpdate(developmentDeck.showDeck());
+        }
+        setStartTurns();
     }
 
     //methods of interface GameBoardHandler
@@ -299,16 +348,10 @@ public class GameBoard implements GameBoardHandler {
         for(Board board : players) {
             virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
         }
+
+        virtualView.showGameStatus(true,"get resources",currentPlayer.getNickname(),TurnType.INITIALIZATION_LEADERS);
     }
 
-
-    /**
-     * @return the nickname of the current player
-     */
-    @Override
-    public String currentPlayerNickname() {
-        return currentPlayer.getNickname();
-    }
 
     /**
      * this method checks if the nickname belongs to the current player
@@ -320,63 +363,18 @@ public class GameBoard implements GameBoardHandler {
         return nickname.equals(currentPlayer.getNickname());
     }
 
-    /**
-     * this method manages the end of the turn of a player and sets the new current player
-     */
-    @Override
-    public void endTurnMove(){
-
-        customMode.endTurnAction(this);
-        if(gameEnded){
-            virtualView.showEndGame(getTotalPoints());
-        }
-        virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
-        if(players.size() == 1 && disconnectedPlayers.size()==0) {
-            virtualView.showTopToken(customMode.showTopToken());
-            virtualView.showDecksUpdate(developmentDeck.showDeck());
-        }
-    }
 
     /**
-     * @return true if the game is ended, false otherwise
+     * This method allows the current player to end his turn.
+     * @throws InvalidActionException if the player can't do this action.
      */
-    @Override
-    public boolean isGameEnded() {
-        return gameEnded;
+    public void exit() throws InvalidActionException{
+
+        checkTurn(TurnType.EXIT);
+        endTurnMove();
+        showAvailableTurns();
     }
 
-    /**
-     * @param turnType the type of the turn
-     * @return true if the type of the turn is one of the allowed types of turn, false otherwise
-     */
-    @Override
-    public boolean isPossibleTurn(TurnType turnType) {
-        return possibleTurn.getOrDefault(turnType,false);
-    }
-
-    /**
-     * this method sets the allowed types of turn after a player has successfully played a main turn (buyCard,takeResources,doProduction)
-     */
-    @Override
-    public void setMiddlePossibleTurn() {
-        this.possibleTurn.put(TurnType.MANAGE_LEADER, true);
-        this.possibleTurn.put(TurnType.TAKE_RESOURCES, false);
-        this.possibleTurn.put(TurnType.BUY_CARD, false);
-        this.possibleTurn.put(TurnType.DO_PRODUCTION, false);
-        this.possibleTurn.put(TurnType.EXIT, true);
-    }
-
-    /**
-     * this method sets the allowed type of turns at the beginning of the turn
-     */
-    @Override
-    public void setStartPossibleTurn() {
-        this.possibleTurn.put(TurnType.MANAGE_LEADER, true);
-        this.possibleTurn.put(TurnType.TAKE_RESOURCES, true);
-        this.possibleTurn.put(TurnType.BUY_CARD, true);
-        this.possibleTurn.put(TurnType.DO_PRODUCTION, true);
-        this.possibleTurn.put(TurnType.EXIT, false);
-    }
 
     /**
      * this method gets the production of the development card present in the indicated slot
@@ -420,15 +418,59 @@ public class GameBoard implements GameBoardHandler {
      * @throws InvalidActionException if the position is not correct
      */
     @Override
-    public boolean initializeLeaderCard(Map<Integer,Boolean> leaderStatus) {
+    public void initializeLeaderCard(Map<Integer,Boolean> leaderStatus) throws InvalidActionException{
 
-         if(currentPlayer.discardLeaderCard(leaderStatus)) {
-             virtualView.showLeaderCards(currentPlayer.showLeaderPosition(), currentPlayer.showLeaderStatus(), currentPlayer.getNickname());
+        if(currentPlayer.isLeadersInitialized())
+            throw new InvalidActionException("You have already initialized your cards!");
+        if(!currentPlayer.discardLeaderCard(leaderStatus))
+            throw new InvalidActionException("Wrong choice of leader cards!");
 
-             return true;
-         }
-         return false;
+        virtualView.showLeaderCards(currentPlayer.showLeaderPosition(), currentPlayer.showLeaderStatus(), currentPlayer.getNickname());
+        virtualView.showGameStatus(true,"get resources",currentPlayer.getNickname(),TurnType.INITIALIZATION_RESOURCE);
     }
+
+
+    /**
+     * This method allows the current player to manage resources during the initialization.
+     * @param resources the resources selected by the player
+     * @param shelves the shelves where the resources have to be inserted
+     * @return true if the operation is successful, false otherwise
+     */
+    @Override
+    public void insertResources(List<Resource> resources, List<Integer> shelves) throws InvalidActionException{
+
+        if(!(currentPlayer.isLeadersInitialized() && !currentPlayer.isResourcesInitialized()))
+            throw new InvalidActionException("You can't initialize your resources now!");
+
+        if (resources.size() != currentPlayer.getNumberResourcesInitialization())
+            throw new InvalidActionException("Wrong number of selected resources!");
+        //metto in warehouse
+        if (resources.stream().anyMatch(resource -> resource.getColor().equals(ResourceColor.RED)))
+            throw new InvalidActionException("Wrong number of selected resources!");
+
+        if (!currentPlayer.getWarehouse().checkInsertMultipleRes(resources, shelves))
+            throw new InvalidActionException("Wrong selected resources!");
+
+        for (int i = 0; i < resources.size(); i++) {
+            currentPlayer.getWarehouse().insertResource(shelves.get(i), resources.get(i));
+        }
+
+        endInsertResources();
+    }
+
+    private void endInsertResources(){
+
+        virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
+        currentPlayer.setResourcesInitialized();
+        endTurnMove();
+
+        if(!isAllInitialized()) {
+            virtualView.showGameStatus(true,"Initialize leader cards",currentPlayer.getNickname(),TurnType.INITIALIZATION_LEADERS);
+            return;
+        }
+        showAvailableTurns();
+    }
+
 
     /**
      * @return the production associated with the personal board
@@ -444,17 +486,21 @@ public class GameBoard implements GameBoardHandler {
      * @return true if the disconnection is successful, false otherwise
      */
     @Override
-    public boolean disconnectPlayer(String nickname) {
+    public void disconnectPlayer(String nickname) {
+
+        if(!isAllInitialized())
+            virtualView.showEndGame(getTotalPoints());
+        if(currentPlayer.getNickname().equals(nickname))
+            endTurnMove();
 
         for(int i=0; i<players.size(); i++){
             if(players.get(i).getNickname().equals(nickname)){
                 disconnectedPlayers.add(players.get(i));
                 virtualView.showDisconnection(players.get(i).getNickname());
                 players.remove(i);
-                return true;
             }
         }
-        return false;
+        showAvailableTurns();
     }
 
     /**
@@ -463,7 +509,7 @@ public class GameBoard implements GameBoardHandler {
      * @return true if the reconnection is successful, false otherwise
      */
     @Override
-    public boolean reconnectPlayer(String nickname) {
+    public void reconnectPlayer(String nickname) {
 
         for(int i=0; i<disconnectedPlayers.size(); i++){
 
@@ -473,10 +519,8 @@ public class GameBoard implements GameBoardHandler {
 
                 players.add(board);
                 disconnectedPlayers.remove(i);
-                return true;
             }
         }
-        return false;
     }
 
     /**
@@ -485,14 +529,16 @@ public class GameBoard implements GameBoardHandler {
      * @throws InvalidActionException if the action is invalid
      */
     @Override
-    public ArrayList<Marble> takeMarketRow(int row) throws InvalidActionException {
+    public void takeMarketRow(int row) throws InvalidActionException {
 
+        checkTurn(TurnType.TAKE_RESOURCES);
         try {
             Marble white = new MarbleWhite();
             marblesMarket = getMarketBoard().takeRow(row-1);
+            correctTurns.clear();
+            correctTurns.add(TurnType.MANAGE_MARBLE);
             virtualView.showMarketUpdate(marketBoard.showMarket());
             virtualView.showMarblesUpdate(marblesMarket, white.whiteTransformations(currentPlayer), currentPlayer.getNickname());
-            return new ArrayList<>(marblesMarket);
         }
         catch (IllegalMarketException e){throw new InvalidActionException(e.getMessage());}
 
@@ -504,14 +550,16 @@ public class GameBoard implements GameBoardHandler {
      * @throws InvalidActionException if the action is invalid
      */
     @Override
-    public ArrayList<Marble> takeMarketColumn(int column) throws InvalidActionException {
+    public void takeMarketColumn(int column) throws InvalidActionException {
 
+        checkTurn(TurnType.TAKE_RESOURCES);
         try {
             Marble white = new MarbleWhite();
             marblesMarket = getMarketBoard().takeColumn(column-1);
+            correctTurns.clear();
+            correctTurns.add(TurnType.MANAGE_MARBLE);
             virtualView.showMarketUpdate(marketBoard.showMarket());
             virtualView.showMarblesUpdate(marblesMarket, white.whiteTransformations(currentPlayer), currentPlayer.getNickname());
-            return new ArrayList<>(marblesMarket);
         }
         catch (IllegalMarketException e){throw new InvalidActionException(e.getMessage());}
 
@@ -524,11 +572,13 @@ public class GameBoard implements GameBoardHandler {
      * @param shelves the shelves where the resources associated to the marbles have to be inserted
      * @return true if the operation is successful, false if choices of the player are not allowed
      */
-    public boolean actionMarbles(List<Marble> marblesPlayer, List<PlayerAction> actions, List<Integer> shelves){
+    public void actionMarbles(List<Marble> marblesPlayer, List<PlayerAction> actions, List<Integer> shelves) throws InvalidActionException{
+
+        checkTurn(TurnType.MANAGE_MARBLE);
 
         Marble marblePlayer;
         if(!checkMarbles(marblesMarket,marblesPlayer,actions,shelves)) {
-            return false;
+            throw new InvalidActionException("Wrong marbles selected!");
         }
         for(int i=0; i<marblesMarket.size(); i++){
 
@@ -543,7 +593,8 @@ public class GameBoard implements GameBoardHandler {
 
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
         virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
-        return true;
+        setMiddleTurns();
+        showAvailableTurns();
     }
 
 
@@ -583,33 +634,6 @@ public class GameBoard implements GameBoardHandler {
         return true;
     }
 
-    /**
-     * This method allows the current player to manage resources during the initialization.
-     * @param resources the resources selected by the player
-     * @param shelves the shelves where the resources have to be inserted
-     * @return true if the operation is successful, false otherwise
-     */
-    @Override
-    public boolean insertResources(List<Resource> resources, List<Integer> shelves){
-
-        if(resources.size() != currentPlayer.getNumberResourcesInitialization())
-            return false;
-
-        if(resources.stream().anyMatch(resource -> resource.getColor().equals(ResourceColor.RED)))
-            return false;
-
-        if(!currentPlayer.getWarehouse().checkInsertMultipleRes(resources,shelves))
-            return false;
-
-        for(int i=0; i<resources.size(); i++){
-
-            currentPlayer.getWarehouse().insertResource(shelves.get(i), resources.get(i));
-        }
-        virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
-
-        return true;
-    }
-
 
     /**
      * This method allows two swap the content of two shelves of the warehouse of the current player.
@@ -619,10 +643,12 @@ public class GameBoard implements GameBoardHandler {
      */
     @Override
     public void swapWarehouse(int source, int target) throws InvalidActionException {
+
+        checkTurn(TurnType.SWAP);
         try {
             currentPlayer.getWarehouse().swap(source,target);
             virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
-
+            showAvailableTurns();
         } catch (IllegalShelfException e) {
             throw new InvalidActionException(e.getMessage());
         }
@@ -646,6 +672,9 @@ public class GameBoard implements GameBoardHandler {
         Slot slot1;
         Board board = currentPlayer;
         DevelopmentCard card;
+
+        checkTurn(TurnType.BUY_CARD);
+
         try {
             card = getDevelopmentDeck().readTop(color,level);
             card.checkReq(board,shelves,quantity,strongbox);
@@ -653,9 +682,6 @@ public class GameBoard implements GameBoardHandler {
 
         try {
             slot1 = board.getSlot(slot);
-        }
-        catch (IllegalSlotException e){throw new InvalidActionException(e.getMessage());}
-        try {
             slot1.insertCard(card);
             board.checkDevCard(card.getCardColor());
         }
@@ -668,6 +694,8 @@ public class GameBoard implements GameBoardHandler {
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
         virtualView.showSlotsUpdate(currentPlayer.showSlot(), currentPlayer.getNickname());
         virtualView.showDecksUpdate(developmentDeck.showDeck());
+        setMiddleTurns();
+        showAvailableTurns();
     }
 
     /**
@@ -683,6 +711,9 @@ public class GameBoard implements GameBoardHandler {
     public void doProduction(ArrayList<Production> productions, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException {
         Map<Resource,Integer> resourceStatus;
         Board board = currentPlayer;
+
+        checkTurn(TurnType.DO_PRODUCTION);
+
         try {
             resourceStatus = ResQuantity.createReqMap(board,shelves,quantity,strongbox);
 
@@ -702,7 +733,8 @@ public class GameBoard implements GameBoardHandler {
 
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
         virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
-
+        setMiddleTurns();
+        showAvailableTurns();
     }
 
     /**
@@ -714,6 +746,8 @@ public class GameBoard implements GameBoardHandler {
     public void activateCard(int position) throws InvalidActionException {
         LeaderCard card;
         Board board = currentPlayer;
+
+        checkTurn(TurnType.MANAGE_LEADER);
 
         try {
             card = board.getLeaderCard(position);
@@ -731,6 +765,7 @@ public class GameBoard implements GameBoardHandler {
             card.setStatus(true);
         }
         virtualView.showLeaderCards(currentPlayer.showLeaderPosition(), currentPlayer.showLeaderStatus(), currentPlayer.getNickname());
+        showAvailableTurns();
     }
 
     /**
@@ -740,25 +775,27 @@ public class GameBoard implements GameBoardHandler {
      */
     @Override
     public void removeCard(int position) throws InvalidActionException {
+
+        checkTurn(TurnType.MANAGE_LEADER);
         try{
             currentPlayer.removeLeaderCard(position);
             virtualView.showLeaderCards(currentPlayer.showLeaderPosition(), currentPlayer.showLeaderStatus(), currentPlayer.getNickname());
             virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
+            showAvailableTurns();
         }
         catch (IndexOutOfBoundsException e){throw new InvalidActionException(e.getMessage());}
     }
 
-    @Override
+
     /**
      *
      */
-    public void currentPlayer() {
+    public void showAvailableTurns() {
         LinkedList<String> turns = new LinkedList<>();
-        for(TurnType turnType : possibleTurn.keySet()){
-            if(possibleTurn.get(turnType))
-                turns.add(turnType.toString());
+        for(TurnType turnType : correctTurns){
+            turns.add(turnType.toString());
         }
-        virtualView.selectTurnAction(turns,currentPlayer.getNickname());
+        virtualView.showAvailableTurns(turns,currentPlayer.getNickname());
     }
 
 

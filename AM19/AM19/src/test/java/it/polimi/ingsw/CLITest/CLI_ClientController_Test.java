@@ -32,7 +32,7 @@ public class CLI_ClientController_Test {
             System.out.println("Disconnection executed");
         }
     }
-
+/*
     @Test
     public void InitializationSequenceSinglePlayer() throws IOException, InterruptedException {
         //SetUp of the Input streams
@@ -368,6 +368,6 @@ public class CLI_ClientController_Test {
         cli.plotView();
     }
 
-
+*/
 
 }

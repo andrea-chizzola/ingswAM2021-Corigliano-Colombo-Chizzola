@@ -6,6 +6,7 @@ import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Messages.MessageFactory;
+import it.polimi.ingsw.Model.Cards.Colors.CardColor;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Cards.Production;
@@ -15,6 +16,7 @@ import it.polimi.ingsw.Model.Turn.TakeResources;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * this class represents a CLI. It gives all the methods to "paint" the current status of the game
@@ -212,7 +214,7 @@ public class CLI implements View, SubjectView {
      * this method is used to print the status of the shared decks
      */
     public void plotDecks(){
-       plot(decksStatus);
+        plot(decksStatus);
     }
 
     /**
@@ -250,6 +252,11 @@ public class CLI implements View, SubjectView {
             CLIPainter.devCardPainter(viewStatus, PLAYERS_Y+1, BOXES_X + 30*i+20, "EMPTY");
     }
 
+    @Override
+    public void reply(boolean answer, String body, String nickName) {
+
+    }
+
     /**
      * this method is used to show a message
      * @param answer represents the type of message
@@ -263,6 +270,7 @@ public class CLI implements View, SubjectView {
         else{
             out.println("Action successfully performed. Let's proceed further.");
         }
+        //Scrivere che stai performando una certa azione e che il gioco prosegue correttamente.
     }
 
     /**
@@ -511,7 +519,7 @@ public class CLI implements View, SubjectView {
      * @param player is the nickname of the current player
      */
     @Override
-    public String selectTurnAction(List<String> turns, String player){
+    public void showAvailableTurns(List<String> turns, String player){
         plotView();
         StringBuilder available = new StringBuilder();
         for(String string : turns) available.append(string).append(", ");
@@ -526,15 +534,63 @@ public class CLI implements View, SubjectView {
             if(s.equals("SHOW_DECKS")) plotDecks();
         }
         while(!turns.contains(s));
-        try {
+        /*try {
             if(s.equals("DISCONNECT"))
                 viewObserver.update(MessageFactory.buildDisconnection("I want to be disconnected", model.getPersonalNickname()));
             else
                 viewObserver.update(MessageFactory.buildSelectedTurn(s, "Selection of the turn type"));
         }catch(MalformedMessageException e){
             //exit from client
+        }*/
+        actionMapper(s);
+    }
+
+    /**
+     * this helper method is used to perform a player action basing on their input
+     * @param action is the action selected by the player
+     */
+    private void actionMapper(String action){
+        switch(action){
+            case("BUY_CARD"): {
+                buyCardAction();
+                break;
+            }
+            case("DO_PRODUCTION"): {
+                doProductionsAction();
+                break;
+            }
+            case("MANAGE_LEADER"): {
+                leaderAction();
+                break;
+            }
+            case("TAKE_RESOURCES"): {
+                selectMarketAction();
+                break;
+            }
+            case("SWAP"): {
+                swapAction();
+                break;
+            }
+            case("EXIT"): {
+                try {
+                    viewObserver.update(MessageFactory.buildExit("End of turn selection"));
+                    //viewObserver.update(MessageFactory.buildSelectedTurn("EXIT", "End of turn selection"));
+                }catch(MalformedMessageException e){
+                    //exit from client
+                }
+                break;
+            }
+            case("DISCONNECT"): {
+                try {
+                    viewObserver.update(MessageFactory.buildDisconnection(
+                            "I want to be disconnected", model.getPersonalNickname()));
+                } catch (MalformedMessageException e) {
+                    //exit from client
+                }
+
+                break;
+            }
         }
-        return s;
     }
 
     /**
@@ -686,7 +742,7 @@ public class CLI implements View, SubjectView {
 
             position = Integer.parseInt(sequence[0]);
         }catch (IndexOutOfBoundsException | NumberFormatException e){
-           // return;
+            // return;
         }
 
         try {
@@ -701,7 +757,7 @@ public class CLI implements View, SubjectView {
      * this method is used to catch the action of a player of a shared DevelopmentCard
      */
     @Override
-    public void buyCardAction() throws MalformedMessageException {
+    public void buyCardAction(){
         plotDecks();
         String[] selection;
         String action;
@@ -726,10 +782,13 @@ public class CLI implements View, SubjectView {
         out.println("You can also get something from your strongbox.");
         strongbox = helpResSequence();
 
-        String message = MessageFactory.buildBuyCard(card.getCardColor().getColor(),
-                card.getCardLevel(), slot, id,"Buy card", warehouse, strongbox);
+        try {
+            viewObserver.update(MessageFactory.buildBuyCard(card.getCardColor().getColor(),
+                    card.getCardLevel(), slot, id, "Buy card", warehouse, strongbox));
 
-        viewObserver.update(message);
+        }catch(MalformedMessageException e){
+            //exit from client
+        }
     }
 
     /**
@@ -781,7 +840,7 @@ public class CLI implements View, SubjectView {
      * this method is used to catch the action of a player on their productions
      */
     @Override
-    public void doProductionsAction() throws MalformedMessageException {
+    public void doProductionsAction(){
         String action, warehouse, strongbox, customResources, customProducts, leaders = "", developments = "";
         boolean decision;
         out.println("So you want to produce some resources... good choice. Let's start");
@@ -813,8 +872,12 @@ public class CLI implements View, SubjectView {
         out.println("You can also get something from your strongbox.");
         strongbox = helpResSequence();
 
-        viewObserver.update(MessageFactory.BuildDoProduction(decision,developments,
-                leaders,customResources,customProducts,warehouse, strongbox, "Do production"));
+        try {
+            viewObserver.update(MessageFactory.BuildDoProduction(decision,developments,
+                    leaders,customResources,customProducts,warehouse, strongbox, "Do production"));
+        } catch (MalformedMessageException e) {
+            //exit from client
+        }
 
     }
 
@@ -915,11 +978,11 @@ public class CLI implements View, SubjectView {
     public boolean swapAction() {
         String decision;
         String[] selections;
-        do {
+        /*do {
             out.println("Would you like to perform a slot swap? [YES/NO]");
             decision = getInput();
         }while(!decision.toUpperCase().equals("YES") && !decision.toUpperCase().equals("NO"));
-        if(decision.toUpperCase().equals("NO")) return false;
+        if(decision.toUpperCase().equals("NO")) return false;*/
         do{
             out.println("Select the source and the target slots for swapping. Command:- source:target");
             decision = getInput();

@@ -31,7 +31,7 @@ public class CLIPainterTest {
             Arrays.fill(s, CLIColors.RESET.getColor() + " ");
         }
     }
-
+/*
     @Test
     public void printLogoTest(){
         CLIPainter.printLogo();
@@ -212,5 +212,5 @@ public class CLIPainterTest {
             plot(test);
         }
     }
-
+*/
 }

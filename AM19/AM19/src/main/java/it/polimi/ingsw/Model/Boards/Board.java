@@ -31,6 +31,16 @@ public class Board {
     private GameBoard gameBoard;
 
     /**
+     * indicates if the leader cards have been initialized
+     */
+    private boolean leadersInitialized;
+
+    /**
+     * indicates if the resources have been initialized
+     */
+    private boolean resourcesInitialized;
+
+    /**
      * contains the Leader Cards owned by the player
      */
     private LinkedList<LeaderCard> leaders;
@@ -82,6 +92,8 @@ public class Board {
         for(int i=0; i<nSlots; i++){
             slots.add(new Slot());
         }
+        leadersInitialized = false;
+        resourcesInitialized = false;
 
         leaders = new LinkedList<>();
         strongBox = new StrongBox();
@@ -109,6 +121,28 @@ public class Board {
      */
     public String getNickname() {
         return nickname;
+    }
+
+
+    /**
+     * @return true if the leader cards have been initialized yet, false otherwise
+     */
+    public boolean isLeadersInitialized() {
+        return leadersInitialized;
+    }
+
+    /**
+     * @return true if the resources have been initialized yet, false otherwise
+     */
+    public boolean isResourcesInitialized() {
+        return resourcesInitialized;
+    }
+
+    /**
+     * sets the status of initialized resources
+     */
+    public void setResourcesInitialized(){
+        resourcesInitialized = true;
     }
 
     /**
@@ -240,6 +274,7 @@ public class Board {
             if(!leaderStatus.get(i))
                 leaders.remove(i - 1);
         }
+        leadersInitialized = true;
         return true;
     }
 

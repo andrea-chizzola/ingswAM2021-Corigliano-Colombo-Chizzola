@@ -32,18 +32,15 @@ class ResQuantityTest {
         //Warehouse: Quantity:Shelf:Resource
         // 1:1:coin, 1:2:servant, 2:3:stones, 1:4:shield, 0:5:coin
         Warehouse warehouse = board.getWarehouse();
-        try{
-            warehouse.addResource(1, new Coin());
-            warehouse.addResource(2, new Servant());
-            warehouse.addResource(3, new Stone());
-            warehouse.addResource(3, new Stone());
-            warehouse.addShelf(new ResQuantity(new Shield(), 2));
-            warehouse.addResource(4, new Shield());
-            warehouse.addShelf(new ResQuantity(new Coin(), 2));
-        }
-        catch(IllegalShelfException e){
-            fail();
-        }
+
+        warehouse.insertResource(1, new Coin());
+        warehouse.insertResource(2, new Servant());
+        warehouse.insertResource(3, new Stone());
+        warehouse.insertResource(3, new Stone());
+        warehouse.addShelf(new ResQuantity(new Shield(), 2));
+        warehouse.insertResource(4, new Shield());
+        warehouse.addShelf(new ResQuantity(new Coin(), 2));
+
 
         //StrongBox: Quantity:Resource
         //10:coin, 1:Servant, 5:Shield, 3:Stone

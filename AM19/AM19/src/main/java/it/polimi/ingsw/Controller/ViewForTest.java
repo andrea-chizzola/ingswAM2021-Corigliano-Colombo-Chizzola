@@ -19,6 +19,11 @@ public class ViewForTest implements View {
 
     }
 
+    @Override
+    public void reply(boolean answer, String body, String nickName) {
+
+    }
+
     /**
      * this method is used to show a message
      *
@@ -156,8 +161,8 @@ public class ViewForTest implements View {
      * @param player is the nickname of the current player
      */
     @Override
-    public String selectTurnAction(List<String> turns, String player) {
-        return null;
+    public void showAvailableTurns(List<String> turns, String player) {
+
     }
 
     /**

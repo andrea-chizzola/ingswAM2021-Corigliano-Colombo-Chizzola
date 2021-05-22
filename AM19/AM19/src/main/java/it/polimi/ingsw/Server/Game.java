@@ -224,15 +224,13 @@ public class Game {
         }
 
         GameBoardHandler gameBoard = new GameBoard(names, file);
-        //gameBoard.giveLeaderCards(file);
 
-        View virtualView = new VirtualView(this,gameBoard);
+        View virtualView = new VirtualView(this);
 
         gameBoard.attachView(virtualView);
         gameBoard.initializeGame(file);
 
         this.messageHandler = new MessageHandler(gameBoard, virtualView);
-
 
         System.out.println("[SERVER] Game is ready to start");
 

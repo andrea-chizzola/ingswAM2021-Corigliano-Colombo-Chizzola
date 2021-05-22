@@ -14,11 +14,9 @@ import java.util.*;
 public class VirtualView implements View {
 
     private Game game;
-    private GameBoardHandler gameBoardHandler;
 
-    public VirtualView(Game game, GameBoardHandler gameBoardHandler) {
+    public VirtualView(Game game) {
         this.game = game;
-        this.gameBoardHandler = gameBoardHandler;
     }
 
     /**
@@ -31,26 +29,25 @@ public class VirtualView implements View {
 
     /**
      * this method is used to show a message
-     *
      * @param answer represents the type of message
      * @param body   is the content of the message
-     *//*
+     */
     @Override
-    public void showAnswer(boolean answer, String body, String nickName) {
+    public void reply(boolean answer, String body, String nickName) {
 
         try {
             String message = MessageFactory.buildReply(answer,body,nickName);
             game.send(message,nickName);
         }catch (MalformedMessageException e){ e.printStackTrace();}
 
-    }*/
+    }
 
     /**
      * this method is used to show a message
      * @param answer represents the type of message
      * @param body is the content of the message
      * @param nickName represents the nickname of involved player
-     * @param nickName represents the current state of the game
+     * @param state represents the current state of the game
      */
     public void showGameStatus(boolean answer, String body, String nickName, TurnType state){
         try {
@@ -61,7 +58,6 @@ public class VirtualView implements View {
 
     /**
      * this method is used to show an update of the marketBoard
-     *
      * @param tray is the current state of the market tray
      */
     @Override
@@ -83,7 +79,6 @@ public class VirtualView implements View {
 
     /**
      * this method is used to show an update of the shared decks on the GameBoard
-     *
      * @param decks contains the top cards of each deck
      */
     @Override
@@ -105,7 +100,6 @@ public class VirtualView implements View {
 
     /**
      * this method is used to show an update of one's card slots
-     *
      * @param slots represent the current state of one's card slots
      */
     @Override
@@ -125,7 +119,6 @@ public class VirtualView implements View {
     @Override
     public void showLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status,  String nickName) {
         try {
-            //aggiungere nickname al factory
             String message = MessageFactory.buildLeaderUpdate(cards,status,nickName, "update leader cards");
             game.sendAll(message);
         }catch (MalformedMessageException e){e.printStackTrace();}
@@ -150,7 +143,6 @@ public class VirtualView implements View {
 
     /**
      * this method is used to show
-     *
      * @param action is the ID of the top token
      */
     @Override
@@ -200,19 +192,15 @@ public class VirtualView implements View {
 
     /**
      * this method is used to catch the player's selected turn
-     *
      * @param turns  is the list of available turns
      * @param player is the nickname of the current player
      */
     @Override
-    public String selectTurnAction(List<String> turns, String player) {
-        try {
-            String nickName = gameBoardHandler.currentPlayerNickname();
-            String message = MessageFactory.buildCurrentPlayer(nickName,turns,"current player");
-            //game.send(message,nickName);
+    public void showAvailableTurns(List<String> turns, String player) {
+       try {
+            String message = MessageFactory.buildCurrentPlayer(player,turns,"current player");
             game.sendAll(message);
         }catch (MalformedMessageException e){ e.printStackTrace();}
-        return "";
     }
 
     /**
@@ -221,19 +209,6 @@ public class VirtualView implements View {
     @Override
     public void selectLeaderAction() {
 
-        try {
-            String message = MessageFactory.buildGameStatus(true,"Initialize cards",gameBoardHandler.currentPlayerNickname(),TurnType.INITIALIZATION_LEADERS);
-            game.send(message,gameBoardHandler.currentPlayerNickname());
-        }catch (MalformedMessageException e){ e.printStackTrace();}
-        /*
-        try {
-            Map<Integer,ItemStatus> map = new HashMap<>();
-            for(Integer i : cards.keySet()){
-                map.put(i,ItemStatus.INACTIVE);
-            }
-            String message = MessageFactory.buildLeaderUpdate(cards,map, gameBoardHandler.currentPlayer(), "leader cards to choose");
-            game.send(message,gameBoardHandler.currentPlayer());
-        }catch (MalformedMessageException e){ e.printStackTrace();}*/
     }
 
     /**
@@ -242,11 +217,6 @@ public class VirtualView implements View {
     @Override
     public void selectMarketAction() {
 
-        try {
-            String nickName = gameBoardHandler.currentPlayerNickname();
-            String message = MessageFactory.buildGameStatus(true,"select market", nickName, TurnType.TAKE_RESOURCES);
-            game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
     }
 
 
@@ -255,11 +225,6 @@ public class VirtualView implements View {
      */
     @Override
     public void leaderAction() {
-        try {
-            String nickName = gameBoardHandler.currentPlayerNickname();
-            String message = MessageFactory.buildGameStatus(true,"leader action", nickName,TurnType.MANAGE_LEADER);
-            game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
     }
 
     /**
@@ -267,11 +232,6 @@ public class VirtualView implements View {
      */
     @Override
     public void buyCardAction() {
-        try {
-            String nickName = gameBoardHandler.currentPlayerNickname();
-            String message = MessageFactory.buildGameStatus(true,"buy card", nickName, TurnType.BUY_CARD);
-            game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
     }
 
     /**
@@ -279,11 +239,7 @@ public class VirtualView implements View {
      */
     @Override
     public void doProductionsAction() {
-        try {
-            String nickName = gameBoardHandler.currentPlayerNickname();
-            String message = MessageFactory.buildGameStatus(true,"do production", nickName, TurnType.DO_PRODUCTION);
-            game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+
     }
 
     /**
@@ -291,11 +247,7 @@ public class VirtualView implements View {
      */
     @Override
     public void getResourcesAction() {
-        try {
-            String nickName = gameBoardHandler.currentPlayerNickname();
-            String message = MessageFactory.buildGameStatus(true,"get resources", nickName,TurnType.INITIALIZATION_RESOURCE);
-            game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+
     }
 
     /**
@@ -303,14 +255,9 @@ public class VirtualView implements View {
      */
     @Override
     public boolean swapAction() {
-        try {
-            String nickName = gameBoardHandler.currentPlayerNickname();
-            String message = MessageFactory.buildGameStatus(true,"swap action", nickName,TurnType.SWAP);
-            game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+
         return true;
     }
-
 
 
     /**

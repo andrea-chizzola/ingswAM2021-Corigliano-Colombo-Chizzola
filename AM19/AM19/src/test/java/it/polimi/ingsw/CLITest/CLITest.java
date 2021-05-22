@@ -33,7 +33,7 @@ public class CLITest {
         cli.initialize();
         System.out.println(" ");
     }
-
+/*
     @Test
     public void mainSightTest(){
         Map<String, Integer> faith = new HashMap<>();
