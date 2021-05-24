@@ -3,8 +3,7 @@ package it.polimi.ingsw.CLITest;
 import it.polimi.ingsw.Client.ClientController;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Client.ViewObserver;
-import it.polimi.ingsw.View.CLI;
-import org.junit.jupiter.api.*;
+import it.polimi.ingsw.View.CLI.CLI;
 
 import java.io.*;
 

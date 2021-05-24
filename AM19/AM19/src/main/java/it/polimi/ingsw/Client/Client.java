@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import it.polimi.ingsw.View.CLI;
+import it.polimi.ingsw.View.CLI.CLI;
 import it.polimi.ingsw.View.View;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class Client implements ViewObserver{
     }
 
     /**
-     * this method is used to notify the willingness of the player to disconnect
+     * this method is used to notify the willingness of the player to be disconnected
      */
     @Override
     public void notifyDisconnection() {

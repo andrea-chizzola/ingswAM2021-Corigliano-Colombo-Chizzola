@@ -1,12 +1,9 @@
 package it.polimi.ingsw.Model.MarketBoard;
 
-import it.polimi.ingsw.Exceptions.*;
 import it.polimi.ingsw.Model.Boards.Board;
-import it.polimi.ingsw.Model.Resources.Faith;
 import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.Model.Resources.Servant;
-import it.polimi.ingsw.Model.Resources.Shield;
-import it.polimi.ingsw.View.CLIColors;
+import it.polimi.ingsw.View.CLI.CLIColors;
 
 import java.util.LinkedList;
 

@@ -64,7 +64,7 @@ class ResourceReqDevTest {
         LinkedList<ResQuantity> products = new LinkedList<>();
         Production production = new Production(materials,products, 1, 0);
 
-        card = new DevelopmentCard(3,production,req, new Green(), 1, "1");
+        card = new DevelopmentCard(3,production,req, new Green(), 1, "1", "test1");
     }
 
     @Test
@@ -140,7 +140,7 @@ class ResourceReqDevTest {
         LinkedList<ResQuantity> products = new LinkedList<>();
         Production production = new Production(materials,products, 1, 2);
 
-        card = new DevelopmentCard(3,production,req, new Green(), 1, "2");
+        card = new DevelopmentCard(3,production,req, new Green(), 1, "2", "test2");
 
         ArrayList<Integer> shelves = new ArrayList<>();
         shelves.add(2);

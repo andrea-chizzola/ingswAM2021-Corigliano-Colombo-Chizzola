@@ -26,6 +26,7 @@ public abstract class Card{
     private SpecialEffect specialEffect;
     private Requirements requirements;
     private String id;
+    private String image;
 
     /**
      * @param victoryPoint indicates the victory points associated to the card
@@ -33,12 +34,13 @@ public abstract class Card{
      * @param requirements indicates the necessary requirements to buy the card
      * @param id is the ID of the card
      */
-    public Card(int victoryPoint, SpecialEffect specialEffect, Requirements requirements, String id) {
+    public Card(int victoryPoint, SpecialEffect specialEffect, Requirements requirements, String id, String image) {
 
         this.victoryPoint = victoryPoint;
         this.specialEffect = specialEffect;
         this.requirements = requirements;
         this.id = id;
+        this.image = image;
 
     }
 
@@ -118,19 +120,21 @@ public abstract class Card{
                 specialEffect.toString();
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Card card = (Card) o;
         return victoryPoint == card.victoryPoint &&
-                specialEffect.equals(card.specialEffect) &&
-                requirements.equals(card.requirements);
+                Objects.equals(specialEffect, card.specialEffect) &&
+                Objects.equals(requirements, card.requirements) &&
+                Objects.equals(id, card.id) &&
+                Objects.equals(image, card.image);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(victoryPoint, specialEffect, requirements);
+        return Objects.hash(victoryPoint, specialEffect, requirements, id, image);
     }
-
 }

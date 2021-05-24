@@ -1,13 +1,10 @@
 package it.polimi.ingsw.Model.MarketBoard;
 
-import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
-import it.polimi.ingsw.Model.Boards.Modifications;
 import it.polimi.ingsw.Model.Resources.*;
-import it.polimi.ingsw.View.CLIColors;
+import it.polimi.ingsw.View.CLI.CLIColors;
 
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * This class implements Marble.

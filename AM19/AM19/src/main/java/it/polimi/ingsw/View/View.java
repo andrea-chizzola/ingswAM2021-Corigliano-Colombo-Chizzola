@@ -135,12 +135,12 @@ public interface View {
     /**
      * this method is used to catch the action of a player of a shared DevelopmentCard
      */
-    void buyCardAction() throws MalformedMessageException;
+    void buyCardAction();
 
     /**
      * this method is used to catch the action of a player on their productions
      */
-    void doProductionsAction() throws MalformedMessageException;
+    void doProductionsAction();
 
     /**
      * this action is used to catch the resources chosen by a player

@@ -18,8 +18,8 @@ public class MoveBlack extends  Action{
      * creates a new move black token
      * @param amount indicates how many positions the black cross has to be moved
      */
-    public MoveBlack(int amount, String id) {
-        super(id);
+    public MoveBlack(int amount, String id, String image ) {
+        super(id, image);
         this.amount = amount;
     }
 

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <tokens>
     <discard>
-        <cards id = "1" color="PURPLE" amount = "2"/>
-        <cards id = "2" color="YELLOW" amount = "2"/>
-        <cards id = "3" color="GREEN" amount = "2"/>
-        <cards id = "4" color="BLUE" amount = "2"/>
+        <cards id = "1" color="PURPLE" amount = "2" image = "src/main/resources/Images/punchboard/discardPurple.png"/>
+        <cards id = "2" color="YELLOW" amount = "2" image = "src/main/resources/Images/punchboard/discardYellow.png"/>
+        <cards id = "3" color="GREEN" amount = "2" image = "src/main/resources/Images/punchboard/discardGreen.png"/>
+        <cards id = "4" color="BLUE" amount = "2" image = "src/main/resources/Images/punchboard/discardBlue.png"/>
     </discard>
 
     <move>
-        <value id = "5" amount = "2"/>
+        <value id = "5" amount = "2" image = "src/main/resources/Images/punchboard/move2.png"/>
     </move>
 
     <moveAndShuffle>
-        <value id = "6" amount = "1"/>
+        <value id = "6" amount = "1" image = "src/main/resources/Images/punchboard/moveAndShuffle.png"/>
     </moveAndShuffle>
 </tokens>

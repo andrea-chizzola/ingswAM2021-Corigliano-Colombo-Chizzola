@@ -43,7 +43,7 @@ public class CardParserTest {
         Requirements requirements = new ResourceReqDev(req);
 
         //test of the content of the two cards
-        assertEquals(card, new DevelopmentCard(1,effect, requirements ,new Green(), 1 , "1"));
+        assertEquals(card, new DevelopmentCard(1,effect, requirements ,new Green(), 1 , "1", "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png"));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class CardParserTest {
         Requirements requirements = new CardRequirements(req);
 
         //test of the content of the two cards
-        assertEquals(card, new LeaderCard(2,effect, requirements, "1"));
+        assertEquals(card, new LeaderCard(2,effect, requirements, "1", "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-49-1.png"));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class CardParserTest {
         Requirements requirements = new ResourceReqLeader(req);
 
         //test of the content of the two cards
-        assertEquals(card, new LeaderCard(3,effect, requirements, "2"));
+        assertEquals(card, new LeaderCard(3,effect, requirements, "2", "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png"));
     }
 
     @Test
@@ -96,7 +96,7 @@ public class CardParserTest {
         Requirements requirements = new CardRequirements(req);
 
         //test of the content of the two cards
-        assertEquals(card, new LeaderCard(5,effect, requirements, "3"));
+        assertEquals(card, new LeaderCard(5,effect, requirements, "3", "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-57-1.png"));
     }
 
     @Test
@@ -119,6 +119,6 @@ public class CardParserTest {
         Requirements requirements = new CardRequirements(req);
 
         //test of the content of the two cards
-        assertEquals(card, new LeaderCard(4,effect, requirements, "4"));
+        assertEquals(card, new LeaderCard(4,effect, requirements, "4", "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-61-1.png"));
     }
 }

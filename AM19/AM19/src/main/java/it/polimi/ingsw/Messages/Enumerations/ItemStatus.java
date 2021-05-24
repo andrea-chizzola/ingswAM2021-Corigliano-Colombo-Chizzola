@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Messages.Enumerations;
 
-import it.polimi.ingsw.View.CLIColors;
+import it.polimi.ingsw.View.CLI.CLIColors;
 
 public enum ItemStatus {
     ACTIVE(CLIColors.F_GREEN.getColor() + "✚", true),

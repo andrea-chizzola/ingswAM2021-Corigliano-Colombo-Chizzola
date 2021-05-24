@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DiscardTest {
 
-    private Discard discardBlue = new Discard(new Blue(), 2, "1");
-    private Discard discardGreen = new Discard(new Green(), 2, "2");
-    private Discard discardPurple = new Discard(new Purple(), 2, "3");
-    private Discard discardYellow = new Discard(new Yellow(), 2, "4");
+    private Discard discardBlue = new Discard(new Blue(), 2, "1", "test1");
+    private Discard discardGreen = new Discard(new Green(), 2, "2", "test2");
+    private Discard discardPurple = new Discard(new Purple(), 2, "3", "test3");
+    private Discard discardYellow = new Discard(new Yellow(), 2, "4", "test4");
     private SinglePlayer singlePlayer;
     private GameBoard gameBoard;
     private final String file = "defaultConfiguration.xml";

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <leaderCards>
-    <leader id = "1" points = "2">
+    <leader id = "1" points = "2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-49-1.png">
         <requirements>
             <cardRequirement>
                 <card color="YELLOW" level="1" amount="1"/>
@@ -13,8 +13,8 @@
             </discount>
         </effect>
     </leader>
-    <!-- -->
-    <leader id = "2" points = "3">
+
+    <leader id = "2" points = "3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png">
         <requirements>
             <resourceRequirement>
                 <resquantity amount="5" resource="COINS"/>
@@ -26,8 +26,8 @@
             </extraSlot>
         </effect>
     </leader>
-    <!-- -->
-    <leader id = "3" points = "5">
+
+    <leader id = "3" points = "5" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-57-1.png">
         <requirements>
             <cardRequirement>
                 <card amount="2" color="YELLOW" level="1"/>
@@ -38,8 +38,8 @@
             <whiteMarble resource="SERVANTS"/>
         </effect>
     </leader>
-    <!-- -->
-    <leader id = "4" points = "4">
+
+    <leader id = "4" points = "4" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-61-1.png">
         <requirements>
             <cardRequirement>
                 <card amount="1" color="YELLOW" level="2"/>

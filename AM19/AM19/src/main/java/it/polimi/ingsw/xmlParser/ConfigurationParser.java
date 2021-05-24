@@ -84,6 +84,15 @@ public class ConfigurationParser{
     }
 
     /**
+     * this method returns the image path of an object from a XML file
+     * @param el is the element containing the path
+     * @return a String that represents the path
+     */
+    protected static String getImagePath(Element el){
+        return el.getAttribute("image");
+    }
+
+    /**
      * This method extract the path of a configuration file from another XML file
      * @param file is the name of the XML that contains the configuration files
      * @param argument is the type of the target configuration file

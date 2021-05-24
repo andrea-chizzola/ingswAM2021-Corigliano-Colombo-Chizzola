@@ -27,10 +27,11 @@ public class DevelopmentCard extends Card{
      * @param color indicates the color associated to the development card
      * @param level indicates the level associated to the development card
      * @param id indicates the ID of the card
+     * @param image is the path of the card image
      */
-    public DevelopmentCard(int victoryPoint, SpecialEffect specialEffect, Requirements requirements, CardColor color, int level, String id) {
+    public DevelopmentCard(int victoryPoint, SpecialEffect specialEffect, Requirements requirements, CardColor color, int level, String id, String image) {
 
-        super(victoryPoint, specialEffect, requirements, id);
+        super(victoryPoint, specialEffect, requirements, id, image);
         this.color = color;
         this.level = level;
 

@@ -22,10 +22,11 @@ public class LeaderCard extends Card{
      * @param specialEffect indicates the production of a development card or the special effect of a leader card
      * @param requirements indicates the necessary requirements to buy the card
      * @param id indicates the ID of the card
+     * @param image is the path of the card image
      */
-    public LeaderCard(int victoryPoint, SpecialEffect specialEffect, Requirements requirements, String id){
+    public LeaderCard(int victoryPoint, SpecialEffect specialEffect, Requirements requirements, String id, String image){
 
-        super(victoryPoint, specialEffect, requirements, id);
+        super(victoryPoint, specialEffect, requirements, id, image);
         this.status = false;
 
     }

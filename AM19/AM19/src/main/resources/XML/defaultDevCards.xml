@@ -2,7 +2,7 @@
 
 <developmentCards>
     <!-- GREEN cards - level 1 -->
-    <card id = "1" points="1" color="GREEN" level="1">
+    <card id = "1" points="1" color="GREEN" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="2" />
         </requirements>
@@ -17,7 +17,7 @@
         </production>
     </card>
 
-    <card id = "2" points="2" color="GREEN" level="1">
+    <card id = "2" points="2" color="GREEN" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-5-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="1" />
             <resquantity resource="SERVANTS" amount="1" />
@@ -34,7 +34,7 @@
         </production>
     </card>
 
-    <card id = "3" points="3" color="GREEN" level="1">
+    <card id = "3" points="3" color="GREEN" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-9-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="3" />
         </requirements>
@@ -51,7 +51,7 @@
         </production>
     </card>
 
-    <card id = "4" points="4" color="GREEN" level="1">
+    <card id = "4" points="4" color="GREEN" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-13-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="2" />
             <resquantity resource="COINS" amount="2" />
@@ -70,7 +70,7 @@
     </card>
 
     <!-- GREEN cards - level 2 -->
-    <card id = "5" points="5" color="GREEN" level="2">
+    <card id = "5" points="5" color="GREEN" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-17-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="4" />
         </requirements>
@@ -85,7 +85,7 @@
         </production>
     </card>
 
-    <card id = "6" points="6" color="GREEN" level="2">
+    <card id = "6" points="6" color="GREEN" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-21-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="3" />
             <resquantity resource="SERVANTS" amount="2" />
@@ -102,7 +102,7 @@
         </production>
     </card>
 
-    <card id = "7" points="7" color="GREEN" level="2">
+    <card id = "7" points="7" color="GREEN" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-25-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="5" />
         </requirements>
@@ -118,7 +118,7 @@
         </production>
     </card>
 
-    <card id = "8" points="8" color="GREEN" level="2">
+    <card id = "8" points="8" color="GREEN" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-29-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="3" />
             <resquantity resource="COINS" amount="3" />
@@ -135,7 +135,7 @@
         </production>
     </card>
     <!-- GREEN cards - level 3 -->
-    <card id = "9" points="9" color="GREEN" level="3">
+    <card id = "9" points="9" color="GREEN" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-33-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="6" />
         </requirements>
@@ -151,7 +151,7 @@
         </production>
     </card>
 
-    <card id = "10" points="10" color="GREEN" level="3">
+    <card id = "10" points="10" color="GREEN" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-37-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="5" />
             <resquantity resource="SERVANTS" amount="2" />
@@ -170,7 +170,7 @@
         </production>
     </card>
 
-    <card id = "11" points="11" color="GREEN" level="3">
+    <card id = "11" points="11" color="GREEN" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-41-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="7" />
         </requirements>
@@ -186,7 +186,7 @@
         </production>
     </card>
 
-    <card id = "12" points="12" color="GREEN" level="3">
+    <card id = "12" points="12" color="GREEN" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-45-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="4" />
             <resquantity resource="COINS" amount="4" />
@@ -206,7 +206,7 @@
 
 
     <!-- PURPLE cards - level 1 -->
-    <card id = "13" points="1" color="PURPLE" level="1">
+    <card id = "13" points="1" color="PURPLE" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-2-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="2" />
         </requirements>
@@ -221,7 +221,7 @@
         </production>
     </card>
 
-    <card id = "14" points="2" color="PURPLE" level="1">
+    <card id = "14" points="2" color="PURPLE" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-6-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="1" />
             <resquantity resource="SERVANTS" amount="1" />
@@ -238,7 +238,7 @@
         </production>
     </card>
 
-    <card id = "15" points="3" color="PURPLE" level="1">
+    <card id = "15" points="3" color="PURPLE" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-10-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="3" />
         </requirements>
@@ -255,7 +255,7 @@
         </production>
     </card>
 
-    <card id = "16" points="4" color="PURPLE" level="1">
+    <card id = "16" points="4" color="PURPLE" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-14-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="2" />
             <resquantity resource="STONES" amount="2" />
@@ -274,7 +274,7 @@
     </card>
 
     <!-- PURPLE cards - level 2 -->
-    <card id = "17" points="5" color="PURPLE" level="2">
+    <card id = "17" points="5" color="PURPLE" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-18-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="4" />
         </requirements>
@@ -289,7 +289,7 @@
         </production>
     </card>
 
-    <card id = "18" points="6" color="PURPLE" level="2">
+    <card id = "18" points="6" color="PURPLE" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-22-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="3" />
             <resquantity resource="COINS" amount="2" />
@@ -306,7 +306,7 @@
         </production>
     </card>
 
-    <card id = "19" points="7" color="PURPLE" level="2">
+    <card id = "19" points="7" color="PURPLE" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-26-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="5" />
         </requirements>
@@ -322,7 +322,7 @@
         </production>
     </card>
 
-    <card id = "20" points="8" color="PURPLE" level="2">
+    <card id = "20" points="8" color="PURPLE" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-30-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="3" />
             <resquantity resource="SHIELDS" amount="3" />
@@ -339,7 +339,7 @@
         </production>
     </card>
     <!-- PURPLE cards - level 3 -->
-    <card id = "21" points="9" color="PURPLE" level="3">
+    <card id = "21" points="9" color="PURPLE" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-34-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="6" />
         </requirements>
@@ -355,7 +355,7 @@
         </production>
     </card>
 
-    <card id = "22" points="10" color="PURPLE" level="3">
+    <card id = "22" points="10" color="PURPLE" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-38-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="5" />
             <resquantity resource="COINS" amount="2" />
@@ -374,7 +374,7 @@
         </production>
     </card>
 
-    <card id = "23" points="11" color="PURPLE" level="3">
+    <card id = "23" points="11" color="PURPLE" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-42-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="7" />
         </requirements>
@@ -390,7 +390,7 @@
         </production>
     </card>
 
-    <card id = "24" points="12" color="PURPLE" level="3">
+    <card id = "24" points="12" color="PURPLE" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-46-1.png">
         <requirements>
             <resquantity resource="SERVANTS" amount="4" />
             <resquantity resource="SHIELDS" amount="4" />
@@ -410,7 +410,7 @@
 
 
     <!-- BLUE cards - level 1 -->
-    <card id = "25" points="1" color="BLUE" level="1">
+    <card id = "25" points="1" color="BLUE" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-3-1.png">
         <requirements>
             <resquantity resource="COINS" amount="2" />
         </requirements>
@@ -425,7 +425,7 @@
         </production>
     </card>
 
-    <card id = "26" points="2" color="BLUE" level="1">
+    <card id = "26" points="2" color="BLUE" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-7-1.png">
         <requirements>
             <resquantity resource="COINS" amount="1" />
             <resquantity resource="SERVANTS" amount="1" />
@@ -442,7 +442,7 @@
         </production>
     </card>
 
-    <card id = "27" points="3" color="BLUE" level="1">
+    <card id = "27" points="3" color="BLUE" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-11-1.png">
         <requirements>
             <resquantity resource="COINS" amount="3" />
         </requirements>
@@ -459,7 +459,7 @@
         </production>
     </card>
 
-    <card id = "28" points="4" color="BLUE" level="1">
+    <card id = "28" points="4" color="BLUE" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-15-1.png">
         <requirements>
             <resquantity resource="COINS" amount="2" />
             <resquantity resource="SERVANTS" amount="2" />
@@ -478,7 +478,7 @@
     </card>
 
     <!-- BLUE cards - level 2 -->
-    <card id = "29" points="5" color="BLUE" level="2">
+    <card id = "29" points="5" color="BLUE" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-19-1.png">
         <requirements>
             <resquantity resource="COINS" amount="4" />
         </requirements>
@@ -493,7 +493,7 @@
         </production>
     </card>
 
-    <card id = "30" points="6" color="BLUE" level="2">
+    <card id = "30" points="6" color="BLUE" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-23-1.png">
         <requirements>
             <resquantity resource="COINS" amount="3" />
             <resquantity resource="STONES" amount="2" />
@@ -510,7 +510,7 @@
         </production>
     </card>
 
-    <card id = "31" points="7" color="BLUE" level="2">
+    <card id = "31" points="7" color="BLUE" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-27-1.png">
         <requirements>
             <resquantity resource="COINS" amount="5" />
         </requirements>
@@ -526,7 +526,7 @@
         </production>
     </card>
 
-    <card id = "32" points="8" color="BLUE" level="2">
+    <card id = "32" points="8" color="BLUE" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-31-1.png">
         <requirements>
             <resquantity resource="COINS" amount="3" />
             <resquantity resource="SERVANTS" amount="3" />
@@ -543,7 +543,7 @@
         </production>
     </card>
     <!-- BLUE cards - level 3 -->
-    <card id = "33" points="9" color="BLUE" level="3">
+    <card id = "33" points="9" color="BLUE" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-35-1.png">
         <requirements>
             <resquantity resource="COINS" amount="6" />
         </requirements>
@@ -559,7 +559,7 @@
         </production>
     </card>
 
-    <card id = "34" points="10" color="BLUE" level="3">
+    <card id = "34" points="10" color="BLUE" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-39-1.png">
         <requirements>
             <resquantity resource="COINS" amount="5" />
             <resquantity resource="STONES" amount="2" />
@@ -578,7 +578,7 @@
         </production>
     </card>
 
-    <card id = "35" points="11" color="BLUE" level="3">
+    <card id = "35" points="11" color="BLUE" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-43-1.png">
         <requirements>
             <resquantity resource="COINS" amount="7" />
         </requirements>
@@ -594,7 +594,7 @@
         </production>
     </card>
 
-    <card id = "36" points="12" color="BLUE" level="3">
+    <card id = "36" points="12" color="BLUE" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-47-1.png">
         <requirements>
             <resquantity resource="COINS" amount="4" />
             <resquantity resource="STONES" amount="4" />
@@ -614,7 +614,7 @@
 
 
     <!-- YELLOW cards - level 1 -->
-    <card id = "37" points="1" color="YELLOW" level="1">
+    <card id = "37" points="1" color="YELLOW" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-4-1.png">
         <requirements>
             <resquantity resource="STONES" amount="2" />
         </requirements>
@@ -629,7 +629,7 @@
         </production>
     </card>
 
-    <card id = "38" points="2" color="YELLOW" level="1">
+    <card id = "38" points="2" color="YELLOW" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-8-1.png">
         <requirements>
             <resquantity resource="SHIELDS" amount="1" />
             <resquantity resource="STONES" amount="1" />
@@ -646,7 +646,7 @@
         </production>
     </card>
 
-    <card id = "39" points="3" color="YELLOW" level="1">
+    <card id = "39" points="3" color="YELLOW" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-12-1.png">
         <requirements>
             <resquantity resource="STONES" amount="3" />
         </requirements>
@@ -663,7 +663,7 @@
         </production>
     </card>
 
-    <card id = "40" points="4" color="YELLOW" level="1">
+    <card id = "40" points="4" color="YELLOW" level="1" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-16-1.png">
         <requirements>
             <resquantity resource="STONES" amount="2" />
             <resquantity resource="SHIELDS" amount="2" />
@@ -682,7 +682,7 @@
     </card>
 
     <!-- YELLOW cards - level 2 -->
-    <card id = "41" points="5" color="YELLOW" level="2">
+    <card id = "41" points="5" color="YELLOW" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-20-1.png">
         <requirements>
             <resquantity resource="STONES" amount="4" />
         </requirements>
@@ -697,7 +697,7 @@
         </production>
     </card>
 
-    <card id = "42" points="6" color="YELLOW" level="2">
+    <card id = "42" points="6" color="YELLOW" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-24-1.png">
         <requirements>
             <resquantity resource="STONES" amount="3" />
             <resquantity resource="SHIELDS" amount="2" />
@@ -714,7 +714,7 @@
         </production>
     </card>
 
-    <card id = "43" points="7" color="YELLOW" level="2">
+    <card id = "43" points="7" color="YELLOW" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-28-1.png">
         <requirements>
             <resquantity resource="STONES" amount="5" />
         </requirements>
@@ -730,7 +730,7 @@
         </production>
     </card>
 
-    <card id = "44" points="8" color="YELLOW" level="2">
+    <card id = "44" points="8" color="YELLOW" level="2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-32-1.png">
         <requirements>
             <resquantity resource="STONES" amount="3" />
             <resquantity resource="SERVANTS" amount="3" />
@@ -747,7 +747,7 @@
         </production>
     </card>
     <!-- GREEN cards - level 3 -->
-    <card id = "45" points="9" color="YELLOW" level="3">
+    <card id = "45" points="9" color="YELLOW" level="3" image = "Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-36-1.png">
         <requirements>
             <resquantity resource="STONES" amount="6" />
         </requirements>
@@ -763,7 +763,7 @@
         </production>
     </card>
 
-    <card id = "46" points="10" color="YELLOW" level="3">
+    <card id = "46" points="10" color="YELLOW" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-40-1.png">
         <requirements>
             <resquantity resource="STONES" amount="5" />
             <resquantity resource="SERVANTS" amount="2" />
@@ -782,7 +782,7 @@
         </production>
     </card>
 
-    <card id = "47" points="11" color="YELLOW" level="3">
+    <card id = "47" points="11" color="YELLOW" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-44-1.png">
         <requirements>
             <resquantity resource="STONES" amount="7" />
         </requirements>
@@ -798,7 +798,7 @@
         </production>
     </card>
 
-    <card id = "48" points="12" color="YELLOW" level="3">
+    <card id = "48" points="12" color="YELLOW" level="3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-48-1.png">
         <requirements>
             <resquantity resource="STONES" amount="4" />
             <resquantity resource="SERVANTS" amount="4" />

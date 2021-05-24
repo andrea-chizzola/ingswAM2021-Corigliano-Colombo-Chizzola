@@ -47,7 +47,7 @@ class CardRequirementsTest {
         LinkedList<ResQuantity> products1 = new LinkedList<>();
         Production production1 = new Production(materials1,products1, 0, 0);
 
-        card1 = new LeaderCard(3, production1, req1, "0");
+        card1 = new LeaderCard(3, production1, req1, "0", "test1");
 
         //Requirements coin:1, servant:2, shield:3
         LinkedList<CardQuantity> requirements2 = new LinkedList<>();
@@ -60,17 +60,17 @@ class CardRequirementsTest {
         LinkedList<ResQuantity> products2 = new LinkedList<>();
         Production production2 = new Production(materials2,products2, 0, 0);
 
-        card2 = new LeaderCard(3, production2, req2, "1");
+        card2 = new LeaderCard(3, production2, req2, "1", "test2");
 
 
 
 
-        DevelopmentCard card3 = new DevelopmentCard(3,production1,req1,new Green(), 1, "0");
-        DevelopmentCard card4 = new DevelopmentCard(2,production1,req1,new Blue(), 2, "1");
-        DevelopmentCard card5 = new DevelopmentCard(2,production1,req1,new Purple(), 3, "2");
-        DevelopmentCard card6 = new DevelopmentCard(2,production1,req1,new Green(), 1, "3");
-        DevelopmentCard card7 = new DevelopmentCard(2,production1,req1,new Green(), 2, "4");
-        DevelopmentCard card8 = new DevelopmentCard(2,production1,req1,new Green(), 3, "5");
+        DevelopmentCard card3 = new DevelopmentCard(3,production1,req1,new Green(), 1, "0", "test3");
+        DevelopmentCard card4 = new DevelopmentCard(2,production1,req1,new Blue(), 2, "1", "test4");
+        DevelopmentCard card5 = new DevelopmentCard(2,production1,req1,new Purple(), 3, "2", "test5");
+        DevelopmentCard card6 = new DevelopmentCard(2,production1,req1,new Green(), 1, "3", "test6");
+        DevelopmentCard card7 = new DevelopmentCard(2,production1,req1,new Green(), 2, "4", "test7");
+        DevelopmentCard card8 = new DevelopmentCard(2,production1,req1,new Green(), 3, "5", "test8");
 
         try {
             board.getSlot(1).insertCard(card3);

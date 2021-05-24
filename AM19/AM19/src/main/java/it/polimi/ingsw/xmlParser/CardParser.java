@@ -103,13 +103,14 @@ public class CardParser{
         int victoryPoint = getPoints(card);
         int level = getLevel(card);
         String id = ConfigurationParser.getIDvalue(card);
+        String image = ConfigurationParser.getImagePath(card);
         CardColor color = getCardColor(card);
 
         ResourceReqDev requirement = buildRequirementDev((Element) card.getElementsByTagName("requirements").item(0));
         Production effect = buildProduction((Element) card.getElementsByTagName("production").item(0));
 
 
-        return new DevelopmentCard(victoryPoint, effect, requirement, color, level, id);
+        return new DevelopmentCard(victoryPoint, effect, requirement, color, level, id, image);
     }
 
     /**
@@ -236,12 +237,13 @@ public class CardParser{
     private LeaderCard buildLeaderCard(Element card) {
 
         int victoryPoint = getPoints(card);
+        String id = ConfigurationParser.getIDvalue(card);
+        String image = ConfigurationParser.getImagePath(card);
 
         Requirements requirement = buildRequirementLeader((Element) card.getElementsByTagName("requirements").item(0));
         SpecialEffect effect = buildEffectLeader((Element) card.getElementsByTagName("effect").item(0));
-        String id = ConfigurationParser.getIDvalue(card);
 
-        return new LeaderCard(victoryPoint, effect, requirement, id);
+        return new LeaderCard(victoryPoint, effect, requirement, id, image);
     }
 
     /**

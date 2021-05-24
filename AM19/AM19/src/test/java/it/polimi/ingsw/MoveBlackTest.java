@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MoveBlackTest {
 
-    private MoveBlack moveBlack = new MoveBlack(2, "2");
+    private MoveBlack moveBlack = new MoveBlack(2, "2", "test");
     private SinglePlayer singlePlayer;
     private GameBoard gameBoard;
     private final String file = "defaultConfiguration.xml";
