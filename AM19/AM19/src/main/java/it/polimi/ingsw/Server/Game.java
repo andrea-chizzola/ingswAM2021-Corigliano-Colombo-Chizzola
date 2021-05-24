@@ -116,9 +116,9 @@ public class Game {
      * @param connection represents the player's socket connection
      */
     public void addPlayer(String nickname, String socketId, ClientConnection connection){
-
+/*
         if(start)
-            messageHandler.reconnection(nickname);
+            messageHandler.reconnection(nickname);*/
         players.put(socketId, nickname);
         connections.put(nickname, connection);
         if(playersNumber == players.size()) start = true;
@@ -130,10 +130,10 @@ public class Game {
      * @param socketId represents the removed player's socket id
      */
     public void removePlayer(String socketId){
-
+/*
         if(start){
             messageHandler.disconnection(players.get(socketId));
-        }
+        }*/
         String nickname = players.get(socketId);
 
         connections.remove(nickname);
@@ -206,6 +206,29 @@ public class Game {
         }
         gamesHandler.removeGame(getId(), new ArrayList<>(players.keySet()));
         System.out.println("[SERVER] Game " + getId() + " closed correctly");
+
+    }
+
+    /**
+     * checks if after the timer at least one player has been reconnected to the game
+     */
+    public void startSuspensionTimer(){
+
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if(getActualPlayers() == 0){
+                    System.out.println("[SERVER] No player reconnected. The game will now be closed.");
+                    gamesHandler.removeGame(getId(), new ArrayList<>(players.keySet()));
+                    System.out.println("[SERVER] Suspended game removed.");
+                }else{
+                    System.out.println("[SERVER] A player was reconnected to his game. The game will not be closed.");
+                }
+                timer.cancel();
+            }
+        };
+        timer.schedule(task, 30000);
 
     }
 

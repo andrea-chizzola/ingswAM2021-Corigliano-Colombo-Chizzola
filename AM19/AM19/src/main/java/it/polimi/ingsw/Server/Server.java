@@ -114,7 +114,7 @@ public class Server {
 
         if(args.length > 0) {
 
-            port = Integer.parseInt(args[1]);
+            port = Integer.parseInt(args[2]);
             if(port < 1024 || port > 49151){
                 port = DEFAULT_PORT;
                 System.out.println("[SERVER] Selected port is unavailable. The server will be initialized with default settings.");
