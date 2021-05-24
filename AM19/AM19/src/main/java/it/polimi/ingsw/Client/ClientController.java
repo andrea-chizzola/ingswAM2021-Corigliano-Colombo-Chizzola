@@ -34,41 +34,35 @@ public class ClientController implements ClientConnectionListener {
     private boolean loggedIn;
 
     /**
-     * this attribute is true if the update has already been received
+     * this attribute is true if the client is active
      */
-    private boolean alreadyUpdated;
-
-    /**
-     * this attribute is true if the player don't want to perform other swaps
-     */
-    private boolean availableSwap;
-
     private boolean isActive;
 
+    /**
+     * this attribute contains all the messages used during the game
+     */
     private LinkedList<String> receivedMessages;
 
+    /**
+     * this method is the constructor of the class
+     * @param model is a reference to the model in the client
+     * @param view is a reference to the view used in the client
+     */
     public ClientController(ReducedGameBoard model, View view){
         this.view = view;
         this.model = model;
         notStarted = false;
-        alreadyUpdated = false;
         loggedIn = false;
-        availableSwap = true;
         isActive = true;
         receivedMessages = new LinkedList<>();
     }
 
-    //start è da mettere nel metodo che sarà chiamato nella run del thread!
-    public synchronized void start(){
-        if(!notStarted){
-            view.newPlayer();
-            notStarted = false;
-        }
-    }
-
+    /**
+     * this method creates a thread that will run the actions of the client
+     */
     public void runController(){
         new Thread(() -> {
-            start();
+            firstInteraction();
             while(isActive) {
                 synchronized (this) {
                     while (receivedMessages.size() == 0) {
@@ -81,18 +75,11 @@ public class ClientController implements ClientConnectionListener {
                     }
 
                     try {
-                        checkStart();
-                        MessageUtilities parser = MessageUtilities.instance();
-                        Message.MessageType type = parser.getType(receivedMessages.getFirst());
-                        if (type == Message.MessageType.GAME_STATUS)
-                            messageHandler(new GameStatusMessage(receivedMessages.getFirst()));
-                        else if (type == Message.MessageType.REPLY) {
-                            loginHandler(new ReplyMessage(receivedMessages.getFirst()));
-                        } else {
-                            updateHandler(new UpdateMessage(receivedMessages.getFirst(), type));
-                        }
-                        receivedMessages.remove(0);
+                        messageHandler();
 
+                        //CODE FOR TESTS
+                        //this.notifyAll();
+                        //-----------------
                     } catch (MalformedMessageException e) {
                         System.out.println("[CLIENT] Malformed message received. No action performed.");
                         e.printStackTrace();
@@ -102,31 +89,99 @@ public class ClientController implements ClientConnectionListener {
         }).start();
     }
 
+    /**
+     * this method is used to perform the first interaction of the client, i.e. the login
+     */
+    private synchronized void firstInteraction(){
+        if(!notStarted){
+            view.newPlayer();
+            notStarted = false;
+        }
+    }
+
+    /**
+     * this method is used to check if the client has been correctly started
+     */
+    private void checkStart(){
+        if(notStarted){
+            //termino il client. Il login non è mai avvenuto
+            System.out.println("[Client] the controller has not been started. Closing connection...");
+        }
+    }
+
+    /**
+     * this method is used to notify the controller of the arrival of a new message from the server
+     * @param message is the content of the String message
+     */
     @Override
     public synchronized void onReceivedMessage(String message) {
         receivedMessages.add(message);
-        //setActive(true);
         this.notifyAll();
-        /*
-       try{
-           checkStart();
-           MessageUtilities parser = MessageUtilities.instance();
-           Message.MessageType type = parser.getType(message);
-           if(type == Message.MessageType.GAME_STATUS)
-               messageHandler(new GameStatusMessage(message));
-           else if(type == Message.MessageType.REPLY){
-               loginHandler(new ReplyMessage(message));
-           }
-           else{
-               updateHandler(new UpdateMessage(message, type));
-           }
-       }
-       catch(MalformedMessageException e){
-           System.out.println("[CLIENT] Malformed message received. No action performed.");
-           e.printStackTrace();
-       }*/
+
+        //CODE FOR TESTS
+        /*try {
+            this.wait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        //----------------
+
     }
 
+    /**
+     *this method is used to notify of the arrival of a new pong message
+     */
+    @Override
+    public synchronized void onMissingPong() {
+        try {
+            String message = MessageFactory.buildGameStatus(false,
+                    "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
+            receivedMessages.add(message);
+
+            this.notifyAll();
+        } catch (MalformedMessageException e) {
+            System.out.println("[CLIENT] cannot create the missing pong message");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * this method is used to manage a message coming from the server
+     * @throws MalformedMessageException if the message is not well formed
+     */
+    protected void messageHandler() throws MalformedMessageException {
+        checkStart();
+
+        MessageUtilities parser = MessageUtilities.instance();
+        Message.MessageType type = parser.getType(receivedMessages.getFirst());
+
+        if (type == Message.MessageType.GAME_STATUS)
+            gameStatusHandler(new GameStatusMessage(receivedMessages.getFirst()));
+        else if (type == Message.MessageType.REPLY) {
+            replyHandler(new ReplyMessage(receivedMessages.getFirst()));
+        } else {
+            updateHandler(new UpdateMessage(receivedMessages.getFirst(), type));
+        }
+        receivedMessages.remove(0);
+    }
+
+    /**
+     * this method is used to manage a reply message coming from the server
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
+    public void replyHandler(ReplyMessage message) throws MalformedMessageException {
+
+        loginHandler(message);
+        if(!message.isOk()) actionHandler(model.getModelState());
+
+    }
+
+    /**
+     * this method is used to check if the login has been successful
+     * @param reply is a message of type reply
+     * @throws MalformedMessageException if the message is not well formed
+     */
     private void loginHandler(ReplyMessage reply) throws MalformedMessageException {
         if(!loggedIn && !reply.isOk()){
             //termino il client. Il login non è mai avvenuto
@@ -135,57 +190,28 @@ public class ClientController implements ClientConnectionListener {
         loggedIn = true;
     }
 
-    @Override
-    public synchronized void onMissingPong() {
-        //view.showGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
-        //view.showGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
-        try {
-            receivedMessages.add(MessageFactory.buildGameStatus(false, "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE));
-            //setActive(true);
-            this.notifyAll();
-        } catch (MalformedMessageException e) {
-            System.out.println("[CLIENT] cannot create the missing pong message");
-            e.printStackTrace();
-        }
-    }
-
-    private void checkStart(){
-        if(notStarted){
-            //termino il client. Il login non è mai avvenuto
-            System.out.println("[Client] the controller has not been started. Closing connection...");
-        }
-    }
-
-    private void messageHandler(GameStatusMessage message) throws MalformedMessageException {
+    /**
+     * this method is used to manage a message of type GameStatusMessage
+     * @param message is the message to be managed
+     * @throws MalformedMessageException if the message is not well formed
+     */
+    private void gameStatusHandler(GameStatusMessage message) throws MalformedMessageException {
         String self = model.getPersonalNickname();
-        TurnType status = message.getStatus();
+        model.setCurrentPlayer(message.getPlayer());
 
-        //da mettere in un sottometodo
-        if(status == TurnType.INITIALIZATION_LEADERS || status == TurnType.TURN_SELECTION){
-            model.setCurrentPlayer(message.getPlayer());
-            System.out.println("CIAO");
-        }
-
-        view.showGameStatus(message.isOk(), message.getBody(), self, status);
         if (model.getCurrentPlayer().equals(self)){
-
-            if (message.isOk()) {
-                model.setModelState(message.getStatus());
-                actionHandler(message.getStatus(), message);
-                return;
-            }
-
-            if(message.getStatus() != TurnType.WRONG_STATE)
-                model.setModelState(message.getStatus());
-
-            alreadyUpdated = true;
-            actionHandler(model.getModelState(), message);
-
-
+            model.setModelState(message.getStatus());
+            selectionHandler(message.getStatus(), message);
+            actionHandler(message.getStatus());
         }
     }
 
-    private void actionHandler(TurnType type, GameStatusMessage message) throws MalformedMessageException {
+    /**
+     * this method is used to call the interaction methods of the view
+     * @param type is the type of update contained in the GameStatusMessage
+     */
+    private void actionHandler(TurnType type){
+        String current = model.getCurrentPlayer();
         switch(type){
             case INITIALIZATION_LEADERS: {
                 view.selectLeaderAction();
@@ -195,80 +221,75 @@ public class ClientController implements ClientConnectionListener {
                 view.getResourcesAction();
                 break;
             }
-            case SWAP: {
-                swapHandler();
+            case MANAGE_MARBLE: {
+                view.showMarblesUpdate(model.getSelectedMarbles(), model.getPossibleWhites(), current);
                 break;
             }
-            case TAKE_RESOURCES: {
-                view.selectMarketAction();
+            case TURN_SELECTION: {
+                view.showAvailableTurns(model.getAvailableTurns(), current);
                 break;
             }
+            default:
+                break;
+            //END CONNECTION BECAUSE OF WRONG MESSAGE FROM SERVER
+        }
+    }
+
+    /**
+     * this method is used to update the state of the view, retrieving information from a GameStatusMessage
+     * @param type is the type of update contained in the GameStatusMessage
+     * @param message is the received GameStatusMessage
+     * @throws MalformedMessageException if the message is not well formed
+     */
+    private void selectionHandler(TurnType type, GameStatusMessage message) throws MalformedMessageException {
+        switch(type){
             case MANAGE_MARBLE: {
                 manageMarbleHandler(message);
-                break;
-            }
-            case MANAGE_LEADER: {
-                view.leaderAction();
-                break;
-            }
-            case BUY_CARD: {
-                view.buyCardAction();
-                break;
-            }
-            case DO_PRODUCTION: {
-                view.doProductionsAction();
                 break;
             }
             case TURN_SELECTION: {
                 turnSelectionHandler(message);
                 break;
             }
-                //aggiungi wrong state
             default:
                 break;
-                //END CONNECTION BECAUSE OF WRONG MESSAGE FROM SERVER
+            //END CONNECTION BECAUSE OF WRONG MESSAGE FROM SERVER
         }
-        alreadyUpdated = false;
         model.setModelState(type);
     }
 
+    /**
+     * this method is used to update the available types of turns
+     * @param message is the GameStatusMessage received
+     * @throws MalformedMessageException if the message is not well formed
+     */
     private void turnSelectionHandler(GameStatusMessage message) throws MalformedMessageException {
 
         String current = message.getPlayer();
         model.setCurrentPlayer(current);
-        availableSwap = true;
 
-        if(!alreadyUpdated) {
-            List<String> turns = message.getTurnTypes();
-            model.setAvailableTurns(new LinkedList<>(turns));
-        }
-
-        if(current.equals(model.getPersonalNickname())){
-            view.selectTurnAction(model.getAvailableTurns(), model.getCurrentPlayer());
-        }
-        else model.setCurrentPlayer(current);
+        List<String> turns = message.getTurnTypes();
+        model.setAvailableTurns(new LinkedList<>(turns));
     }
 
+    /**
+     * this method is used to update the marble selected during a take resources turn
+     * @param message is the GameStatusMessage coming from the server
+     * @throws MalformedMessageException if the message is not well formed
+     */
     private void manageMarbleHandler(GameStatusMessage message) throws MalformedMessageException {
 
-        if(!alreadyUpdated) {
-            List<Marble> selected = message.getSelectedMarbles();
-            List<Marble> candidates = message.getCandidateWhite();
-            model.setSelectedMarbles(selected);
-            model.setPossibleWhites(candidates);
-        }
-        view.showMarblesUpdate(model.getSelectedMarbles(), model.getPossibleWhites(), model.getCurrentPlayer());
+        List<Marble> selected = message.getSelectedMarbles();
+        List<Marble> candidates = message.getCandidateWhite();
+        model.setSelectedMarbles(selected);
+        model.setPossibleWhites(candidates);
     }
 
-    private void swapHandler(){
-        if(availableSwap)
-            availableSwap = view.swapAction();
-        if(!availableSwap) {
-            view.selectMarketAction();
-            availableSwap = true;
-        }
-    }
-
+    /**
+     * this method is used to manage graphical updates coming from the server
+     * @param message is the UpdateMessage coming from the server
+     * @throws MalformedMessageException if the message is not well formed
+     */
     private void updateHandler(UpdateMessage message) throws MalformedMessageException{
 
         switch(message.getMessageType()){
@@ -282,6 +303,7 @@ public class ClientController implements ClientConnectionListener {
             }
             case END_GAME: {
                 endGameUpdate(message);
+                isActive = false;
                 break;
             }
             case BOX_UPDATE: {
@@ -309,9 +331,7 @@ public class ClientController implements ClientConnectionListener {
                 break;
             }
             case START_GAME: {
-                List<String> nicknames = message.getNicknames();
-                model.initializeNicknames(nicknames);
-                view.initialize();
+                startGameHandler(message);
                 break;
             }
             default:
@@ -320,6 +340,22 @@ public class ClientController implements ClientConnectionListener {
         }
     }
 
+    /**
+     * this method is used to retrieve the names of the players from the first update message
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException if the server is not well formed
+     */
+    private void startGameHandler(UpdateMessage message) throws MalformedMessageException {
+        List<String> nicknames = message.getNicknames();
+        model.initializeNicknames(nicknames);
+        view.initialize();
+    }
+
+    /**
+     * this method is used to manage the disconnection of a player
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException if the server is not well formed
+     */
     private void disconnectionUpdate(UpdateMessage message) throws MalformedMessageException {
         String disconnected = message.getPlayer();
         if(model.getNicknames().contains(disconnected)) {
@@ -329,6 +365,11 @@ public class ClientController implements ClientConnectionListener {
 
     }
 
+    /**
+     * this method is used to manage the end of the game
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException if the server is not well formed
+     */
     private void endGameUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<String, Integer> map = message.getEndGamePoints();
         view.showEndGame(map);
@@ -336,6 +377,11 @@ public class ClientController implements ClientConnectionListener {
         //Here the connection should be closed (client side)
     }
 
+    /**
+     * this method is used to manage a box update
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException if the server is not well formed
+     */
     private void boxUpdate(UpdateMessage message) throws MalformedMessageException {
         String player = message.getPlayer();
         List<ResQuantity> warehouse = message.getWarehouseUpdate();
@@ -346,6 +392,11 @@ public class ClientController implements ClientConnectionListener {
         view.showBoxes(warehouse, strongbox, player);
     }
 
+    /**
+     * this method is used to manage the update of one's personal slots
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException if the server is not well formed
+     */
     private void slotsUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<Integer, String> slots = message.getSlotsUpdate();
         String player = message.getPlayer();
@@ -353,12 +404,22 @@ public class ClientController implements ClientConnectionListener {
         view.showSlotsUpdate(slots, player);
     }
 
+    /**
+     * this method is used to manage the update of the decks
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException if the message is not well formed
+     */
     private void decksUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<Integer, String> decks = message.getDecksUpdate();
         model.setDecks(decks);
         view.showDecksUpdate(decks);
     }
 
+    /**
+     * this method is used to manage the update of the fatih tracks
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException is the message is not well formed
+     */
     private void faithUpdate(UpdateMessage message) throws MalformedMessageException {
 
         Optional<List<ItemStatus>> lorenzoSections = message.getLorenzoSections();
@@ -377,6 +438,11 @@ public class ClientController implements ClientConnectionListener {
         view.showFaithUpdate(faith, sections, lorenzoFaith, lorenzoSections);
     }
 
+    /**
+     * this method is used to manage the update of the top token
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException if the message is not well formed
+     */
     private void tokenUpdate(UpdateMessage message) throws MalformedMessageException {
         String token = message.getTopToken();
         if(token.length() != 0) {
@@ -385,12 +451,22 @@ public class ClientController implements ClientConnectionListener {
         }
     }
 
+    /**
+     * this method is used to manage the update of the market
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException if the message is not well formed
+     */
     private void marketUpdate(UpdateMessage message) throws MalformedMessageException {
         List<Marble> tray = message.getMarketUpdate();
         model.setMarket(tray);
         view.showMarketUpdate(tray);
     }
 
+    /**
+     * this method is used to manage the update of the leader cards of a player
+     * @param message is the message coming from the server
+     * @throws MalformedMessageException if the message is not well formed
+     */
     private void leadersUpdate(UpdateMessage message) throws MalformedMessageException{
         Map<Integer, ItemStatus> status = message.getLeaderCardsStatus();
         Map<Integer, String> cards = message.getLeaderCardsUpdate();

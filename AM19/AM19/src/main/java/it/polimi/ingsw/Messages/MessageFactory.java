@@ -16,6 +16,14 @@ import java.util.Optional;
 public class MessageFactory {
     private static final String splitter = ":";
 
+
+    public static String buildExit(String body) throws MalformedMessageException{
+        Map<String, String > map = new HashMap<>();
+        map.put("body", body);
+        map.put("messageType", Message.MessageType.EXIT.toString());
+        return MessageParser.createMessage(map);
+    }
+
     public static String buildConnection(String body, String nickname, Boolean gameHost, Integer playersNumber) throws MalformedMessageException{
         Map<String, String > map = new HashMap<>();
         map.put("body", body);

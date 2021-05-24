@@ -13,7 +13,7 @@ public class CLI_ClientController_Test {
     private BufferedReader server;
     private ReducedGameBoard model;
     private ClientController controller;
-    private TestCLI cli;
+    private CLI cli;
     private String typing;
     private String fromServer;
 
@@ -26,70 +26,15 @@ public class CLI_ClientController_Test {
                             + message +
                             "\n-----------------------------------------------------");
         }
+
+        @Override
+        public void notifyDisconnection() {
+            System.out.println("Disconnection executed");
+        }
     }
-
-    private class TestCLI extends CLI{
-
-        //ho messo a protected viewStatus, addInput, getInput, InputReader, busyInput, typed
-        public TestCLI(ReducedGameBoard model, InputStream in, PrintStream out) {
-            super(model, in, out);
-        }
-
-        @Override
-        protected void inputReader(InputStream input){
-            new Thread(() ->
-            {
-                try {
-                    BufferedReader in = new BufferedReader(new InputStreamReader(input));
-                    String s = "";
-                    while ((s = in.readLine()) != null) {
-                        System.out.println(s);
-                        addInput(s);
-                    }
-                } catch (IOException | NullPointerException e) {
-                    System.out.println("Cannot open the input stream of CLI");
-                    e.printStackTrace();
-                }
-            }).start();
-        }
-
-        @Override
-        protected void addInput(String s){
-            synchronized(busyInput){
-                typed.append(s);
-                availableInput = true;
-                busyInput.notifyAll();
-                try {
-                    busyInput.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        @Override
-        protected String getInput(){
-            synchronized(busyInput){
-                if(!availableInput){
-                    busyInput.notifyAll();
-                    try{
-                        busyInput.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                availableInput=false;
-                String s = typed.toString();
-                typed.setLength(0);
-                return s;
-            }
-        }
-
-
-    }
-
+/*
     @Test
-    public void InitializationSequenceSinglePlayer() throws IOException {
+    public void InitializationSequenceSinglePlayer() throws IOException, InterruptedException {
         //SetUp of the Input streams
         typing = "src/test/java/it/polimi/ingsw/CLITest/Input_Simulation/Initialization_Single.txt";
         fromServer = "src/test/java/it/polimi/ingsw/CLITest/Server_Simulation/Initialization_Single.txt";
@@ -99,12 +44,12 @@ public class CLI_ClientController_Test {
 
         //SetUp of the ViewModel, CLI, and CLIController
         model = new ReducedGameBoard("defaultConfiguration.xml");
-        cli = new TestCLI(model, player, System.out);
+        cli = new CLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
 
         //START OF THE LOGIN
-        controller.start();
+        controller.runController();
 
         //LOGIN COMPLETED DURING THE SETUP. UPDATE OF THE VIEWMODEL
         message = server.readLine();
@@ -132,6 +77,8 @@ public class CLI_ClientController_Test {
         message = server.readLine();
         System.out.println(message);
         controller.onReceivedMessage(message);
+
+        Thread.sleep(200);
    }
 
 
@@ -146,12 +93,12 @@ public class CLI_ClientController_Test {
 
         //SetUp of the ViewModel, CLI, and CLIController
         model = new ReducedGameBoard("defaultConfiguration.xml");
-        cli = new TestCLI(model, player, System.out);
+        cli = new CLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
 
         //START OF THE LOGIN
-        controller.start();
+        controller.runController();
 
         //LOGIN COMPLETED DURING THE SETUP. UPDATE WHILE WAITING FOR MY TURN:
         for(int i=0; i<22; i++){
@@ -178,6 +125,7 @@ public class CLI_ClientController_Test {
 
         //FINAL PLOT TO CHECK IF UPDATES ARE CORRECT
         cli.plotView();
+
     }
 
     @Test
@@ -191,12 +139,12 @@ public class CLI_ClientController_Test {
 
         //SetUp of the ViewModel, CLI, and CLIController
         model = new ReducedGameBoard("defaultConfiguration.xml");
-        cli = new TestCLI(model, player, System.out);
+        cli = new CLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
 
         //START OF THE LOGIN
-        controller.start();
+        controller.runController();
 
         //ALL PHASES AND UPDATES + ENDGAME
         for(int i=0; i<27; i++){
@@ -217,12 +165,12 @@ public class CLI_ClientController_Test {
 
         //SetUp of the ViewModel, CLI, and CLIController
         model = new ReducedGameBoard("defaultConfiguration.xml");
-        cli = new TestCLI(model, player, System.out);
+        cli = new CLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
 
         //START OF THE LOGIN
-        controller.start();
+        controller.runController();
 
         //INITIALIZATION OF 2 PLAYERS + UPDATES. The board has been initialized so that Davide starts the game with
         //two extra resources in the warehouse and Davide has two possible white marbles transformations
@@ -294,12 +242,12 @@ public class CLI_ClientController_Test {
 
         //SetUp of the ViewModel, CLI, and CLIController
         model = new ReducedGameBoard("defaultConfiguration.xml");
-        cli = new TestCLI(model, player, System.out);
+        cli = new CLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
 
         //START OF THE LOGIN
-        controller.start();
+        controller.runController();
 
         //INITIALIZATION OF 2 PLAYERS + UPDATES. The board has been initialized so that Davide starts the game with
         //extra resources in the warehouse and strongbox
@@ -339,12 +287,12 @@ public class CLI_ClientController_Test {
 
         //SetUp of the ViewModel, CLI, and CLIController
         model = new ReducedGameBoard("defaultConfiguration.xml");
-        cli = new TestCLI(model, player, System.out);
+        cli = new CLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
 
         //START OF THE LOGIN
-        controller.start();
+        controller.runController();
 
         //INITIALIZATION OF 2 PLAYERS + UPDATES. The board has been initialized so that Davide starts the game with
         //extra resources in the warehouse and strongbox
@@ -384,12 +332,12 @@ public class CLI_ClientController_Test {
 
         //SetUp of the ViewModel, CLI, and CLIController
         model = new ReducedGameBoard("defaultConfiguration.xml");
-        cli = new TestCLI(model, player, System.out);
+        cli = new CLI(model, player, System.out);
         cli.attachObserver(new messageReceiver());
         controller = new ClientController(model, cli);
 
         //START OF THE LOGIN
-        controller.start();
+        controller.runController();
 
         //INITIALIZATION OF 2 PLAYERS + UPDATES. The board has been initialized so that Davide starts the game with
         //extra resources in the warehouse and strongbox
@@ -420,6 +368,6 @@ public class CLI_ClientController_Test {
         cli.plotView();
     }
 
-
+*/
 
 }

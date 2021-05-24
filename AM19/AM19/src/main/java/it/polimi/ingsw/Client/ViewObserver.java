@@ -10,4 +10,9 @@ public interface ViewObserver {
      * @param message is the content of the message
      */
     void update(String message);
+
+    /**
+     * this method is used to notify the willingness to disconnect to the client
+     */
+    void notifyDisconnection();
 }

@@ -14,9 +14,7 @@ import it.polimi.ingsw.xmlParser.ConfigurationParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,6 +41,7 @@ class GameBoardTest {
         gameBoard = new GameBoard(names, file);
         View view = new ViewForTest();
         gameBoard.attachView(view);
+        gameBoard.giveLeaderCards(file);
 
     }
 
@@ -71,21 +70,41 @@ class GameBoardTest {
     @Test
     void insertResources(){
 
+        //the second player has one resource to initialize
         gameBoard.endTurnMove();
         List<Resource> resources = new LinkedList<>();
         List<Integer> shelves = new LinkedList<>();
 
+        Map<Integer,Boolean> map = new HashMap<>();
+
+        map.put(1,false);
+        map.put(3,true);
+        map.put(4,true);
+        map.put(2,false);
+
+        try {
+            gameBoard.initializeLeaderCard(map);
+        } catch (InvalidActionException e) {
+            fail();
+        }
+
         resources.add(coin);
         shelves.add(1);
 
-        assertTrue(gameBoard.insertResources(resources, shelves));
+        //assertTrue(gameBoard.insertResources(resources, shelves));
+        try {
+            gameBoard.insertResources(resources, shelves);
+        }catch (InvalidActionException e){
+            fail();
+        }
 
         try {
-            assertEquals(gameBoard.getCurrentPlayer().getWarehouse().getResource(1).getColor(), coin.getColor());
-            assertEquals(gameBoard.getCurrentPlayer().getWarehouse().getQuantity(1), 1);
+            assertEquals(gameBoard.getPlayers().get(1).getWarehouse().getResource(1).getColor(), coin.getColor());
+            assertEquals(gameBoard.getPlayers().get(1).getWarehouse().getQuantity(1), 1);
         }catch (IllegalShelfException e){
             fail();
         }
+        assertEquals(gameBoard.getCurrentPlayer().getNickname(),gameBoard.getPlayers().get(2).getNickname());
 
     }
 
@@ -100,8 +119,10 @@ class GameBoardTest {
         resources.add(coin);
         shelves.add(1);
 
-        assertFalse(gameBoard.insertResources(resources, shelves));
+        //assertFalse(gameBoard.insertResources(resources, shelves));
+        assertThrows(InvalidActionException.class, () -> gameBoard.insertResources(resources, shelves));
 
+        assertTrue(gameBoard.isCurrentPlayer(gameBoard.getPlayers().get(0).getNickname()));
         assertThrows(IllegalShelfException.class, () -> gameBoard.getCurrentPlayer().getWarehouse().getQuantity(1));
         assertThrows(IllegalShelfException.class, () -> gameBoard.getCurrentPlayer().getWarehouse().getResource(1));
 
@@ -118,7 +139,8 @@ class GameBoardTest {
         resources.add(faith);
         shelves.add(1);
 
-        assertFalse(gameBoard.insertResources(resources, shelves));
+        //assertFalse(gameBoard.insertResources(resources, shelves));
+        assertThrows(InvalidActionException.class, () -> gameBoard.insertResources(resources, shelves));
 
         assertThrows(IllegalShelfException.class, () -> gameBoard.getCurrentPlayer().getWarehouse().getQuantity(1));
         assertThrows(IllegalShelfException.class, () -> gameBoard.getCurrentPlayer().getWarehouse().getResource(1));
@@ -128,7 +150,7 @@ class GameBoardTest {
 
     @Test
     void disconnectionTest(){
-        assertTrue(gameBoard.disconnectPlayer("firstPlayer"));
+        gameBoard.disconnectPlayer("firstPlayer");
         assertTrue(gameBoard.getPlayers().size()==3);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"thirdPlayer");
@@ -137,8 +159,8 @@ class GameBoardTest {
 
     @Test
     void disconnectionTest2(){
-        assertTrue(gameBoard.disconnectPlayer("firstPlayer"));
-        assertTrue(gameBoard.disconnectPlayer("thirdPlayer"));
+        gameBoard.disconnectPlayer("firstPlayer");
+        gameBoard.disconnectPlayer("thirdPlayer");
         assertTrue(gameBoard.getPlayers().size()==2);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
@@ -146,12 +168,12 @@ class GameBoardTest {
 
     @Test
     void reconnectionTest1(){
-        assertTrue(gameBoard.disconnectPlayer("thirdPlayer"));
-        assertTrue(gameBoard.disconnectPlayer("firstPlayer"));
+        gameBoard.disconnectPlayer("thirdPlayer");
+        gameBoard.disconnectPlayer("firstPlayer");
         assertTrue(gameBoard.getPlayers().size()==2);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
-        assertTrue(gameBoard.reconnectPlayer("firstPlayer"));
+        gameBoard.reconnectPlayer("firstPlayer");
         assertTrue(gameBoard.getPlayers().size()==3);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
@@ -160,15 +182,15 @@ class GameBoardTest {
 
     @Test
     void reconnectionTest2(){
-        assertTrue(gameBoard.disconnectPlayer("thirdPlayer"));
-        assertTrue(gameBoard.disconnectPlayer("firstPlayer"));
-        assertTrue(gameBoard.disconnectPlayer("fourthPlayer"));
+        gameBoard.disconnectPlayer("thirdPlayer");
+        gameBoard.disconnectPlayer("firstPlayer");
+        gameBoard.disconnectPlayer("fourthPlayer");
         assertTrue(gameBoard.getPlayers().size()==1);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
 
-        assertTrue(gameBoard.reconnectPlayer("fourthPlayer"));
-        assertTrue(gameBoard.reconnectPlayer("thirdPlayer"));
-        assertTrue(gameBoard.reconnectPlayer("firstPlayer"));
+        gameBoard.reconnectPlayer("fourthPlayer");
+        gameBoard.reconnectPlayer("thirdPlayer");
+        gameBoard.reconnectPlayer("firstPlayer");
 
         assertTrue(gameBoard.getPlayers().size()==4);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");

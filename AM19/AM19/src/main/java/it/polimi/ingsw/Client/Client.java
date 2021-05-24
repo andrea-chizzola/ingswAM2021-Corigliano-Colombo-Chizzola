@@ -41,6 +41,14 @@ public class Client implements ViewObserver{
         connection.send(message);
     }
 
+    /**
+     * this method is used to notify the willingness of the player to disconnect
+     */
+    @Override
+    public void notifyDisconnection() {
+        connection.closeConnection();
+    }
+
     public void startClient(){
 
 

@@ -244,7 +244,7 @@ public class ReducedConfiguration {
     public List<Integer> getSectionsPoints(){
         List<Integer> result = new LinkedList<>();
         for(int i=0; i<sections.size(); i++){
-            result.add(sections.get(i).getPopeFavorVictoryPoints());
+            result.add(sections.get(i).getPopeFavourValue());
         }
         return result;
     }

@@ -238,7 +238,7 @@ public class Game {
     public void setUpGame(){
 
         System.out.println("[SERVER] Creating a new game...");
-/*
+
         ArrayList<String> names = new ArrayList<>(players.values());
         try {
             sendAll(MessageFactory.buildStartGame("Game is starting", names));
@@ -247,16 +247,14 @@ public class Game {
         }
 
         GameBoardHandler gameBoard = new GameBoard(names, file);
-        //gameBoard.giveLeaderCards(file);
 
-        View virtualView = new VirtualView(this,gameBoard);
+        View virtualView = new VirtualView(this);
 
         gameBoard.attachView(virtualView);
         gameBoard.initializeGame(file);
 
         this.messageHandler = new MessageHandler(gameBoard, virtualView);
 
-*/
         System.out.println("[SERVER] Game is ready to start");
 
     }

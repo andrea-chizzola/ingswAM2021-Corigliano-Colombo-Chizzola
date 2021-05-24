@@ -2,16 +2,16 @@
 <tokens>
     <discard>
         <cards id = "1" color="PURPLE" amount = "2"/>
-        <cards color="YELLOW" amount = "2"/>
-        <cards color="GREEN" amount = "2"/>
-        <cards color="BLUE" amount = "2"/>
+        <cards id = "2" color="YELLOW" amount = "2"/>
+        <cards id = "3" color="GREEN" amount = "2"/>
+        <cards id = "4" color="BLUE" amount = "2"/>
     </discard>
 
     <move>
-        <value id = "2" amount = "2"/>
+        <value id = "5" amount = "2"/>
     </move>
 
     <moveAndShuffle>
-        <value id = "3" amount = "1"/>
+        <value id = "6" amount = "1"/>
     </moveAndShuffle>
 </tokens>
