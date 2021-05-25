@@ -60,7 +60,7 @@ public class NetworkBuffer {
      * @throws Exception is thrown if the current state of the buffer does not correspond to a
      * correct XML String. In that case, the buffer is emptied
      */
-    public synchronized void append(String s) throws MalformedMessageException {
+    public void append(String s) throws MalformedMessageException {
         buffer.append(s);
         if(!checkString()) {
             buffer.setLength(0);
@@ -74,7 +74,7 @@ public class NetworkBuffer {
      * @return the oldest XML message or ping element in the buffer
      * @throws EmptyBufferException if there are no available Strings
      */
-    public synchronized String get() throws EmptyBufferException {
+    public String get() throws EmptyBufferException {
         if(extracted.size()==0) throw new EmptyBufferException();
         return extracted.remove(0);
     }

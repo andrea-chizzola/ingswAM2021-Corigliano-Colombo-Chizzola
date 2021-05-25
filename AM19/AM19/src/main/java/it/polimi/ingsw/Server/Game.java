@@ -5,6 +5,7 @@ import it.polimi.ingsw.Controller.VirtualView;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Boards.GameBoardHandler;
+import it.polimi.ingsw.Controller.MessageHandler;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.View.View;
 
@@ -213,6 +214,29 @@ public class Game {
         }
         gamesHandler.removeGame(getId(), new ArrayList<>(players.keySet()));
         System.out.println("[SERVER] Game " + getId() + " closed correctly");
+
+    }
+
+    /**
+     * checks if after the timer at least one player has been reconnected to the game
+     */
+    public void startSuspensionTimer(){
+
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if(getActualPlayers() == 0){
+                    System.out.println("[SERVER] No player reconnected. The game will now be closed.");
+                    gamesHandler.removeGame(getId(), new ArrayList<>(players.keySet()));
+                    System.out.println("[SERVER] Suspended game removed.");
+                }else{
+                    System.out.println("[SERVER] A player was reconnected to his game. The game will not be closed.");
+                }
+                timer.cancel();
+            }
+        };
+        timer.schedule(task, 30000);
 
     }
 

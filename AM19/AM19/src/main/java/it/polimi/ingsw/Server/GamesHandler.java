@@ -29,6 +29,11 @@ public class GamesHandler implements ConnectionListener{
     private Map<String, String> inactivePlayers;
 
     /**
+     * keeps track of the single player games that have been suspended as the player disconnected
+     */
+    private List<Game> suspendedGames;
+
+    /**
      * represents a progressive number associated to a game
      */
     private AtomicLong idCounter;
@@ -42,6 +47,7 @@ public class GamesHandler implements ConnectionListener{
         waitingConnection = new ArrayList<>();
         activeGames = new ArrayList<>();
         inactivePlayers = new HashMap<>();
+        suspendedGames = new ArrayList<>();
         idCounter = new AtomicLong();
 
     }
@@ -67,6 +73,11 @@ public class GamesHandler implements ConnectionListener{
             }
         }
         for(Game game : activeGames){
+            if(game.getId().equals(gameId)){
+                return game;
+            }
+        }
+        for(Game game : suspendedGames){
             if(game.getId().equals(gameId)){
                 return game;
             }
@@ -123,6 +134,22 @@ public class GamesHandler implements ConnectionListener{
             inactivePlayers.remove(nickname);
         }
 
+    }
+
+    /**
+     * adds a game to the suspended ones
+     * @param game represents the game to suspend
+     */
+    private void addSuspendedGame(Game game){
+        suspendedGames.add(game);
+    }
+
+    /**
+     * removes a game from the suspended ones
+     * @param game represents the game to remove
+     */
+    private void removeSuspendedGame(Game game){
+        suspendedGames.remove(game);
     }
 
     /**
@@ -251,6 +278,13 @@ public class GamesHandler implements ConnectionListener{
             }
         }
         activeGames.removeAll(removed);
+
+        for(Game game : suspendedGames){
+            if(game.getId().equals(gameId)){
+                removed.add(game);
+            }
+        }
+        suspendedGames.removeAll(removed);
 
     }
 
@@ -424,6 +458,7 @@ public class GamesHandler implements ConnectionListener{
 
         System.out.println("[SERVER] Waiting list: " + waitingConnection.size());
         System.out.println("[SERVER] Active games: " + activeGames.size());
+        System.out.println("[SERVER] Suspended games: " + suspendedGames.size());
 
     }
 
@@ -468,7 +503,20 @@ public class GamesHandler implements ConnectionListener{
 
         for(Game game : activeGames){
             if(game.containsPlayer(nickname) && game.isCorresponding(socketId, nickname)){
-                if(game.getActualPlayers() == 1) {
+                if(game.getPlayersNumber() == 1) {
+
+                    System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be suspended.");
+                    game.removePlayer(socketId);
+                    game.startSuspensionTimer();
+                    getConnection(socketId).closeConnection();
+                    removeActiveConnection(socketId);
+                    addInactivePlayer(nickname, game.getId());
+                    addSuspendedGame(game);
+                    disconnected.add(game);
+                    System.out.println("[SERVER] Game suspended correctly.");
+
+                } else if (game.getPlayersNumber() > 1 && game.getActualPlayers() == 1) {
+
                     System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be removed from the active ones.");
                     clearInactivePlayers(game.getId());
                     game.removePlayer(socketId);
@@ -476,7 +524,9 @@ public class GamesHandler implements ConnectionListener{
                     removeActiveConnection(socketId);
                     disconnected.add(game);
                     System.out.println("[SERVER] Game removed correctly.");
-                }else{
+
+                } else {
+
                     System.out.println("[SERVER] " + nickname + " will now be removed from the game.");
                     game.removePlayer(socketId);
                     getConnection(socketId).closeConnection();
@@ -492,6 +542,7 @@ public class GamesHandler implements ConnectionListener{
                         System.err.println("[SERVER] Error occurred while creating a disconnection message");
                         e.printStackTrace();
                     }
+
                 }
             }
             System.out.println("[SERVER] Disconnection request completed.");
@@ -501,6 +552,7 @@ public class GamesHandler implements ConnectionListener{
 
         System.out.println("[SERVER] Waiting list: " + waitingConnection.size());
         System.out.println("[SERVER] Active games: " + activeGames.size());
+        System.out.println("[SERVER] Suspended games: " + suspendedGames.size());
 
     }
 
@@ -519,9 +571,13 @@ public class GamesHandler implements ConnectionListener{
         }
         if(inactivePlayers.containsKey(nickname)){
 
-            getGameById(inactivePlayers.get(nickname)).addPlayer(nickname, socketID, getConnection(socketID));
+            Game game = getGameById(inactivePlayers.get(nickname));
+            game.addPlayer(nickname, socketID, getConnection(socketID));
             inactivePlayers.remove(nickname);
-
+            if(suspendedGames.contains(game)) {
+                removeSuspendedGame(game);
+                addActiveGame(game);
+            }
             System.out.println("[SERVER] " + nickname + " was reconnected to his game.");
 
             try {
@@ -531,10 +587,6 @@ public class GamesHandler implements ConnectionListener{
                 System.err.println("[SERVER] Error occurred while creating a positive reply message");
                 e.printStackTrace();
             }
-
-            //connection.send(new UpdateGame());
-            //connection.send(new UpdateLeaderCards());
-            //connection.send(new MessageCurrentPlayer());
 
         }else{
 
@@ -554,6 +606,7 @@ public class GamesHandler implements ConnectionListener{
 
         System.out.println("[SERVER] Waiting list: " + waitingConnection.size());
         System.out.println("[SERVER] Active games: " + activeGames.size());
+        System.out.println("[SERVER] Suspended games: " + suspendedGames.size());
 
     }
 
