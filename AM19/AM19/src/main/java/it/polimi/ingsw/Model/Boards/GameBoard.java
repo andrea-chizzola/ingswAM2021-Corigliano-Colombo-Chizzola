@@ -13,7 +13,6 @@ import it.polimi.ingsw.Model.MarketBoard.MarbleWhite;
 import it.polimi.ingsw.Model.MarketBoard.MarketBoard;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
-import it.polimi.ingsw.Model.Resources.ResourceColor;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
@@ -25,19 +24,14 @@ import java.util.*;
 public class GameBoard implements GameBoardHandler {
 
     /**
-     * indicates the number of players
-     */
-    private int nPlayers;//forse si può togliere, non viene usato
-
-    /**
      * contains a reference for each board associated to the players
      */
-    private ArrayList<Board> players;
+    private final ArrayList<Board> players;
 
     /**
      * arraylist of the disconnected players
      */
-    private ArrayList<Board> disconnectedPlayers;
+    private final ArrayList<Board> disconnectedPlayers;
 
     /**
      * indicates the current player
@@ -62,22 +56,22 @@ public class GameBoard implements GameBoardHandler {
     /**
      * represents the market board
      */
-    private MarketBoard marketBoard;
+    private final MarketBoard marketBoard;
 
     /**
      * represents the current game mode (single player or multiplayer)
      */
-    private CustomMode customMode;
+    private final CustomMode customMode;
 
     /**
      * contains all the development cards, divided by level and color is smaller decks
      */
-    private DevelopmentDeck developmentDeck;
+    private final DevelopmentDeck developmentDeck;
 
     /**
      * contains the leader cards chosen by each player
      */
-    private LeaderDeck leaderDeck;
+    private final LeaderDeck leaderDeck;
 
     /**
      * it represents the marbles taken by the current player from the marketBoard
@@ -87,7 +81,7 @@ public class GameBoard implements GameBoardHandler {
     /**
      * it represents the turns that the current player can do
      */
-    private List<TurnType> correctTurns;
+    private final List<TurnType> correctTurns;
 
     public GameBoard(ArrayList<String> nicknames, String file) {
 
@@ -95,16 +89,13 @@ public class GameBoard implements GameBoardHandler {
         leaderDeck = new LeaderDeck(file);
         marketBoard = new MarketBoard(file);
 
-        nPlayers = nicknames.size();
         players = new ArrayList<>(nicknames.size());
 
         LinkedList<Integer> nInitializationResources =  ConfigurationParser.getInitializationResources(file);
         LinkedList<Integer> nInitializationFaith =  ConfigurationParser.getInitializationFaith(file);
 
         for(int i = 0; i < nicknames.size(); i++){
-            players.add(new Board(nicknames.get(i),
-                    this,
-                    file));
+            players.add(new Board(nicknames.get(i), this, file));
         }
 
         for(int i = 0; i<players.size(); i++){
@@ -122,7 +113,6 @@ public class GameBoard implements GameBoardHandler {
         }
 
         disconnectedPlayers = new ArrayList<>();
-
         correctTurns = new ArrayList<>();
     }
 
@@ -170,7 +160,6 @@ public class GameBoard implements GameBoardHandler {
         gameEnded = true;
     }
 
-
     /**
      * @return returns an ArrayList containing all the players
      */
@@ -178,16 +167,12 @@ public class GameBoard implements GameBoardHandler {
         return players;
     }
 
-
     /**
      * @return returns the market board
      */
     public MarketBoard getMarketBoard(){
-
         return marketBoard;
-
     }
-
 
     /**
      * starts the vatican report regarding the section indicated
@@ -208,7 +193,6 @@ public class GameBoard implements GameBoardHandler {
                 } else board.getFaithTrack().getSection(section).discard();
             }
         }
-
     }
 
     /**
@@ -228,7 +212,6 @@ public class GameBoard implements GameBoardHandler {
                 }
             }
         }
-
     }
 
     /**
@@ -278,7 +261,7 @@ public class GameBoard implements GameBoardHandler {
     }
 
     /**
-     * check if it is possible to play a turn
+     * This method checks if it is possible to play a turn
      * @param turn the type of turn
      * @throws InvalidActionException if it is not possible to play the turn
      */
@@ -289,6 +272,9 @@ public class GameBoard implements GameBoardHandler {
             throw new InvalidActionException("You can't do this action now!");
     }
 
+    /**
+     * This method sets the turns that a player can do at the beginning of his round
+     */
     public void setStartTurns(){
         correctTurns.clear();
         correctTurns.add(TurnType.SWAP);
@@ -298,6 +284,9 @@ public class GameBoard implements GameBoardHandler {
         correctTurns.add(TurnType.DO_PRODUCTION);
     }
 
+    /**
+     * This method sets the turns that a player can do after one of the main turns of the round
+     */
     public void setMiddleTurns(){
         correctTurns.clear();
         correctTurns.add(TurnType.SWAP);
@@ -311,15 +300,26 @@ public class GameBoard implements GameBoardHandler {
     public void endTurnMove(){
 
         customMode.endTurnAction(this);
-        if(gameEnded){
+        if(gameEnded)
             virtualView.showEndGame(getTotalPoints());
-        }
-        virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
+
         if(players.size() == 1 && disconnectedPlayers.size()==0) {
+            virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
             virtualView.showTopToken(customMode.showTopToken());
             virtualView.showDecksUpdate(developmentDeck.showDeck());
         }
         setStartTurns();
+    }
+
+    /**
+     *This method shows the status of the model
+     */
+    public void showAvailableTurns() {
+        LinkedList<String> turns = new LinkedList<>();
+        for(TurnType turnType : correctTurns){
+            turns.add(turnType.toString());
+        }
+        virtualView.showAvailableTurns(turns,currentPlayer.getNickname());
     }
 
     //methods of interface GameBoardHandler
@@ -329,10 +329,7 @@ public class GameBoard implements GameBoardHandler {
      * @param virtualView the observer of the model
      */
     @Override
-    public void attachView(View virtualView){
-
-        this.virtualView = virtualView;
-    }
+    public void attachView(View virtualView) { this.virtualView = virtualView; }
 
     /**
      * This method distributes the leader cards and updates the view
@@ -345,13 +342,11 @@ public class GameBoard implements GameBoardHandler {
         virtualView.showDecksUpdate(developmentDeck.showDeck());
         virtualView.showMarketUpdate(marketBoard.showMarket());
 
-        for(Board board : players) {
+        for(Board board : players)
             virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
-        }
 
         virtualView.showGameStatus(true,"get resources",currentPlayer.getNickname(),TurnType.INITIALIZATION_LEADERS);
     }
-
 
     /**
      * this method checks if the nickname belongs to the current player
@@ -363,18 +358,15 @@ public class GameBoard implements GameBoardHandler {
         return nickname.equals(currentPlayer.getNickname());
     }
 
-
     /**
      * This method allows the current player to end his turn.
      * @throws InvalidActionException if the player can't do this action.
      */
     public void exit() throws InvalidActionException{
-
         checkTurn(TurnType.EXIT);
         endTurnMove();
         showAvailableTurns();
     }
-
 
     /**
      * this method gets the production of the development card present in the indicated slot
@@ -385,8 +377,7 @@ public class GameBoard implements GameBoardHandler {
     @Override
     public Production getDevProduction(int slot) throws InvalidActionException {
         try {
-            Production production = currentPlayer.getSlot(slot).getTop().getSpecialEffect().getProduction();
-            return production;
+            return currentPlayer.getSlot(slot).getTop().getSpecialEffect().getProduction();
         }
         catch (IllegalSlotException e) {
             throw new InvalidActionException(e.getMessage());
@@ -404,13 +395,19 @@ public class GameBoard implements GameBoardHandler {
         try {
             if(!currentPlayer.getLeaderCard(position).getStatus())
                 throw new InvalidActionException("You are doing a production of an inactive leader card!");
-            Production production = currentPlayer.getLeaderCard(position).getSpecialEffect().getProduction();
-            return production;
+
+            return currentPlayer.getLeaderCard(position).getSpecialEffect().getProduction();
         }
         catch (IndexOutOfBoundsException e){
             throw new InvalidActionException(e.getMessage());
         }
     }
+
+    /**
+     * @return the production associated with the personal board
+     */
+    @Override
+    public Production getBoardProduction() { return currentPlayer.getPersonalProduction(); }
 
     /**
      * this method discards the leader card in the indicated position without adding faith points to the player's faithTrack
@@ -429,12 +426,10 @@ public class GameBoard implements GameBoardHandler {
         virtualView.showGameStatus(true,"get resources",currentPlayer.getNickname(),TurnType.INITIALIZATION_RESOURCE);
     }
 
-
     /**
      * This method allows the current player to manage resources during the initialization.
      * @param resources the resources selected by the player
      * @param shelves the shelves where the resources have to be inserted
-     * @return true if the operation is successful, false otherwise
      */
     @Override
     public void insertResources(List<Resource> resources, List<Integer> shelves) throws InvalidActionException{
@@ -444,20 +439,18 @@ public class GameBoard implements GameBoardHandler {
 
         if (resources.size() != currentPlayer.getNumberResourcesInitialization())
             throw new InvalidActionException("Wrong number of selected resources!");
-        //metto in warehouse
-        if (resources.stream().anyMatch(resource -> resource.getColor().equals(ResourceColor.RED)))
-            throw new InvalidActionException("Wrong number of selected resources!");
 
-        if (!currentPlayer.getWarehouse().checkInsertMultipleRes(resources, shelves))
-            throw new InvalidActionException("Wrong selected resources!");
-
-        for (int i = 0; i < resources.size(); i++) {
-            currentPlayer.getWarehouse().insertResource(shelves.get(i), resources.get(i));
+        try {
+            currentPlayer.getWarehouse().insertMultipleResources(resources,shelves);
         }
+        catch (IllegalShelfException e){ throw new InvalidActionException(e.getMessage());}
 
         endInsertResources();
     }
 
+    /**
+     * manages the end of the initialization of the resources of the current player
+     */
     private void endInsertResources(){
 
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
@@ -471,42 +464,33 @@ public class GameBoard implements GameBoardHandler {
         showAvailableTurns();
     }
 
-
-    /**
-     * @return the production associated with the personal board
-     */
-    @Override
-    public Production getBoardProduction() {
-        return currentPlayer.getPersonalProduction();
-    }
-
     /**
      * This method manages the disconnection of a player
      * @param nickname the nickname of the player disconnected
-     * @return true if the disconnection is successful, false otherwise
      */
     @Override
     public void disconnectPlayer(String nickname) {
 
-        if(!isAllInitialized())
+        if(!isAllInitialized()) {
             virtualView.showEndGame(getTotalPoints());
-        if(currentPlayer.getNickname().equals(nickname))
+            return;
+        }
+        if(currentPlayer.getNickname().equals(nickname)){
             endTurnMove();
+            showAvailableTurns();
+        }
 
-        for(int i=0; i<players.size(); i++){
+        for(int i=0; i<players.size(); i++)
             if(players.get(i).getNickname().equals(nickname)){
                 disconnectedPlayers.add(players.get(i));
-                virtualView.showDisconnection(players.get(i).getNickname());
                 players.remove(i);
+                return;
             }
-        }
-        showAvailableTurns();
     }
 
     /**
      * This method manages the reconnection of a player
      * @param nickname the nickname of the player reconnected
-     * @return true if the reconnection is successful, false otherwise
      */
     @Override
     public void reconnectPlayer(String nickname) {
@@ -516,9 +500,14 @@ public class GameBoard implements GameBoardHandler {
             Board board = disconnectedPlayers.get(i);
 
             if(board.getNickname().equals(nickname)){
-
                 players.add(board);
                 disconnectedPlayers.remove(i);
+                virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
+                virtualView.showDecksUpdate(developmentDeck.showDeck());
+                virtualView.showMarketUpdate(marketBoard.showMarket());
+                virtualView.showBoxes(board.getWarehouse().showWarehouse(), board.getStrongBox().showStrongBox(), board.getNickname());
+                virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
+                return;
             }
         }
     }
@@ -541,7 +530,6 @@ public class GameBoard implements GameBoardHandler {
             virtualView.showMarblesUpdate(marblesMarket, white.whiteTransformations(currentPlayer), currentPlayer.getNickname());
         }
         catch (IllegalMarketException e){throw new InvalidActionException(e.getMessage());}
-
     }
 
     /**
@@ -570,25 +558,19 @@ public class GameBoard implements GameBoardHandler {
      * @param marblesPlayer the marbles selected by the player
      * @param actions the actions to be performed on each marble
      * @param shelves the shelves where the resources associated to the marbles have to be inserted
-     * @return true if the operation is successful, false if choices of the player are not allowed
      */
     public void actionMarbles(List<Marble> marblesPlayer, List<PlayerAction> actions, List<Integer> shelves) throws InvalidActionException{
 
         checkTurn(TurnType.MANAGE_MARBLE);
+        checkMarbles(marblesMarket,marblesPlayer,actions,shelves);
 
-        Marble marblePlayer;
-        if(!checkMarbles(marblesMarket,marblesPlayer,actions,shelves)) {
-            throw new InvalidActionException("Wrong marbles selected!");
-        }
         for(int i=0; i<marblesMarket.size(); i++){
 
-            marblePlayer = marblesPlayer.get(i);
-
             if(actions.get(i).equals(PlayerAction.INSERT))
-                marblePlayer.addResource(currentPlayer,shelves.get(i));
+                marblesPlayer.get(i).addResource(currentPlayer,shelves.get(i));
 
             if(actions.get(i).equals(PlayerAction.DISCARD))
-                marblePlayer.discard(currentPlayer);
+                marblesPlayer.get(i).discard(currentPlayer);
         }
 
         virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
@@ -604,34 +586,28 @@ public class GameBoard implements GameBoardHandler {
      * @param marblesPlayer the marbles selected by the player
      * @param actions the actions to be performed on each marble
      * @param shelves the shelves where the resources associated to the marbles have to be inserted
-     * @return true if the marbles selected and the actions to be performed on them are correct, false otherwise
      */
-    private boolean checkMarbles(List<Marble> marbles, List<Marble> marblesPlayer, List<PlayerAction> actions, List<Integer> shelves){
-        Marble marble;
-        Marble marblePlayer;
+    private void checkMarbles(List<Marble> marbles, List<Marble> marblesPlayer, List<PlayerAction> actions, List<Integer> shelves) throws InvalidActionException{
+
         ArrayList<Resource> resources = new ArrayList<>();
         ArrayList<Integer> shelf = new ArrayList<>();
 
         if(marbles.size() != marblesPlayer.size())
-            return false;
+            throw new InvalidActionException("Selected a wrong number of marbles!");
 
         for(int i=0; i<marbles.size(); i++){
-            marble = marbles.get(i);
-            marblePlayer = marblesPlayer.get(i);
 
-            if(!marble.checkMarble(marblePlayer,currentPlayer))
-                return false;
+            if(!marbles.get(i).checkMarble(marblesPlayer.get(i),currentPlayer))
+                throw new InvalidActionException("Wrong marble selection!");
 
             if(actions.get(i).equals(PlayerAction.INSERT)) {
-                resources.add(marblePlayer.getResourceAssociated());
+                resources.add(marblesPlayer.get(i).getResourceAssociated());
                 shelf.add(shelves.get(i));
             }
         }
 
-        if(!currentPlayer.getWarehouse().checkInsertMultipleRes(resources,shelf)) {
-            return false;
-        }
-        return true;
+        if(!currentPlayer.getWarehouse().checkInsertMultipleRes(resources,shelf))
+            throw new InvalidActionException("You can't insert in the warehouse the selected resources");
     }
 
 
@@ -714,13 +690,10 @@ public class GameBoard implements GameBoardHandler {
 
         checkTurn(TurnType.DO_PRODUCTION);
 
-        try {
-            resourceStatus = ResQuantity.createReqMap(board,shelves,quantity,strongbox);
+        resourceStatus = ResQuantity.createReqMap(board,shelves,quantity,strongbox);
 
-            for(Production production : productions)
-                production.checkProduction(resourceStatus);
-        }
-        catch (InvalidActionException e){throw e;}
+        for(Production production : productions)
+            production.checkProduction(resourceStatus);
 
         //It checks if the player has selected more resources than required, it is important because all the resources selected will be subtracted from the deposits
         if(resourceStatus.values().stream().mapToInt(Integer::intValue).sum() != 0)
@@ -755,7 +728,7 @@ public class GameBoard implements GameBoardHandler {
         catch (IndexOutOfBoundsException e){throw new InvalidActionException(e.getMessage());}
 
         //if status == true no actions have to be done
-        if(card.getStatus() == false){
+        if(!card.getStatus()){
             try {
                 card.checkReq(board);
             }
@@ -786,18 +759,7 @@ public class GameBoard implements GameBoardHandler {
         catch (IndexOutOfBoundsException e){throw new InvalidActionException(e.getMessage());}
     }
 
-
-    /**
-     *
-     */
-    public void showAvailableTurns() {
-        LinkedList<String> turns = new LinkedList<>();
-        for(TurnType turnType : correctTurns){
-            turns.add(turnType.toString());
-        }
-        virtualView.showAvailableTurns(turns,currentPlayer.getNickname());
-    }
-
+    //end of overridden methods
 
     /**
      * @return map(String-Integer) which represents nickname and total points
@@ -833,7 +795,10 @@ public class GameBoard implements GameBoardHandler {
         return map;
     }
 
-
+    /**
+     * @param vatican List of VaticanReportSection
+     * @return List of ItemStatus which indicates the status of each VaticanReportSection
+     */
     public List<ItemStatus> createListItems(List<VaticanReportSection> vatican){
         List<ItemStatus> list = new ArrayList<>();
         for(VaticanReportSection vaticanReportSection : vatican) {

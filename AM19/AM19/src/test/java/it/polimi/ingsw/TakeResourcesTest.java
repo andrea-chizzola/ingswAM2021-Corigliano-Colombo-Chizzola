@@ -5,7 +5,6 @@ import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.MarketBoard.MarbleYellow;
 import it.polimi.ingsw.Model.Resources.Coin;
-import it.polimi.ingsw.Model.Turn.TakeResources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +44,7 @@ class TakeResourcesTest {
             assertEquals(board.getWarehouse().getResource(1), new Coin());
         } catch (IllegalShelfException e){fail();}
 
-    }*/
+    }
 
 
     @Test
@@ -61,5 +60,5 @@ class TakeResourcesTest {
         assertEquals(gameBoard.getPlayers().get(2).getFaithTrack().getPosition(),2);
 
 
-    }
+    }*/
 }

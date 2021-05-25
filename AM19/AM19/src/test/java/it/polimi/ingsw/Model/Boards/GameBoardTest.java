@@ -150,6 +150,10 @@ class GameBoardTest {
 
     @Test
     void disconnectionTest(){
+        for(Board board : gameBoard.getPlayers()){
+            board.setResourcesInitialized();
+            board.setLeadersInitialized();
+        }
         gameBoard.disconnectPlayer("firstPlayer");
         assertTrue(gameBoard.getPlayers().size()==3);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
@@ -159,6 +163,10 @@ class GameBoardTest {
 
     @Test
     void disconnectionTest2(){
+        for(Board board : gameBoard.getPlayers()){
+            board.setResourcesInitialized();
+            board.setLeadersInitialized();
+        }
         gameBoard.disconnectPlayer("firstPlayer");
         gameBoard.disconnectPlayer("thirdPlayer");
         assertTrue(gameBoard.getPlayers().size()==2);
@@ -168,6 +176,10 @@ class GameBoardTest {
 
     @Test
     void reconnectionTest1(){
+        for(Board board : gameBoard.getPlayers()){
+            board.setResourcesInitialized();
+            board.setLeadersInitialized();
+        }
         gameBoard.disconnectPlayer("thirdPlayer");
         gameBoard.disconnectPlayer("firstPlayer");
         assertTrue(gameBoard.getPlayers().size()==2);
@@ -182,6 +194,10 @@ class GameBoardTest {
 
     @Test
     void reconnectionTest2(){
+        for(Board board : gameBoard.getPlayers()){
+            board.setResourcesInitialized();
+            board.setLeadersInitialized();
+        }
         gameBoard.disconnectPlayer("thirdPlayer");
         gameBoard.disconnectPlayer("firstPlayer");
         gameBoard.disconnectPlayer("fourthPlayer");

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Model.Boards.GameBoardHandler;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.*;
 import it.polimi.ingsw.Messages.MessageFactory;
@@ -13,19 +12,15 @@ import java.util.*;
 
 public class VirtualView implements View {
 
-    private Game game;
+    /**
+     * handler of the match
+     */
+    private final Game game;
 
     public VirtualView(Game game) {
         this.game = game;
     }
 
-    /**
-     * this method is used to initialize the state of the view
-     */
-    @Override
-    public void initialize() {
-
-    }
 
     /**
      * this method is used to show a message
@@ -39,7 +34,6 @@ public class VirtualView implements View {
             String message = MessageFactory.buildReply(answer,body,nickName);
             game.send(message,nickName);
         }catch (MalformedMessageException e){ e.printStackTrace();}
-
     }
 
     /**
@@ -62,7 +56,6 @@ public class VirtualView implements View {
      */
     @Override
     public void showMarketUpdate(List<Marble> tray) {
-
         try{
             String message = MessageFactory.buildUpdateMarket(tray,"update market");
             game.sendAll(message);
@@ -127,7 +120,6 @@ public class VirtualView implements View {
 
     /**
      * this method is used to show an update of one's FaithTrack
-     *
      * @param faith           is the amount of faith obtained by the players
      * @param sections        is the state of the players' sections
      * @param faithLorenzo    is the faith obtained by Lorenzo
@@ -150,9 +142,7 @@ public class VirtualView implements View {
         try {
             String message = MessageFactory.buildUpdateLorenzo(action.orElse(""),"token");
             game.sendAll(message);
-        }catch (MalformedMessageException e){e.printStackTrace();
-        System.out.println(e.getMessage());
-        }
+        }catch (MalformedMessageException e){e.printStackTrace();}
     }
 
     /**
@@ -171,7 +161,6 @@ public class VirtualView implements View {
 
     /**
      * this method is used to show the disconnection of a player
-     *
      * @param nickname is the name of the disconnected player
      */
     @Override
@@ -182,13 +171,6 @@ public class VirtualView implements View {
         }catch (MalformedMessageException e){e.printStackTrace();}
     }
 
-    /**
-     * this method is used to add a player to the view
-     */
-    @Override
-    public void newPlayer() {
-
-    }
 
     /**
      * this method is used to catch the player's selected turn
@@ -204,67 +186,62 @@ public class VirtualView implements View {
     }
 
     /**
+     * this method is used to initialize the state of the view
+     */
+    @Override
+    public void initialize() {}
+
+    /**
+     * this method is used to add a player to the view
+     */
+    @Override
+    public void newPlayer() {}
+
+    /**
      * this method is used to catch the LeaderCards selected by a player
      */
     @Override
-    public void selectLeaderAction() {
-
-    }
+    public void selectLeaderAction() {}
 
     /**
      * this method is used to catch the player's selected row or column of the MarketBoard
      */
     @Override
-    public void selectMarketAction() {
-
-    }
-
+    public void selectMarketAction() {}
 
     /**
      * this method is used to catch the action of a player on a LeaderCard
      */
     @Override
-    public void leaderAction() {
-    }
+    public void leaderAction() {}
 
     /**
      * this method is used to catch the action of a player of a shared DevelopmentCard
      */
     @Override
-    public void buyCardAction() {
-    }
+    public void buyCardAction() {}
 
     /**
      * this method is used to catch the action of a player on their productions
      */
     @Override
-    public void doProductionsAction() {
-
-    }
+    public void doProductionsAction() {}
 
     /**
      * this action is used to catch the resources chosen by a player
      */
     @Override
-    public void getResourcesAction() {
-
-    }
+    public void getResourcesAction() {}
 
     /**
      * this method is used to catch a swap in the warehouse
      */
     @Override
-    public boolean swapAction() {
-
-        return true;
-    }
-
+    public boolean swapAction() { return true; }
 
     /**
      * this method show the player's personal production.
      */
     @Override
-    public void showPersonalProduction() {
-
-    }
+    public void showPersonalProduction() {}
 }
