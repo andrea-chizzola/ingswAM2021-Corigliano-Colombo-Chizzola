@@ -77,14 +77,14 @@ class MessageParserTest {
         exception1 = assertThrows(MalformedMessageException.class, () -> MessageParser.getMessageTag(file,"body"));
         assertEquals("Parsing failure!", exception1.getMessage());
     }
-/*
+
     @Test
     void testCreateMessage(){
         Map<String,String> map = new HashMap<>();
         String createdMessage = "";
         map.put("name","pippo");
         map.put("type","ACTION");
-        String messageExpected = "<Message><name>pippo</name><type>ACTION</type></Message>";
+        String messageExpected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><name>pippo</name><type>ACTION</type></Message>";
         try {
              createdMessage = MessageParser.createMessage(map);
         } catch (MalformedMessageException e) {
@@ -100,7 +100,7 @@ class MessageParserTest {
         String name = "sfdfd";
         map.put("name","");
         map.put("type","ACTION");
-        String messageExpected = "<Message><name/><type>ACTION</type></Message>";
+        String messageExpected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><name/><type>ACTION</type></Message>";
         try {
             createdMessage = MessageParser.createMessage(map);
         } catch (MalformedMessageException e) {
@@ -114,7 +114,7 @@ class MessageParserTest {
         }
         assertEquals("",name);
     }
-*/
+
 
 
 }

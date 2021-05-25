@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Controller.ViewForTest;
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.IllegalSlotException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
@@ -12,7 +13,6 @@ import it.polimi.ingsw.Model.Cards.Colors.Purple;
 import it.polimi.ingsw.Model.Cards.Colors.Yellow;
 import it.polimi.ingsw.Model.Resources.*;
 
-import it.polimi.ingsw.Model.Turn.ManageLeader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -20,12 +20,15 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ManageLeaderTest {
     private Board board;
+    private GameBoard gameBoard;
     private final String file = "defaultConfiguration.xml";
     private DevelopmentCard dev1;
     private DevelopmentCard dev2;
@@ -46,9 +49,24 @@ class ManageLeaderTest {
         //creation of GameBoard and Board
         ArrayList<String> names = new ArrayList<>();
         names.add("test");
-        GameBoard gameBoard = new GameBoard(names, file);
+        gameBoard = new GameBoard(names, file);
         board = gameBoard.getPlayers().get(0);
         gameBoard.giveLeaderCards(file);
+        gameBoard.setStartTurns();
+        board.setResourcesInitialized();
+        gameBoard.attachView(new ViewForTest());
+
+        Map<Integer,Boolean> map = new HashMap<>();
+        map.put(1,true);
+        map.put(2,true);
+        map.put(3,false);
+        map.put(4,false);
+
+        try {
+            gameBoard.initializeLeaderCard(map);
+        } catch (InvalidActionException e) {
+            fail();
+        }
 
         //initialization of Warehouse and StrongBox
         //Warehouse: Quantity:Shelf:Resource
@@ -109,11 +127,9 @@ class ManageLeaderTest {
     @Test
     public void testRemove() {
 
-        ManageLeader action = new ManageLeader();
         try {
-            action.removeCard(board, 2);
+            gameBoard.removeCard(2);
         } catch (InvalidActionException e) {
-            System.out.println(e.getMessage());
             fail();}
 
         assertEquals(board.getFaithTrack().getPosition(), 1);
@@ -130,7 +146,6 @@ class ManageLeaderTest {
         LeaderCard card = board.getLeaderCard(1);
         boolean check = true;
 
-        ManageLeader manageLeader = new ManageLeader();
 
         int coins = board.getStrongBox().getQuantity(coin);
         int shields = board.getStrongBox().getQuantity(shield);
@@ -150,7 +165,7 @@ class ManageLeaderTest {
 
         if(check){
             try {
-                manageLeader.activateCard(board,1);
+                gameBoard.activateCard(1);
             }
             catch (InvalidActionException e){fail();}
 
@@ -175,7 +190,7 @@ class ManageLeaderTest {
 
         }
         else{
-            assertThrows(InvalidActionException.class, () -> manageLeader.activateCard(board,1));
+            assertThrows(InvalidActionException.class, () -> gameBoard.activateCard(1));
             assertFalse(board.getLeaderCard(1).getStatus());
         }
 
@@ -206,8 +221,6 @@ class ManageLeaderTest {
 
 
 
-        ManageLeader manageLeader = new ManageLeader();
-
         int coins = board.getStrongBox().getQuantity(coin);
         int shields = board.getStrongBox().getQuantity(shield);
         int stones = board.getStrongBox().getQuantity(stone);
@@ -216,9 +229,9 @@ class ManageLeaderTest {
 
 
 
-            Exception exception;
-            exception = assertThrows(InvalidActionException.class, () -> manageLeader.activateCard(board,5));
-            assertEquals("Nonexistent Leader card",exception.getMessage());
+        Exception exception;
+        exception = assertThrows(InvalidActionException.class, () -> gameBoard.activateCard(5));
+        assertEquals("Nonexistent Leader card",exception.getMessage());
 
 
         try {

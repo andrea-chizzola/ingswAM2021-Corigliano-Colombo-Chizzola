@@ -93,28 +93,19 @@ public class MarbleTest {
 
     @Test
     public void addMarbleRed(){
-        //try{
-            new MarbleRed().addResource(board,1);
-        //}
-        //catch(InvalidActionException e){
-        //    fail();
-       // }
+
+        new MarbleRed().addResource(board,1);
+
         assertEquals(board.getFaithTrack().getPosition(),1);
     }
 
-    /*
+
+
     @Test
-    public void IllegalShelfTest(){
-        try {
-            new MarbleYellow().addResource(board, 1);
-        }
-        catch(InvalidActionException e){
-                fail();
-            }
-        assertThrows(InvalidActionException.class, () -> new MarbleBlue().addResource(board,1));
-
-        assertThrows(InvalidActionException.class, () -> new MarbleBlue().addResource(board,50));
-    }*/
-
+    void testWhite (){
+        board.getModifications().addMarbleTo(new Coin());
+        MarbleWhite marbleWhite = new MarbleWhite();
+        assertTrue(marbleWhite.checkMarble(new MarbleYellow(), board));
+    }
 
 }

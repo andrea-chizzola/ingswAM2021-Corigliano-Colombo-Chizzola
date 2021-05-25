@@ -28,6 +28,7 @@ class MoveAndShuffleTest {
         gameBoard = new GameBoard(names, file);
 
         singlePlayer = new SinglePlayer(gameBoard, file);
+        singlePlayer.endTurnAction(gameBoard);
 
     }
 

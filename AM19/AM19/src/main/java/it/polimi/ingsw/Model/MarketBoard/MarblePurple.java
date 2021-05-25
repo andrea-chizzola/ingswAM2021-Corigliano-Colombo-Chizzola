@@ -54,13 +54,18 @@ public class MarblePurple implements Marble {
      */
     @Override
     public boolean checkMarble(Marble marble, Board board) {
-        return marble.toString().equals(this.toString());
+
+        return marble.getResourceAssociated().isSameResource(this.getResourceAssociated());
     }
 
+    /**
+     * @return the resource associated with the marble
+     */
     @Override
     public Resource getResourceAssociated() {
         return new Servant();
     }
+
     /**
      * @return the string associated with the color of the marble
      */
@@ -68,7 +73,6 @@ public class MarblePurple implements Marble {
     public CLIColors toColor() {
         return CLIColors.B_MAGENTA;
     }
-
 
 
     @Override

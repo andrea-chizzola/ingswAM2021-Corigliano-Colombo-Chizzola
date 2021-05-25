@@ -1,10 +1,7 @@
 package it.polimi.ingsw.Model.Boards;
 
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
-import it.polimi.ingsw.Model.Resources.Coin;
-import it.polimi.ingsw.Model.Resources.Faith;
-import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.Model.Resources.Resource;
+import it.polimi.ingsw.Model.Resources.*;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
 import java.util.*;
@@ -117,7 +114,7 @@ public class Warehouse {
      * @param shelf the number of the shelf
      * @throws IllegalShelfException if: the shelf does not exists, it has not a resource, it is empty.
      */
-    public boolean subtract(int shelf) throws IllegalShelfException{
+    public void subtract(int shelf) throws IllegalShelfException{
 
         if(shelf > 0 && shelf <= defaultCapacity.size() && !defaultShelf.containsKey(shelf))
             throw new IllegalShelfException("Empty Shelf!");
@@ -125,11 +122,11 @@ public class Warehouse {
         if(defaultShelf.containsKey(shelf)) {
             if (defaultShelf.get(shelf).getQuantity() == 1) {
                 defaultShelf.remove(shelf);
-                return true;
+                return;
             }
             defaultShelf.put(shelf, new ResQuantity(defaultShelf.get(shelf).getResource(), defaultShelf.get(shelf).getQuantity() - 1));
 
-            return true;
+            return;
         }
 
         if (!extraShelf.containsKey(shelf))
@@ -139,87 +136,15 @@ public class Warehouse {
             throw new IllegalShelfException("Empty extra shelf!");
 
         extraShelf.put(shelf, new ResQuantity(extraShelf.get(shelf).getResource(), extraShelf.get(shelf).getQuantity() - 1));
-
-        return true;
     }
+
 
     /**
      * This method adds one unit to the quantity of resources present in the shelf with number 'shelf'.
+     * Before calling this method it is important to call the method checkInsertMultipleRes
      * @param shelf the number of the shelf
      * @param resource the resource you want to add
-     * @throws IllegalShelfException if: the shelf does not exists, already exists a default shelf with this resource,
-     *                               the resource present int the shelf with number 'shelf' is different from the resource you want to add,
-     *                               the shelf is full.
      */
-    public void addResource(int shelf, Resource resource) throws IllegalShelfException{
-
-        if(shelf <= 0)
-            throw new IllegalShelfException("This shelf does not exist!");
-
-        if(shelf <= defaultCapacity.size()) {
-            try{addResourceDefault(shelf,resource);}
-            catch(IllegalShelfException e) { throw e;}
-        }
-        else{
-            try{addResourceExtra(shelf, resource);}
-            catch(IllegalShelfException e) { throw e;}
-        }
-    }
-
-    /**
-     * This method adds one unit to the quantity of resources present in the shelf with number 'shelf' in case of default shelf.
-     * @param shelf the number of the shelf
-     * @param resource the resource you want to add
-     * @throws IllegalShelfException if: already exists a default shelf with this resource,
-     *                               the resource present int the shelf with number 'shelf' is different from the resource you want to add,
-     *                               the shelf is full.
-     */
-    private boolean addResourceDefault(int shelf, Resource resource) throws IllegalShelfException{
-
-
-        if(!defaultShelf.containsKey(shelf)){
-
-            if(defaultShelf.values().stream().anyMatch(resQuantity -> resQuantity.getResource().getColor().equals(resource.getColor())))
-                throw new IllegalShelfException("Already exists a shelf with this resource!");
-
-            defaultShelf.put(shelf, new ResQuantity(resource,1));
-            return true;
-        }
-
-        if (!defaultShelf.get(shelf).getResource().getColor().equals(resource.getColor()))
-            throw new IllegalShelfException("Wrong resource!"); // different resource
-
-        if (defaultShelf.get(shelf).getQuantity() >= defaultCapacity.get(shelf))
-            throw new IllegalShelfException("Full shelf!") ; // full shelf
-
-        defaultShelf.put(shelf, new ResQuantity(defaultShelf.get(shelf).getResource(), defaultShelf.get(shelf).getQuantity() + 1));
-
-        return true;
-
-    }
-
-    /**
-     * This method adds one unit to the quantity of resources present in the shelf with number 'shelf' in case of extra shelf.
-     * @param shelf the number of the shelf
-     * @param resource the resource you want to add
-     * @throws IllegalShelfException if: the resource present int the shelf with number 'shelf' is different from the resource you want to add, the shelf is full.
-     */
-    private boolean addResourceExtra(int shelf, Resource resource) throws IllegalShelfException{
-
-        if(!extraShelf.containsKey(shelf))
-            throw new IllegalShelfException("This shelf does not exist");
-
-        if(!extraShelf.get(shelf).getResource().getColor().equals(resource.getColor()))
-            throw new IllegalShelfException("Wrong resource!"); // different resource
-
-        if(extraShelf.get(shelf).getQuantity() >= extraCapacity.get(shelf))
-            throw new IllegalShelfException("Full shelf!");//full shelf
-
-        extraShelf.put(shelf, new ResQuantity(extraShelf.get(shelf).getResource(), extraShelf.get(shelf).getQuantity() + 1));
-
-        return true;
-    }
-
     public void insertResource(int shelf, Resource resource){
         if(defaultCapacity.containsKey(shelf))
             insertResourceDefault(shelf,resource);
@@ -227,6 +152,11 @@ public class Warehouse {
             insertResourceExtra(shelf,resource);
     }
 
+    /**
+     * This method adds one unit to the quantity of resources present in the shelf with number 'shelf' in case of default shelf.
+     * @param shelf the number of the shelf
+     * @param resource the resource you want to add
+     */
     private void insertResourceDefault(int shelf, Resource resource){
         if(!defaultShelf.containsKey(shelf))
             defaultShelf.put(shelf,new ResQuantity(resource,1));
@@ -234,64 +164,93 @@ public class Warehouse {
             defaultShelf.put(shelf, new ResQuantity(resource, defaultShelf.get(shelf).getQuantity() + 1));
     }
 
+    /**
+     * This method adds one unit to the quantity of resources present in the shelf with number 'shelf' in case of extra shelf.
+     * @param shelf the number of the shelf
+     * @param resource the resource you want to add
+     */
     private void insertResourceExtra(int shelf, Resource resource){
 
         extraShelf.put(shelf, new ResQuantity(resource, extraShelf.get(shelf).getQuantity() + 1));
     }
 
+    /**
+     * This method allows to insert multiple resources in the selected shelves
+     * @param resources List of Resources which represents all the resources to be inserted
+     * @param shelves List of Integer which represents for each resource the shelf where it has to be inserted
+     * @throws IllegalShelfException if it is not possible to insert the selected resources
+     */
+    public void insertMultipleResources(List<Resource> resources, List<Integer> shelves) throws IllegalShelfException{
+
+        if(!checkInsertMultipleRes(resources, shelves))
+            throw new IllegalShelfException("Wrong selected resources!");
+        if (resources.stream().anyMatch(resource -> resource.isEmpty()))
+            throw new IllegalShelfException("Wrong selected resources!");
+
+        for (int i = 0; i < resources.size(); i++) {
+            insertResource(shelves.get(i), resources.get(i));
+        }
+    }
+
+    /**
+     * This method checks if the resources passed ad parameters can be inserted in the Warehouse
+     * @param resources List of resources which indicates all the resources that should be inserted
+     * @param shelves List of integers which represents for each resource the shelf in which the resource should be inserted
+     * @return true if the resources can be inserted, false otherwise
+     */
     public boolean checkInsertMultipleRes(List<Resource> resources, List<Integer> shelves){
 
         HashMap<Integer,ResQuantity> map = new HashMap<>();
         HashMap<Integer,ResQuantity> mapDefault = new HashMap<>();
         HashMap<Integer,ResQuantity> mapExtra = new HashMap<>();
-        ResQuantity resQuantity;
-        ResQuantity res = new ResQuantity(new Coin(),0);
 
         for(int i=0; i< resources.size(); i++){
+            int j = shelves.get(i);
 
-            if(resources.get(i).getColor().equals(new Faith().getColor()))
+            if(resources.get(i).isEmpty())
                 continue;
-            if(map.containsKey(shelves.get(i))) {
-                //different resources in the same shelf
-                if (!map.get(shelves.get(i)).getResource().getColor().equals(resources.get(i).getColor()))
-                    return false;
-            }
-            resQuantity = new ResQuantity(resources.get(i), map.getOrDefault(shelves.get(i),res).getQuantity()+1);
-            map.put(shelves.get(i),resQuantity);
-        }
-
-        for(int i : map.keySet()){
-            if(defaultCapacity.containsKey(i))
-                mapDefault.put(i,map.get(i));
-            if(extraShelf.containsKey(i))
-                mapExtra.put(i,map.get(i));
-            if(!extraShelf.containsKey(i) && !defaultCapacity.containsKey(i))
+            if(!extraShelf.containsKey(j) && !defaultCapacity.containsKey(j))
                 return false;
+            //if there are two different resources in one shelf
+            if(map.containsKey(j) && !map.get(j).getResource().isSameResource(resources.get(i)))
+                return false;
+
+            int quantity = map.containsKey(j) ? (map.get(j).getQuantity()+1) : 1;
+            map.put(j, new ResQuantity(resources.get(i), quantity));
+
+            if(defaultCapacity.containsKey(j))
+                mapDefault.put(j, map.get(j));
+            else
+                mapExtra.put(j, map.get(j));
         }
 
         return (checkInsertDefault(mapDefault) && checkInsertExtra(mapExtra));
-
     }
 
+    /**
+     * This method checks if the resources passed ad parameters can be inserted in the default shelves of the warehouse
+     * @param mapDefault Map(Integer-ResQuantity) which represents the shelf, the resource and the quantity of resources
+     * @return true if it is possible to insert the selected resources, false otherwise
+     */
     private boolean checkInsertDefault(HashMap<Integer,ResQuantity> mapDefault){
 
-        Map<Resource,Integer> map = new HashMap<>();
+        Set<Resource> set = new HashSet<>();
         for(ResQuantity resQuantity : mapDefault.values()){
-            //vuol dire che ci sono due risorse uguali che cerco di inserire in shelf diversi
-            if(map.containsKey(resQuantity.getResource()))
+            //if there a resource has to be inserted in two different shelves
+            if(set.contains(resQuantity.getResource()))
                 return false;
-            map.put(resQuantity.getResource(),1);
+            set.add(resQuantity.getResource());
         }
 
         for(int i : mapDefault.keySet()){
             if(!defaultShelf.containsKey(i)){
-                if(defaultShelf.values().stream().anyMatch(resQuantity -> resQuantity.getResource().getColor().equals(mapDefault.get(i).getResource().getColor())))
+                if(defaultShelf.values().stream().anyMatch(resQuantity -> resQuantity.getResource().isSameResource(mapDefault.get(i).getResource())))
                     return false;
                 if(defaultCapacity.get(i) < mapDefault.get(i).getQuantity())
                     return false;
             }
             else {
-                if (!defaultShelf.get(i).getResource().getColor().equals(mapDefault.get(i).getResource().getColor()))
+                if (!defaultShelf.get(i).getResource().isSameResource(mapDefault.get(i).getResource()))
                     return false;
                 if (defaultCapacity.get(i) < defaultShelf.get(i).getQuantity() + mapDefault.get(i).getQuantity())
                     return false;
@@ -300,10 +259,15 @@ public class Warehouse {
         return true;
     }
 
+    /**
+     * This method checks if the resources passed ad parameters can be inserted in the extra shelves of the warehouse
+     * @param mapExtra Map(Integer-ResQuantity) which represents the shelf, the resource and the quantity of resources
+     * @return true if it is possible to insert the selected resources, false otherwise
+     */
     private boolean checkInsertExtra(HashMap<Integer,ResQuantity> mapExtra){
 
         for(int i : mapExtra.keySet()){
-            if(!extraShelf.get(i).getResource().getColor().equals(mapExtra.get(i).getResource().getColor()))
+            if(!extraShelf.get(i).getResource().isSameResource(mapExtra.get(i).getResource()))
                 return false;
             if(extraCapacity.get(i) < extraShelf.get(i).getQuantity() + mapExtra.get(i).getQuantity())
                 return false;
@@ -317,7 +281,7 @@ public class Warehouse {
      * @param target the number of the second shelf
      * @throws IllegalShelfException if the swap is not possible
      */
-    public boolean swap(int source, int target) throws IllegalShelfException{
+    public void swap(int source, int target) throws IllegalShelfException{
 
         if(source <= 0 || source > defaultCapacity.size() || target <= 0 || target > defaultCapacity.size())
             throw new IllegalShelfException("Illegal swap!");
@@ -327,20 +291,19 @@ public class Warehouse {
         int targetCapacity = defaultCapacity.get(target);
 
         if(source == target)
-            return true;
+            return;
 
         if(sourceQuantity >= targetQuantity) {
             if(sourceQuantity > targetCapacity)
                 throw new IllegalShelfException("Illegal swap!");
             safeSwap(source, target, sourceQuantity, targetQuantity);
-            return true;
+            return;
         }
 
         if(targetQuantity > sourceCapacity)
             throw new IllegalShelfException("Illegal swap!");
 
         safeSwap(target, source, targetQuantity, sourceQuantity);
-        return true;
     }
 
     /**
@@ -351,23 +314,22 @@ public class Warehouse {
      * @param sourceQuantity quantity of first shelf
      * @param targetQuantity quantity of second shelf
      */
-    private boolean safeSwap(int source, int target, int sourceQuantity, int targetQuantity) {
+    private void safeSwap(int source, int target, int sourceQuantity, int targetQuantity) {
 
         if(sourceQuantity == 0)//sourceQuantity == 0 => targetQuantity == 0, swap is valid but nothing happens
-            return true;
+            return;
 
         if(targetQuantity == 0){
             Resource sourceResource = defaultShelf.get(source).getResource();
             defaultShelf.put(target, new ResQuantity(sourceResource,sourceQuantity));
             defaultShelf.remove(source);
-            return true;
+            return;
         }
 
         Resource sourceResource = defaultShelf.get(source).getResource();
         Resource targetResource = defaultShelf.get(target).getResource();
         defaultShelf.put(source, new ResQuantity(targetResource,targetQuantity));
         defaultShelf.put(target, new ResQuantity(sourceResource,sourceQuantity));
-        return true;
     }
 
     /**
