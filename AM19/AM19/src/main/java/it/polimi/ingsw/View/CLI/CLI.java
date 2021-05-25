@@ -1,21 +1,23 @@
-package it.polimi.ingsw.View;
+package it.polimi.ingsw.View.CLI;
 
+import it.polimi.ingsw.Client.InteractionObserver;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Client.ViewObserver;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Messages.MessageFactory;
-import it.polimi.ingsw.Model.Cards.Colors.CardColor;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.View.PlayerInteractions.*;
+import it.polimi.ingsw.View.SubjectView;
+import it.polimi.ingsw.View.View;
 
 import java.io.*;
 import java.util.*;
-import java.util.function.Supplier;
 
 /**
  * this class represents a CLI. It gives all the methods to "paint" the current status of the game
@@ -115,6 +117,11 @@ public class CLI implements View, SubjectView {
      * this attribute represents an observer of the view
      */
     ViewObserver viewObserver;
+
+    /**
+     * this attribute represents an observer of the interactions of a player
+     */
+    InteractionObserver interactionObserver;
 
     /**
      * this is the constructor of the class
@@ -551,29 +558,28 @@ public class CLI implements View, SubjectView {
     private void actionMapper(String action){
         switch(action){
             case("BUY_CARD"): {
-                buyCardAction();
+                interactionObserver.notifyInteraction(new BuyCardInteraction());
                 break;
             }
             case("DO_PRODUCTION"): {
-                doProductionsAction();
+                interactionObserver.notifyInteraction(new DoProductionInteraction());
                 break;
             }
             case("MANAGE_LEADER"): {
-                leaderAction();
+                interactionObserver.notifyInteraction(new ManageLeaderInteraction());
                 break;
             }
             case("TAKE_RESOURCES"): {
-                selectMarketAction();
+                interactionObserver.notifyInteraction(new TakeResourcesInteraction());
                 break;
             }
             case("SWAP"): {
-                swapAction();
+                interactionObserver.notifyInteraction(new SwapInteraction());
                 break;
             }
             case("EXIT"): {
                 try {
                     viewObserver.update(MessageFactory.buildExit("End of turn selection"));
-                    //viewObserver.update(MessageFactory.buildSelectedTurn("EXIT", "End of turn selection"));
                 }catch(MalformedMessageException e){
                     //exit from client
                 }
@@ -1003,16 +1009,16 @@ public class CLI implements View, SubjectView {
      * @param observer is the observer to be attached
      */
     @Override
-    public void attachObserver(ViewObserver observer) {
+    public void attachViewObserver(ViewObserver observer) {
         this.viewObserver = observer;
     }
 
     /**
-     * this method is used to notify a Client of an action
-     * @param message is the String that represent the action
+     * this method is used to attach a ClientController to a view
+     * @param observer is the observer to be attached
      */
     @Override
-    public void notifyObserver(String message) {
-        viewObserver.update(message);
+    public void attachInteractionObserver(InteractionObserver observer) {
+        this.interactionObserver = observer;
     }
 }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.View.CLI.CLI;
 import it.polimi.ingsw.View.GUI.GUI;
 import it.polimi.ingsw.View.View;
+import javafx.application.Application;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -22,7 +23,6 @@ public class Client implements ViewObserver{
     private String ip;
     private int port;
     private boolean useCli;
-    private View ui;
     private ClientController clientController;
 
     public Client(String ip, int port, boolean useCli) {
@@ -51,19 +51,20 @@ public class Client implements ViewObserver{
 
     public void startClient(){
 
-
         ReducedGameBoard reducedModel = new ReducedGameBoard(file);
 
         if(useCli){
-            ui = new CLI(reducedModel, System.in, System.out);
-            CLI cli = (CLI) ui;
-            cli.attachObserver(this);
+            CLI cli = new CLI(reducedModel, System.in, System.out);
+            clientController = new ClientController(reducedModel, cli);
+            clientController.runController();
+            cli.attachViewObserver(this);
         }else{
             GUI gui = new GUI();
+            clientController = new ClientController(reducedModel, gui);
+            clientController.runController();
+            gui.attachViewObserver(this);
             GUI.main(null);
         }
-
-        clientController = new ClientController(reducedModel, ui);
 
         try {
 
@@ -78,8 +79,6 @@ public class Client implements ViewObserver{
             e.printStackTrace();
 
         }
-        
-        clientController.runController();
 
     }
 

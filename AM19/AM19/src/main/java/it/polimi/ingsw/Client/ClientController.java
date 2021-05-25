@@ -7,10 +7,11 @@ import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
+import it.polimi.ingsw.View.SubjectView;
 import it.polimi.ingsw.View.View;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientController implements ClientConnectionListener, InteractionObserver {
 
@@ -45,6 +46,16 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     private LinkedList<String> receivedMessages;
 
     /**
+     * this attribute is true if a player interaction is available
+     */
+    private boolean availableInteraction;
+
+    /**
+     * this attribute contains the most recent interaction of the player
+     */
+    private PlayerInteraction interaction;
+
+    /**
      * this method is the constructor of the class
      * @param model is a reference to the model in the client
      * @param view is a reference to the view used in the client
@@ -55,6 +66,7 @@ public class ClientController implements ClientConnectionListener, InteractionOb
         notStarted = false;
         loggedIn = false;
         isActive = true;
+        availableInteraction = false;
         receivedMessages = new LinkedList<>();
     }
 
@@ -62,13 +74,13 @@ public class ClientController implements ClientConnectionListener, InteractionOb
      * this method creates a thread that will run the actions of the client
      */
     public void runController(){
-        AtomicReference<String> message = new AtomicReference<>();
-
         new Thread(() -> {
+
             firstInteraction();
             while(isActive) {
+
                 synchronized (this) {
-                    while (receivedMessages.size() == 0) {
+                    while (receivedMessages.size() == 0 && !availableInteraction) {
                         try {
                             wait();
                         } catch (InterruptedException e) {
@@ -76,18 +88,10 @@ public class ClientController implements ClientConnectionListener, InteractionOb
                             e.printStackTrace();
                         }
                     }
-                    message.set(receivedMessages.remove(0));
                 }
-                    try {
-                        messageHandler(message.get());
 
-                        //CODE FOR TESTS
-                        //this.notifyAll();
-                        //-----------------
-                    } catch (MalformedMessageException e) {
-                        System.out.println("[CLIENT] Malformed message received. No action performed.");
-                        e.printStackTrace();
-                    }
+                manageInteraction();
+                messageHandler();
 
             }
         }).start();
@@ -98,6 +102,7 @@ public class ClientController implements ClientConnectionListener, InteractionOb
      */
     private synchronized void firstInteraction(){
         if(!notStarted){
+            ((SubjectView) view).attachInteractionObserver(this);
             view.newPlayer();
             notStarted = false;
         }
@@ -121,15 +126,6 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     public synchronized void onReceivedMessage(String message) {
         receivedMessages.add(message);
         this.notifyAll();
-
-        //CODE FOR TESTS
-        /*try {
-            this.wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        //----------------
-
     }
 
     /**
@@ -150,27 +146,44 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     }
 
     /**
-     * this method is used to manage a message coming from the server
-     * @throws MalformedMessageException if the message is not well formed
+     * this method checks if a message is available. In that case, it manages the message.
      */
-    protected void messageHandler(String message) throws MalformedMessageException {
+    protected void messageHandler(){
+        String message;
+        MessageUtilities parser = MessageUtilities.instance();
         checkStart();
 
-        MessageUtilities parser = MessageUtilities.instance();
-        //Message.MessageType type = parser.getType(receivedMessages.getFirst());
-        Message.MessageType type = parser.getType(message);
-
-        if (type == Message.MessageType.GAME_STATUS)
-            gameStatusHandler(new GameStatusMessage(message));
-           // gameStatusHandler(new GameStatusMessage(receivedMessages.getFirst()));
-        else if (type == Message.MessageType.REPLY) {
-            replyHandler(new ReplyMessage(message));
-            //replyHandler(new ReplyMessage(receivedMessages.getFirst()));
-        } else {
-            //updateHandler(new UpdateMessage(receivedMessages.getFirst(), type));
-            updateHandler(new UpdateMessage(message, type));
+        synchronized(this){
+            if(receivedMessages.size()<=0) return;
+            message = receivedMessages.removeFirst();
         }
-        //receivedMessages.remove(0);
+
+        try {
+            Message.MessageType type = parser.getType(message);
+            if (type == Message.MessageType.GAME_STATUS)
+                gameStatusHandler(new GameStatusMessage(message));
+            else if (type == Message.MessageType.REPLY) {
+                replyHandler(new ReplyMessage(message));
+            } else {
+                updateHandler(new UpdateMessage(message, type));
+            }
+        } catch (MalformedMessageException e) {
+            System.out.println("[CLIENT] cannot create the missing pong message");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * this method checks if a player interaction is available. In that case, it manages the interaction
+     */
+    private void manageInteraction(){
+        PlayerInteraction toHandle;
+        synchronized(this){
+            if(!availableInteraction) return;
+            toHandle = interaction;
+            availableInteraction = false;
+        }
+        toHandle.manageInteraction(view);
     }
 
     /**
@@ -489,13 +502,16 @@ public class ClientController implements ClientConnectionListener, InteractionOb
      * @param interaction is the notified interaction
      */
     @Override
-    public void notifyInteraction(PlayerInteraction interaction) {
-
+    public synchronized void notifyInteraction(PlayerInteraction interaction) {
+        this.interaction = interaction;
+        availableInteraction = true;
+        notifyAll();
     }
 
     @Override
     public void notifySelectedNickname(String nickname) {
-
+        model.setPersonalNickname(nickname);
+        model.setCurrentPlayer(nickname);
     }
 }
 

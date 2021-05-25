@@ -1,7 +1,9 @@
 package it.polimi.ingsw.View.GUI;
 
+import it.polimi.ingsw.Client.InteractionObserver;
 import it.polimi.ingsw.Client.ViewObserver;
 import it.polimi.ingsw.GUI.Gui;
+import it.polimi.ingsw.GUI.LoadingController;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
@@ -11,11 +13,8 @@ import it.polimi.ingsw.View.View;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 import java.util.List;
 import java.util.Map;
@@ -23,27 +22,23 @@ import java.util.Optional;
 
 public class GUI extends Application implements View, SubjectView {
 
-    private static Scene scene;
-
     @Override
     public void start(Stage stage) throws Exception {
-        scene = new Scene(loadFXML("/FXML/login.fxml"), 575, 534);
+        FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/FXML/loading.fxml"));
+
+        Scene scene = new Scene(fxmlLoader.load(), 575, 534);
         stage.setScene(scene);
+
+        GUIHandler handler = GUIHandler.instance();
+        handler.setCurrentScene(scene);
+
         stage.show();
     }
+
     @Override
     public void stop(){
         Platform.exit();
         System.exit(0);
-    }
-
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource(fxml));
-        return fxmlLoader.load();
     }
 
 
@@ -123,7 +118,9 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void newPlayer() {
-
+       /* GUIHandler handler = GUIHandler.instance();
+        LoadingController controller = handler.getLoadingController();
+        Platform.runLater(controller::startLogin);*/
     }
 
     @Override
@@ -147,7 +144,6 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void buyCardAction() {
-
     }
 
     @Override
@@ -171,12 +167,15 @@ public class GUI extends Application implements View, SubjectView {
     }
 
     @Override
-    public void attachObserver(ViewObserver observer) {
-
+    public void attachViewObserver(ViewObserver observer) {
+        GUIHandler handler = GUIHandler.instance();
+        handler.setViewObserver(observer);
     }
 
     @Override
-    public void notifyObserver(String message) {
-
+    public void attachInteractionObserver(InteractionObserver observer) {
+        GUIHandler handler = GUIHandler.instance();
+        handler.setInteractionObserver(observer);
     }
+
 }

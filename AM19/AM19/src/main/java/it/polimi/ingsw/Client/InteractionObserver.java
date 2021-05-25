@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
+
 /**
  * this interface implements a method to notify the interaction performed by a player
  */

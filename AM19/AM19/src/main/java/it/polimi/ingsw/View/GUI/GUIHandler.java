@@ -1,4 +1,7 @@
 package it.polimi.ingsw.View.GUI;
+import it.polimi.ingsw.Client.InteractionObserver;
+import it.polimi.ingsw.Client.ViewObserver;
+import it.polimi.ingsw.GUI.LoadingController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -28,7 +31,15 @@ public class GUIHandler {
 
     //handler = GUIHandler.instance();
     //handler.update(MessageFactory.Build...);
-    
+
+    private Scene currentScene;
+
+    private InteractionObserver interactionObserver;
+
+    private ViewObserver viewObserver;
+
+    private LoadingController loadingController;
+
     private GUIHandler(){}
 
     /**
@@ -51,7 +62,7 @@ public class GUIHandler {
      * @param <T> is the type of the returned controller
      * @return the controller of the scene
      */
-    static <T> T loadRoot(Scene scene, String fxmlPath) {
+    public static <T> T loadRoot(Scene scene, String fxmlPath) {
         FXMLLoader fxmlLoader = new FXMLLoader(GUIHandler.class.getResource(fxmlPath));
 
         Pane parent;
@@ -66,5 +77,63 @@ public class GUIHandler {
         return fxmlLoader.getController();
     }
 
+    public static <T> T newWindow(String fxmlPath){
+        Parent root;
+        FXMLLoader fxmlLoader = new FXMLLoader(GUIHandler.class.getResource(fxmlPath));
 
+        try {
+            root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("My New Stage Title");
+            stage.setScene(new Scene(root, 500, 500));
+            stage.show();
+
+            // Hide this current window (if this is what you want)
+            //((Node)(event.getSource())).getScene().getWindow().hide();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fxmlLoader.getController();
+    }
+
+    public static GUIHandler getInstance() {
+        return instance;
+    }
+
+    public static void setInstance(GUIHandler instance) {
+        GUIHandler.instance = instance;
+    }
+
+    public InteractionObserver getInteractionObserver() {
+        return interactionObserver;
+    }
+
+    public void setInteractionObserver(InteractionObserver interactionObserver) {
+        this.interactionObserver = interactionObserver;
+    }
+
+    public ViewObserver getViewObserver() {
+        return viewObserver;
+    }
+
+    public void setViewObserver(ViewObserver viewObserver) {
+        this.viewObserver = viewObserver;
+    }
+
+    public Scene getCurrentScene() {
+        return currentScene;
+    }
+
+    public void setCurrentScene(Scene currentScene) {
+        this.currentScene = currentScene;
+    }
+
+    public LoadingController getLoadingController() {
+        return loadingController;
+    }
+
+    public void setLoadingController(LoadingController loadingController) {
+        this.loadingController = loadingController;
+    }
 }
