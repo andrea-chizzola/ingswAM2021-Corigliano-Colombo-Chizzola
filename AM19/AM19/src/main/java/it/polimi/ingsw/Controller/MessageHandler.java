@@ -9,7 +9,6 @@ import it.polimi.ingsw.Model.Boards.GameBoardHandler;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.View.View;
 
 
@@ -24,12 +23,12 @@ public class MessageHandler {
     /**
      * the model of the game
      */
-    private GameBoardHandler gameBoard;
+    private final GameBoardHandler gameBoard;
 
     /**
      * Virtual view
      */
-    private View virtualView;
+    private final View virtualView;
 
     /**
      * constructor
@@ -46,7 +45,6 @@ public class MessageHandler {
      * This method handles the current state and sets the next one
      * @param message the message received
      * @param nickname the nickname of the player that sent the message
-     * @return true if the message was correct and the state has successful evolved, false otherwise
      */
     public void messageHandler(String message, String nickname) {
 
@@ -119,7 +117,6 @@ public class MessageHandler {
     /**
      * Handler of the message MessageConnection
      * @param nickName nickname of the player
-     * @return true if the message was correct, false otherwise
      */
     public void disconnection(String nickName){
         gameBoard.disconnectPlayer(nickName);
@@ -128,7 +125,6 @@ public class MessageHandler {
     /**
      * Handler of the message MessageConnection
      * @param nickName nickname of the player
-     * @return true if the message was correct, false otherwise
      */
     public void reconnection(String nickName){
         gameBoard.reconnectPlayer(nickName);
@@ -185,7 +181,6 @@ public class MessageHandler {
      * Handler of the message MessageSwap
      * @param actionMessage the message from the player
      * @param nickname the nickname of the player
-     * @return true if the message was correct, false otherwise
      */
     private void swapHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
@@ -260,13 +255,12 @@ public class MessageHandler {
      * Handler of the message MessageBuyCard
      * @param actionMessage the message from the player
      * @param nickname the nickname of the player
-     * @return true if the message was correct, false otherwise
      */
     private void buyCardHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
 
         ArrayList<Integer> shelves = new ArrayList<>(actionMessage.getSelectedWarehouseShelves());
         ArrayList<Integer> quantity = new ArrayList<>(actionMessage.getSelectedWarehouseQuantity());
-        ArrayList<ResQuantity> strongbox = createCorrectStrongbox(actionMessage.getSelectedStrongBoxQuantity());
+        ArrayList<ResQuantity> strongbox = Utilities.createCorrectStrongbox(actionMessage.getSelectedStrongBoxQuantity());
 
         try {
             gameBoard.buyCard(actionMessage.getTargetSlotDevelopmentCard(), actionMessage.getDevelopmentCardColor(), actionMessage.getDevelopmentCardLevel(), shelves,quantity,strongbox);
@@ -281,97 +275,21 @@ public class MessageHandler {
      * Handler of the message MessageDoProduction
      * @param actionMessage the message from the player
      * @param nickname the nickname of the player
-     * @return true if the message was correct, false otherwise
      */
     private void doProductionHandler(ActionMessage actionMessage, String nickname) throws MalformedMessageException{
-
-        ArrayList<Production> productions = new ArrayList<>();
-        int numberChoiceProducts = 0;
-        int numberChoiceMaterials = 0;
-
-        if(actionMessage.getSelectedLeaderCards().size()==0 && actionMessage.getActivatedDevelopmentCards().size()==0 && !actionMessage.isPersonalProduction()){
-            virtualView.reply(false,"No productions selected", nickname);
-        }
-
-        //check development cards
-        for(int i : actionMessage.getActivatedDevelopmentCards().keySet()){
-            try {
-                Production production = gameBoard.getDevProduction(i);
-                productions.add(production);
-            }
-            catch (InvalidActionException e){
-                virtualView.reply(false,e.getMessage(), nickname);
-            }
-        }
-
-        //check leader cards
-        for(int i : actionMessage.getSelectedLeaderCards().keySet()){
-            try {
-                Production production = gameBoard.getLeaderProduction(i);
-                productions.add(production);
-                numberChoiceProducts += production.getCustomProducts();
-                numberChoiceMaterials += production.getCustomMaterials();
-            }
-            catch (InvalidActionException e){
-                virtualView.reply(false,e.getMessage(), nickname);
-            }
-        }
-
-        //personal board production
-        if(actionMessage.isPersonalProduction()){
-            numberChoiceProducts += gameBoard.getBoardProduction().getCustomProducts();
-            numberChoiceMaterials += gameBoard.getBoardProduction().getCustomMaterials();
-            productions.add(gameBoard.getBoardProduction());
-        }
-
-        //check of number chosen resources
-        if(numberChoiceMaterials != actionMessage.getChosenMaterials().stream().mapToInt(ResQuantity::getQuantity).sum()) {
-            virtualView.reply(false,"Wrong number chosen materials", nickname);
-        }
-        if(numberChoiceProducts != actionMessage.getChosenProducts().stream().mapToInt(ResQuantity::getQuantity).sum()) {
-            virtualView.reply(false,"Wrong number chosen products", nickname);
-        }
-
-        //creating new production
-        LinkedList<ResQuantity> materials = new LinkedList<>(actionMessage.getChosenMaterials());
-        LinkedList<ResQuantity> products = new LinkedList<>(actionMessage.getChosenProducts());
-        Production choiceProduction = new Production(materials,products,0,0);
-
-        productions.add(choiceProduction);
 
         //selected resources
         ArrayList<Integer> shelves = new ArrayList<>(actionMessage.getSelectedWarehouseShelves());
         ArrayList<Integer> quantity = new ArrayList<>(actionMessage.getSelectedWarehouseQuantity());
-        ArrayList<ResQuantity> strongbox = createCorrectStrongbox(actionMessage.getSelectedStrongBoxQuantity());
+        ArrayList<ResQuantity> strongbox = Utilities.createCorrectStrongbox(actionMessage.getSelectedStrongBoxQuantity());
+        ArrayList<Production> productions;
 
         try {
+            productions = Utilities.createProductions(gameBoard,actionMessage);
             gameBoard.doProduction(productions, shelves,quantity,strongbox);
         }
         catch (InvalidActionException e){
             virtualView.reply(false,e.getMessage(), nickname);
         }
     }
-
-    /**
-     * This method creates an ArrayList or resQuantity that meets the requirements for the parameter strongbox that has to be passed in DoProduction and BuyCard
-     * @param strongbox
-     * @return an ArrayList or resQuantity that meets the requirements for the parameter strongbox
-     */
-    private ArrayList<ResQuantity> createCorrectStrongbox(List<ResQuantity> strongbox){
-
-        Map<Resource,Integer> map = new HashMap<>();
-        ArrayList<ResQuantity> list = new ArrayList<>();
-
-        for(ResQuantity resQuantity : strongbox){
-            if(map.containsKey(resQuantity.getResource())){
-                map.put(resQuantity.getResource(), map.get(resQuantity.getResource()) + resQuantity.getQuantity());}
-            else{map.put(resQuantity.getResource(), resQuantity.getQuantity());}
-        }
-
-        for (Resource resource : map.keySet()){
-            list.add(new ResQuantity(resource,map.get(resource)));
-        }
-        return list;
-    }
-
 }

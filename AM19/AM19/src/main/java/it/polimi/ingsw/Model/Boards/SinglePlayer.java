@@ -91,9 +91,9 @@ public class SinglePlayer implements CustomMode{
     @Override
     public void endTurnAction(GameBoard gameBoard){
 
-        //if(!initialization)
+        if(!initialization)
             actionTokenDeck.getTop().doAction(this);
-        //initialization = false;
+        initialization = false;
         if(gameBoard.isEndGameStarted())
            gameBoard.setGameEnded();
     }

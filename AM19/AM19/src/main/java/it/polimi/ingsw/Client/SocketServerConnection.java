@@ -109,7 +109,7 @@ public class SocketServerConnection implements ServerConnection, Runnable{
 
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 7500);
+        timer.scheduleAtFixedRate(task, 0, 15000);
 
     }
 

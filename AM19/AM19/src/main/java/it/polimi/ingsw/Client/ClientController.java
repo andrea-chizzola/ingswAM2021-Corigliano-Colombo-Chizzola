@@ -10,6 +10,7 @@ import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.View;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientController implements ClientConnectionListener {
 
@@ -61,6 +62,8 @@ public class ClientController implements ClientConnectionListener {
      * this method creates a thread that will run the actions of the client
      */
     public void runController(){
+        AtomicReference<String> message = new AtomicReference<>();
+
         new Thread(() -> {
             firstInteraction();
             while(isActive) {
@@ -73,9 +76,10 @@ public class ClientController implements ClientConnectionListener {
                             e.printStackTrace();
                         }
                     }
-
+                    message.set(receivedMessages.remove(0));
+                }
                     try {
-                        messageHandler();
+                        messageHandler(message.get());
 
                         //CODE FOR TESTS
                         //this.notifyAll();
@@ -84,7 +88,7 @@ public class ClientController implements ClientConnectionListener {
                         System.out.println("[CLIENT] Malformed message received. No action performed.");
                         e.printStackTrace();
                     }
-                }
+
             }
         }).start();
     }
@@ -149,20 +153,24 @@ public class ClientController implements ClientConnectionListener {
      * this method is used to manage a message coming from the server
      * @throws MalformedMessageException if the message is not well formed
      */
-    protected void messageHandler() throws MalformedMessageException {
+    protected void messageHandler(String message) throws MalformedMessageException {
         checkStart();
 
         MessageUtilities parser = MessageUtilities.instance();
-        Message.MessageType type = parser.getType(receivedMessages.getFirst());
+        //Message.MessageType type = parser.getType(receivedMessages.getFirst());
+        Message.MessageType type = parser.getType(message);
 
         if (type == Message.MessageType.GAME_STATUS)
-            gameStatusHandler(new GameStatusMessage(receivedMessages.getFirst()));
+            gameStatusHandler(new GameStatusMessage(message));
+           // gameStatusHandler(new GameStatusMessage(receivedMessages.getFirst()));
         else if (type == Message.MessageType.REPLY) {
-            replyHandler(new ReplyMessage(receivedMessages.getFirst()));
+            replyHandler(new ReplyMessage(message));
+            //replyHandler(new ReplyMessage(receivedMessages.getFirst()));
         } else {
-            updateHandler(new UpdateMessage(receivedMessages.getFirst(), type));
+            //updateHandler(new UpdateMessage(receivedMessages.getFirst(), type));
+            updateHandler(new UpdateMessage(message, type));
         }
-        receivedMessages.remove(0);
+        //receivedMessages.remove(0);
     }
 
     /**

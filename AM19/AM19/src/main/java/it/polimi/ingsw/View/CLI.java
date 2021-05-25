@@ -12,7 +12,6 @@ import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.Model.Turn.TakeResources;
 
 import java.io.*;
 import java.util.*;

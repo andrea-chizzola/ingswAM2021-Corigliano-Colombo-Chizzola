@@ -5,11 +5,11 @@ import it.polimi.ingsw.Controller.VirtualView;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Boards.GameBoardHandler;
-import it.polimi.ingsw.Controller.MessageHandler;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.View.View;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * public class used to handle the creation of a match
@@ -117,10 +117,16 @@ public class Game {
      */
     public void addPlayer(String nickname, String socketId, ClientConnection connection){
 
-        if(start)
-            messageHandler.reconnection(nickname);
         players.put(socketId, nickname);
         connections.put(nickname, connection);
+        if(start) {
+            try {
+                send(MessageFactory.buildStartGame("Game is starting", new ArrayList<>(players.values())),nickname);
+            } catch (MalformedMessageException e) {
+                //TERMINA IL GAME
+            }
+            messageHandler.reconnection(nickname);
+        }
         if(playersNumber == players.size()) start = true;
 
     }
@@ -131,13 +137,14 @@ public class Game {
      */
     public void removePlayer(String socketId){
 
-        if(start){
-            messageHandler.disconnection(players.get(socketId));
-        }
         String nickname = players.get(socketId);
 
         connections.remove(nickname);
         players.remove(socketId);
+
+        if(start){
+            messageHandler.disconnection(nickname);
+        }
 
     }
 

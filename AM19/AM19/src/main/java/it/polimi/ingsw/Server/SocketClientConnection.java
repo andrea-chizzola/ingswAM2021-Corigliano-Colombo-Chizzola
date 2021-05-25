@@ -80,7 +80,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         out.println(message);
         out.flush();
-        System.out.println(message);
+        System.out.println( "To: "+socketID+"  "+message);
 
     }
 
@@ -174,7 +174,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
             while ((read = in.readLine()) != null) {
 
-                System.out.println("[SERVER] Received: " + read);
+                System.out.println("[SERVER] Received: " + read + " from: "+socketID);
                 messageHandler(read);
 
             }

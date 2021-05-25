@@ -61,6 +61,7 @@ class DiscardTest {
         }
 
         singlePlayer.endTurnAction(gameBoard);
+        singlePlayer.endTurnAction(gameBoard);
 
         assertEquals(5, singlePlayer.getActionTokenDeck().getUnusedActionTokens().size());
         assertEquals(1, singlePlayer.getActionTokenDeck().getUsedActionTokens().size());
