@@ -47,7 +47,7 @@ public class Faith extends Resource {
     }
 
     /**
-     * @return false if the resource ...
+     * @return true if the resource is not empty, false otherwise
      */
     @Override
     public boolean isEmpty() {
