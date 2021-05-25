@@ -38,6 +38,24 @@ public class Stone extends Resource {
     }
 
     /**
+     * @param resource Resource to check
+     * @return true if the resources passed as parameter is of the same type of this
+     */
+    @Override
+    public boolean isSameResource(Resource resource) {
+        return resource.getColor().equals(this.color);
+    }
+
+
+    /**
+     * @return true if the resource is not empty, false otherwise
+     */
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    /**
      * This method returns the Marble associated to the resource.
      * @return the Marble associated to the resource
      */

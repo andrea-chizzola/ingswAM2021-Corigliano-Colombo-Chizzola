@@ -48,10 +48,6 @@ public class MarbleGray implements Marble{
     }
 
 
-    public boolean isWhite() {
-        return false;
-    }
-
     /**
      * This method checks if the the marble passed as parameter is among those allowed
      *
@@ -61,9 +57,13 @@ public class MarbleGray implements Marble{
      */
     @Override
     public boolean checkMarble(Marble marble, Board board) {
-        return marble.toString().equals(this.toString());
+
+        return marble.getResourceAssociated().isSameResource(this.getResourceAssociated());
     }
 
+    /**
+     * @return the resource associated with the marble
+     */
     @Override
     public Resource getResourceAssociated() {
         return new Stone();

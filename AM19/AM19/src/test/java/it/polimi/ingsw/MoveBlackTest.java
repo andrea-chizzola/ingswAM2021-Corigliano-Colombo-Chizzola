@@ -51,7 +51,8 @@ class MoveBlackTest {
             singlePlayer.getActionTokenDeck().mergeAndShuffle();
         }
 
-        singlePlayer.endTurnAction(gameBoard); //2
+        singlePlayer.endTurnAction(gameBoard);
+        singlePlayer.endTurnAction(gameBoard);//2
 
         assertEquals(2, singlePlayer.getLorenzoTrack().getPosition());
         assertEquals(5, singlePlayer.getActionTokenDeck().getUnusedActionTokens().size());

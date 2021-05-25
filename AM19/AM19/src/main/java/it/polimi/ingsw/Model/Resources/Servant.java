@@ -46,6 +46,23 @@ public class Servant extends Resource {
     }
 
     /**
+     * @param resource Resource to check
+     * @return true if the resources passed as parameter is of the same type of this
+     */
+    @Override
+    public boolean isSameResource(Resource resource) {
+        return resource.getColor().equals(this.color);
+    }
+
+    /**
+     * @return @return true if the resource is not empty, false otherwise
+     */
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    /**
      * @return the name of the resource
      */
     @Override

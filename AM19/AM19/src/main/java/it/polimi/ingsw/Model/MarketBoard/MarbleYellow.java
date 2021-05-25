@@ -50,9 +50,13 @@ public class MarbleYellow implements Marble {
      */
     @Override
     public boolean checkMarble(Marble marble, Board board) {
-        return marble.toString().equals(this.toString());
+
+        return marble.getResourceAssociated().isSameResource(this.getResourceAssociated());
     }
 
+    /**
+     * @return the resource associated with the marble
+     */
     @Override
     public Resource getResourceAssociated() {
         return new Coin();

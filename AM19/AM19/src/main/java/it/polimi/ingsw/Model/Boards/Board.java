@@ -139,6 +139,13 @@ public class Board {
     }
 
     /**
+     * sets the status of initialized leader cards
+     */
+    public void setLeadersInitialized(){
+        leadersInitialized = true;
+    }
+
+    /**
      * sets the status of initialized resources
      */
     public void setResourcesInitialized(){
@@ -238,11 +245,11 @@ public class Board {
 
         if(position > 0 && position <= leaders.size()){
 
+            if(leaders.get(position-1).getStatus())
+                throw new IndexOutOfBoundsException("You can't discard an active card!");
             leaders.remove(position - 1);
 
-
             this.addFaith(1);
-
 
         }else throw new IndexOutOfBoundsException("Nonexistent Leader card");
 
@@ -259,14 +266,10 @@ public class Board {
 
         if(leaderStatus.values().size() != leaders.size())
             return false;
-
-        if(leaderStatus.keySet().stream().anyMatch(integer -> (integer < 1 || integer > leaders.size()))){
+        if(leaderStatus.keySet().stream().anyMatch(integer -> (integer < 1 || integer > leaders.size())))
             return false;
-        }
-
-        if(leaderStatus.values().stream().filter(aBoolean -> aBoolean == true).count() != 2){
+        if(leaderStatus.values().stream().filter(aBoolean -> aBoolean == true).count() != 2)
             return false;
-        }
 
         list = leaderStatus.keySet().stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
 
@@ -289,19 +292,13 @@ public class Board {
 
         int devPoints = 0;
 
-        for(Slot slot : slots){
-
+        for(Slot slot : slots)
             devPoints = devPoints + slot.countPoints();
-
-        }
 
         int leadPoints = 0;
 
-        for(LeaderCard leaderCard : leaders){
-
+        for(LeaderCard leaderCard : leaders)
             leadPoints = leadPoints + leaderCard.getVictoryPoint();
-
-        }
 
         return resourcePoints + trackPoints + devPoints + leadPoints;
 

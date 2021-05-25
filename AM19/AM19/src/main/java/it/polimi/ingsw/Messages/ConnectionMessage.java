@@ -20,7 +20,7 @@ public class ConnectionMessage extends Message{
      */
     public String getNickname() throws MalformedMessageException {
 
-        return MessageParser.getMessageTag(toXML(), "nickname");
+        return MessageParser.getMessageTag(toXML(), "player");
 
     }
 

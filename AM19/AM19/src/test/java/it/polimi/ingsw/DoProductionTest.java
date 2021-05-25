@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Controller.ViewForTest;
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
@@ -8,7 +9,6 @@ import it.polimi.ingsw.Model.Boards.StrongBox;
 import it.polimi.ingsw.Model.Boards.Warehouse;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.Resources.*;
-import it.polimi.ingsw.Model.Turn.DoProduction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +23,7 @@ class DoProductionTest {
     private  Production production2;
     private Production production3;
     private Board board;
+    GameBoard gameBoard;
     private  ArrayList<Production> productions;
     private  final String file = "defaultConfiguration.xml";
 
@@ -31,8 +32,12 @@ class DoProductionTest {
         //creation of GameBoard and Board
         ArrayList<String> names = new ArrayList<>();
         names.add("test");
-        GameBoard gameBoard = new GameBoard(names, file);
+        gameBoard = new GameBoard(names, file);
         board = gameBoard.getPlayers().get(0);
+        gameBoard.setStartTurns();
+        board.setLeadersInitialized();
+        board.setResourcesInitialized();
+        gameBoard.attachView(new ViewForTest());
 
         productions = new ArrayList<>();
 
@@ -111,10 +116,10 @@ class DoProductionTest {
         strongBox.add(new ResQuantity(new Coin(), 3));
         strongBox.add(new ResQuantity(new Stone(), 2));
         strongBox.add(new ResQuantity(new Shield(), 0));
-        DoProduction action = new DoProduction();
         try {
 
-            action.doProduction(board,productions,shelves,quantity,strongBox);
+            gameBoard.doProduction(productions,shelves,quantity,strongBox);
+
         }catch (InvalidActionException e){fail();}
 
         try {
@@ -150,10 +155,9 @@ class DoProductionTest {
         strongBox.add(new ResQuantity(new Shield(), 1));
         ArrayList<Production> list = new ArrayList<>();
         list.add(production3);
-        DoProduction action = new DoProduction();
         try {
 
-            action.doProduction(board,list,shelves,quantity,strongBox);
+            gameBoard.doProduction(list,shelves,quantity,strongBox);
         }catch (InvalidActionException e){fail();}
 
         try {
@@ -196,10 +200,9 @@ class DoProductionTest {
 
         ArrayList<Production> list = new ArrayList<>();
         list.add(production3);
-        DoProduction action = new DoProduction();
         try {
 
-            action.doProduction(board,list,shelves,quantity,strongBox);
+            gameBoard.doProduction(list,shelves,quantity,strongBox);
         }catch (InvalidActionException e){System.out.println(e.getMessage());}
 
         try {
@@ -238,9 +241,8 @@ class DoProductionTest {
         strongBox.add(new ResQuantity(new Coin(), 3));
         strongBox.add(new ResQuantity(new Stone(), 2));
         strongBox.add(new ResQuantity(new Shield(), 1));
-        DoProduction action = new DoProduction();
         Exception exception;
-        exception = assertThrows(InvalidActionException.class, () -> action.doProduction(board, productions, shelves, quantity, strongBox));
+        exception = assertThrows(InvalidActionException.class, () -> gameBoard.doProduction( productions, shelves, quantity, strongBox));
         assertEquals(exception.getMessage(), "Too many resources selected!");
     }
 
@@ -256,9 +258,9 @@ class DoProductionTest {
         strongBox.add(new ResQuantity(new Coin(), 0));
         strongBox.add(new ResQuantity(new Stone(), 2));
         strongBox.add(new ResQuantity(new Shield(), 1));
-        DoProduction action = new DoProduction();
         Exception exception;
-        exception = assertThrows(InvalidActionException.class, () -> action.doProduction(board, productions, shelves, quantity, strongBox));
+        exception = assertThrows(InvalidActionException.class, () -> gameBoard.doProduction( productions, shelves, quantity, strongBox));
+
         assertEquals(exception.getMessage(), "Insufficient resources!");
     }
 }

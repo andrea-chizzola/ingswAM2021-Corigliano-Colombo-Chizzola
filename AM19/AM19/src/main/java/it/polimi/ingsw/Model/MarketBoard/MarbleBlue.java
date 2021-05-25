@@ -3,9 +3,10 @@ package it.polimi.ingsw.Model.MarketBoard;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.Model.Resources.Shield;
-import it.polimi.ingsw.View.CLI.CLIColors;
+import it.polimi.ingsw.View.CLIColors;
 
 import java.util.LinkedList;
+
 
 /**
  * This class implements Marble.
@@ -56,18 +57,21 @@ public class MarbleBlue implements Marble {
      */
     @Override
     public boolean checkMarble(Marble marble, Board board) {
-        return marble.toString().equals(this.toString());
+        return marble.getResourceAssociated().isSameResource(this.getResourceAssociated());
     }
 
+    /**
+     * @return the resource associated with the marble
+     */
     @Override
     public Resource getResourceAssociated() {
         return new Shield();
     }
 
 
-
     @Override
     public String toString() {
         return "MarbleBlue";
     }
+
 }

@@ -48,6 +48,9 @@ public interface Marble {
      */
     CLIColors toColor();
 
+    /**
+     * @return the resource associated with the marble
+     */
     Resource getResourceAssociated();
 
 }

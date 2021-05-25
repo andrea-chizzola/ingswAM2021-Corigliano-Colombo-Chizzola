@@ -23,6 +23,17 @@ public abstract class Resource {
     public abstract void addResourceStrongbox(Board board, int quantity);
 
     /**
+     * @param resource Resource to check
+     * @return true if the resources passed as parameter is of the same type of this
+     */
+    public abstract boolean isSameResource(Resource resource);
+
+    /**
+     * @return false if the resource ...
+     */
+    public abstract boolean isEmpty();
+
+    /**
      * This method returns the Marble associated to the resource.
      * @return the Marble associated to the resource
      */
