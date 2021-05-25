@@ -11,7 +11,7 @@ import it.polimi.ingsw.View.View;
 
 import java.util.*;
 
-public class ClientController implements ClientConnectionListener {
+public class ClientController implements ClientConnectionListener, InteractionObserver {
 
     /**
      * this attribute represents the reduced model of the Client
@@ -474,6 +474,20 @@ public class ClientController implements ClientConnectionListener {
         model.getBoard(player).setLeadersID(cards);
         model.getBoard(player).setLeadersStatus(status);
         view.showLeaderCards(cards, status, player);
+    }
+
+    /**
+     * this method is used to notify a performed interaction
+     * @param interaction is the notified interaction
+     */
+    @Override
+    public void notifyInteraction(PlayerInteraction interaction) {
+
+    }
+
+    @Override
+    public void notifySelectedNickname(String nickname) {
+
     }
 }
 

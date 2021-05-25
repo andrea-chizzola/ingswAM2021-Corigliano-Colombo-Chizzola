@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import it.polimi.ingsw.GUI.Gui;
-import it.polimi.ingsw.View.CLI;
+import it.polimi.ingsw.View.CLI.CLI;
+import it.polimi.ingsw.View.GUI.GUI;
 import it.polimi.ingsw.View.View;
 
 import java.io.IOException;
@@ -59,8 +59,8 @@ public class Client implements ViewObserver{
             CLI cli = (CLI) ui;
             cli.attachObserver(this);
         }else{
-            Gui gui = new Gui();
-            Gui.main(null);
+            GUI gui = new GUI();
+            GUI.main(null);
         }
 
         clientController = new ClientController(reducedModel, ui);
