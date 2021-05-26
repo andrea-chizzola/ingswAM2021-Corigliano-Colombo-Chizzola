@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GUI;
 
-import it.polimi.ingsw.View.GUI.GUIHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
@@ -19,11 +18,5 @@ public class LoadingController {
 
     @FXML
     public void initialize(){
-        GUIHandler handler = GUIHandler.instance();
-        handler.setLoadingController(this);
-    }
-
-    public void startLogin(){
-        GUIHandler.loadRoot(pane.getScene(), "/FXML/login.fxml");
     }
 }

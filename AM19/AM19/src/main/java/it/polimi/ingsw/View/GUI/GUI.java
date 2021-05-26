@@ -13,24 +13,27 @@ import it.polimi.ingsw.View.View;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class GUI extends Application implements View, SubjectView {
 
+    //QUI VA LA LISTA DEI CONTROLLER USATI/CHE SERVE RICHIAMARE
+
+
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/FXML/TurnSelection.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/FXML/login.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 575, 534);
         stage.setScene(scene);
-
-        GUIHandler handler = GUIHandler.instance();
-        handler.setCurrentScene(scene);
 
         stage.show();
     }
@@ -44,6 +47,56 @@ public class GUI extends Application implements View, SubjectView {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    /**
+     * this method is used to change the look of a given scene
+     *
+     * @param scene is the scene to be modified
+     * @param fxmlPath is the path of the FXML file
+     * @param <T> is the type of the returned controller
+     * @return the controller of the scene
+     */
+    public static <T> T loadRoot(Scene scene, String fxmlPath) {
+        FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource(fxmlPath));
+
+        Pane parent;
+
+        try {
+            parent = fxmlLoader.load();
+            scene.setRoot(parent);
+        } catch (IOException e) {
+            //Chiudo il client
+        }
+
+        return fxmlLoader.getController();
+    }
+
+    /**
+     * this method is used to copen a new window
+     *
+     * @param fxmlPath is the path of the FXML file
+     * @param <T> is the type of the returned controller
+     * @return the controller of the scene
+     */
+    public static <T> T newWindow(String fxmlPath){
+        Parent root;
+        FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource(fxmlPath));
+
+        try {
+            root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("My New Stage Title");
+            stage.setScene(new Scene(root, 500, 500));
+            stage.show();
+
+            // Hide this current window (if this is what you want)
+            //((Node)(event.getSource())).getScene().getWindow().hide();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fxmlLoader.getController();
     }
 
     @Override
@@ -161,8 +214,7 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void attachInteractionObserver(InteractionObserver observer) {
-        GUIHandler handler = GUIHandler.instance();
-        handler.setInteractionObserver(observer);
+
     }
 
     @Override

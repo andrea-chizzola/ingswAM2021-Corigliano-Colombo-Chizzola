@@ -12,11 +12,6 @@ public interface MessageSender {
     void sendMessage(String message);
 
     /**
-     * this method is used to notify the willingness to disconnect to the client
-     */
-    //void notifyDisconnection();
-
-    /**
      * this method is used to send the first String message to the MessageSender
      * @param message is the content of the message
      */

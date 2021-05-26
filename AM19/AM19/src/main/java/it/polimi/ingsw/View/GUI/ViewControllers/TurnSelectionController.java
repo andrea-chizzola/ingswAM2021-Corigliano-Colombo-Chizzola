@@ -1,13 +1,6 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
-import it.polimi.ingsw.Client.InteractionObserver;
-import it.polimi.ingsw.View.GUI.GUIHandler;
-import it.polimi.ingsw.View.PlayerInteractions.BuyCardInteraction;
-import it.polimi.ingsw.View.PlayerInteractions.DoProductionInteraction;
-import it.polimi.ingsw.View.PlayerInteractions.ManageLeaderInteraction;
-import it.polimi.ingsw.View.PlayerInteractions.SwapInteraction;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
@@ -45,8 +38,6 @@ public class TurnSelectionController {
     }
 
     private void bindAction(){
-        GUIHandler handler = GUIHandler.instance();
-        InteractionObserver interactionObserver = handler.getInteractionObserver();
 
         /*ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new ManageLeaderInteraction()));
         BuyCardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new BuyCardInteraction()));
@@ -54,7 +45,7 @@ public class TurnSelectionController {
         SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new SwapInteraction()));
         ExitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("EXIT"));*/
 
-        TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> GUIHandler.loadRoot(mainPane.getScene(), "/FXML/login.fxml"));
+        //TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> GUIHandler.loadRoot(mainPane.getScene(), "/FXML/login.fxml"));
         /*ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("ManageLeader"));
         BuyCardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("BuyCardButton"));
         DoProduction.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("DoProduction"));

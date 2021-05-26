@@ -62,14 +62,6 @@ public class Client implements MessageSender {
         }
     }
 
-    /**
-     * this method is used to notify the willingness of the player to disconnect
-     */
-    /*@Override
-    public void notifyDisconnection() {
-        connection.closeConnection();
-    }*/
-
     public void startClient(){
 
         ReducedGameBoard reducedModel = new ReducedGameBoard(file);
