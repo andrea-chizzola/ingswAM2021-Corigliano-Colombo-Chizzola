@@ -1,13 +1,10 @@
 package it.polimi.ingsw.Model.MarketBoard;
 
-import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
-import it.polimi.ingsw.Model.Boards.Modifications;
 import it.polimi.ingsw.Model.Resources.*;
-import it.polimi.ingsw.View.CLIColors;
+import it.polimi.ingsw.View.CLI.CLIColors;
 
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * This class implements Marble.
@@ -53,7 +50,6 @@ public class MarbleWhite implements Marble {
 
     /**
      * This method checks if the the marble passed as parameter is among those allowed
-     *
      * @param marble marble
      * @param board  the board of the player
      * @return true if the the marble passed as parameter is among those allowed, false otherwise
@@ -61,17 +57,22 @@ public class MarbleWhite implements Marble {
     @Override
     public boolean checkMarble(Marble marble, Board board) {
 
-        if(marble.toString().equals(this.toString()) ||
-            this.whiteTransformations(board).contains(marble))
+        if(marble.getResourceAssociated().isSameResource(this.getResourceAssociated()))
             return true;
+        for(Marble modifications : this.whiteTransformations(board)) {
+            if(modifications.getResourceAssociated().isSameResource(marble.getResourceAssociated()))
+                return true;
+        }
         return false;
     }
 
+    /**
+     * @return the resource associated with the marble
+     */
     @Override
     public Resource getResourceAssociated() {
-        return new Faith();
+        return new White();
     }
-
 
 
     @Override

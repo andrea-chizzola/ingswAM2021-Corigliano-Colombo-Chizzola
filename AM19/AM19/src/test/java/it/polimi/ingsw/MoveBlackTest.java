@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MoveBlackTest {
 
-    private MoveBlack moveBlack = new MoveBlack(2, "2");
+    private MoveBlack moveBlack = new MoveBlack(2, "2", "test");
     private SinglePlayer singlePlayer;
     private GameBoard gameBoard;
     private final String file = "defaultConfiguration.xml";
@@ -51,7 +51,8 @@ class MoveBlackTest {
             singlePlayer.getActionTokenDeck().mergeAndShuffle();
         }
 
-        singlePlayer.endTurnAction(gameBoard); //2
+        singlePlayer.endTurnAction(gameBoard);
+        singlePlayer.endTurnAction(gameBoard);//2
 
         assertEquals(2, singlePlayer.getLorenzoTrack().getPosition());
         assertEquals(5, singlePlayer.getActionTokenDeck().getUnusedActionTokens().size());

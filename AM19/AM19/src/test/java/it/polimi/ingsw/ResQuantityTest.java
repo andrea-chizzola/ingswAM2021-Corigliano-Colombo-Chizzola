@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Boards.GameBoard;
@@ -85,10 +84,10 @@ class ResQuantityTest {
     @Test
     public void createReqMapTest1(){
 
-        try {
-            board.getWarehouse().addShelf(new ResQuantity(new Coin(),2));
-            board.getWarehouse().addResource(6,new Coin());
-        }catch (IllegalShelfException e){fail();}
+
+        board.getWarehouse().addShelf(new ResQuantity(new Coin(),2));
+        board.getWarehouse().insertResource(6,new Coin());
+
         ArrayList<Integer> shelves = new ArrayList<>();
         shelves.add(1);
         shelves.add(3);

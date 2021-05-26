@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Model.Boards.Warehouse;
 import it.polimi.ingsw.Model.Resources.*;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -133,61 +134,6 @@ class WarehouseTest {
         assertEquals(exception.getMessage(), "This shelf does not exist!");
     }
 
-    @Test
-    public void testAddResource(){
-        int i=0;
-        Resource resource = null;
-        try {
-            warehouse.addResource(1, new Coin());
-
-            i = warehouse.getQuantity(1);
-
-            resource = warehouse.getResource(1);
-        }
-        catch(IllegalShelfException e){fail();}
-        assertEquals(i, 1);
-        assertEquals(resource, new Coin());
-    }
-
-    @Test
-    public void test2AddShelf1(){
-        Exception exception;
-        try {
-            warehouse.addResource(1, new Coin());
-        }
-        catch(IllegalShelfException e){fail();}
-        exception = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(1,new Coin()));
-        assertEquals(exception.getMessage(),"Full shelf!");
-    }
-
-    @Test
-    public void testAddDifferentResource(){
-        Exception exception;
-        try {
-            warehouse.addResource(1, new Coin());
-        }
-        catch(IllegalShelfException e){fail();}
-        exception = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(1,new Stone()));
-        assertEquals(exception.getMessage(),"Wrong resource!");
-    }
-
-    @Test
-    public void testAddSameResourceTwoShelves(){
-        Exception exception;
-        try {
-            warehouse.addResource(1, new Coin());
-        }
-        catch(IllegalShelfException e){fail();}
-        exception = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(2,new Coin()));
-        assertEquals(exception.getMessage(),"Already exists a shelf with this resource!");
-    }
-
-    @Test
-    public void testAddIllegalShelf(){
-        Exception exception;
-        exception = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(0,new Coin()));
-        assertEquals(exception.getMessage(),"This shelf does not exist!");
-    }
 
     @Test
     public void testSubtractIllegalShelf(){
@@ -197,11 +143,11 @@ class WarehouseTest {
     }
 
     @Test
-    public void testSubctract1to0(){
+    public void testSubtract1to0(){
 
 
         try {
-            warehouse.addResource(1, new Coin());
+            warehouse.insertResource(1, new Coin());
 
             warehouse.subtract(1);
         }
@@ -211,7 +157,7 @@ class WarehouseTest {
     }
 
     @Test
-    public void testSubctractIllegalExtra(){
+    public void testSubtractIllegalExtra(){
 
 
             warehouse.addShelf(new ResQuantity(new Coin(),2));
@@ -230,9 +176,9 @@ class WarehouseTest {
         int i = 0;
         Resource resource = null;
         try {
-            warehouse.addResource(2, new Coin());
+            warehouse.insertResource(2, new Coin());
 
-            warehouse.addResource(2, new Coin());
+            warehouse.insertResource(2, new Coin());
 
             warehouse.subtract(2);
 
@@ -251,9 +197,9 @@ class WarehouseTest {
         Resource resource = null;
         Resource resource1 = null;
         try {
-            warehouse.addResource(1, new Coin());
+            warehouse.insertResource(1, new Coin());
 
-            warehouse.addResource(2, new Stone());
+            warehouse.insertResource(2, new Stone());
 
             warehouse.swap(1,2);
 
@@ -272,9 +218,9 @@ class WarehouseTest {
 
         Resource resource1 = null;
         try {
-            warehouse.addResource(1, new Coin());
+            warehouse.insertResource(1, new Coin());
 
-            warehouse.addResource(2, new Stone());
+            warehouse.insertResource(2, new Stone());
 
             warehouse.swap(1,1);
 
@@ -294,9 +240,9 @@ class WarehouseTest {
         Resource resource = null;
         Resource resource1 = null;
         try {
-            warehouse.addResource(1, new Coin());
+            warehouse.insertResource(1, new Coin());
 
-            warehouse.addResource(2, new Stone());
+            warehouse.insertResource(2, new Stone());
 
             warehouse.swap(2,1);
 
@@ -318,13 +264,11 @@ class WarehouseTest {
         Resource resource1 = null;
         Resource resource2 = null;
 
-        try {
-            warehouse.addResource(1, new Coin());
 
-            warehouse.addResource(2, new Stone());
-            warehouse.addResource(2,new Stone());
-        }
-        catch(IllegalShelfException e){fail();}
+        warehouse.insertResource(1, new Coin());
+        warehouse.insertResource(2, new Stone());
+        warehouse.insertResource(2,new Stone());
+
 
         Exception exception;
         exception = assertThrows(IllegalShelfException.class, () ->  warehouse.swap(2,1));
@@ -352,13 +296,11 @@ class WarehouseTest {
         Resource resource1 = null;
         Resource resource2 = null;
 
-        try {
-            warehouse.addResource(1, new Coin());
 
-            warehouse.addResource(2, new Stone());
-            warehouse.addResource(2,new Stone());
-        }
-        catch(IllegalShelfException e){fail();}
+        warehouse.insertResource(1, new Coin());
+        warehouse.insertResource(2, new Stone());
+        warehouse.insertResource(2,new Stone());
+
 
         Exception exception;
         exception = assertThrows(IllegalShelfException.class, () ->  warehouse.swap(1,2));
@@ -384,7 +326,7 @@ class WarehouseTest {
         Resource resource1 = null;
 
         try {
-            warehouse.addResource(2, new Stone());
+            warehouse.insertResource(2, new Stone());
 
             warehouse.swap(1,2);
 
@@ -421,11 +363,11 @@ class WarehouseTest {
         Resource resource1 = null;
 
         try {
-            warehouse.addResource(2, new Stone());
+            warehouse.insertResource(2, new Stone());
 
-            warehouse.addResource(2, new Stone());
+            warehouse.insertResource(2, new Stone());
 
-            warehouse.addResource(1, new Coin());
+            warehouse.insertResource(1, new Coin());
 
             resource1 = warehouse.getResource(2);
 
@@ -445,9 +387,9 @@ class WarehouseTest {
             warehouse.addShelf(new ResQuantity(new Coin(), 2));
 
         try {
-            warehouse.addResource(4, new Coin());
+            warehouse.insertResource(4, new Coin());
 
-            warehouse.addResource(4, new Coin());
+            warehouse.insertResource(4, new Coin());
 
             resource1 = warehouse.getResource(4);
 
@@ -484,17 +426,6 @@ class WarehouseTest {
         assertEquals(i,5 );
     }
 
-    @Test
-    public void testAddShelfZeroCapacity(){
-
-
-
-        warehouse.addShelf(new ResQuantity(new Coin(), 0));
-        Exception exception1;
-        exception1 = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(4, new Coin()));
-        assertEquals("Full shelf!", exception1.getMessage());
-
-    }
 
     @Test
     public void testExtraShelfSubtract2to1(){
@@ -503,9 +434,9 @@ class WarehouseTest {
         Resource resource = null;
         warehouse.addShelf(new ResQuantity(new Coin(),2));
         try {
-            warehouse.addResource(4, new Coin());
+            warehouse.insertResource(4, new Coin());
 
-            warehouse.addResource(4, new Coin());
+            warehouse.insertResource(4, new Coin());
 
             warehouse.subtract(4);
 
@@ -519,22 +450,50 @@ class WarehouseTest {
     }
 
     @Test
-    void calculateTotalResources(){
-        System.out.println(warehouse.calculateTotalResources());
+    void calculateTotalResourcesZero(){
+        assertEquals(warehouse.calculateTotalResources(),0);
     }
 
     @Test
+    void calculateTotalResources(){
+        warehouse.insertResource(1,new Coin());
+        warehouse.insertResource(3,new Servant());
+        warehouse.insertResource(3,new Servant());
 
+        assertEquals(warehouse.calculateTotalResources(),3);
+    }
+
+    @Test
+    void calculateTotalResourcesExtra(){
+        warehouse.addShelf(new ResQuantity(new Coin(),4));
+        warehouse.addShelf(new ResQuantity(new Servant(),1));
+        warehouse.insertResource(4,new Coin());
+        warehouse.insertResource(4,new Coin());
+
+        assertEquals(warehouse.calculateTotalResources(),2);
+    }
+
+    @Test
+    void calculateTotalResourcesBoth(){
+        warehouse.insertResource(1,new Coin());
+        warehouse.insertResource(3,new Servant());
+        warehouse.insertResource(3,new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(),4));
+        warehouse.addShelf(new ResQuantity(new Servant(),1));
+        warehouse.insertResource(4,new Coin());
+        warehouse.insertResource(4,new Coin());
+
+        assertEquals(warehouse.calculateTotalResources(),5);
+    }
+
+    @Test
     public void getAllResourcesTest(){
-        try{
-            warehouse.addResource(1, new Coin());
-            warehouse.addResource(2, new Stone());
-            warehouse.addResource(3, new Servant());
-            warehouse.addResource(3, new Servant());
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
+
+        warehouse.insertResource(1, new Coin());
+        warehouse.insertResource(2, new Stone());
+        warehouse.insertResource(3, new Servant());
+        warehouse.insertResource(3, new Servant());
+
 
         Map<Resource, Integer> map = warehouse.getAllResources();
         Map<Resource, Integer> copy = new HashMap<>();
@@ -549,28 +508,88 @@ class WarehouseTest {
     }
 
     @Test
-    public void testAddDifferentResourceExtra(){
-        Exception exception;
+    void insertMultipleResTest(){
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(3);
+        resources.add(new Coin());
+        shelves.add(3);
+        resources.add(new Coin());
+        shelves.add(3);
+        resources.add(new Stone());
+        shelves.add(1);
+
         try {
-            warehouse.addShelf(new ResQuantity(new Coin(),2));
-            warehouse.addResource(4, new Coin());
+            warehouse.insertMultipleResources(resources,shelves);
+        } catch (IllegalShelfException e) {
+            fail();
         }
-        catch(IllegalShelfException e){fail();}
-        exception = assertThrows(IllegalShelfException.class, () -> warehouse.addResource(4,new Stone()));
-        assertEquals(exception.getMessage(),"Wrong resource!");
+
+        try {
+            assertEquals(warehouse.getQuantity(3),3);
+            assertEquals(warehouse.getQuantity(1),1);
+            assertEquals(warehouse.getResource(3),new Coin());
+            assertEquals(warehouse.getResource(1),new Stone());
+
+        } catch (IllegalShelfException e) {
+            fail();
+        }
+
+        assertThrows(IllegalShelfException.class, () -> warehouse.getQuantity(2));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getResource(2));
     }
 
     @Test
-    public void testCheckInsertMultipleResources(){
-        try{
-            warehouse.addResource(1, new Coin());
-            warehouse.addResource(2, new Stone());
-            warehouse.addResource(3, new Servant());
+    void insertMultipleResWrongTest(){
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(3);
+        resources.add(new Coin());
+        shelves.add(3);
+        resources.add(new Coin());
+        shelves.add(2);
+        resources.add(new Stone());
+        shelves.add(1);
 
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
+        assertThrows(IllegalShelfException.class, () -> warehouse.insertMultipleResources(resources,shelves));
+
+
+        assertThrows(IllegalShelfException.class, () -> warehouse.getQuantity(2));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getResource(2));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getQuantity(1));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getResource(1));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getQuantity(3));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getResource(3));
+    }
+
+    @Test
+    void insertMultipleResWrong2Test(){
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Faith());
+        shelves.add(3);
+
+        assertThrows(IllegalShelfException.class, () -> warehouse.insertMultipleResources(resources,shelves));
+
+        assertThrows(IllegalShelfException.class, () -> warehouse.getQuantity(2));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getResource(2));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getQuantity(1));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getResource(1));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getQuantity(3));
+        assertThrows(IllegalShelfException.class, () -> warehouse.getResource(3));
+    }
+
+
+    @Test
+    public void testCheckInsertMultipleResources(){
+
+        warehouse.insertResource(1, new Coin());
+        warehouse.insertResource(2, new Stone());
+        warehouse.insertResource(3, new Servant());
+
+
         List<Resource> resources = new ArrayList<>();
         List<Integer> shelves = new ArrayList<>();
         resources.add(new Coin());
@@ -582,16 +601,13 @@ class WarehouseTest {
 
     @Test
     public void testCheckInsertMultipleResources1(){
-        try{
-            warehouse.addResource(1, new Coin());
-            warehouse.addResource(2, new Stone());
-            warehouse.addResource(3, new Servant());
-            warehouse.addShelf(new ResQuantity(new Coin(), 3));
 
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
+        warehouse.insertResource(1, new Coin());
+        warehouse.insertResource(2, new Stone());
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+
         List<Resource> resources = new ArrayList<>();
         List<Integer> shelves = new ArrayList<>();
         resources.add(new Coin());
@@ -614,15 +630,11 @@ class WarehouseTest {
 
     @Test
     public void testCheckInsertMultipleResources2(){
-        try{
 
-            warehouse.addResource(3, new Servant());
-            warehouse.addShelf(new ResQuantity(new Coin(), 3));
 
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
         List<Resource> resources = new ArrayList<>();
         List<Integer> shelves = new ArrayList<>();
         resources.add(new Coin());
@@ -638,22 +650,17 @@ class WarehouseTest {
         resources.add(new Servant());
         shelves.add(3);
 
-
         assertTrue(warehouse.checkInsertMultipleRes(resources,shelves));
 
     }
 
     @Test
     public void testCheckInsertMultipleResources3(){
-        try{
 
-            warehouse.addResource(3, new Servant());
-            warehouse.addShelf(new ResQuantity(new Coin(), 3));
 
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
         List<Resource> resources = new ArrayList<>();
         List<Integer> shelves = new ArrayList<>();
         resources.add(new Coin());
@@ -673,17 +680,13 @@ class WarehouseTest {
 
     }
 
+
     @Test
     public void testCheckInsertMultipleResources4(){
-        try{
 
-            warehouse.addResource(3, new Servant());
-            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
 
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
         List<Resource> resources = new ArrayList<>();
         List<Integer> shelves = new ArrayList<>();
         resources.add(new Coin());
@@ -703,15 +706,12 @@ class WarehouseTest {
 
     @Test
     public void testCheckInsertMultipleResources5(){
-        try{
 
-            warehouse.addResource(3, new Servant());
-            warehouse.addShelf(new ResQuantity(new Coin(), 3));
 
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+
         List<Resource> resources = new ArrayList<>();
         List<Integer> shelves = new ArrayList<>();
         resources.add(new Servant());
@@ -723,15 +723,12 @@ class WarehouseTest {
 
     @Test
     public void testCheckInsertMultipleResources6(){
-        try{
 
-            warehouse.addResource(3, new Servant());
-            warehouse.addShelf(new ResQuantity(new Coin(), 3));
 
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+
         List<Resource> resources = new ArrayList<>();
         List<Integer> shelves = new ArrayList<>();
         resources.add(new Servant());
@@ -743,15 +740,10 @@ class WarehouseTest {
 
     @Test
     public void testCheckInsertMultipleResources7(){
-        try{
 
-            warehouse.addResource(3, new Servant());
-            warehouse.addShelf(new ResQuantity(new Coin(), 3));
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
 
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
         List<Resource> resources = new ArrayList<>();
         List<Integer> shelves = new ArrayList<>();
         resources.add(new Coin());
@@ -766,15 +758,11 @@ class WarehouseTest {
 
     @Test
     public void testCheckInsertMultipleResources8(){
-        try{
 
-            warehouse.addResource(3, new Servant());
-            warehouse.addShelf(new ResQuantity(new Coin(), 3));
 
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
         List<Resource> resources = new ArrayList<>();
         List<Integer> shelves = new ArrayList<>();
         resources.add(new Coin());
@@ -805,15 +793,12 @@ class WarehouseTest {
 
     @Test
     public void testCheckInsertMultipleResources10(){
-        try{
 
-            warehouse.addResource(3, new Servant());
-            warehouse.addShelf(new ResQuantity(new Coin(), 3));
 
-        }
-        catch (IllegalShelfException e){
-            fail();
-        }
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+
         List<Resource> resources = new ArrayList<>();
         List<Integer> shelves = new ArrayList<>();
 
@@ -844,5 +829,98 @@ class WarehouseTest {
 
 
         assertTrue(warehouse.checkInsertMultipleRes(resources,shelves));
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources12(){
+
+
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+
+        resources.add(new Servant());
+        //wrong shelf
+        shelves.add(0);
+
+        assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
+
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources13(){
+
+
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(1);
+        resources.add(new Coin());
+        shelves.add(1);
+
+
+        assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
+
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources14(){
+
+
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 3));
+
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(3);
+
+
+        assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
+
+    }
+
+    @Test
+    public void testCheckInsertMultipleResources15(){
+
+
+        warehouse.insertResource(3, new Servant());
+        warehouse.addShelf(new ResQuantity(new Coin(), 1));
+        warehouse.insertResource(3,new Stone());
+
+        List<Resource> resources = new ArrayList<>();
+        List<Integer> shelves = new ArrayList<>();
+        resources.add(new Coin());
+        shelves.add(4);
+        resources.add(new Coin());
+        shelves.add(4);
+
+
+        assertFalse(warehouse.checkInsertMultipleRes(resources,shelves));
+
+    }
+
+    @Test
+    void showWarehouseTest(){
+        warehouse.insertResource(3, new Stone());
+        warehouse.addShelf(new ResQuantity(new Coin(), 2));
+        warehouse.insertResource(3,new Stone());
+        warehouse.insertResource(4,new Coin());
+
+        List<ResQuantity> list = warehouse.showWarehouse();
+
+        List<ResQuantity> expected = new ArrayList<>();
+        expected.add(new ResQuantity(new Coin(),0));
+        expected.add(new ResQuantity(new Coin(),0));
+        expected.add(new ResQuantity(new Stone(),2));
+        expected.add(new ResQuantity(new Coin(),1));
+
+        for (int i=0; i<list.size(); i++){
+            assertEquals(list.get(i).getQuantity(),expected.get(i).getQuantity());
+            assertEquals(list.get(i).getResource().getColor(),expected.get(i).getResource().getColor());
+        }
     }
 }

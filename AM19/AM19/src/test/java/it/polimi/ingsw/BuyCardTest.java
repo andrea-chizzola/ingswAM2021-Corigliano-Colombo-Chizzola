@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Controller.ViewForTest;
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.IllegalSlotException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
@@ -9,7 +10,7 @@ import it.polimi.ingsw.Model.Cards.Colors.Blue;
 import it.polimi.ingsw.Model.Cards.Colors.Green;
 import it.polimi.ingsw.Model.Cards.Colors.Purple;
 import it.polimi.ingsw.Model.Resources.*;
-import it.polimi.ingsw.Model.Turn.BuyCard;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,10 +18,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BuyCardTest {
     private Board board;
+    private GameBoard gameBoard;
     private final String file = "defaultConfiguration.xml";
     private DevelopmentCard dev1;
     private DevelopmentCard dev2;
@@ -37,9 +40,12 @@ class BuyCardTest {
         //creation of GameBoard and Board
         ArrayList<String> names = new ArrayList<>();
         names.add("test");
-        GameBoard gameBoard = new GameBoard(names, file);
+        gameBoard = new GameBoard(names, file);
         board = gameBoard.getPlayers().get(0);
-
+        gameBoard.setStartTurns();
+        board.setLeadersInitialized();
+        board.setResourcesInitialized();
+        gameBoard.attachView(new ViewForTest());
         //initialization of Warehouse and StrongBox
         //Warehouse: Quantity:Shelf:Resource
         // 1:1:coin, 1:2:servant, 2:3:stones, 1:4:shield, 0:5:coin
@@ -64,17 +70,17 @@ class BuyCardTest {
         //creation of a DevelopmentCard
         Requirements requirements1 = new ResourceReqDev(new LinkedList<>());
         SpecialEffect effect1 = new Production(new LinkedList<>(), new LinkedList<>(), 0, 0);
-        dev1 = new DevelopmentCard(0, effect1, requirements1, new Green(), 1, "1");
+        dev1 = new DevelopmentCard(0, effect1, requirements1, new Green(), 1, "1", "test1");
 
         //creation of a DevelopmentCard
         Requirements requirements2 = new ResourceReqDev(new LinkedList<>());
         SpecialEffect effect2 = new Production(new LinkedList<>(), new LinkedList<>(), 0 , 0);
-        dev2 = new DevelopmentCard(0, effect2, requirements2, new Green(), 1, "2");
+        dev2 = new DevelopmentCard(0, effect2, requirements2, new Green(), 1, "2", "test2");
 
         //creation of a DevelopmentCard
         Requirements requirements3 = new ResourceReqDev(new LinkedList<>());
         
-        dev3 = new DevelopmentCard(0, effect2, requirements3, new Purple(), 2, "3");
+        dev3 = new DevelopmentCard(0, effect2, requirements3, new Purple(), 2, "3", "test3");
 
         //Initialization of board slots of firstPlayer
         try {
@@ -135,10 +141,9 @@ class BuyCardTest {
 
         }
 
-        BuyCard buyCard = new BuyCard();
 
         try {
-            buyCard.buyCard(board, 3, new Blue(), 1, shelves, quantity, strongBox);
+            gameBoard.buyCard(3, new Blue(), 1, shelves, quantity, strongBox);
         } catch (InvalidActionException e) {
             fail();
         }
@@ -222,9 +227,9 @@ class BuyCardTest {
 
         }
 
-        BuyCard buyCard = new BuyCard();
+
         Exception exception;
-        exception = assertThrows(InvalidActionException.class, () -> buyCard.buyCard(board,3, new Blue(), 5, shelves,quantity,strongBox));
+        exception = assertThrows(InvalidActionException.class, () -> gameBoard.buyCard(3, new Blue(), 5, shelves,quantity,strongBox));
         assertEquals("The deck does not exist",exception.getMessage());
     }
 
@@ -268,9 +273,9 @@ class BuyCardTest {
 
         }
 
-        BuyCard buyCard = new BuyCard();
         Exception exception;
-        exception = assertThrows(InvalidActionException.class, () -> buyCard.buyCard(board,2, new Blue(), 1, shelves,quantity,strongBox));
+        exception = assertThrows(InvalidActionException.class, () -> gameBoard.buyCard(2, new Blue(), 1, shelves,quantity,strongBox));
+
         assertEquals("This card can't be inserted!",exception.getMessage());
     }
 
@@ -314,9 +319,8 @@ class BuyCardTest {
 
         }
 
-        BuyCard buyCard = new BuyCard();
         Exception exception;
-        exception = assertThrows(InvalidActionException.class, () -> buyCard.buyCard(board,4, new Blue(), 1, shelves,quantity,strongBox));
+        exception = assertThrows(InvalidActionException.class, () -> gameBoard.buyCard(4, new Blue(), 1, shelves,quantity,strongBox));
         assertEquals("This slot doesn't exist",exception.getMessage());
     }
 
@@ -355,10 +359,10 @@ class BuyCardTest {
         }
 
 
-        BuyCard buyCard = new BuyCard();
 
         try {
-            buyCard.buyCard(board, 3, new Blue(), 1, shelves, quantity, strongBox);
+            gameBoard.buyCard(3, new Blue(), 1, shelves, quantity, strongBox);
+
         } catch (InvalidActionException e) {
 
             fail();
@@ -416,10 +420,9 @@ class BuyCardTest {
 
 
 
-        BuyCard buyCard = new BuyCard();
 
         Exception exception;
-        exception = assertThrows(InvalidActionException.class, () -> buyCard.buyCard(board,3, new Blue(), 1, shelves,quantity,strongBox));
+        exception = assertThrows(InvalidActionException.class, () -> gameBoard.buyCard(3, new Blue(), 1, shelves,quantity,strongBox));
         assertEquals("Insufficient resources!",exception.getMessage());
 
     }
@@ -467,9 +470,8 @@ class BuyCardTest {
         }
 
 
-        BuyCard buyCard = new BuyCard();
         Exception exception;
-        exception = assertThrows(InvalidActionException.class, () -> buyCard.buyCard(board,3, new Blue(), 1, shelves,quantity,strongBox));
+        exception = assertThrows(InvalidActionException.class, () -> gameBoard.buyCard(3, new Blue(), 1, shelves,quantity,strongBox));
         assertEquals("Too many resources selected!",exception.getMessage());
 
     }
@@ -521,10 +523,10 @@ class BuyCardTest {
 
         }
 
-        BuyCard buyCard = new BuyCard();
 
         try {
-            buyCard.buyCard(board, 1, new Green(), 3, shelves, quantity, strongBox);
+            gameBoard.buyCard( 1, new Green(), 3, shelves, quantity, strongBox);
+
         } catch (InvalidActionException e) {
 
             fail();

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MoveAndShuffleTest {
 
-    private MoveAndShuffle moveAndShuffle = new MoveAndShuffle(1, "2");
+    private MoveAndShuffle moveAndShuffle = new MoveAndShuffle(1, "2", "test");
     private SinglePlayer singlePlayer;
     private GameBoard gameBoard;
     private final String file = "defaultConfiguration.xml";
@@ -28,6 +28,7 @@ class MoveAndShuffleTest {
         gameBoard = new GameBoard(names, file);
 
         singlePlayer = new SinglePlayer(gameBoard, file);
+        singlePlayer.endTurnAction(gameBoard);
 
     }
 

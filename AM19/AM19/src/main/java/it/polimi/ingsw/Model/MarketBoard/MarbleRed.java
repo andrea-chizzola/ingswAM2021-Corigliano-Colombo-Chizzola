@@ -1,11 +1,9 @@
 package it.polimi.ingsw.Model.MarketBoard;
 
-import it.polimi.ingsw.Exceptions.InvalidActionException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.Faith;
 import it.polimi.ingsw.Model.Resources.Resource;
-import it.polimi.ingsw.Model.Resources.Shield;
-import it.polimi.ingsw.View.CLIColors;
+import it.polimi.ingsw.View.CLI.CLIColors;
 
 import java.util.LinkedList;
 
@@ -50,9 +48,13 @@ public class MarbleRed implements Marble {
      */
     @Override
     public boolean checkMarble(Marble marble, Board board) {
-        return marble.toString().equals(this.toString());
+
+        return marble.getResourceAssociated().isSameResource(this.getResourceAssociated());
     }
 
+    /**
+     * @return the resource associated with the marble
+     */
     @Override
     public Resource getResourceAssociated() {
         return new Faith();

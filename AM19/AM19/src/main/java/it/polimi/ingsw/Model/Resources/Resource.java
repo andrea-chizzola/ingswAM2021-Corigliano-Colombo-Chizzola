@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model.Resources;
 
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
-import it.polimi.ingsw.View.CLIColors;
+import it.polimi.ingsw.View.CLI.CLIColors;
 
 /**
  * This abstract class represents the resources and it provides useful methods for managing them
@@ -21,6 +21,17 @@ public abstract class Resource {
      * @param quantity the quantity of resources to add
      */
     public abstract void addResourceStrongbox(Board board, int quantity);
+
+    /**
+     * @param resource Resource to check
+     * @return true if the resources passed as parameter is of the same type of this
+     */
+    public abstract boolean isSameResource(Resource resource);
+
+    /**
+     * @return false if the resource ...
+     */
+    public abstract boolean isEmpty();
 
     /**
      * This method returns the Marble associated to the resource.

@@ -1,12 +1,9 @@
 package it.polimi.ingsw.Model.MarketBoard;
 
-import it.polimi.ingsw.Exceptions.*;
 import it.polimi.ingsw.Model.Boards.Board;
-import it.polimi.ingsw.Model.Resources.Faith;
 import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.Model.Resources.Servant;
-import it.polimi.ingsw.Model.Resources.Shield;
-import it.polimi.ingsw.View.CLIColors;
+import it.polimi.ingsw.View.CLI.CLIColors;
 
 import java.util.LinkedList;
 
@@ -54,13 +51,18 @@ public class MarblePurple implements Marble {
      */
     @Override
     public boolean checkMarble(Marble marble, Board board) {
-        return marble.toString().equals(this.toString());
+
+        return marble.getResourceAssociated().isSameResource(this.getResourceAssociated());
     }
 
+    /**
+     * @return the resource associated with the marble
+     */
     @Override
     public Resource getResourceAssociated() {
         return new Servant();
     }
+
     /**
      * @return the string associated with the color of the marble
      */
@@ -68,7 +70,6 @@ public class MarblePurple implements Marble {
     public CLIColors toColor() {
         return CLIColors.B_MAGENTA;
     }
-
 
 
     @Override

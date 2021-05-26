@@ -4,8 +4,7 @@ package it.polimi.ingsw.Model.Resources;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.MarketBoard.MarbleBlue;
-import it.polimi.ingsw.Model.MarketBoard.MarbleYellow;
-import it.polimi.ingsw.View.CLIColors;
+import it.polimi.ingsw.View.CLI.CLIColors;
 
 import java.util.Objects;
 
@@ -39,12 +38,29 @@ public class Shield extends Resource {
     }
 
     /**
+     * @param resource Resource to check
+     * @return true if the resources passed as parameter is of the same type of this
+     */
+    @Override
+    public boolean isSameResource(Resource resource) {
+        return resource.getColor().equals(this.color);
+    }
+
+    /**
      * This method returns the Marble associated to the resource.
      * @return the Marble associated to the resource
      */
     @Override
     public Marble getMarbleAssociated() {
         return new MarbleBlue();
+    }
+
+    /**
+     * @return true if the resource is not empty, false otherwise
+     */
+    @Override
+    public boolean isEmpty() {
+        return false;
     }
 
     /**

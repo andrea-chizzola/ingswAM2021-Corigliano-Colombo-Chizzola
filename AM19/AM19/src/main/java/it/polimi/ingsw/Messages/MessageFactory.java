@@ -28,7 +28,7 @@ public class MessageFactory {
         Map<String, String > map = new HashMap<>();
         map.put("body", body);
         map.put("messageType", Message.MessageType.CONNECTION.toString());
-        map.put("nickname", nickname);
+        map.put("player", nickname);
         map.put("gameHost", gameHost.toString());
         map.put("playersNumber", playersNumber.toString());
         return MessageParser.createMessage(map);
@@ -38,7 +38,7 @@ public class MessageFactory {
         Map<String, String > map = new HashMap<>();
         map.put("body", body);
         map.put("messageType", Message.MessageType.DISCONNECTION.toString());
-        map.put("nickname", nickname);
+        map.put("player", nickname);
         return MessageParser.createMessage(map);
     }
 
@@ -46,7 +46,7 @@ public class MessageFactory {
         Map<String, String > map = new HashMap<>();
         map.put("body", body);
         map.put("messageType", Message.MessageType.RECONNECTION.toString());
-        map.put("nickname", nickname);
+        map.put("player", nickname);
         return MessageParser.createMessage(map);
     }
 

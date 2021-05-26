@@ -3,8 +3,7 @@ package it.polimi.ingsw.Model.Resources;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.MarketBoard.MarbleRed;
-import it.polimi.ingsw.Model.MarketBoard.MarbleYellow;
-import it.polimi.ingsw.View.CLIColors;
+import it.polimi.ingsw.View.CLI.CLIColors;
 
 import java.util.Objects;
 
@@ -35,6 +34,23 @@ public class Faith extends Resource {
     @Override
     public void addResourceStrongbox(Board board, int quantity){
         board.addFaith(quantity);
+    }
+
+    /**
+     * @param resource Resource to check
+     * @return true if the resources passed as parameter is of the same type of this
+     */
+    @Override
+    public boolean isSameResource(Resource resource) {
+        return resource.getColor().equals(this.color);
+    }
+
+    /**
+     * @return true if the resource is not empty, false otherwise
+     */
+    @Override
+    public boolean isEmpty() {
+        return true;
     }
 
     /**

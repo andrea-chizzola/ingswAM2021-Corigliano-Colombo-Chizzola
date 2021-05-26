@@ -21,8 +21,8 @@ public class Discard extends Action {
      */
     private int quantity;
 
-    public Discard(CardColor cardColor, int quantity, String id) {
-        super(id);
+    public Discard(CardColor cardColor, int quantity, String id, String image) {
+        super(id, image);
         this.cardColor = cardColor;
         this.quantity = quantity;
     }

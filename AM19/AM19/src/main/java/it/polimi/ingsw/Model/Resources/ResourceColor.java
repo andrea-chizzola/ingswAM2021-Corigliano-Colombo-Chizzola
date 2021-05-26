@@ -28,5 +28,10 @@ public enum ResourceColor {
     /**
      * This color represents faith points
      */
-    RED
+    RED,
+
+    /**
+     * This color represents an empty resource
+     */
+    WHITE
 }

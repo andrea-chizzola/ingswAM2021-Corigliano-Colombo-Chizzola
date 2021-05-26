@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This interface provides all the methods useful to interact with the model
+ */
 public interface GameBoardHandler {
-
 
     /**
      * This method distributes the leader cards and updates the view
@@ -36,11 +38,22 @@ public interface GameBoardHandler {
     boolean isCurrentPlayer(String nickname);
 
     /**
+     * This method manages the disconnection of a player
+     * @param nickname the nickname of the player disconnected
+     */
+    void disconnectPlayer(String nickname);
+
+    /**
+     * This method manages the reconnection of a player
+     * @param nickname the nickname of the player reconnected
+     */
+    void reconnectPlayer(String nickname);
+
+    /**
      * This method attaches the virtualView to the model
-     * @param virtualView
+     * @param virtualView the virtual view observer of the model
      */
     void attachView(View virtualView);
-
 
     /**
      * this method gets the production of the development card present in the indicated slot
@@ -70,24 +83,10 @@ public interface GameBoardHandler {
      */
     Production getBoardProduction();
 
-    /**
-     * This method manages the disconnection of a player
-     * @param nickname the nickname of the player disconnected
-     * @return true if the disconnection is successful, false otherwise
-     */
-    void disconnectPlayer(String nickname);
-
-    /**
-     * This method manages the reconnection of a player
-     * @param nickname the nickname of the player reconnected
-     * @return true if the reconnection is successful, false otherwise
-     */
-    void reconnectPlayer(String nickname);
 
     /**
      * This method allows to take a specific row from the MarketBoard of the current player.
      * @param row the row the player wants to take
-     * @return ArrayList of Marbles, which corresponds to the row
      * @throws InvalidActionException if the action is invalid
      */
     void takeMarketRow(int row) throws InvalidActionException;
@@ -95,7 +94,6 @@ public interface GameBoardHandler {
     /**
      * This method allows to take a specific column from the MarketBoard of the current player.
      * @param column the column the player wants to take
-     * @return ArrayList of Marbles, which corresponds to the row
      * @throws InvalidActionException if the action is invalid
      */
     void takeMarketColumn(int column) throws InvalidActionException;
@@ -106,7 +104,7 @@ public interface GameBoardHandler {
      * @param marblesPlayer the marbles selected by the player
      * @param actions the actions to be performed on each marble
      * @param shelves the shelves where the resources associated to the marbles have to be inserted
-     * @return false if the selected parameters don't met the requirements of the model status, true if the operation is successful
+     * @throws InvalidActionException if the action is invalid
      */
     void actionMarbles( List<Marble> marblesPlayer, List<PlayerAction> actions, List<Integer> shelves) throws InvalidActionException;
 
@@ -114,7 +112,7 @@ public interface GameBoardHandler {
      * This method allows the current player to manage resources during the initialization.
      * @param resources the resources selected by the player
      * @param shelves the shelves where the resources have to be inserted
-     * @return true if the operation is successful, false otherwise
+     * @throws InvalidActionException if the action is invalid
      */
     void insertResources(List<Resource> resources, List<Integer> shelves) throws InvalidActionException;
 

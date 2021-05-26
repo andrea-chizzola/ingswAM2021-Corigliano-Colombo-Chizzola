@@ -18,8 +18,8 @@ public class MoveAndShuffle extends Action{
      * creates a new move black and shuffle token
      * @param amount indicates how many positions the black cross has to be moved
      */
-    public MoveAndShuffle(int amount, String id){
-        super(id);
+    public MoveAndShuffle(int amount, String id, String image){
+        super(id, image);
         this.amount=amount;
     }
 

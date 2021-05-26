@@ -2,9 +2,8 @@ package it.polimi.ingsw.CLITest;
 
 import it.polimi.ingsw.Client.ClientController;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import it.polimi.ingsw.Client.ViewObserver;
-import it.polimi.ingsw.View.CLI;
-import org.junit.jupiter.api.*;
+import it.polimi.ingsw.Client.MessageSender;
+import it.polimi.ingsw.View.CLI.CLI;
 
 import java.io.*;
 
@@ -17,10 +16,10 @@ public class CLI_ClientController_Test {
     private String typing;
     private String fromServer;
 
-    private class messageReceiver implements ViewObserver {
+    /*private class messageReceiver implements MessageSender {
 
         @Override
-        public void update(String message) {
+        public void sendMessage(String message) {
             System.out.println(
                             "-----------------------------------------------------\n"
                             + message +

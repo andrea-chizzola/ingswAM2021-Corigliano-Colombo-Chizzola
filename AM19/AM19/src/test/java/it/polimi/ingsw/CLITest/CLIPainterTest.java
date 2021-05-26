@@ -1,17 +1,6 @@
 package it.polimi.ingsw.CLITest;
 
-import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
-import it.polimi.ingsw.Model.Cards.DevelopmentCard;
-import it.polimi.ingsw.Model.Cards.LeaderCard;
-import it.polimi.ingsw.Model.MarketBoard.Marble;
-import it.polimi.ingsw.Model.MarketBoard.MarbleBlue;
-import it.polimi.ingsw.Model.MarketBoard.MarbleGray;
-import it.polimi.ingsw.Model.MarketBoard.MarbleRed;
-import it.polimi.ingsw.Model.Resources.*;
-import it.polimi.ingsw.View.CLIColors;
-import it.polimi.ingsw.View.CLIPainter;
-import it.polimi.ingsw.xmlParser.ConfigurationParser;
-import org.junit.jupiter.api.Test;
+import it.polimi.ingsw.View.CLI.CLIColors;
 
 import java.util.*;
 

@@ -31,7 +31,7 @@ public class ConfigurationParser{
     /**
      * this attribute represents the path of a generic XML file in the project
      */
-    //private static final String path = "src/main/resources/XML/";
+   // private static final String path = "src/main/resources/XML/";
 
     private static final String path = "AM19/AM19/src/main/resources/XML/";
     /**
@@ -81,6 +81,15 @@ public class ConfigurationParser{
      */
     protected static String getIDvalue(Element el){
         return el.getAttribute("id");
+    }
+
+    /**
+     * this method returns the image path of an object from a XML file
+     * @param el is the element containing the path
+     * @return a String that represents the path
+     */
+    protected static String getImagePath(Element el){
+        return el.getAttribute("image");
     }
 
     /**

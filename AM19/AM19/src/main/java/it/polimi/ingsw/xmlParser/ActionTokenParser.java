@@ -64,7 +64,9 @@ public class ActionTokenParser{
             Node token = tokens.item(i);
             if (token.getNodeType() == Node.ELEMENT_NODE) {
                 Element action = (Element) token;
-                result.add(new Discard(getCardColor(action), getAmount(action), ConfigurationParser.getIDvalue(action)));
+                String id = ConfigurationParser.getIDvalue(action);
+                String image = ConfigurationParser.getImagePath(action);
+                result.add(new Discard(getCardColor(action), getAmount(action), id, image));
             }
         }
         return result;
@@ -81,7 +83,9 @@ public class ActionTokenParser{
             Node token = tokens.item(i);
             if (token.getNodeType() == Node.ELEMENT_NODE) {
                 Element action = (Element) token;
-                result.add(new MoveBlack(getAmount(action), ConfigurationParser.getIDvalue(action)));
+                String id = ConfigurationParser.getIDvalue(action);
+                String image = ConfigurationParser.getImagePath(action);
+                result.add(new MoveBlack(getAmount(action), id, image));
             }
         }
         return result;
@@ -98,7 +102,9 @@ public class ActionTokenParser{
             Node token = tokens.item(i);
             if (token.getNodeType() == Node.ELEMENT_NODE) {
                 Element action = (Element) token;
-                result.add(new MoveAndShuffle(getAmount(action), ConfigurationParser.getIDvalue(action)));
+                String id = ConfigurationParser.getIDvalue(action);
+                String image = ConfigurationParser.getImagePath(action);
+                result.add(new MoveAndShuffle(getAmount(action), id, image));
             }
         }
         return result;

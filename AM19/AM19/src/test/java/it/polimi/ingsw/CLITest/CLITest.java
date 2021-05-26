@@ -1,19 +1,8 @@
 package it.polimi.ingsw.CLITest;
 
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
-import it.polimi.ingsw.Model.ActionTokens.Action;
-import it.polimi.ingsw.Model.Cards.DevelopmentCard;
-import it.polimi.ingsw.Model.Cards.LeaderCard;
-import it.polimi.ingsw.Model.MarketBoard.Marble;
-import it.polimi.ingsw.Model.MarketBoard.MarbleBlue;
-import it.polimi.ingsw.Model.MarketBoard.MarbleGray;
-import it.polimi.ingsw.Model.MarketBoard.MarbleRed;
-import it.polimi.ingsw.Model.Resources.*;
-import it.polimi.ingsw.View.CLI;
-import it.polimi.ingsw.xmlParser.ConfigurationParser;
+import it.polimi.ingsw.View.CLI.CLI;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
