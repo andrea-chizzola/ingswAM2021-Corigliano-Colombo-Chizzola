@@ -31,11 +31,6 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     private MessageSender messageSender;
 
     /**
-     * this attribute is true if the controller has not been started
-     */
-    private boolean notStarted;
-
-    /**
      * this attribute is true if the login has been successful
      */
     private boolean loggedIn;
@@ -69,7 +64,6 @@ public class ClientController implements ClientConnectionListener, InteractionOb
         this.view = view;
         this.model = model;
         this.messageSender = messageSender;
-        notStarted = false;
         loggedIn = false;
         isActive = true;
         availableInteraction = false;
@@ -82,7 +76,6 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     public void runController(){
         new Thread(() -> {
 
-            firstInteraction();
             while(isActive) {
 
                 synchronized (this) {
@@ -103,26 +96,6 @@ public class ClientController implements ClientConnectionListener, InteractionOb
         }).start();
     }
 
-    /**
-     * this method is used to perform the first interaction of the client, i.e. the login
-     */
-    private synchronized void firstInteraction(){
-        if(!notStarted){
-            ((SubjectView) view).attachInteractionObserver(this);
-            view.newPlayer();
-            notStarted = false;
-        }
-    }
-
-    /**
-     * this method is used to check if the client has been correctly started
-     */
-    private void checkStart(){
-        if(notStarted){
-            //termino il client. Il login non è mai avvenuto
-            System.out.println("[Client] the controller has not been started. Closing connection...");
-        }
-    }
 
     /**
      * this method is used to notify the controller of the arrival of a new message from the server
@@ -157,7 +130,6 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     protected void messageHandler(){
         String message;
         MessageUtilities parser = MessageUtilities.instance();
-        checkStart();
 
         synchronized(this){
             if(receivedMessages.size()<=0) return;

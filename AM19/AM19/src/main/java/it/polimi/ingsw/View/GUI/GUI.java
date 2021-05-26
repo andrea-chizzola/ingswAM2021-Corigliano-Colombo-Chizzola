@@ -24,7 +24,7 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/FXML/loading.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/FXML/TurnSelection.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 575, 534);
         stage.setScene(scene);
@@ -114,13 +114,6 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void showDisconnection(String nickname) {
 
-    }
-
-    @Override
-    public void newPlayer() {
-       /* GUIHandler handler = GUIHandler.instance();
-        LoadingController controller = handler.getLoadingController();
-        Platform.runLater(controller::startLogin);*/
     }
 
     @Override

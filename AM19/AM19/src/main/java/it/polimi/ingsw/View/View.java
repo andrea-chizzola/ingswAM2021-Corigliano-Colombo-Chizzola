@@ -111,12 +111,6 @@ public interface View {
     void showDisconnection(String nickname);
 
     /**
-     * this method is used to add a player to the view
-     */
-    void newPlayer();
-
-
-    /**
      * this method is used to catch the LeaderCards selected by a player
      */
     void selectLeaderAction();

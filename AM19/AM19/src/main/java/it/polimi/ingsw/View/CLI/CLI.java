@@ -24,7 +24,7 @@ import java.util.*;
  */
 public class CLI implements View, SubjectView {
 
-    //TO DO: put all the configuration offsets inside a file
+    //TODO: put all the configuration offsets inside a file
     /**
      * the following attributes represent the constants used to paint the items of the CLI
      */
@@ -62,7 +62,6 @@ public class CLI implements View, SubjectView {
     private final int LEADER_Y = 16;
 
     private final int N_DECKS_X = 4;
-    private final int N_DECKS_Y = 3;
 
     private final int END_X = 53;
     private final int END_Y = 19;
@@ -111,7 +110,6 @@ public class CLI implements View, SubjectView {
      * this attribute is used to collect the Strings that comes from the input stream
      */
     StringBuilder interaction;
-    //connectionSubject
 
     /**
      * this attribute represents an observer of the interactions of a player
@@ -152,12 +150,11 @@ public class CLI implements View, SubjectView {
                 String s = "";
                 while ((s = in.readLine()) != null) {
                     addInput(s);
-                    //System.out.println(s);
                 }
             } catch (IOException | NullPointerException e) {
                 System.out.println("Cannot open the input stream of CLI");
                 e.printStackTrace();
-                //CLOSE CLIENT AND CONNECTION. CANNOT OPEN INPUT STREAM
+                //TODO CLOSE CLIENT AND CONNECTION. CANNOT OPEN INPUT STREAM
             }
         }).start();
     }
@@ -171,14 +168,6 @@ public class CLI implements View, SubjectView {
             typed.append(s);
             availableInput = true;
             busyInput.notifyAll();
-
-            //CODE FOR TESTS
-            /*try {
-                busyInput.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
-            //---------------------
         }
     }
 
@@ -188,9 +177,6 @@ public class CLI implements View, SubjectView {
     private String getInput(){
         synchronized(busyInput){
             while(!availableInput){
-                //CODE FOR TESTS
-                //busyInput.notifyAll();
-                //------------------
                 try{
                     busyInput.wait();
                 } catch (InterruptedException e) {
@@ -271,7 +257,7 @@ public class CLI implements View, SubjectView {
         else{
             out.println("Action successfully performed. Let's proceed further.");
         }
-        //Scrivere che stai performando una certa azione e che il gioco prosegue correttamente.
+        //TODO Scrivere che stai performando una certa azione e che il gioco prosegue correttamente.
     }
 
     /**
@@ -363,7 +349,7 @@ public class CLI implements View, SubjectView {
         }
     }
 
-    //devi gestire gli errori di parsing
+    //TODO devi gestire gli errori di parsing
     /**
      * this method is used to show an update of one's LeaderCards
      * @param cards represent the current state of one's leader cards
@@ -443,10 +429,10 @@ public class CLI implements View, SubjectView {
 
     //MODIFY AS SOON YOU HAVE THE MESSAGES AND THE CONTROLLER
     /**
-     * this method is used to add a player to the view
+     * this method is used to add a player to the game
      */
-    @Override
-    public void newPlayer() {
+
+    public void launch() {
         String player, first = "", reconnect = "";
         String num;
         do {

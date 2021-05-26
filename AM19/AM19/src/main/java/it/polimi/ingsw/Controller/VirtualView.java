@@ -192,12 +192,6 @@ public class VirtualView implements View {
     public void initialize() {}
 
     /**
-     * this method is used to add a player to the view
-     */
-    @Override
-    public void newPlayer() {}
-
-    /**
      * this method is used to catch the LeaderCards selected by a player
      */
     @Override

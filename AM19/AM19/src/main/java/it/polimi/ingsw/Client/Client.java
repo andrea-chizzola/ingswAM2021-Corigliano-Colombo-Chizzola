@@ -41,7 +41,25 @@ public class Client implements MessageSender {
 
     @Override
     public void firstMessage(String message) {
+        establishConnection();
         connection.send(message);
+    }
+
+    private void establishConnection(){
+        try {
+            Socket socket = new Socket(ip, port);
+
+            System.out.println("[CLIENT] Connecting to server...");
+            System.out.println("[CLIENT] Connected to server on port " + port);
+            connection = new SocketServerConnection(socket, clientController,this);
+            new Thread(connection).start();
+
+        } catch (IOException e) {
+
+            System.err.println("[CLIENT] Connection error. Unavailable sever");
+            e.printStackTrace();
+
+        }
     }
 
     /**
@@ -61,6 +79,7 @@ public class Client implements MessageSender {
             clientController = new ClientController(reducedModel, cli, this);
             cli.attachInteractionObserver(clientController);
             clientController.runController();
+            cli.launch();
         }else{
             GUI gui = new GUI();
             clientController = new ClientController(reducedModel, gui, this);
@@ -68,21 +87,6 @@ public class Client implements MessageSender {
             gui.attachInteractionObserver(clientController);
             GUI.main(null);
         }
-
-        try {
-
-            Socket socket = new Socket(ip, port);
-            System.out.println("[CLIENT] Connected to server on port " + port);
-            connection = new SocketServerConnection(socket, clientController,this);
-            new Thread(connection).start();
-
-        } catch (IOException e) {
-
-            System.err.println("[CLIENT] Connection error. Unavailable sever");
-            e.printStackTrace();
-
-        }
-
     }
 
     public static void main(String[] args){
@@ -118,8 +122,6 @@ public class Client implements MessageSender {
             cli = true;
             System.out.println("[CLIENT] Client will be initialized using CLI settings.");
         }
-
-        System.out.println("[CLIENT] Connecting to server...");
 
         Client client = new Client(ip, port, cli);
         client.startClient();

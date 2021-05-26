@@ -33,6 +33,19 @@ public class SocketServerConnection implements ServerConnection, Runnable{
         this.clientController = clientController;
         pong = true;
 
+        try {
+
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            buffer = new NetworkBuffer();
+            out = new PrintWriter(socket.getOutputStream());
+
+        } catch (IOException e){
+
+            e.printStackTrace();
+            System.err.println("[CLIENT] Error occurred while opening input and output streams.");
+
+        }
+
     }
 
     /**
@@ -142,19 +155,6 @@ public class SocketServerConnection implements ServerConnection, Runnable{
      */
     @Override
     public void run() {
-
-        try {
-
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            buffer = new NetworkBuffer();
-            out = new PrintWriter(socket.getOutputStream());
-
-        } catch (IOException e){
-
-            e.printStackTrace();
-            System.err.println("[CLIENT] Error occurred while opening input and output streams.");
-
-        }
 
         startPingTimer();
         String read = "";

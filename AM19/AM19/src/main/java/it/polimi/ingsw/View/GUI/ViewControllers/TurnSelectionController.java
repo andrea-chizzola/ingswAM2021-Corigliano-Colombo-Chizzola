@@ -54,8 +54,8 @@ public class TurnSelectionController {
         SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new SwapInteraction()));
         ExitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("EXIT"));*/
 
-        /*TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> GUIHandler.loadRoot(mainPane.getScene(), "/FXML/prova.fxml"));
-        ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("ManageLeader"));
+        TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> GUIHandler.loadRoot(mainPane.getScene(), "/FXML/login.fxml"));
+        /*ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("ManageLeader"));
         BuyCardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("BuyCardButton"));
         DoProduction.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("DoProduction"));
         SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("SwapButton"));

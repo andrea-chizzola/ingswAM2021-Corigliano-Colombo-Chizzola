@@ -147,14 +147,6 @@ public class ViewForTest implements View {
     }
 
     /**
-     * this method is used to add a player to the view
-     */
-    @Override
-    public void newPlayer() {
-
-    }
-
-    /**
      * this method is used to catch the player's selected turn
      *
      * @param turns  is the list of available turns
