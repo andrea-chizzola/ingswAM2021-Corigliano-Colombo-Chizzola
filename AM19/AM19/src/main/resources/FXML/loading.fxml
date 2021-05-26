@@ -19,13 +19,13 @@
                   <Image url="@../Images/allcards.jpg" />
                </image>
             </ImageView>
-            <DialogPane layoutX="5.0" layoutY="98.0" prefHeight="53.0" prefWidth="498.0" />
+            <DialogPane layoutX="-1.0" layoutY="98.0" prefHeight="53.0" prefWidth="512.0" />
               <Label layoutX="6.0" layoutY="106.0" prefHeight="34.0" prefWidth="498.0" text="Please wait. The game is about to start..." textFill="#141313">
                <font>
                   <Font name="Times New Roman Bold Italic" size="30.0" />
                </font>
             </Label>
-              <Button fx:id="secondaryButton" layoutX="236.0" layoutY="272.0" onAction="#switchToPrimary" text="Exit">
+              <Button fx:id="exitButton" layoutX="236.0" layoutY="272.0" text="Exit">
                <font>
                   <Font name="Times New Roman Italic" size="14.0" />
                </font>
