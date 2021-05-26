@@ -1,9 +1,7 @@
 package it.polimi.ingsw.View.GUI;
 import it.polimi.ingsw.Client.InteractionObserver;
-import it.polimi.ingsw.Client.ViewObserver;
+import it.polimi.ingsw.Client.MessageSender;
 import it.polimi.ingsw.GUI.LoadingController;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -36,7 +34,7 @@ public class GUIHandler {
 
     private InteractionObserver interactionObserver;
 
-    private ViewObserver viewObserver;
+    private MessageSender messageSender;
 
     private LoadingController loadingController;
 
@@ -113,12 +111,12 @@ public class GUIHandler {
         this.interactionObserver = interactionObserver;
     }
 
-    public ViewObserver getViewObserver() {
-        return viewObserver;
+    public MessageSender getViewObserver() {
+        return messageSender;
     }
 
-    public void setViewObserver(ViewObserver viewObserver) {
-        this.viewObserver = viewObserver;
+    public void setViewObserver(MessageSender messageSender) {
+        this.messageSender = messageSender;
     }
 
     public Scene getCurrentScene() {

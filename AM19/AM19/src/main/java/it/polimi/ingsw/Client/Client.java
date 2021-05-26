@@ -3,15 +3,13 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.View.CLI.CLI;
 import it.polimi.ingsw.View.GUI.GUI;
-import it.polimi.ingsw.View.View;
-import javafx.application.Application;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
-public class Client implements ViewObserver{
+public class Client implements MessageSender {
 
     private static final String IP_ARG = "-ip";
     private static final String PORT_ARG = "-port";
@@ -37,17 +35,22 @@ public class Client implements ViewObserver{
      * @param message is the content of the message
      */
     @Override
-    public void update(String message) {
+    public void sendMessage(String message) {
+        connection.send(message);
+    }
+
+    @Override
+    public void firstMessage(String message) {
         connection.send(message);
     }
 
     /**
      * this method is used to notify the willingness of the player to disconnect
      */
-    @Override
+    /*@Override
     public void notifyDisconnection() {
         connection.closeConnection();
-    }
+    }*/
 
     public void startClient(){
 
@@ -55,14 +58,14 @@ public class Client implements ViewObserver{
 
         if(useCli){
             CLI cli = new CLI(reducedModel, System.in, System.out);
-            clientController = new ClientController(reducedModel, cli);
+            clientController = new ClientController(reducedModel, cli, this);
+            cli.attachInteractionObserver(clientController);
             clientController.runController();
-            cli.attachViewObserver(this);
         }else{
             GUI gui = new GUI();
-            clientController = new ClientController(reducedModel, gui);
+            clientController = new ClientController(reducedModel, gui, this);
             clientController.runController();
-            gui.attachViewObserver(this);
+            gui.attachInteractionObserver(clientController);
             GUI.main(null);
         }
 

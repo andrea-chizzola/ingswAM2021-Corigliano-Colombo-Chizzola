@@ -48,11 +48,11 @@ public class TurnSelectionController {
         GUIHandler handler = GUIHandler.instance();
         InteractionObserver interactionObserver = handler.getInteractionObserver();
 
-        ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new ManageLeaderInteraction()));
+        /*ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new ManageLeaderInteraction()));
         BuyCardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new BuyCardInteraction()));
         DoProduction.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new DoProductionInteraction()));
         SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new SwapInteraction()));
-        ExitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("EXIT"));
+        ExitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("EXIT"));*/
 
         /*TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> GUIHandler.loadRoot(mainPane.getScene(), "/FXML/prova.fxml"));
         ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("ManageLeader"));
@@ -61,7 +61,6 @@ public class TurnSelectionController {
         SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("SwapButton"));
         ExitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("ExitButton"));*/
     }
-
 
     public void setAvailableActions(){
         //metto a disabled tutti i bottoni e riattivo quelli presenti

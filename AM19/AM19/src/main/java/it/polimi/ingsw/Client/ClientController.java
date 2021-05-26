@@ -26,6 +26,11 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     private View view;
 
     /**
+     * this attribute represents a sender of messages
+     */
+    private MessageSender messageSender;
+
+    /**
      * this attribute is true if the controller has not been started
      */
     private boolean notStarted;
@@ -60,9 +65,10 @@ public class ClientController implements ClientConnectionListener, InteractionOb
      * @param model is a reference to the model in the client
      * @param view is a reference to the view used in the client
      */
-    public ClientController(ReducedGameBoard model, View view){
+    public ClientController(ReducedGameBoard model, View view, MessageSender messageSender){
         this.view = view;
         this.model = model;
+        this.messageSender = messageSender;
         notStarted = false;
         loggedIn = false;
         isActive = true;
@@ -502,14 +508,31 @@ public class ClientController implements ClientConnectionListener, InteractionOb
      * @param interaction is the notified interaction
      */
     @Override
-    public synchronized void notifyInteraction(PlayerInteraction interaction) {
+    public synchronized void updateInteraction(PlayerInteraction interaction) {
         this.interaction = interaction;
         availableInteraction = true;
         notifyAll();
     }
 
+    /**
+     * this method is used to notify a performed interaction
+     * @param message is the representation of the interaction
+     */
+    public void updateInteraction(String message){
+        if(!loggedIn){
+            messageSender.firstMessage(message);
+        }
+        else{
+            messageSender.sendMessage(message);
+        }
+    }
+
+    /**
+     * this method is used to notify the nickname chosen by the player
+     * @param nickname is the nickname chosen by the player
+     */
     @Override
-    public void notifySelectedNickname(String nickname) {
+    public void updatePersonalNickname(String nickname) {
         model.setPersonalNickname(nickname);
         model.setCurrentPlayer(nickname);
     }

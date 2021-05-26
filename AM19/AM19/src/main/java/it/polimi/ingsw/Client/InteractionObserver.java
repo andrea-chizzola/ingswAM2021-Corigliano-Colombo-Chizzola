@@ -11,11 +11,17 @@ public interface InteractionObserver {
      * this method is used to notify a performed interaction
      * @param interaction is the notified interaction
      */
-    void notifyInteraction(PlayerInteraction interaction);
+    void updateInteraction(PlayerInteraction interaction);
 
+    /**
+     * this method is used to notify a performed interaction
+     * @param message is the representation of the interaction
+     */
+    void updateInteraction(String message);
     /**
      * this method is used to notify the nickname chosen by the player
      * @param nickname is the nickname chosen by the player
      */
-    void notifySelectedNickname(String nickname);
+    void updatePersonalNickname(String nickname);
+
 }

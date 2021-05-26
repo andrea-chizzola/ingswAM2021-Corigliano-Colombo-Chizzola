@@ -2,7 +2,6 @@ package it.polimi.ingsw.View.CLI;
 
 import it.polimi.ingsw.Client.InteractionObserver;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import it.polimi.ingsw.Client.ViewObserver;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
@@ -112,11 +111,7 @@ public class CLI implements View, SubjectView {
      * this attribute is used to collect the Strings that comes from the input stream
      */
     StringBuilder interaction;
-
-    /**
-     * this attribute represents an observer of the view
-     */
-    ViewObserver viewObserver;
+    //connectionSubject
 
     /**
      * this attribute represents an observer of the interactions of a player
@@ -480,14 +475,13 @@ public class CLI implements View, SubjectView {
             }while(!reconnect.equals("true") && !reconnect.equals("false"));
         }
 
-        model.setPersonalNickname(player);
-        model.setCurrentPlayer(player);
+        notifyNickname(player);
 
         try {
             if(reconnect.equals("true"))
-                viewObserver.update(MessageFactory.buildReconnection("Reconnection request", player));
+                notifyInteraction(MessageFactory.buildReconnection("Reconnection request", player));
             else
-                viewObserver.update(MessageFactory.buildConnection("Connection request", player, Boolean.parseBoolean(first), Integer.parseInt(num)));
+                notifyInteraction(MessageFactory.buildConnection("Connection request", player, Boolean.parseBoolean(first), Integer.parseInt(num)));
         }catch(MalformedMessageException e){
             //CLOSE CONNECTION
         }
@@ -558,28 +552,28 @@ public class CLI implements View, SubjectView {
     private void actionMapper(String action){
         switch(action){
             case("BUY_CARD"): {
-                interactionObserver.notifyInteraction(new BuyCardInteraction());
+                notifyInteraction(new BuyCardInteraction());
                 break;
             }
             case("DO_PRODUCTION"): {
-                interactionObserver.notifyInteraction(new DoProductionInteraction());
+                notifyInteraction(new DoProductionInteraction());
                 break;
             }
             case("MANAGE_LEADER"): {
-                interactionObserver.notifyInteraction(new ManageLeaderInteraction());
+                notifyInteraction(new ManageLeaderInteraction());
                 break;
             }
             case("TAKE_RESOURCES"): {
-                interactionObserver.notifyInteraction(new TakeResourcesInteraction());
+                notifyInteraction(new TakeResourcesInteraction());
                 break;
             }
             case("SWAP"): {
-                interactionObserver.notifyInteraction(new SwapInteraction());
+                notifyInteraction(new SwapInteraction());
                 break;
             }
             case("EXIT"): {
                 try {
-                    viewObserver.update(MessageFactory.buildExit("End of turn selection"));
+                    notifyInteraction(MessageFactory.buildExit("End of turn selection"));
                 }catch(MalformedMessageException e){
                     //exit from client
                 }
@@ -587,7 +581,7 @@ public class CLI implements View, SubjectView {
             }
             case("DISCONNECT"): {
                 try {
-                    viewObserver.update(MessageFactory.buildDisconnection(
+                    notifyInteraction(MessageFactory.buildDisconnection(
                             "I want to be disconnected", model.getPersonalNickname()));
                 } catch (MalformedMessageException e) {
                     //exit from client
@@ -622,7 +616,7 @@ public class CLI implements View, SubjectView {
         }catch (NumberFormatException e){}
 
         try{
-            viewObserver.update(MessageFactory.buildLeaderUpdate(cards, map,
+            notifyInteraction(MessageFactory.buildLeaderUpdate(cards, map,
                     "Leader cards initialization managing.", model.getCurrentPlayer()));
         }catch(MalformedMessageException e){
             //exit from client
@@ -667,7 +661,7 @@ public class CLI implements View, SubjectView {
         } while(!isValidMarketSelection(s));
         String[] selection = s.split(":");
         try {
-            viewObserver.update(MessageFactory.buildMarketSelection(selection[0], Integer.parseInt(selection[1])
+            notifyInteraction(MessageFactory.buildMarketSelection(selection[0], Integer.parseInt(selection[1])
                     , "Selection of a row or a column from the market."));
         }catch (MalformedMessageException e){
             //exit from client
@@ -720,7 +714,7 @@ public class CLI implements View, SubjectView {
                 "eg. MarbleBlue:INSERT:2:MarbleYellow:DISCARD:0");
         String action = getInput();
         try {
-            viewObserver.update(MessageFactory.buildActionMarble(action, "Marbles managing"));
+            notifyInteraction(MessageFactory.buildActionMarble(action, "Marbles managing"));
         }
         catch(MalformedMessageException e){
             //Close the client because of the error
@@ -751,7 +745,7 @@ public class CLI implements View, SubjectView {
         }
 
         try {
-            viewObserver.update(MessageFactory.buildLeaderAction(leadersID.get(position), position, sequence[1], "Action on leader"));
+            notifyInteraction(MessageFactory.buildLeaderAction(leadersID.get(position), position, sequence[1], "Action on leader"));
         }catch(MalformedMessageException e){
             //exit from client;
         }
@@ -788,7 +782,7 @@ public class CLI implements View, SubjectView {
         strongbox = helpResSequence();
 
         try {
-            viewObserver.update(MessageFactory.buildBuyCard(card.getCardColor().getColor(),
+            notifyInteraction(MessageFactory.buildBuyCard(card.getCardColor().getColor(),
                     card.getCardLevel(), slot, id, "Buy card", warehouse, strongbox));
 
         }catch(MalformedMessageException e){
@@ -878,7 +872,7 @@ public class CLI implements View, SubjectView {
         strongbox = helpResSequence();
 
         try {
-            viewObserver.update(MessageFactory.BuildDoProduction(decision,developments,
+            notifyInteraction(MessageFactory.BuildDoProduction(decision,developments,
                     leaders,customResources,customProducts,warehouse, strongbox, "Do production"));
         } catch (MalformedMessageException e) {
             //exit from client
@@ -956,7 +950,7 @@ public class CLI implements View, SubjectView {
         }
 
         try{
-            viewObserver.update(MessageFactory.buildSelectedResources(selection, "Selection of resources during initialization"));
+            notifyInteraction(MessageFactory.buildSelectedResources(selection, "Selection of resources during initialization"));
         }catch(MalformedMessageException e){
             //exit from client
         }
@@ -995,7 +989,7 @@ public class CLI implements View, SubjectView {
         }
         while(!isIntSequence(selections,1));
         try{
-            viewObserver.update(MessageFactory.buildSwap(Integer.parseInt(selections[0]),Integer.parseInt(selections[1])
+            notifyInteraction(MessageFactory.buildSwap(Integer.parseInt(selections[0]),Integer.parseInt(selections[1])
                     , "Swapping two shelves of the warehouse"));
         }
         catch(MalformedMessageException e){
@@ -1005,20 +999,38 @@ public class CLI implements View, SubjectView {
     }
 
     /**
-     * this method is used to attach a Client to a view
-     * @param observer is the observer to be attached
-     */
-    @Override
-    public void attachViewObserver(ViewObserver observer) {
-        this.viewObserver = observer;
-    }
-
-    /**
      * this method is used to attach a ClientController to a view
      * @param observer is the observer to be attached
      */
     @Override
     public void attachInteractionObserver(InteractionObserver observer) {
         this.interactionObserver = observer;
+    }
+
+    /**
+     * this method is used to notify a performed interaction
+     * @param interaction is the notified interaction
+     */
+    @Override
+    public void notifyInteraction(PlayerInteraction interaction) {
+        interactionObserver.updateInteraction(interaction);
+    }
+
+    /**
+     * this method is used to notify a performed interaction
+     * @param message is the representation of the interaction
+     */
+    @Override
+    public void notifyInteraction(String message) {
+        interactionObserver.updateInteraction(message);
+    }
+
+    /**
+     * this method is used to notify the nickname selected by a player to the observers
+     * @param nickname is the name chosen by the players
+     */
+    @Override
+    public void notifyNickname(String nickname) {
+        interactionObserver.updatePersonalNickname(nickname);
     }
 }
