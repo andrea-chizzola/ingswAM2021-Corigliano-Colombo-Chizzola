@@ -217,6 +217,11 @@ public class GameBoardController extends ViewController{
         }
     }
 
+    /**
+     * activates the pope favor associated to the selected position
+     * @param position represents the pope favor's position
+     * @param path represents the path to the image related to the activated pope favor
+     */
     public void activatePopeFavor(int position, String path){  //TODO MANCANO LE IMMAGINI RELATIVE AI POPE FAVOR ATTIVI
         if(position > 0 && position <= 3){
             Image favor = new Image(getClass().getResourceAsStream(path));
