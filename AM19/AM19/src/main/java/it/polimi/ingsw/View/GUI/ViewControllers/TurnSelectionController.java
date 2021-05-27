@@ -1,16 +1,22 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
+import it.polimi.ingsw.Exceptions.MalformedMessageException;
+import it.polimi.ingsw.Messages.MessageFactory;
+import it.polimi.ingsw.View.GUI.GUI;
+import it.polimi.ingsw.View.PlayerInteractions.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
-public class TurnSelectionController {
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+public class TurnSelectionController extends ViewController{
 
     @FXML
     private GridPane mainPane;
-
-    @FXML
-    private AnchorPane pane;
 
     @FXML
     private Button TakeResourcesButton;
@@ -30,31 +36,66 @@ public class TurnSelectionController {
     @FXML
     private Button ExitButton;
 
+    private Map<String, Button> turns;
+    private List<String> availableTurns;
+
+    public TurnSelectionController(){
+        turns = Map.of("SWAP", SwapButton, "TAKE_RESOURCES", TakeResourcesButton,
+                "MANAGE_LEADER", ManageLeaderButton, "BUY_CARD", BuyCardButton, "DO_PRODUCTION", DoProduction,
+                "EXIT", ExitButton);
+        availableTurns = new LinkedList<>();
+    }
+
     @FXML
     public void initialize() {
+
+        disableButtons();
+        for(String s: availableTurns){
+            Button b = turns.get(s);
+            b.setDisable(false);
+        }
         //ExitButton.setDisable(true);
         //SwapButton.setVisible(false);
-        bindAction();
+        bindActions();
     }
 
-    private void bindAction(){
 
-        /*ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new ManageLeaderInteraction()));
-        BuyCardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new BuyCardInteraction()));
-        DoProduction.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new DoProductionInteraction()));
-        SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> interactionObserver.notifyInteraction(new SwapInteraction()));
-        ExitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("EXIT"));*/
+    private void bindActions(){
 
-        //TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> GUIHandler.loadRoot(mainPane.getScene(), "/FXML/login.fxml"));
-        /*ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("ManageLeader"));
-        BuyCardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("BuyCardButton"));
-        DoProduction.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("DoProduction"));
-        SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("SwapButton"));
-        ExitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("ExitButton"));*/
+        GUI gui = getGUIReference();
+        TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                gui.notifyInteraction(new TakeResourcesInteraction()));
+
+        ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                gui.notifyInteraction(new ManageLeaderInteraction()));
+
+        BuyCardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                gui.notifyInteraction(new BuyCardInteraction()));
+
+        DoProduction.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                gui.notifyInteraction(new DoProductionInteraction()));
+
+        SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                gui.notifyInteraction(new SwapInteraction()));
+
+        ExitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                gui.notifyInteraction(MessageFactory.buildExit("End of turn selection"));
+            } catch (MalformedMessageException e) {
+                e.printStackTrace();
+                //TODO exit from client
+            }
+        });
     }
 
-    public void setAvailableActions(){
-        //metto a disabled tutti i bottoni e riattivo quelli presenti
+    public void setAvailableActions(List<String> availableTurns){
+        this.availableTurns = new LinkedList<>(availableTurns);
+    }
+
+    private void disableButtons(){
+        for(Button b : turns.values()){
+            b.setDisable(true);
+        }
     }
 }
 

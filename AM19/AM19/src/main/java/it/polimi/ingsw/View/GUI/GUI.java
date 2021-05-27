@@ -1,7 +1,6 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.InteractionObserver;
-import it.polimi.ingsw.Client.MessageSender;
 import it.polimi.ingsw.GUI.Gui;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
@@ -25,7 +24,7 @@ import java.util.Optional;
 
 public class GUI extends Application implements View, SubjectView {
 
-    //QUI VA LA LISTA DEI CONTROLLER USATI/CHE SERVE RICHIAMARE
+    //TODO QUI VA LA LISTA DEI CONTROLLER USATI/CHE SERVE RICHIAMARE
 
 
     @Override

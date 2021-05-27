@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 import it.polimi.ingsw.View.GUI.GUI;
+import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 
 public abstract class ViewController{
 
@@ -14,11 +15,10 @@ public abstract class ViewController{
     }
 
     /**
-     * this method is used to notify a message to the current instance of GUI
-     * @param message is the message to be modified
+     *
+     * @return the instance of the GUI associated to the controller
      */
-    public void notifyMessage(String message){
-        gui.notifyInteraction(message);
+    public GUI getGUIReference(){
+        return gui;
     }
-
 }
