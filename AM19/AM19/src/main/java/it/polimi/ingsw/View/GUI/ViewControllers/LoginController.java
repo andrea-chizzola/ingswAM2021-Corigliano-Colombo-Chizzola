@@ -4,6 +4,7 @@ import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.GUI.Gui;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.View.GUI.GUI;
+import it.polimi.ingsw.View.GUI.GUIHandler;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -59,7 +60,7 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 1);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUI.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
             } catch (MalformedMessageException e) {
                 e.printStackTrace();
             }
@@ -72,7 +73,7 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 2);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUI.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -85,7 +86,7 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 3);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUI.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -98,7 +99,7 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 4);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUI.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -111,7 +112,7 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), false, 0);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUI.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -124,7 +125,7 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildReconnection("Reconnection request.", nicknameField.getText());
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUI.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }

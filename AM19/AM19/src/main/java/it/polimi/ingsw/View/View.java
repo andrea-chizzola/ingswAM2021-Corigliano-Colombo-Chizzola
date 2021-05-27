@@ -20,7 +20,7 @@ public interface View {
      */
     void initialize();
 
-    public void reply(boolean answer, String body, String nickName);
+    void reply(boolean answer, String body, String nickName);
 
     /**
      * this method is used to show a message

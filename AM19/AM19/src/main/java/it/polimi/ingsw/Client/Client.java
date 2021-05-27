@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.View.CLI.CLI;
 import it.polimi.ingsw.View.GUI.GUI;
+import it.polimi.ingsw.View.GUI.GUIHandler;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -74,6 +75,8 @@ public class Client implements MessageSender {
             cli.launch();
         }else{
             GUI gui = new GUI();
+            GUIHandler handler = GUIHandler.instance();
+            handler.setGUIinstance(gui);
             clientController = new ClientController(reducedModel, gui, this);
             clientController.runController();
             gui.attachInteractionObserver(clientController);
