@@ -15,6 +15,8 @@ import java.io.IOException;
 public class LoadingController extends ViewController{
 
     @FXML
+    private Pane pane;
+    @FXML
     private Button exitButton;
 
     @FXML
