@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GUI;
+package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -11,7 +11,7 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameBoardController {
+public class GameBoardController extends ViewController{
 
     private class Coordinates{
 
@@ -84,6 +84,7 @@ public class GameBoardController {
     private Label servantsNumber;
 
     private List<Coordinates> positions;
+
     private int currentPos;
 
     @FXML
@@ -93,18 +94,23 @@ public class GameBoardController {
         setPositions(positions);
         currentPos = 0;
 
-        quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onQuitButtonClicked);
+    }
+
+    /**
+     * changes the position of the player inside his faith track
+     * @param position represents the new player's position
+     */
+    private void changePosition(int position){
+
+        tile.setLayoutX(positions.get(position).getX());
+        tile.setLayoutY(positions.get(position).getY());
 
     }
 
-    private void onQuitButtonClicked(Event event){
-
-        tile.setLayoutX(positions.get(currentPos).getX());
-        tile.setLayoutY(positions.get(currentPos).getY());
-        currentPos++;
-
-    }
-
+    /**
+     * sets the positions related to each tile of the faith track
+     * @param positions contains the coordinates of each tile
+     */
     private void setPositions(List<Coordinates> positions){
 
         positions.add(new Coordinates(54, 113));

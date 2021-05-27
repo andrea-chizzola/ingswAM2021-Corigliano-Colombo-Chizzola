@@ -1,12 +1,18 @@
-package it.polimi.ingsw.GUI;
+package it.polimi.ingsw.View.GUI.ViewControllers;
 
+import it.polimi.ingsw.View.GUI.GUI;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+
+import java.io.IOException;
 
 
-public class LoadingController {
+public class LoadingController extends ViewController{
 
     @FXML
     private Button exitButton;
@@ -17,7 +23,7 @@ public class LoadingController {
     }
 
     private void onExitButtonClicked(Event event) {
-        Gui.setRoot("/FXML/login.fxml");
+        getGuiReference().stop();
     }
 
 }

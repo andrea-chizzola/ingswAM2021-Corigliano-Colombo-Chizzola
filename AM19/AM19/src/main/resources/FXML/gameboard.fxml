@@ -8,11 +8,11 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.GameBoardController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUI.ViewControllers.GameBoardController">
    <children>
       <ImageView fitHeight="500.0" fitWidth="870.0" pickOnBounds="true">
          <image>
-            <Image url="@../Images/gameboard.png" />
+            <Image url="@../Images/board/gameboard.png" />
          </image>
       </ImageView>
       <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="344.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true" />
@@ -29,17 +29,17 @@
       </Label>
       <ImageView fx:id="firstPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="217.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/quadrato giallo.png" />
+            <Image url="@../Images/punchboard/quadrato giallo.png" />
          </image>
       </ImageView>
       <ImageView fx:id="secondPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="430.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/quadrato arancione.png" />
+            <Image url="@../Images/punchboard/quadrato arancione.png" />
          </image>
       </ImageView>
       <ImageView fx:id="thirdPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="690.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/quadrato rosso.png" />
+            <Image url="@../Images/punchboard/quadrato rosso.png" />
          </image>
       </ImageView>
       <Button fx:id="menuButton" layoutX="941.0" layoutY="83.0" mnemonicParsing="false" text="MENU">
@@ -76,22 +76,22 @@
       <ImageView fx:id="thirdBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="135.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="coins" fitHeight="41.0" fitWidth="31.0" layoutX="28.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/coin.png" />
+            <Image url="@../Images/punchboard/coin.png" />
          </image>
       </ImageView>
       <ImageView fx:id="shields" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="383.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/shield.png" />
+            <Image url="@../Images/punchboard/shield.png" />
          </image>
       </ImageView>
       <ImageView fx:id="stones" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="423.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/stone.png" />
+            <Image url="@../Images/punchboard/stone.png" />
          </image>
       </ImageView>
       <ImageView fx:id="servants" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="463.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/servant.png" />
+            <Image url="@../Images/punchboard/servant.png" />
          </image>
       </ImageView>
       <Label fx:id="coinsNumber" layoutX="91.0" layoutY="352.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
