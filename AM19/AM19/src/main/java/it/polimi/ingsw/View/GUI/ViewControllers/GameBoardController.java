@@ -71,6 +71,8 @@ public class GameBoardController extends ViewController{
     @FXML
     private ImageView thirdBottomResource;
     @FXML
+    private ImageView blackCross;
+    @FXML
     private Button menuButton;
     @FXML
     private Button marketBoardButton;
@@ -91,6 +93,8 @@ public class GameBoardController extends ViewController{
 
     private List<Coordinates> positions;
 
+    private List<Coordinates> blackPositions;
+
     private List<ImageView> warehouse;
 
     private List<ImageView> developmentCards;
@@ -99,7 +103,6 @@ public class GameBoardController extends ViewController{
 
     private List<ImageView> popeFavors;
 
-    private int currentPos;
 
     @FXML
     private void initialize(){
@@ -123,7 +126,10 @@ public class GameBoardController extends ViewController{
 
         positions = new ArrayList<>();
         setPositions(positions);
-        currentPos = 0;
+
+        blackPositions = new ArrayList<>();
+        setBlackPositions(blackPositions);
+        blackCross.setVisible(false);
 
     }
 
@@ -273,6 +279,24 @@ public class GameBoardController extends ViewController{
     }
 
     /**
+     * changes Lorenzo's position inside the faith track
+     * @param position represents Lorenzo's position
+     */
+    public void changeBlackPosition(int position){
+
+        blackCross.setLayoutX(blackPositions.get(position).getX());
+        blackCross.setLayoutY(blackPositions.get(position).getY());
+
+    }
+
+    /**
+     * makes Lorenzo's black cross visible in case of a single player game
+     */
+    public void visualizeBlackCross(){
+        blackCross.setVisible(true);
+    }
+
+    /**
      * sets the ImageView associated to each slot in the warehouse
      * @param warehouse contains the ImageViews associated the warehouse
      */
@@ -355,6 +379,40 @@ public class GameBoardController extends ViewController{
         positions.add(new Coordinates(734, 45));
         positions.add(new Coordinates(779, 45));
         positions.add(new Coordinates(817, 45));
+
+    }
+
+    /**
+     * sets the positions related to each tile of the faith track (only for Lorenzo's black cross)
+     * @param positions contains the coordinates of each tile
+     */
+    private void setBlackPositions(List<Coordinates> positions){
+
+        positions.add(new Coordinates(39, 95));
+        positions.add(new Coordinates(81, 95));
+        positions.add(new Coordinates(120, 95));
+        positions.add(new Coordinates(120, 64));
+        positions.add(new Coordinates(120, 30));
+        positions.add(new Coordinates(166, 30));
+        positions.add(new Coordinates(211, 30));
+        positions.add(new Coordinates(249, 30));
+        positions.add(new Coordinates(293, 30));
+        positions.add(new Coordinates(337,30));
+        positions.add(new Coordinates(337, 64));
+        positions.add(new Coordinates(337, 95));
+        positions.add(new Coordinates(378, 95));
+        positions.add(new Coordinates(420, 95));
+        positions.add(new Coordinates(465, 95));
+        positions.add(new Coordinates(509, 95));
+        positions.add(new Coordinates(552, 95));
+        positions.add(new Coordinates(552, 64));
+        positions.add(new Coordinates(552, 30));
+        positions.add(new Coordinates(594, 30));
+        positions.add(new Coordinates(633, 30));
+        positions.add(new Coordinates(675, 30));
+        positions.add(new Coordinates(717, 30));
+        positions.add(new Coordinates(759, 30));
+        positions.add(new Coordinates(805, 30));
 
     }
 
