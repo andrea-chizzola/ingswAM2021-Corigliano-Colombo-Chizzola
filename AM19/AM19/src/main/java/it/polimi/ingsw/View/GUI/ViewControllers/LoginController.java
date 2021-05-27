@@ -55,6 +55,7 @@ public class LoginController extends ViewController{
         if(checkUsername()) {
             try {
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 1);
+                getGuiReference().notifyNickname(nicknameField.getText());
                 getGuiReference().notifyInteraction(message);
             } catch (MalformedMessageException e) {
                 e.printStackTrace();
@@ -66,6 +67,7 @@ public class LoginController extends ViewController{
         if(checkUsername()) {
             try {
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 2);
+                getGuiReference().notifyNickname(nicknameField.getText());
                 getGuiReference().notifyInteraction(message);
             }catch (MalformedMessageException e){
                 e.printStackTrace();
@@ -78,6 +80,7 @@ public class LoginController extends ViewController{
         if(checkUsername()) {
             try {
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 3);
+                getGuiReference().notifyNickname(nicknameField.getText());
                 getGuiReference().notifyInteraction(message);
             }catch (MalformedMessageException e){
                 e.printStackTrace();
@@ -89,6 +92,7 @@ public class LoginController extends ViewController{
         if(checkUsername()) {
             try {
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 4);
+                getGuiReference().notifyNickname(nicknameField.getText());
                 getGuiReference().notifyInteraction(message);
             }catch (MalformedMessageException e){
                 e.printStackTrace();
@@ -100,6 +104,7 @@ public class LoginController extends ViewController{
         if(checkUsername()) {
             try {
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), false, 0);
+                getGuiReference().notifyNickname(nicknameField.getText());
                 getGuiReference().notifyInteraction(message);
             }catch (MalformedMessageException e){
                 e.printStackTrace();
@@ -111,6 +116,7 @@ public class LoginController extends ViewController{
         if(checkUsername()) {
             try {
                 String message = MessageFactory.buildReconnection("Reconnection request.", nicknameField.getText());
+                getGuiReference().notifyNickname(nicknameField.getText());
                 getGuiReference().notifyInteraction(message);
             }catch (MalformedMessageException e){
                 e.printStackTrace();
