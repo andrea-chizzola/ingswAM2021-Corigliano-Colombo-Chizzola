@@ -23,7 +23,7 @@ public class LoadingController extends ViewController{
     }
 
     private void onExitButtonClicked(Event event) {
-        getGuiReference().stop();
+        getGUIReference().stop();
     }
 
 }

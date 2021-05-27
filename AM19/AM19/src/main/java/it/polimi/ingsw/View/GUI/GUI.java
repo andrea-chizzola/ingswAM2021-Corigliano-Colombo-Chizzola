@@ -6,6 +6,7 @@ import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.View.GUI.ViewControllers.LoginController;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 import it.polimi.ingsw.View.SubjectView;
 import it.polimi.ingsw.View.View;
@@ -33,6 +34,9 @@ public class GUI extends Application implements View, SubjectView {
 
         Scene scene = new Scene(fxmlLoader.load(), 575, 534);
         stage.setScene(scene);
+        LoginController controller = fxmlLoader.getController();
+        controller.attachGUIReference(this);
+
 
         stage.show();
     }
@@ -223,7 +227,6 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void notifyInteraction(String message) {
-
     }
 
     @Override
