@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="612.0" prefWidth="552.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.LoadingController">
+<VBox alignment="CENTER" prefHeight="612.0" prefWidth="552.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUI.ViewControllers.LoadingController">
     <children>
       <Pane fx:id="pane" prefHeight="404.0" prefWidth="456.0">
          <children>
@@ -19,13 +19,13 @@
                   <Image url="@../Images/allcards.jpg" />
                </image>
             </ImageView>
-            <DialogPane layoutX="5.0" layoutY="98.0" prefHeight="53.0" prefWidth="498.0" />
+            <DialogPane layoutX="-1.0" layoutY="98.0" prefHeight="53.0" prefWidth="512.0" />
               <Label layoutX="6.0" layoutY="106.0" prefHeight="34.0" prefWidth="498.0" text="Please wait. The game is about to start..." textFill="#141313">
                <font>
                   <Font name="Times New Roman Bold Italic" size="30.0" />
                </font>
             </Label>
-              <Button fx:id="secondaryButton" layoutX="236.0" layoutY="272.0" onAction="#switchToPrimary" text="Exit">
+              <Button fx:id="exitButton" layoutX="236.0" layoutY="272.0" text="Exit">
                <font>
                   <Font name="Times New Roman Italic" size="14.0" />
                </font>

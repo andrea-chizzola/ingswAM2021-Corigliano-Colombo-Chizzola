@@ -15,7 +15,7 @@ public class Gui extends Application  {
 
     @Override
     public void start(Stage stage) throws Exception {
-        scene = new Scene(loadFXML("/FXML/login.fxml"), 575, 534);
+        scene = new Scene(loadFXML("/FXML/login.fxml"));
         stage.setScene(scene);
         stage.show();
     }
@@ -25,8 +25,13 @@ public class Gui extends Application  {
         System.exit(0);
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+    static void setRoot(String fxml) {
+        try {
+            scene.setRoot(loadFXML(fxml));
+        } catch (IOException e) {
+            System.err.println("Error occurred while switching root.");
+            e.printStackTrace();
+        }
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
