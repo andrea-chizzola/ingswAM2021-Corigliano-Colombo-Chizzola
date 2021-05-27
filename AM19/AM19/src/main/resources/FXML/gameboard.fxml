@@ -67,7 +67,7 @@
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
       </Button>
-      <Circle fx:id="tile" fill="DODGERBLUE" layoutX="54.0" layoutY="113.0" opacity="0.38" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="tile" fill="#2bf507" layoutX="54.0" layoutY="113.0" opacity="0.5" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
       <ImageView fx:id="topResource" fitHeight="26.0" fitWidth="31.0" layoutX="101.0" layoutY="216.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="firstMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="85.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="secondMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="120.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true" />
@@ -114,5 +114,10 @@
             <Font name="Times New Roman" size="12.0" />
          </font>
       </Label>
+      <ImageView fx:id="blackCross" fitHeight="36.0" fitWidth="31.0" layoutX="39.0" layoutY="95.0" opacity="0.5" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/punchboard/croce.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>
