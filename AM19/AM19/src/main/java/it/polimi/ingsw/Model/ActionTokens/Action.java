@@ -40,6 +40,11 @@ public abstract class Action {
         return id;
     }
 
+    /**
+     * @return the path of the image associated with the ActionToken
+     */
+    public String getImage(){return image;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

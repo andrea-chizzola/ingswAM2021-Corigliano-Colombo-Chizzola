@@ -1,9 +1,15 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedConfiguration;
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
+import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.MessageFactory;
+import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.View.GUI.GUIHandler;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,6 +20,8 @@ import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class GameBoardController extends ViewController{
 
@@ -73,6 +81,8 @@ public class GameBoardController extends ViewController{
     @FXML
     private ImageView blackCross;
     @FXML
+    private ImageView actionToken;
+    @FXML
     private Button menuButton;
     @FXML
     private Button marketBoardButton;
@@ -103,6 +113,8 @@ public class GameBoardController extends ViewController{
 
     private List<ImageView> popeFavors;
 
+    private ReducedGameBoard model = GUIHandler.instance().getModel();
+
 
     @FXML
     private void initialize(){
@@ -122,7 +134,7 @@ public class GameBoardController extends ViewController{
         setLeaderCards(leaderCards);
 
         popeFavors = new ArrayList<>();
-
+        setPopeFavors(popeFavors);
 
         positions = new ArrayList<>();
         setPositions(positions);
@@ -154,92 +166,155 @@ public class GameBoardController extends ViewController{
 
     }
 
+    public Scene getScene() {
+        return pane.getScene();
+    }
+
     /**
-     * places the resource in the selected warehouse position
-     * @param position represents the warehouse position
-     * @param path represents the path to the image related to the resource
+     * manages the activation and deactivation of the pope favors
+     * @param sections contains the status of each pope favor
      */
-    public void setResource(int position, String path){
-        if(position > 0 && position <= 6) {
-            Image res = new Image(getClass().getResourceAsStream(path));
-            warehouse.get(position - 1).setImage(res);
-            warehouse.get(position - 1).setVisible(true);
+    public void manageSections(List<ItemStatus> sections){  //TODO MANCANO LE IMMAGINI RELATIVE AI POPE FAVOR ATTIVI
+        for(ItemStatus status : sections){
+            if(status == ItemStatus.ACTIVE){
+                int section = sections.indexOf(status);
+                switch (section){
+                    case 0:
+                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/quadrato giallo attivo.png"));
+                        popeFavors.get(section).setImage(image);
+                        break;
+                    case 1:
+                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadrato arancio attivo.png"));
+                        popeFavors.get(section).setImage(image1);
+                        break;
+                    case 2:
+                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadrato rosso attivo.png"));
+                        popeFavors.get(section).setImage(image2);
+                        break;
+                }
+
+            }
         }
     }
 
     /**
-     * removes the resource from the selected warehouse position
-     * @param position represents the warehouse position
+     * manages the selection of the development cards
+     * @param slots contains the development cards
      */
-    public void removeResource(int position){
-        if(position > 0 && position <= 6) {
-            warehouse.get(position - 1).setVisible(false);
+    public void manageDevelopmentCards(Map<Integer, String> slots){
+        for(ImageView image : developmentCards){
+            image.setVisible(false);
         }
-    }
-
-    /**
-     * places the development card in the selected slot
-     * @param slot represents the development card slot
-     * @param path represents the path to the image related to the development card
-     */
-    public void setDevelopmentCard(int slot, String path){
-        if(slot > 0 && slot <= 3) {
-            Image res = new Image(getClass().getResourceAsStream(path));
-            developmentCards.get(slot - 1).setImage(res);
+        for(Integer slot : slots.keySet()){
+            String path = model.getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
+            Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
+            developmentCards.get(slot - 1).setImage(card);
             developmentCards.get(slot - 1).setVisible(true);
         }
     }
 
     /**
-     * removes the development card from the selected slot
-     * @param slot represents the development card slot
+     * manages the selection and activation of the leader cards
+     * @param cards contains the leader cards
+     * @param status contains the status of each leader card
      */
-    public void removeDevelopmentCard(int slot){
-        if(slot > 0 && slot <= 3) {
-            developmentCards.get(slot - 1).setVisible(false);
+    public void manageLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status){
+        for(ImageView image : leaderCards){
+            image.setVisible(false);
+        }
+        for(Integer slot : cards.keySet()){
+            String path = model.getConfiguration().getLeaderCard(cards.get(slot)).getPath();
+            if(status.get(slot) == ItemStatus.ACTIVE){
+                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
+                leaderCards.get(slot - 1).setImage(card);
+                leaderCards.get(slot - 1).setVisible(true);
+            }else{
+                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
+                leaderCards.get(slot - 1).setImage(card);
+                leaderCards.get(slot - 1).setVisible(true);
+                leaderCards.get(slot - 1).setOpacity(0.5);
+            }
+        }
+    }
+
+
+    public void manageTopToken(Optional<String> action){
+        if(action.isEmpty())
+            return;
+
+        String image = model.getConfiguration().getActionTokenCard(action.get()).getImage();
+        Image token = new Image("/Images/punchboard/" + image);
+        actionToken.setImage(token);
+        actionToken.setVisible(true);
+    }
+
+
+    /**
+     * stores the selected resources inside the strongbox
+     * @param strongbox contains the resources to store
+     */
+    public void setResourceStrongbox(List<ResQuantity> strongbox){
+
+        for(ResQuantity resQuantity : strongbox) {
+            switch (resQuantity.getResource().getColor()) {
+                case YELLOW:
+                    setCoinsNumber(resQuantity.getQuantity());
+                    break;
+                case BLUE:
+                    setShieldsNumber(resQuantity.getQuantity());
+                    break;
+                case GRAY:
+                    setStonesNumber(resQuantity.getQuantity());
+                    break;
+                case PURPLE:
+                    setServantsNumber(resQuantity.getQuantity());
+                    break;
+            }
         }
     }
 
     /**
-     * places the leader card in the selected position
-     * @param position represents the leader card position
-     * @param path represents the path to the image related to the leader card
+     * stores the selected resources inside the warehouse
+     * @param warehouseRes contains the resources to store
      */
-    public void setLeaderCard(int position, String path){
-        if(position > 0 && position <= 4) {
-            Image res = new Image(getClass().getResourceAsStream(path));
-            leaderCards.get(position - 1).setImage(res);
-            leaderCards.get(position - 1).setVisible(true);
-        }
-    }
+    public void setResourceWarehouse(List<ResQuantity> warehouseRes){
 
-    /**
-     * removes the leader card from the selected position
-     * @param position represents the leader card position
-     */
-    public void removeLeaderCard(int position){
-        if(position > 0 && position <= 4) {
-            leaderCards.get(position - 1).setVisible(false);
+        for(ResQuantity resQuantity : warehouseRes){
+            if(resQuantity.getQuantity() == 0){
+                warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(false);
+            }else{
+                switch (resQuantity.getResource().getColor()) {
+                    case YELLOW:
+                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                        break;
+                    case BLUE:
+                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image1);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                        break;
+                    case GRAY:
+                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image2);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                        break;
+                    case PURPLE:
+                        Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image3);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                        break;
+                }
+            }
         }
-    }
 
-    /**
-     * activates the pope favor associated to the selected position
-     * @param position represents the pope favor's position
-     * @param path represents the path to the image related to the activated pope favor
-     */
-    public void activatePopeFavor(int position, String path){  //TODO MANCANO LE IMMAGINI RELATIVE AI POPE FAVOR ATTIVI
-        if(position > 0 && position <= 3){
-            Image favor = new Image(getClass().getResourceAsStream(path));
-            popeFavors.get(position - 1).setImage(favor);
-        }
     }
 
     /**
      * sets the strongbox coins to the specified number
      * @param number represents the number of coins
      */
-    public void setCoinsNumber(Integer number){
+    private void setCoinsNumber(Integer number){
         coinsNumber.setText(number.toString());
     }
 
@@ -247,7 +322,7 @@ public class GameBoardController extends ViewController{
      * sets the strongbox shields to the specified number
      * @param number represents the number of shields
      */
-    public void setShieldsNumber(Integer number){
+    private void setShieldsNumber(Integer number){
         shieldsNumber.setText(number.toString());
     }
 
@@ -255,7 +330,7 @@ public class GameBoardController extends ViewController{
      * sets the strongbox stones to the specified number
      * @param number represents the number of stones
      */
-    public void setStonesNumber(Integer number){
+    private void setStonesNumber(Integer number){
         stonesNumber.setText(number.toString());
     }
 
@@ -263,7 +338,7 @@ public class GameBoardController extends ViewController{
      * sets the strongbox servants to the specified number
      * @param number represents the number of servants
      */
-    public void setServantsNumber(Integer number){
+    private void setServantsNumber(Integer number){
         servantsNumber.setText(number.toString());
     }
 
@@ -303,11 +378,17 @@ public class GameBoardController extends ViewController{
     private void setWarehouse(List<ImageView> warehouse){
 
         warehouse.add(topResource);
+        topResource.setVisible(false);
         warehouse.add(firstMidResource);
+        firstMidResource.setVisible(false);
         warehouse.add(secondMidResource);
+        secondMidResource.setVisible(false);
         warehouse.add(firstBottomResource);
+        firstBottomResource.setVisible(false);
         warehouse.add(secondBottomResource);
+        secondBottomResource.setVisible(false);
         warehouse.add(thirdBottomResource);
+        thirdBottomResource.setVisible(false);
 
     }
 
@@ -318,8 +399,11 @@ public class GameBoardController extends ViewController{
     private void setDevelopmentCards(List<ImageView> developmentCards){
 
         developmentCards.add(firstSlot);
+        firstSlot.setVisible(false);
         developmentCards.add(secondSlot);
+        secondSlot.setVisible(false);
         developmentCards.add(thirdSlot);
+        thirdSlot.setVisible(false);
 
     }
 
@@ -330,9 +414,13 @@ public class GameBoardController extends ViewController{
     private void setLeaderCards(List<ImageView> leaderCards){
 
         leaderCards.add(firstLeaderCard);
+        firstLeaderCard.setVisible(false);
         leaderCards.add(secondLeaderCard);
+        secondLeaderCard.setVisible(false);
         leaderCards.add(thirdLeaderCard);
+        thirdLeaderCard.setVisible(false);
         leaderCards.add(fourthLeaderCard);
+        fourthLeaderCard.setVisible(false);
 
     }
 

@@ -18,6 +18,7 @@ public class GUIHandler {
 
     private static GUIHandler instance;
     private GUI gui;
+    private ReducedGameBoard model;
 
     public static GUIHandler instance(){
         if (instance == null)
@@ -32,6 +33,15 @@ public class GUIHandler {
     public GUI getGUIinstance(){
         return gui;
     }
+
+    public ReducedGameBoard getModel() {
+        return model;
+    }
+
+    public void setModel(ReducedGameBoard model) {
+        this.model = model;
+    }
+
 
     /**
      * this method is used to change the look of a given scene

@@ -54,13 +54,17 @@ public class LoginController extends ViewController{
 
     }
 
+    public Scene getScene(){
+        return pane.getScene();
+    }
+
     private void onSinglePlayerButtonClicked(Event event){
         if(checkUsername()) {
             try {
+                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 1);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
             } catch (MalformedMessageException e) {
                 e.printStackTrace();
             }

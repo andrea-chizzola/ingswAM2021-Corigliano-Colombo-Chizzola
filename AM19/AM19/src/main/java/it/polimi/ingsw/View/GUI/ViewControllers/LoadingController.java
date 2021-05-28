@@ -21,7 +21,14 @@ public class LoadingController extends ViewController{
 
     @FXML
     public void initialize(){
+
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onExitButtonClicked);
+        getGUIReference().setLoadingController(this);
+
+    }
+
+    public Scene getScene(){
+        return pane.getScene();
     }
 
     private void onExitButtonClicked(Event event) {
