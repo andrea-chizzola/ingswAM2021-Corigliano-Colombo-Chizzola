@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" >
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="500.0" fitWidth="870.0" pickOnBounds="true">
          <image>
@@ -119,5 +119,6 @@
             <Image url="@../Images/punchboard/croce.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="actionToken" fitHeight="59.0" fitWidth="66.0" layoutX="242.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </Pane>

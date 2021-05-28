@@ -8,6 +8,8 @@ import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.ViewControllers.*;
+import it.polimi.ingsw.View.GUI.ViewControllers.EndGameController;
+import it.polimi.ingsw.View.GUI.ViewControllers.LoginController;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 import it.polimi.ingsw.View.SubjectView;
 import it.polimi.ingsw.View.View;
@@ -52,6 +54,7 @@ public class GUI extends Application implements View, SubjectView {
         controller.attachGUIReference(handler.getGUIinstance());
 
         stage.show();
+
     }
 
     @Override
@@ -154,11 +157,18 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void showTopToken(Optional<String> action) {
-
+        Platform.runLater(()-> gameBoardController.manageTopToken(action));
     }
 
     @Override
     public void showEndGame(Map<String, Integer> players) {
+
+        EndGameController endGameController = new EndGameController();
+
+        Platform.runLater(() -> {
+            GUIHandler.newWindow(endGameController,"/FXML/EndGame.fxml");
+            endGameController.showEndGame(players);
+        });
 
     }
 

@@ -757,7 +757,7 @@ public class CLI implements View, SubjectView {
         }while(!isCardOK(selection));
         int position = Integer.parseInt(selection[0]), slot = Integer.parseInt(selection[1]);
         String id = model.getDecks().get(position-1);
-        System.out.println("Debug");
+        //System.out.println("Debug");
         DevelopmentCard card = model.getConfiguration().getDevelopmentCard(id);
 
 

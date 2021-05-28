@@ -21,6 +21,7 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class GameBoardController extends ViewController{
 
@@ -79,6 +80,8 @@ public class GameBoardController extends ViewController{
     private ImageView thirdBottomResource;
     @FXML
     private ImageView blackCross;
+    @FXML
+    private ImageView actionToken;
     @FXML
     private Button menuButton;
     @FXML
@@ -233,6 +236,18 @@ public class GameBoardController extends ViewController{
             }
         }
     }
+
+
+    public void manageTopToken(Optional<String> action){
+        if(action.isEmpty())
+            return;
+
+        String image = model.getConfiguration().getActionTokenCard(action.get()).getImage();
+        Image token = new Image("/Images/punchboard/" + image);
+        actionToken.setImage(token);
+        actionToken.setVisible(true);
+    }
+
 
     /**
      * stores the selected resources inside the strongbox

@@ -38,6 +38,7 @@ public class GUIHandler {
         this.model = model;
     }
 
+
     /**
      * this method is used to change the look of a given scene
      *
