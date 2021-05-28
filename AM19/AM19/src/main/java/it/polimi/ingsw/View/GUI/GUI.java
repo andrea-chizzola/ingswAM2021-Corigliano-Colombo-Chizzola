@@ -1,12 +1,13 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.InteractionObserver;
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.GUI.Gui;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.View.GUI.ViewControllers.LoginController;
+import it.polimi.ingsw.View.GUI.ViewControllers.*;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 import it.polimi.ingsw.View.SubjectView;
 import it.polimi.ingsw.View.View;
@@ -19,30 +20,70 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class GUI extends Application implements View, SubjectView {
 
     //TODO QUI VA LA LISTA DEI CONTROLLER USATI/CHE SERVE RICHIAMARE
+
+    DecksController decksController;
 
     /**
      * this attribute represents an observer of the interactions of a player
      */
     InteractionObserver interactionObserver;
 
+    ReducedGameBoard model;
+
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/login.fxml"));
 
+        GUIHandler handler = GUIHandler.instance();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 575, 534);
         stage.setScene(scene);
-        LoginController controller = fxmlLoader.getController();
-        GUIHandler handler = GUIHandler.instance();
+        ViewController controller = fxmlLoader.getController();
         controller.attachGUIReference(handler.getGUIinstance());
 
         stage.show();
+
+        /*try {
+            LinkedList<String> test = new LinkedList<>();
+            test.add("TAKE_RESOURCES");
+            test.add("MANAGE_LEADER");
+            TurnSelectionController controller = new TurnSelectionController();
+            GUIHandler handler = GUIHandler.instance();
+            controller.attachGUIReference(handler.getGUIinstance());
+            controller.setAvailableActions(test);
+
+            FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/TurnSelection.fxml"));
+            fxmlLoader.setController(controller);
+            Scene scene = new Scene(fxmlLoader.load(), 575, 534);
+            stage.setScene(scene);
+            controller.attachGUIReference(handler.getGUIinstance());
+
+            stage.show();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        try {
+
+            MarketboardController controller = new MarketboardController();
+            GUIHandler handler = GUIHandler.instance();
+            controller.attachGUIReference(handler.getGUIinstance());
+
+            FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/marketboard.fxml"));
+            fxmlLoader.setController(controller);
+            Scene scene = new Scene(fxmlLoader.load(), 575, 534);
+            stage.setScene(scene);
+            controller.attachGUIReference(handler.getGUIinstance());
+
+            stage.show();
+        }catch(Exception e){
+            e.printStackTrace();
+        }*/
     }
 
     @Override
@@ -73,6 +114,13 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void showAvailableTurns(List<String> turns, String player) {
 
+        GUIHandler handler = GUIHandler.instance();
+        TurnSelectionController controller = new TurnSelectionController();
+        controller.attachGUIReference(handler.getGUIinstance());
+        controller.setAvailableActions(turns);
+
+        Platform.runLater(() ->
+                GUIHandler.newWindow(controller,"/FXML/TurnSelection.fxml"));
     }
 
     @Override
@@ -87,7 +135,14 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void showDecksUpdate(Map<Integer, String> decks) {
-
+        Map<Integer, String> topCards = new HashMap<>();
+        decksController = new DecksController();
+        topCards.put(1, "/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png");
+        Platform.runLater(() ->
+        {
+            GUIHandler.newWindow(decksController, "/FXML/decks.fxml");
+            decksController.showDecksUpdate(topCards);
+        });
     }
 
     @Override
@@ -188,4 +243,11 @@ public class GUI extends Application implements View, SubjectView {
         interactionObserver.updatePersonalNickname(nickname);
     }
 
+    public DecksController getDecksController() {
+        return decksController;
+    }
+
+    public void setDecksController(DecksController decksController) {
+        this.decksController = decksController;
+    }
 }

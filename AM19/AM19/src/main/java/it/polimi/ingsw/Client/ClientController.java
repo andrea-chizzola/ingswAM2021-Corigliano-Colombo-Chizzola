@@ -492,7 +492,8 @@ public class ClientController implements ClientConnectionListener, InteractionOb
      */
     public void updateInteraction(String message){
         if(!loggedIn){
-            messageSender.firstMessage(message);
+            //messageSender.firstMessage(message);
+            view.showDecksUpdate(new HashMap<>());
         }
         else{
             messageSender.sendMessage(message);

@@ -2,18 +2,23 @@ package it.polimi.ingsw.View.GUI.ViewControllers;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.View.GUI.GUI;
+import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.PlayerInteractions.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Popup;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class TurnSelectionController extends ViewController{
+
+
+    private Map<String, Button> turns;
+    private List<String> availableTurns = new LinkedList<>();
 
     @FXML
     private GridPane mainPane;
@@ -36,26 +41,22 @@ public class TurnSelectionController extends ViewController{
     @FXML
     private Button ExitButton;
 
-    private Map<String, Button> turns;
-    private List<String> availableTurns;
-
-    public TurnSelectionController(){
-        turns = Map.of("SWAP", SwapButton, "TAKE_RESOURCES", TakeResourcesButton,
-                "MANAGE_LEADER", ManageLeaderButton, "BUY_CARD", BuyCardButton, "DO_PRODUCTION", DoProduction,
-                "EXIT", ExitButton);
-        availableTurns = new LinkedList<>();
-    }
+    private MarketboardController controller;
 
     @FXML
     public void initialize() {
 
+        turns = Map.of("SWAP", SwapButton, "TAKE_RESOURCES", TakeResourcesButton,
+                "MANAGE_LEADER", ManageLeaderButton, "BUY_CARD", BuyCardButton, "DO_PRODUCTION", DoProduction,
+                "EXIT", ExitButton);
         disableButtons();
         for(String s: availableTurns){
             Button b = turns.get(s);
             b.setDisable(false);
         }
-        //ExitButton.setDisable(true);
-        //SwapButton.setVisible(false);
+
+        controller = new MarketboardController();
+        GUIHandler.createPopup(controller, "/FXML/marketboard.fxml");
         bindActions();
     }
 
@@ -63,8 +64,9 @@ public class TurnSelectionController extends ViewController{
     private void bindActions(){
 
         GUI gui = getGUIReference();
-        TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                gui.notifyInteraction(new TakeResourcesInteraction()));
+        /*TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                gui.notifyInteraction(new TakeResourcesInteraction()));*/
+        TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> controller.showWindow());
 
         ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
                 gui.notifyInteraction(new ManageLeaderInteraction()));

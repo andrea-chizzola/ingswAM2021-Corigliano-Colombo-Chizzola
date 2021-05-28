@@ -1,11 +1,16 @@
 package it.polimi.ingsw.View.GUI;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.View.GUI.ViewControllers.ViewController;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -84,7 +89,7 @@ public class GUIHandler {
             stage.setScene(new Scene(root, 500, 500));
             stage.show();
 
-            // Hide this current window (if this is what you want)
+            // Hide this current window
             //((Node)(event.getSource())).getScene().getWindow().hide();
         }
         catch (IOException e) {
@@ -104,8 +109,25 @@ public class GUIHandler {
             stage.setTitle("My New Stage Title");
             stage.setScene(new Scene(root, 500, 500));
             stage.show();
-            // Hide this current window (if this is what you want)
+            // Hide this current window
             //((Node)(event.getSource())).getScene().getWindow().hide();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fxmlLoader.getController();
+    }
+
+    public static <T> T createPopup(ViewController controller, String fxmlPath){
+        Parent root;
+        FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource(fxmlPath));
+        fxmlLoader.setController(controller);
+        try {
+            root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("My New Stage Title");
+            stage.setScene(new Scene(root, 500, 500));
+            stage.setOnCloseRequest(event -> stage.hide());
         }
         catch (IOException e) {
             e.printStackTrace();

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="mainPane" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="card1" fitHeight="209.0" fitWidth="139.0" layoutX="211.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card2" fitHeight="209.0" fitWidth="139.0" layoutX="385.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card3" fitHeight="209.0" fitWidth="139.0" layoutX="555.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card4" fitHeight="209.0" fitWidth="139.0" layoutX="731.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card5" fitHeight="209.0" fitWidth="139.0" layoutX="213.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card6" fitHeight="209.0" fitWidth="139.0" layoutX="387.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card7" fitHeight="209.0" fitWidth="139.0" layoutX="557.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card8" fitHeight="209.0" fitWidth="139.0" layoutX="733.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card9" fitHeight="209.0" fitWidth="139.0" layoutX="213.0" layoutY="471.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card10" fitHeight="209.0" fitWidth="139.0" layoutX="387.0" layoutY="470.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card11" fitHeight="209.0" fitWidth="139.0" layoutX="557.0" layoutY="470.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card12" fitHeight="209.0" fitWidth="139.0" layoutX="733.0" layoutY="470.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>
