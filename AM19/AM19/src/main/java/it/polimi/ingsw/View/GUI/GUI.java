@@ -34,6 +34,8 @@ public class GUI extends Application implements View, SubjectView {
 
     private TurnSelectionController turnSelectionController;
 
+    private LoadingController loadingController;
+
     /**
      * this attribute represents an observer of the interactions of a player
      */
@@ -62,12 +64,16 @@ public class GUI extends Application implements View, SubjectView {
         launch();
     }
 
+    public void setLoadingController(LoadingController loadingController) {
+        this.loadingController = loadingController;
+    }
+
     @Override
     public void initialize() {
 
-        GameBoardController gameBoardController = new GameBoardController();
+        gameBoardController = new GameBoardController();
         controllers.add(gameBoardController);
-        Platform.runLater(() -> GUIHandler.loadRoot(gameBoardController.getScene(), gameBoardController, "/FXML/gameboard.fxml"));
+        Platform.runLater(() -> GUIHandler.newWindow(gameBoardController, "/FXML/gameboard.fxml"));
 
     }
 
@@ -104,23 +110,30 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void showBoxes(List<ResQuantity> warehouse, List<ResQuantity> strongBox, String nickName) {
 
+        if(!nickName.equals(GUIHandler.instance().getModel().getPersonalNickname())) return;
+
+        Platform.runLater(() -> {
+            gameBoardController.setResourceWarehouse(warehouse);
+            gameBoardController.setResourceStrongbox(strongBox);
+        });
+
     }
 
     @Override
     public void showSlotsUpdate(Map<Integer, String> slots, String nickName) {
+
+        if(!nickName.equals(GUIHandler.instance().getModel().getPersonalNickname())) return;
+
+        Platform.runLater(() -> gameBoardController.manageDevelopmentCards(slots));
 
     }
 
     @Override
     public void showLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status, String nickName) {
 
-        //if(!nickName.equals(GUIHandler.instance().getModel().getPersonalNickname())) return;
+        if(!nickName.equals(GUIHandler.instance().getModel().getPersonalNickname())) return;
 
-        GameBoardController gameBoardController = new GameBoardController();
-        Platform.runLater(() -> {
-            GUIHandler.newWindow(gameBoardController, "/FXML/gameboard.fxml");
-            gameBoardController.manageLeaderCards(cards, status);
-        });
+        Platform.runLater(() -> gameBoardController.manageLeaderCards(cards, status));
 
     }
 
@@ -128,6 +141,15 @@ public class GUI extends Application implements View, SubjectView {
     public void showFaithUpdate(Map<String, Integer> faith, Map<String, List<ItemStatus>> sections, Optional<Integer> faithLorenzo, Optional<List<ItemStatus>> sectionsLorenzo) {
 
         String nickname = GUIHandler.instance().getModel().getPersonalNickname();
+        Platform.runLater(() -> {
+            gameBoardController.changePosition(faith.get(nickname));
+            gameBoardController.manageSections(sections.get(nickname));
+            if(faithLorenzo.isPresent() && sectionsLorenzo.isPresent()){
+                gameBoardController.visualizeBlackCross();
+                gameBoardController.changeBlackPosition(faithLorenzo.get());
+            }
+        });
+
     }
 
     @Override
