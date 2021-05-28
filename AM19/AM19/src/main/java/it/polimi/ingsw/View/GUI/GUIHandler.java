@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View.GUI;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.View.GUI.ViewControllers.ViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,7 @@ public class GUIHandler {
 
     private static GUIHandler instance;
     private GUI gui;
+    private ReducedGameBoard model;
 
     public static GUIHandler instance(){
         if (instance == null)
@@ -26,6 +28,14 @@ public class GUIHandler {
 
     public GUI getGUIinstance(){
         return gui;
+    }
+
+    public ReducedGameBoard getModel() {
+        return model;
+    }
+
+    public void setModel(ReducedGameBoard model) {
+        this.model = model;
     }
 
     /**

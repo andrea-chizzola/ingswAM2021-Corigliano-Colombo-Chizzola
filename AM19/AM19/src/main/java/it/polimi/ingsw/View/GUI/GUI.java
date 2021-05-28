@@ -1,12 +1,13 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.InteractionObserver;
+import it.polimi.ingsw.Client.MessageSender;
 import it.polimi.ingsw.GUI.Gui;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.View.GUI.ViewControllers.LoginController;
+import it.polimi.ingsw.View.GUI.ViewControllers.*;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 import it.polimi.ingsw.View.SubjectView;
 import it.polimi.ingsw.View.View;
@@ -19,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +28,8 @@ import java.util.Optional;
 public class GUI extends Application implements View, SubjectView {
 
     //TODO QUI VA LA LISTA DEI CONTROLLER USATI/CHE SERVE RICHIAMARE
+    private List<ViewController> controllers = new ArrayList<>();
+
 
     /**
      * this attribute represents an observer of the interactions of a player
@@ -57,6 +61,10 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void initialize() {
+
+        GameBoardController gameBoardController = new GameBoardController();
+        controllers.add(gameBoardController);
+        Platform.runLater(() -> GUIHandler.loadRoot(gameBoardController.getScene(), gameBoardController, "/FXML/gameboard"));
 
     }
 
@@ -103,6 +111,11 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void showLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status, String nickName) {
 
+        if(!nickName.equals(GUIHandler.instance().getModel().getPersonalNickname())) return;
+
+        GameBoardController gameBoardController = new GameBoardController();
+        Platform.runLater(() -> gameBoardController.manageLeaderCards(cards, status));
+
     }
 
     @Override
@@ -122,6 +135,9 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void showDisconnection(String nickname) {
+
+        DisconnectionController disconnectionController = new DisconnectionController(nickname);
+        Platform.runLater(() -> GUIHandler.newWindow(disconnectionController, "/FXML/disconnection.fxml"));
 
     }
 
@@ -186,6 +202,14 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void notifyNickname(String nickname) {
         interactionObserver.updatePersonalNickname(nickname);
+    }
+
+
+    public void showLoadingScreen(){
+
+        LoadingController loadingController = new LoadingController();
+        //Platform.runLater(() -> loadRoot(loadingController.getScene(), "/FXML/loading.fxml"));
+
     }
 
 }

@@ -1,9 +1,15 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedConfiguration;
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
+import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.MessageFactory;
+import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.View.GUI.GUIHandler;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,6 +20,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GameBoardController extends ViewController{
 
@@ -103,6 +110,8 @@ public class GameBoardController extends ViewController{
 
     private List<ImageView> popeFavors;
 
+    private ReducedGameBoard model = GUIHandler.instance().getModel();
+
 
     @FXML
     private void initialize(){
@@ -154,6 +163,10 @@ public class GameBoardController extends ViewController{
 
     }
 
+    public Scene getScene() {
+        return pane.getScene();
+    }
+
     /**
      * places the resource in the selected warehouse position
      * @param position represents the warehouse position
@@ -200,6 +213,24 @@ public class GameBoardController extends ViewController{
         }
     }
 
+    public void manageLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status){
+        for(ImageView image : leaderCards){
+            image.setVisible(false);
+        }
+        for(Integer slot : cards.keySet()){
+            String path = model.getConfiguration().getLeaderCard(cards.get(slot)).getPath();
+            if(status.get(slot) == ItemStatus.ACTIVE){
+                Image card = new Image(getClass().getResourceAsStream(path));
+                leaderCards.get(slot - 1).setImage(card);
+                leaderCards.get(slot - 1).setVisible(true);
+            }else{
+                Image card = new Image(getClass().getResourceAsStream(path));
+                leaderCards.get(slot - 1).setImage(card);
+                leaderCards.get(slot - 1).setOpacity(0.5);
+            }
+        }
+    }
+
     /**
      * places the leader card in the selected position
      * @param position represents the leader card position
@@ -210,6 +241,17 @@ public class GameBoardController extends ViewController{
             Image res = new Image(getClass().getResourceAsStream(path));
             leaderCards.get(position - 1).setImage(res);
             leaderCards.get(position - 1).setVisible(true);
+            leaderCards.get(position - 1).setOpacity(0.5);
+        }
+    }
+
+    /**
+     * activates the leader card associated to the selected position
+     * @param position represents the leader card position
+     */
+    public void activateLeaderCard(int position){
+        if(position > 0 && position <= 4) {
+            leaderCards.get(position - 1).setOpacity(1);
         }
     }
 
@@ -219,7 +261,8 @@ public class GameBoardController extends ViewController{
      */
     public void removeLeaderCard(int position){
         if(position > 0 && position <= 4) {
-            leaderCards.get(position - 1).setVisible(false);
+            //leaderCards.get(position - 1).setVisible(false);
+            leaderCards.remove(position - 1);
         }
     }
 
@@ -232,6 +275,23 @@ public class GameBoardController extends ViewController{
         if(position > 0 && position <= 3){
             Image favor = new Image(getClass().getResourceAsStream(path));
             popeFavors.get(position - 1).setImage(favor);
+        }
+    }
+
+    public void setResourceNumber(ResQuantity resQuantity){
+        switch (resQuantity.getResource().getColor()){
+            case YELLOW:
+                setCoinsNumber(resQuantity.getQuantity());
+                break;
+            case BLUE:
+                setShieldsNumber(resQuantity.getQuantity());
+                break;
+            case GRAY:
+                setStonesNumber(resQuantity.getQuantity());
+                break;
+            case PURPLE:
+                setServantsNumber(resQuantity.getQuantity());
+                break;
         }
     }
 
@@ -330,9 +390,13 @@ public class GameBoardController extends ViewController{
     private void setLeaderCards(List<ImageView> leaderCards){
 
         leaderCards.add(firstLeaderCard);
+        firstLeaderCard.setVisible(false);
         leaderCards.add(secondLeaderCard);
+        secondLeaderCard.setVisible(false);
         leaderCards.add(thirdLeaderCard);
+        thirdLeaderCard.setVisible(false);
         leaderCards.add(fourthLeaderCard);
+        fourthLeaderCard.setVisible(false);
 
     }
 
