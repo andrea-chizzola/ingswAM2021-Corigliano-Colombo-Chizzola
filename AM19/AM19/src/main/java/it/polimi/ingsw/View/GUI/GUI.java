@@ -233,12 +233,4 @@ public class GUI extends Application implements View, SubjectView {
         interactionObserver.updatePersonalNickname(nickname);
     }
 
-
-    public void showLoadingScreen(){
-
-        LoadingController loadingController = new LoadingController();
-        //Platform.runLater(() -> loadRoot(loadingController.getScene(), "/FXML/loading.fxml"));
-
-    }
-
 }

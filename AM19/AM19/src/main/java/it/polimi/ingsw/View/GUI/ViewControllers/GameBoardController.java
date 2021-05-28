@@ -144,7 +144,7 @@ public class GameBoardController extends ViewController{
 
     private void onQuitClicked(Event event) {
         try {
-            String message = MessageFactory.buildDisconnection("Disconnection request.", "nickname"); //TODO AGGIUNGERE RIFERIMENTO A NICKNAME DEL GIOCATORE
+            String message = MessageFactory.buildDisconnection("Disconnection request.", model.getPersonalNickname());
             getGUIReference().notifyInteraction(message);
         } catch (MalformedMessageException e){
             e.printStackTrace();
