@@ -60,7 +60,7 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 1);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                GUIHandler.loadRoot(pane.getScene(), "/FXML/gameboard.fxml");
             } catch (MalformedMessageException e) {
                 e.printStackTrace();
             }

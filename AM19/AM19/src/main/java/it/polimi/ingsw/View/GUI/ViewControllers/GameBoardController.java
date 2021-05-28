@@ -220,38 +220,15 @@ public class GameBoardController extends ViewController{
         for(Integer slot : cards.keySet()){
             String path = model.getConfiguration().getLeaderCard(cards.get(slot)).getPath();
             if(status.get(slot) == ItemStatus.ACTIVE){
-                Image card = new Image(getClass().getResourceAsStream(path));
+                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
                 leaderCards.get(slot - 1).setImage(card);
                 leaderCards.get(slot - 1).setVisible(true);
             }else{
-                Image card = new Image(getClass().getResourceAsStream(path));
+                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
                 leaderCards.get(slot - 1).setImage(card);
+                leaderCards.get(slot - 1).setVisible(true);
                 leaderCards.get(slot - 1).setOpacity(0.5);
             }
-        }
-    }
-
-    /**
-     * places the leader card in the selected position
-     * @param position represents the leader card position
-     * @param path represents the path to the image related to the leader card
-     */
-    public void setLeaderCard(int position, String path){
-        if(position > 0 && position <= 4) {
-            Image res = new Image(getClass().getResourceAsStream(path));
-            leaderCards.get(position - 1).setImage(res);
-            leaderCards.get(position - 1).setVisible(true);
-            leaderCards.get(position - 1).setOpacity(0.5);
-        }
-    }
-
-    /**
-     * activates the leader card associated to the selected position
-     * @param position represents the leader card position
-     */
-    public void activateLeaderCard(int position){
-        if(position > 0 && position <= 4) {
-            leaderCards.get(position - 1).setOpacity(1);
         }
     }
 

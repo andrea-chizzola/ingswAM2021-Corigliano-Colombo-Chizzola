@@ -30,6 +30,9 @@ public class GUI extends Application implements View, SubjectView {
     //TODO QUI VA LA LISTA DEI CONTROLLER USATI/CHE SERVE RICHIAMARE
     private List<ViewController> controllers = new ArrayList<>();
 
+    private GameBoardController gameBoardController;
+
+    private TurnSelectionController turnSelectionController;
 
     /**
      * this attribute represents an observer of the interactions of a player
@@ -64,7 +67,7 @@ public class GUI extends Application implements View, SubjectView {
 
         GameBoardController gameBoardController = new GameBoardController();
         controllers.add(gameBoardController);
-        Platform.runLater(() -> GUIHandler.loadRoot(gameBoardController.getScene(), gameBoardController, "/FXML/gameboard"));
+        Platform.runLater(() -> GUIHandler.loadRoot(gameBoardController.getScene(), gameBoardController, "/FXML/gameboard.fxml"));
 
     }
 
@@ -111,16 +114,20 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void showLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status, String nickName) {
 
-        if(!nickName.equals(GUIHandler.instance().getModel().getPersonalNickname())) return;
+        //if(!nickName.equals(GUIHandler.instance().getModel().getPersonalNickname())) return;
 
         GameBoardController gameBoardController = new GameBoardController();
-        Platform.runLater(() -> gameBoardController.manageLeaderCards(cards, status));
+        Platform.runLater(() -> {
+            GUIHandler.newWindow(gameBoardController, "/FXML/gameboard.fxml");
+            gameBoardController.manageLeaderCards(cards, status);
+        });
 
     }
 
     @Override
     public void showFaithUpdate(Map<String, Integer> faith, Map<String, List<ItemStatus>> sections, Optional<Integer> faithLorenzo, Optional<List<ItemStatus>> sectionsLorenzo) {
 
+        String nickname = GUIHandler.instance().getModel().getPersonalNickname();
     }
 
     @Override
