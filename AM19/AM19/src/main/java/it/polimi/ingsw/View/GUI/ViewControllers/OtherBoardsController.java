@@ -78,8 +78,6 @@ public class OtherBoardsController extends ViewController{
 
     private String nickname;
 
-    private ReducedGameBoard model = GUIHandler.instance().getModel();
-
     public OtherBoardsController(String nickname) {
         this.nickname = nickname;
     }
@@ -113,7 +111,7 @@ public class OtherBoardsController extends ViewController{
      */
     public void fillBoard(){
 
-        ReducedBoard board = model.getBoard(nickname);
+        ReducedBoard board = getModelReference().getBoard(nickname);
 
         changePosition(board.getFaithPoints());
         manageSections(board.getSections());
@@ -143,7 +141,7 @@ public class OtherBoardsController extends ViewController{
     private void manageLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status) {
 
         for (Integer slot : cards.keySet()) {
-            String path = model.getConfiguration().getLeaderCard(cards.get(slot)).getPath();
+            String path = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
             if (status.get(slot) == ItemStatus.ACTIVE) {
                 Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
                 leaderCards.get(slot - 1).setImage(card);
@@ -162,7 +160,7 @@ public class OtherBoardsController extends ViewController{
     private void manageDevelopmentCards(Map<Integer, String> slots){
 
         for(Integer slot : slots.keySet()){
-            String path = model.getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
+            String path = getModelReference().getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
             Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
             developmentCards.get(slot - 1).setImage(card);
         }

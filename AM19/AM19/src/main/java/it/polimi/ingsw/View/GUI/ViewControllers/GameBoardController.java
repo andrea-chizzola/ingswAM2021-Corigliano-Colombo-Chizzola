@@ -96,10 +96,6 @@ public class GameBoardController extends ViewController{
 
     private MarketboardController marketboardController;
 
-    public GameBoardController(){
-    }
-
-
     @FXML
     private void initialize(){
 
@@ -145,7 +141,7 @@ public class GameBoardController extends ViewController{
 
     private void onQuitClicked(Event event) {
         try {
-            String message = MessageFactory.buildDisconnection("Disconnection request.", model.getPersonalNickname());
+            String message = MessageFactory.buildDisconnection("Disconnection request.", getModelReference().getPersonalNickname());
             getGUIReference().notifyInteraction(message);
         } catch (MalformedMessageException e){
             e.printStackTrace();
@@ -154,11 +150,14 @@ public class GameBoardController extends ViewController{
 
     private void onOtherPlayersClicked(Event event) {
 
-        String myNickname = model.getPersonalNickname();
+        String myNickname = getModelReference().getPersonalNickname();
 
-        for(String nickname : model.getNicknames()){
+        for(String nickname : getModelReference().getNicknames()){
             if (!myNickname.equals(nickname)) {
-                GUIHandler.newWindow(new OtherBoardsController(nickname), "/FXML/otherBoards.fxml");
+                OtherBoardsController controller = new OtherBoardsController(nickname);
+                controller.attachGUIReference(getGUIReference());
+                controller.attachModelReference(getModelReference());
+                GUIHandler.newWindow(controller, "/FXML/otherBoards.fxml");
             }
         }
 
