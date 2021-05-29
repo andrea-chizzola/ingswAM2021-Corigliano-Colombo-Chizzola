@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="anchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuButton fx:id="resource1" layoutX="120.0" layoutY="144.0" mnemonicParsing="false" text="MenuButton">
+        <items>
+          <MenuItem fx:id="coin1" mnemonicParsing="false" text="COIN" />
+          <MenuItem fx:id="shield1" mnemonicParsing="false" text="SHIELD" />
+            <MenuItem fx:id="servant1" mnemonicParsing="false" text="SERVANT" />
+            <MenuItem fx:id="stone1" mnemonicParsing="false" text="STONE" />
+        </items>
+      </MenuButton>
+      <MenuButton fx:id="resource2" layoutX="120.0" layoutY="193.0" mnemonicParsing="false" text="MenuButton">
+         <items>
+            <MenuItem fx:id="coin2" mnemonicParsing="false" text="COIN" />
+            <MenuItem fx:id="shield2" mnemonicParsing="false" text="SHIELD" />
+            <MenuItem fx:id="servant2" mnemonicParsing="false" text="SERVANT" />
+            <MenuItem fx:id="stone2" mnemonicParsing="false" text="STONE" />
+         </items>
+      </MenuButton>
+      <MenuButton fx:id="resource3" layoutX="119.0" layoutY="244.0" mnemonicParsing="false" text="MenuButton">
+         <items>
+            <MenuItem fx:id="coin3" mnemonicParsing="false" text="COIN" />
+            <MenuItem fx:id="shield3" mnemonicParsing="false" text="SHIELD" />
+            <MenuItem fx:id="servant3" mnemonicParsing="false" text="SERVANT" />
+            <MenuItem fx:id="stone3" mnemonicParsing="false" text="STONE" />
+         </items>
+      </MenuButton>
+      <MenuButton fx:id="resource4" layoutX="118.0" layoutY="295.0" mnemonicParsing="false" text="MenuButton">
+         <items>
+            <MenuItem fx:id="coin4" mnemonicParsing="false" text="COIN" />
+            <MenuItem fx:id="shield4" mnemonicParsing="false" text="SHIELD" />
+            <MenuItem fx:id="servant4" mnemonicParsing="false" text="SERVANT" />
+            <MenuItem fx:id="stone4" mnemonicParsing="false" text="STONE" />
+         </items>
+      </MenuButton>
+      <Label layoutX="104.0" layoutY="89.0" text="Select resource">
+         <font>
+            <Font name="System Italic" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="296.0" layoutY="89.0" text="Select shelf">
+         <font>
+            <Font name="System Italic" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="50.0" layoutY="34.0" text="Let's get some starting resources">
+         <font>
+            <Font name="System Bold Italic" size="21.0" />
+         </font>
+      </Label>
+      <TextField fx:id="shelf1" layoutX="311.0" layoutY="143.0" prefHeight="26.0" prefWidth="53.0" />
+      <TextField fx:id="shelf2" layoutX="311.0" layoutY="192.0" prefHeight="26.0" prefWidth="53.0" />
+      <TextField fx:id="shelf3" layoutX="311.0" layoutY="243.0" prefHeight="26.0" prefWidth="53.0" />
+      <TextField fx:id="shelf4" layoutX="311.0" layoutY="294.0" prefHeight="26.0" prefWidth="53.0" />
+      <Button fx:id="select1" layoutX="389.0" layoutY="144.0" mnemonicParsing="false" text="SELECT" />
+      <Button fx:id="select2" layoutX="389.0" layoutY="193.0" mnemonicParsing="false" text="SELECT" />
+      <Button fx:id="select3" layoutX="389.0" layoutY="243.0" mnemonicParsing="false" text="SELECT" />
+      <Button fx:id="select4" layoutX="389.0" layoutY="295.0" mnemonicParsing="false" text="SELECT" />
+   </children>
+</AnchorPane>

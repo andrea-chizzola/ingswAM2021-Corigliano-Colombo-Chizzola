@@ -7,6 +7,8 @@ import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.GUIHandler;
+import it.polimi.ingsw.View.GUI.Messages.Accumulator;
+import javafx.animation.PauseTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -17,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +86,14 @@ public class GameBoardController extends ViewController{
     @FXML
     private ImageView actionToken;
     @FXML
+    private ImageView coins;
+    @FXML
+    private ImageView shields;
+    @FXML
+    private ImageView stones;
+    @FXML
+    private ImageView servants;
+    @FXML
     private Button menuButton;
     @FXML
     private Button marketBoardButton;
@@ -90,6 +101,8 @@ public class GameBoardController extends ViewController{
     private Button otherPlayersButton;
     @FXML
     private Button quitButton;
+    @FXML
+    private Button personalProduction;
     @FXML
     private Circle tile;
     @FXML
@@ -100,6 +113,8 @@ public class GameBoardController extends ViewController{
     private Label stonesNumber;
     @FXML
     private Label servantsNumber;
+    @FXML
+    private Label errorStrongbox;
 
     private List<Coordinates> positions;
 
@@ -115,6 +130,8 @@ public class GameBoardController extends ViewController{
 
     private ReducedGameBoard model = GUIHandler.instance().getModel();
 
+    private Accumulator accumulator;
+
 
     @FXML
     private void initialize(){
@@ -123,6 +140,8 @@ public class GameBoardController extends ViewController{
         marketBoardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMarketBoardClicked);
         otherPlayersButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onOtherPlayersClicked);
         quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onQuitClicked);
+
+        errorStrongbox.setVisible(false);
 
         warehouse = new ArrayList<>();
         setWarehouse(warehouse);
@@ -143,6 +162,12 @@ public class GameBoardController extends ViewController{
         setBlackPositions(blackPositions);
         blackCross.setVisible(false);
 
+        useWarehouse();
+        useStrongbox();
+        useSlots();
+        useLeaders();
+        usePersonalProduction();
+        //resetTurn();
     }
 
     private void onQuitClicked(Event event) {
@@ -288,21 +313,25 @@ public class GameBoardController extends ViewController{
                         Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image);
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
                         break;
                     case BLUE:
                         Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image1);
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
                         break;
                     case GRAY:
                         Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image2);
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
                         break;
                     case PURPLE:
                         Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image3);
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
                         break;
                 }
             }
@@ -391,6 +420,224 @@ public class GameBoardController extends ViewController{
         thirdBottomResource.setVisible(false);
 
     }
+
+    /**
+     * adds the events handlers to the images associated with the warehouse
+     */
+    private void useWarehouse(){
+
+        helpUseWarehouse(topResource,1);
+        helpUseWarehouse(firstMidResource,2);
+        helpUseWarehouse(secondMidResource,2);
+        helpUseWarehouse(firstBottomResource,3);
+        helpUseWarehouse(secondBottomResource,3);
+        helpUseWarehouse(thirdBottomResource,3);
+    }
+
+    private void helpUseWarehouse(ImageView imageView,Integer slot){
+        List<ResQuantity> list = model.getBoard(model.getPersonalNickname()).getWarehouse();
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
+            imageView.setOpacity(0.5);
+            imageView.setDisable(true);
+            imageView.setVisible(true);
+            accumulator.setWarehouse(slot.toString());
+            accumulator.setWarehouse(list.get(slot-1).getResource().getColor().toString());});
+    }
+
+    /**
+     * enable or disable the event handlers of the images associated with the warehouse
+     * @param b if b=true the events handlers are set as active, otherwise they are set as inactive
+     */
+    private void enableWarehouse(Boolean b){
+        topResource.setDisable(!b);
+        firstMidResource.setDisable(!b);
+        secondMidResource.setDisable(!b);
+        firstBottomResource.setDisable(!b);
+        secondBottomResource.setDisable(!b);
+        thirdBottomResource.setDisable(!b);
+    }
+
+
+    /**
+     * adds the events handlers to the images associated with the strongbox
+     */
+    private void useStrongbox(){
+
+        helpUseStrongbox(coins,coinsNumber,"COIN");
+        helpUseStrongbox(shields,shieldsNumber,"SHIELD");
+        helpUseStrongbox(stones,stonesNumber,"STONE");
+        helpUseStrongbox(servants,servantsNumber,"SERVANT");
+
+    }
+
+    private void helpUseStrongbox(ImageView imageView, Label label, String resource){
+        PauseTransition visiblePause = new PauseTransition(Duration.seconds(0.8));
+        visiblePause.setOnFinished(event -> errorStrongbox.setVisible(false));
+
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
+            imageView.setVisible(true);
+            Integer i = Integer.parseInt(label.getText());
+            if(i == 0) {
+                errorStrongbox.setVisible(true);
+                visiblePause.play();
+                return;
+            }
+            i--;
+            label.setText(i.toString());
+            accumulator.setStrongbox(resource);
+            accumulator.setStrongbox("1");});
+
+    }
+
+    /**
+     * enable or disable the event handlers of the images associated with the strongbox
+     * @param b if b=true the events handlers are set as active, otherwise they are set as inactive
+     */
+    private void enableStrongbox(Boolean b){
+        coins.setDisable(!b);
+        shields.setDisable(!b);
+        servants.setDisable(!b);
+        stones.setDisable(!b);
+    }
+
+
+    /**
+     * adds the events handlers to the images associated with the slots
+     */
+    private void useSlots(){
+        helpUseSlots(firstSlot,1);
+        helpUseSlots(secondSlot,2);
+        helpUseSlots(thirdSlot,3);
+    }
+
+    private void helpUseSlots(ImageView imageView, Integer slot){
+
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
+            imageView.setOpacity(0.5);
+            imageView.setDisable(true);
+            imageView.setVisible(true);
+            accumulator.setDevelopmentCards(slot.toString());
+            accumulator.setSlot(slot);});
+    }
+
+    /**
+     * enable or disable the event handlers of the images associated with the slots
+     * @param b if b=true the events handlers are set as active, otherwise they are set as inactive
+     */
+    private void enableSlots(Boolean b){
+        firstSlot.setDisable(!b);
+        secondSlot.setDisable(!b);
+        thirdSlot.setDisable(!b);
+    }
+
+    /**
+     * adds the events handlers to the images associated with the leader cards
+     */
+    private void useLeaders(){
+        helpUseLeaders(firstLeaderCard,1);
+        helpUseLeaders(secondLeaderCard,2);
+        helpUseLeaders(thirdLeaderCard,3);
+        helpUseLeaders(fourthLeaderCard,4);
+    }
+
+    private void helpUseLeaders(ImageView imageView, Integer number){
+
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
+            imageView.setOpacity(0.5);
+            imageView.setDisable(true);
+            imageView.setVisible(true);
+            accumulator.setLeaderCards(number.toString());
+            accumulator.setLeaderCard(number);});
+    }
+
+    /**
+     * enable or disable the event handlers of the images associated with the leader cards
+     * @param b if b=true the events handlers are set as active, otherwise they are set as inactive
+     */
+    private void enableLeaderCards(Boolean b){
+        firstLeaderCard.setDisable(!b);
+        secondLeaderCard.setDisable(!b);
+        thirdLeaderCard.setDisable(!b);
+        fourthLeaderCard.setDisable(!b);
+    }
+
+    /**
+     * adds the events handlers to the button personalProduction
+     */
+    private void usePersonalProduction(){
+        personalProduction.addEventHandler(MouseEvent.MOUSE_RELEASED, action ->{
+            personalProduction.setOpacity(0.5);
+            personalProduction.setDisable(true);
+            personalProduction.setVisible(true);
+            accumulator.setPersonalProduction();});
+    }
+
+    /**
+     * resets all the images view and buttons that was changed during the game
+     */
+    public void resetTurn(){
+        enableWarehouse(false);
+        enableStrongbox(false);
+        enableLeaderCards(false);
+        enableSlots(false);
+        personalProduction.setDisable(true);
+        personalProduction.setVisible(false);
+
+        resetImage(firstSlot);
+        resetImage(secondSlot);
+        resetImage(thirdSlot);
+
+        resetImage(firstLeaderCard);
+        resetImage(secondLeaderCard);
+        resetImage(thirdLeaderCard);
+        resetImage(fourthLeaderCard);
+
+    }
+
+    private void resetImage(ImageView imageView){
+        imageView.setOpacity(1);
+    }
+
+
+    /**
+     * sets the correct buttons and images to play the turn
+     */
+    public void setDoProduction(){
+        enableWarehouse(true);
+        enableStrongbox(true);
+        enableLeaderCards(true);
+        enableSlots(true);
+        personalProduction.setOpacity(1);
+        personalProduction.setDisable(false);
+        personalProduction.setVisible(true);
+
+    }
+
+    /**
+     * sets the correct buttons and images to play the turn
+     */
+    public void setBuyCard(){
+        enableWarehouse(true);
+        enableStrongbox(true);
+        enableSlots(true);
+    }
+
+    /**
+     * sets the correct buttons and images to play the turn
+     */
+    public void setManageLeader(){
+        enableLeaderCards(true);
+    }
+    /*
+    public void setSwap(){
+        enableWarehouse(true);
+    }*/
+
+
 
     /**
      * sets the ImageView associated to each development card

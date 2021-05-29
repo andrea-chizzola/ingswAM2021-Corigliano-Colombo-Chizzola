@@ -18,7 +18,6 @@ public class Accumulator {
     private final String splitter = ":";
 
     //init
-    private StringBuilder initLeaders = new StringBuilder();
     private StringBuilder initResources = new StringBuilder();
 
     //market
@@ -49,10 +48,6 @@ public class Accumulator {
 
 
 
-    public void setInitLeaders(String cardNumber){
-        initLeaders.append(cardNumber).append(splitter);
-    }
-
     public void setInitResources(String resource){
         initResources.append(resource).append(splitter);
     }
@@ -79,12 +74,24 @@ public class Accumulator {
         this.target = target;
     }
 
+    public void setPosition(int position){
+        this.position = position;
+    }
+
+    public void setSlot(int slot){
+        this.slot = slot;
+    }
+
     public void setWarehouse(String warehouse){
         this.warehouse.append(warehouse).append(splitter);
     }
 
     public void setStrongbox(String strongbox){
         this.strongbox.append(strongbox).append(splitter);
+    }
+
+    public void setPersonalProduction(){
+        personalProduction = true;
     }
 
     public void setDevelopmentCards(String card){
@@ -123,7 +130,7 @@ public class Accumulator {
 
     public String buildLeaderUpdate(){
 
-        String input = initLeaders.length()==0 ? "" : initLeaders.substring(0, initLeaders.length()-1);
+        String input = leaderCards.length()==0 ? "" : leaderCards.substring(0, leaderCards.length()-1);
         String[] selections = input.split(splitter);
         ReducedGameBoard model = GUIHandler.instance().getModel();
         Map<Integer, String> cards = model.getBoard(model.getCurrentPlayer()).getLeadersID();
