@@ -15,7 +15,7 @@ import java.util.LinkedList;
 public class ActionTokenParserTest {
 
     private ActionTokenParser parser;
-    String file = "src/test/java/it/polimi/ingsw/XMLSourcesTest/ActionTokensTest.xml";
+    String file = "/ActionTokensTest.xml";
 
     @BeforeEach
     public void setUp(){

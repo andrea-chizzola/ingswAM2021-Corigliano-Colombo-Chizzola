@@ -1,9 +1,7 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
-import it.polimi.ingsw.GUI.Gui;
 import it.polimi.ingsw.Messages.MessageFactory;
-import it.polimi.ingsw.View.GUI.GUI;
 import it.polimi.ingsw.View.GUI.GUIHandler;
 import javafx.event.Event;
 import javafx.fxml.FXML;

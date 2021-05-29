@@ -1,10 +1,9 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
-import it.polimi.ingsw.Client.ReducedModel.ReducedConfiguration;
-import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.MessageFactory;
+import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.GUIHandler;
 import javafx.event.Event;
@@ -18,10 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class GameBoardController extends ViewController{
 
@@ -87,6 +83,8 @@ public class GameBoardController extends ViewController{
     @FXML
     private Button marketBoardButton;
     @FXML
+    private Button decksButton;
+    @FXML
     private Button otherPlayersButton;
     @FXML
     private Button quitButton;
@@ -113,7 +111,12 @@ public class GameBoardController extends ViewController{
 
     private List<ImageView> popeFavors;
 
-    private ReducedGameBoard model = GUIHandler.instance().getModel();
+    private DecksController decksController;
+
+    private MarketboardController marketboardController;
+
+    public GameBoardController(){
+    }
 
 
     @FXML
@@ -123,6 +126,7 @@ public class GameBoardController extends ViewController{
         marketBoardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMarketBoardClicked);
         otherPlayersButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onOtherPlayersClicked);
         quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onQuitClicked);
+        decksButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onDecksClicked);
 
         warehouse = new ArrayList<>();
         setWarehouse(warehouse);
@@ -143,6 +147,19 @@ public class GameBoardController extends ViewController{
         setBlackPositions(blackPositions);
         blackCross.setVisible(false);
 
+        decksController = new DecksController();
+        marketboardController = new MarketboardController();
+
+        marketboardController.attachGUIReference(getGUIReference());
+        marketboardController.attachModelReference(getModelReference());
+        GUIHandler.createHelperWindow(marketboardController, "/FXML/marketboard.fxml");
+        marketboardController.hideWindow();
+
+        decksController.attachGUIReference(getGUIReference());
+        decksController.attachModelReference(getModelReference());
+        GUIHandler.createHelperWindow(decksController, "/FXML/decks.fxml");
+        decksController.hideWindow();
+
     }
 
     private void onQuitClicked(Event event) {
@@ -159,7 +176,11 @@ public class GameBoardController extends ViewController{
     }
 
     private void onMarketBoardClicked(Event event) {
+        marketboardController.showWindow();
+    }
 
+    private void onDecksClicked(Event event) {
+        decksController.showWindow();
     }
 
     private void onMenuClicked(Event event) {
@@ -206,7 +227,7 @@ public class GameBoardController extends ViewController{
             image.setVisible(false);
         }
         for(Integer slot : slots.keySet()){
-            String path = model.getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
+            String path = getModelReference().getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
             Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
             developmentCards.get(slot - 1).setImage(card);
             developmentCards.get(slot - 1).setVisible(true);
@@ -223,7 +244,7 @@ public class GameBoardController extends ViewController{
             image.setVisible(false);
         }
         for(Integer slot : cards.keySet()){
-            String path = model.getConfiguration().getLeaderCard(cards.get(slot)).getPath();
+            String path = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
             if(status.get(slot) == ItemStatus.ACTIVE){
                 Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
                 leaderCards.get(slot - 1).setImage(card);
@@ -242,7 +263,7 @@ public class GameBoardController extends ViewController{
         if(action.isEmpty())
             return;
 
-        String image = model.getConfiguration().getActionTokenCard(action.get()).getImage();
+        String image = getModelReference().getConfiguration().getActionTokenCard(action.get()).getImage();
         Image token = new Image("/Images/punchboard/" + image);
         actionToken.setImage(token);
         actionToken.setVisible(true);
@@ -369,6 +390,44 @@ public class GameBoardController extends ViewController{
      */
     public void visualizeBlackCross(){
         blackCross.setVisible(true);
+    }
+
+    public void setDecks(Map<Integer, String> decks){
+        decksController.showDecksUpdate(decks);
+    }
+
+    public void setMarketBoard(List<Marble> tray){
+        List<String> trayImages = new LinkedList<>();
+        for(int i=0; i<tray.size(); i++){
+            trayImages.add(getMarbleImage(tray.get(i)));
+        }
+        marketboardController.showMarketUpdate(trayImages);
+    }
+
+    //TODO aggiungere immagine di risorse e di biglie alle classi Resource e Marble
+    private String getMarbleImage(Marble marble){
+        switch(marble.getResourceAssociated().getColor()){
+            case RED: {
+                return "/Images/market/MarbleRed.PNG";
+            }
+            case BLUE: {
+                return "/Images/market/MarbleBlue.PNG";
+            }
+            case GRAY: {
+                return "/Images/market/MarbleGray.PNG";
+            }
+            case WHITE: {
+                return "/Images/market/MarbleWhite.PNG";
+            }
+            case PURPLE: {
+                return "/Images/market/MarblePurple.PNG";
+            }
+            case YELLOW: {
+                return "/Images/market/MarbleYellow.PNG";
+            }
+            default:
+                return "/Images/market/MarbleWhite.PNG";
+        }
     }
 
     /**

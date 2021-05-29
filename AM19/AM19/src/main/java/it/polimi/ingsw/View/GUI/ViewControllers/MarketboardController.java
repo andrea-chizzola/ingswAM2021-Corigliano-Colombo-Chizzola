@@ -36,9 +36,6 @@ public class MarketboardController extends ViewController {
     @FXML
     private Button row3;
 
-    @FXML
-    private Button exitButton;
-
     List<ImageView> viewTray;
     List<Button> positions;
 
@@ -59,14 +56,9 @@ public class MarketboardController extends ViewController {
                 System.out.println("row2"));
         row3.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
                 System.out.println("row3"));
-        exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                hideWindow());
         initializeTray();
 
         positions = List.of(column1, column2, column3, column4, row1, row2, row3);
-        //hideWindow();
-
-
     }
 
     private void initializeTray(){

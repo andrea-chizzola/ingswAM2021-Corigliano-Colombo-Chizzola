@@ -1,6 +1,8 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.View.GUI.GUI;
+import it.polimi.ingsw.View.GUI.GUIHandler;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +34,8 @@ public class LoadingController extends ViewController{
     }
 
     private void onExitButtonClicked(Event event) {
-        getGUIReference().stop();
+        Platform.exit();
+        System.exit(0);
     }
 
 }

@@ -10,7 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.Map;
 
 public class DecksController extends ViewController {
 
+    @FXML
+    private AnchorPane mainPane;
 
     @FXML
     private ImageView card1;
@@ -78,6 +82,13 @@ public class DecksController extends ViewController {
         }
     }
 
+    public void showWindow(){
+        ((Stage) mainPane.getScene().getWindow()).show();
+    }
+
+    public void hideWindow(){
+        mainPane.getScene().getWindow().hide();
+    }
 }
 
 

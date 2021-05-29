@@ -1,36 +1,25 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.InteractionObserver;
+import it.polimi.ingsw.Client.ReducedModel.ReducedConfiguration;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import it.polimi.ingsw.Client.MessageSender;
-import it.polimi.ingsw.GUI.Gui;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.ViewControllers.*;
-import it.polimi.ingsw.View.GUI.ViewControllers.*;
 import it.polimi.ingsw.View.GUI.ViewControllers.EndGameController;
-import it.polimi.ingsw.View.GUI.ViewControllers.LoginController;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 import it.polimi.ingsw.View.SubjectView;
 import it.polimi.ingsw.View.View;
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class GUI extends Application implements View, SubjectView {
+public class GUI implements View, SubjectView {
 
     //TODO QUI VA LA LISTA DEI CONTROLLER USATI/CHE SERVE RICHIAMARE
     private List<ViewController> controllers = new ArrayList<>();
@@ -41,76 +30,22 @@ public class GUI extends Application implements View, SubjectView {
 
     private LoadingController loadingController;
 
-    DecksController decksController;
+    private DecksController decksController;
 
-    /**
-     * this attribute represents an observer of the interactions of a player
-     */
-    InteractionObserver interactionObserver;
+    private ReducedGameBoard model;
 
-    ReducedGameBoard model;
+    private InteractionObserver interactionObserver;
 
-    @Override
-    public void start(Stage stage) throws Exception {
+    //TODO: le immagini dovrebbero essere ricostruite dalla GUI. Ai controller dovrebbero arrivare i path già pronti
+    
+    private final String path = "/Images/front/";
 
-        GUIHandler handler = GUIHandler.instance();
-
-        FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 575, 534);
-        stage.setScene(scene);
-        ViewController controller = fxmlLoader.getController();
-        controller.attachGUIReference(handler.getGUIinstance());
-
-        stage.show();
-
-        /*try {
-            LinkedList<String> test = new LinkedList<>();
-            test.add("TAKE_RESOURCES");
-            test.add("MANAGE_LEADER");
-            TurnSelectionController controller = new TurnSelectionController();
-            GUIHandler handler = GUIHandler.instance();
-            controller.attachGUIReference(handler.getGUIinstance());
-            controller.setAvailableActions(test);
-
-            FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/TurnSelection.fxml"));
-            fxmlLoader.setController(controller);
-            Scene scene = new Scene(fxmlLoader.load(), 575, 534);
-            stage.setScene(scene);
-            controller.attachGUIReference(handler.getGUIinstance());
-
-            stage.show();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        try {
-
-            MarketboardController controller = new MarketboardController();
-            GUIHandler handler = GUIHandler.instance();
-            controller.attachGUIReference(handler.getGUIinstance());
-
-        stage.show();
-
-            FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/marketboard.fxml"));
-            fxmlLoader.setController(controller);
-            Scene scene = new Scene(fxmlLoader.load(), 575, 534);
-            stage.setScene(scene);
-            controller.attachGUIReference(handler.getGUIinstance());
-
-            stage.show();
-        }catch(Exception e){
-            e.printStackTrace();
-        }*/
+    public GUI (ReducedGameBoard model){
+        this.model = model;
     }
 
-    @Override
-    public void stop(){
-        Platform.exit();
-        System.exit(0);
-    }
-
-    public static void main(String[] args) {
-        launch();
+    public ReducedGameBoard getModelReference(){
+        return model;
     }
 
     public void setLoadingController(LoadingController loadingController) {
@@ -122,6 +57,8 @@ public class GUI extends Application implements View, SubjectView {
 
         gameBoardController = new GameBoardController();
         controllers.add(gameBoardController);
+        gameBoardController.attachGUIReference(this);
+        gameBoardController.attachModelReference(model);
         Platform.runLater(() -> GUIHandler.newWindow(gameBoardController, "/FXML/gameboard.fxml"));
 
     }
@@ -139,9 +76,9 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void showAvailableTurns(List<String> turns, String player) {
 
-        GUIHandler handler = GUIHandler.instance();
         TurnSelectionController controller = new TurnSelectionController();
-        controller.attachGUIReference(handler.getGUIinstance());
+        controller.attachGUIReference(this);
+        controller.attachModelReference(model);
         controller.setAvailableActions(turns);
 
         Platform.runLater(() ->
@@ -150,7 +87,7 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void showMarketUpdate(List<Marble> tray) {
-
+        Platform.runLater(() -> gameBoardController.setMarketBoard(tray));
     }
 
     @Override
@@ -161,19 +98,20 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void showDecksUpdate(Map<Integer, String> decks) {
         Map<Integer, String> topCards = new HashMap<>();
-        decksController = new DecksController();
-        topCards.put(1, "/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png");
-        Platform.runLater(() ->
-        {
-            GUIHandler.newWindow(decksController, "/FXML/decks.fxml");
-            decksController.showDecksUpdate(topCards);
-        });
+        ReducedConfiguration config = model.getConfiguration();
+        for(int i : decks.keySet()){
+            String id = decks.get(i);
+            String image = path + config.getDevelopmentCard(id).getPath();
+            topCards.put(i, image);
+        }
+
+        Platform.runLater(() -> gameBoardController.setDecks(topCards));
     }
 
     @Override
     public void showBoxes(List<ResQuantity> warehouse, List<ResQuantity> strongBox, String nickName) {
 
-        if(!nickName.equals(GUIHandler.instance().getModel().getPersonalNickname())) return;
+        if(!nickName.equals(model.getPersonalNickname())) return;
 
         Platform.runLater(() -> {
             gameBoardController.setResourceWarehouse(warehouse);
@@ -185,7 +123,7 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void showSlotsUpdate(Map<Integer, String> slots, String nickName) {
 
-        if(!nickName.equals(GUIHandler.instance().getModel().getPersonalNickname())) return;
+        if(!nickName.equals(model.getPersonalNickname())) return;
 
         Platform.runLater(() -> gameBoardController.manageDevelopmentCards(slots));
 
@@ -194,7 +132,7 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void showLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status, String nickName) {
 
-        if(!nickName.equals(GUIHandler.instance().getModel().getPersonalNickname())) return;
+        if(!nickName.equals(model.getPersonalNickname())) return;
 
         Platform.runLater(() -> gameBoardController.manageLeaderCards(cards, status));
 
@@ -203,7 +141,7 @@ public class GUI extends Application implements View, SubjectView {
     @Override
     public void showFaithUpdate(Map<String, Integer> faith, Map<String, List<ItemStatus>> sections, Optional<Integer> faithLorenzo, Optional<List<ItemStatus>> sectionsLorenzo) {
 
-        String nickname = GUIHandler.instance().getModel().getPersonalNickname();
+        String nickname = model.getPersonalNickname();
         Platform.runLater(() -> {
             gameBoardController.changePosition(faith.get(nickname));
             gameBoardController.manageSections(sections.get(nickname));
@@ -224,7 +162,6 @@ public class GUI extends Application implements View, SubjectView {
     public void showEndGame(Map<String, Integer> players) {
 
         EndGameController endGameController = new EndGameController();
-
         Platform.runLater(() -> {
             GUIHandler.newWindow(endGameController,"/FXML/EndGame.fxml");
             endGameController.showEndGame(players);
@@ -252,11 +189,6 @@ public class GUI extends Application implements View, SubjectView {
 
     @Override
     public void leaderAction() {
-        //prendo il controller della board principale con il get di GUIHandler
-        //chiamo run-later su tale controller (il metodo di leaderAction che attiva alcuni bottoni
-        // e ne disattiva altri, e cambia l'istanza di strategy).
-        //avere una classe "buffer" insieme ai controller, che viene riempita al click dei bottoni e poi svuotata
-        //quando creo il messaggio
     }
 
     @Override

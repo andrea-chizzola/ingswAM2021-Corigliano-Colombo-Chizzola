@@ -15,6 +15,7 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import org.w3c.dom.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,8 @@ public class ConfigurationParser{
      */
     //private static final String path = "src/main/resources/XML/";
 
-    private static final String path = "AM19/AM19/src/main/resources/XML/";
+    //private static final String path = "AM19/AM19/src/main/resources/XML/";
+    private static final String path = "/XML/";
     /**
      * this attribute represents the element faitTrack in the XML file
      */
@@ -68,9 +70,10 @@ public class ConfigurationParser{
 
     protected static Element getRoot(String file) throws ParserConfigurationException, SAXException, IOException {
 
+        InputStream inputStream = ConfigurationParser.class.getResourceAsStream(file);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document document = dBuilder.parse(new File(file));
+        Document document = dBuilder.parse(inputStream);
         return document.getDocumentElement();
     }
 

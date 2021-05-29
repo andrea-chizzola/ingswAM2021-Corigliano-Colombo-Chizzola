@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<leaderCards>
+    <leader id = "1" points = "2" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-49-1.png">
+        <requirements>
+            <cardRequirement>
+                <card color="YELLOW" level="1" amount="1"/>
+                <card color="GREEN" level="1" amount="1"/>
+            </cardRequirement>
+        </requirements>
+        <effect>
+            <discount>
+                <resquantity amount="1" resource="SERVANTS"/>
+            </discount>
+        </effect>
+    </leader>
+
+    <leader id = "2" points = "3" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-53-1.png">
+        <requirements>
+            <resourceRequirement>
+                <resquantity amount="5" resource="COINS"/>
+            </resourceRequirement>
+        </requirements>
+        <effect>
+            <extraSlot>
+                <resquantity amount="2" resource="STONES"/>
+            </extraSlot>
+        </effect>
+    </leader>
+
+    <leader id = "3" points = "5" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-57-1.png">
+        <requirements>
+            <cardRequirement>
+                <card amount="2" color="YELLOW" level="1"/>
+                <card amount="1" color="BLUE" level="1"/>
+            </cardRequirement>
+        </requirements>
+        <effect>
+            <whiteMarble resource="SERVANTS"/>
+        </effect>
+    </leader>
+
+    <leader id = "4" points = "4" image = "src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-61-1.png">
+        <requirements>
+            <cardRequirement>
+                <card amount="1" color="YELLOW" level="2"/>
+            </cardRequirement>
+        </requirements>
+        <effect>
+            <production customMaterials = "0" customProducts = "0">
+                <materials>
+                    <resquantity amount="1" resource="SHIELDS"/>
+                </materials>
+                <products>
+                    <resquantity amount="1" resource="FAITH"/>
+                </products>
+            </production>
+        </effect>
+    </leader>
+</leaderCards>

@@ -17,7 +17,6 @@ public class Client implements MessageSender {
     private static final String GUI_ARG = "--gui";
     private static final String CLI_ARG = "--cli";
 
-    private final String file = "defaultConfiguration.xml";
     private SocketServerConnection connection;
     private String ip;
     private int port;
@@ -65,7 +64,7 @@ public class Client implements MessageSender {
 
     public void startClient(){
 
-        ReducedGameBoard reducedModel = new ReducedGameBoard(file);
+        ReducedGameBoard reducedModel = new ReducedGameBoard("defaultConfiguration.xml");
 
         if(useCli){
             CLI cli = new CLI(reducedModel, System.in, System.out);
@@ -74,13 +73,12 @@ public class Client implements MessageSender {
             clientController.runController();
             cli.launch();
         }else{
-            GUI gui = new GUI();
-            GUIHandler handler = GUIHandler.instance();
-            handler.setGUIinstance(gui);
+            GUI gui = new GUI(reducedModel);
+            GUIHandler.setGUIReference(gui);
             clientController = new ClientController(reducedModel, gui, this);
             clientController.runController();
             gui.attachInteractionObserver(clientController);
-            GUI.main(null);
+            GUIHandler.main(null);
         }
     }
 

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<developmentCards>
+    <!-- GREEN cards - level 1 -->
+    <card id="1" points="1" color="GREEN" level="1"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-1-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="2"/>
+        </requirements>
+
+        <production customMaterials="1" customProducts="2">
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card id="2" points="2" color="GREEN" level="1"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-5-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="1"/>
+            <resquantity resource="SERVANTS" amount="1"/>
+            <resquantity resource="STONES" amount="1"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="STONES" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card id="3" points="3" color="GREEN" level="1"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-9-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="3"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="SERVANTS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="SHIELDS" amount="1"/>
+                <resquantity resource="STONES" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card id="4" points="4" color="GREEN" level="1"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-13-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="2"/>
+            <resquantity resource="COINS" amount="2"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="STONES" amount="1"/>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <!-- GREEN cards - level 2 -->
+    <card id="5" points="5" color="GREEN" level="2"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-17-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="4"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="STONES" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card id="6" points="6" color="GREEN" level="2"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-21-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="3"/>
+            <resquantity resource="SERVANTS" amount="2"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="SHIELDS" amount="1"/>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SHIELDS" amount="3"/>
+            </products>
+        </production>
+    </card>
+
+    <card id="7" points="7" color="GREEN" level="2"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-25-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="5"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="COINS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="STONES" amount="2"/>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card id="8" points="8" color="GREEN" level="2"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-29-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="3"/>
+            <resquantity resource="COINS" amount="3"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SHIELDS" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+    <!-- GREEN cards - level 3 -->
+    <card id="9" points="9" color="GREEN" level="3"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-33-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="6"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="COINS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="STONES" amount="3"/>
+                <resquantity resource="FAITH" amount="2"/>
+            </products>
+        </production>
+    </card>
+
+    <card id="10" points="10" color="GREEN" level="3"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-37-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="5"/>
+            <resquantity resource="SERVANTS" amount="2"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="SERVANTS" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="SHIELDS" amount="2"/>
+                <resquantity resource="STONES" amount="2"/>
+                <resquantity resource="FAITH" amount="1"/>
+            </products>
+        </production>
+    </card>
+
+    <card id="11" points="11" color="GREEN" level="3"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-41-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="7"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="SERVANTS" amount="2"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="1"/>
+                <resquantity resource="FAITH" amount="3"/>
+            </products>
+        </production>
+    </card>
+
+    <card id="12" points="12" color="GREEN" level="3"
+          image="src/main/resources/Images/front/Masters of Renaissance_Cards_FRONT_3mmBleed_1-45-1.png">
+        <requirements>
+            <resquantity resource="SHIELDS" amount="4"/>
+            <resquantity resource="COINS" amount="4"/>
+        </requirements>
+
+        <production customMaterials="0" customProducts="0">
+            <materials>
+                <resquantity resource="STONES" amount="1"/>
+            </materials>
+            <products>
+                <resquantity resource="COINS" amount="3"/>
+                <resquantity resource="SHIELDS" amount="1"/>
+            </products>
+        </production>
+    </card>
+</developmentCards>

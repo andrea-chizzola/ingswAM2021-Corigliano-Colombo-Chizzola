@@ -97,6 +97,5 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="exitButton" layoutX="323.0" layoutY="6.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="69.0" text="Exit" />
    </children>
 </AnchorPane>

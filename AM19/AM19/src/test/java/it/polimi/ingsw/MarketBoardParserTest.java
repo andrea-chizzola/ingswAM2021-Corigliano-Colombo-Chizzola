@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 
 public class MarketBoardParserTest {
-    private final String file = "src/main/resources/XML/defaultMarketBoard.xml";
+    private final String file = "/XML/defaultMarketBoard.xml";
     MarketBoardParser parser;
 
     @BeforeEach

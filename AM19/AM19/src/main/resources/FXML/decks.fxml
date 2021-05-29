@@ -3,7 +3,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="mainPane" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="mainPane" fx:id="mainPane" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="card1" fitHeight="209.0" fitWidth="139.0" layoutX="211.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="card2" fitHeight="209.0" fitWidth="139.0" layoutX="385.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />

@@ -125,7 +125,7 @@ public class Accumulator {
 
         String input = initLeaders.length()==0 ? "" : initLeaders.substring(0, initLeaders.length()-1);
         String[] selections = input.split(splitter);
-        ReducedGameBoard model = GUIHandler.instance().getModel();
+        ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();
         Map<Integer, String> cards = model.getBoard(model.getCurrentPlayer()).getLeadersID();
         Map<Integer, ItemStatus> map = new HashMap<>();
         for(int i : cards.keySet()) map.put(i, ItemStatus.DISCARDED);
@@ -174,7 +174,7 @@ public class Accumulator {
 
     public String buildBuyCard(){
 
-        ReducedGameBoard model = GUIHandler.instance().getModel();
+        ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();
         String id = model.getDecks().get(position-1);
         //System.out.println("Debug");
         DevelopmentCard card = model.getConfiguration().getDevelopmentCard(id);
@@ -193,7 +193,7 @@ public class Accumulator {
     }
 
     public String buildDoProduction(){
-        ReducedGameBoard model = GUIHandler.instance().getModel();
+        ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();
         String leaderCards = this.leaderCards.length()==0 ? "" : this.leaderCards.substring(0, this.leaderCards.length()-1);
         String developmentCards = this.developmentCards.length()==0 ? "" : this.developmentCards.substring(0,this.developmentCards.length()-1);
         String leaderMessage = helpCards(model.getBoard(model.getCurrentPlayer()).getLeadersID(),leaderCards);
@@ -230,7 +230,7 @@ public class Accumulator {
     }
 
     public String buildLeaderAction() {
-        ReducedGameBoard model = GUIHandler.instance().getModel();
+        ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();
         String player = model.getCurrentPlayer();
         Map<Integer, String> leadersID = model.getBoard(player).getLeadersID();
         try {

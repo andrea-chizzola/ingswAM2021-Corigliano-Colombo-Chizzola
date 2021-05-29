@@ -13,8 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CardParserTest {
-    String DevTest = "src/test/java/it/polimi/ingsw/XMLSourcesTest/DevCardsTest.xml";
-    String LeaderTest = "src/test/java/it/polimi/ingsw/XMLSourcesTest/LeaderCardsTest.xml";
+    String DevTest = "/DevCardsTest.xml";
+    String LeaderTest = "/LeaderCardsTest.xml";
 
     CardParser parser;
 

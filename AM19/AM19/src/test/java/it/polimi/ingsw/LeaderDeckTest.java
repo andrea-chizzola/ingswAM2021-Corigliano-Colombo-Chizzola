@@ -12,7 +12,7 @@ import java.util.List;
 public class LeaderDeckTest {
     private LeaderDeck deck;
     private final String configurationFile = "defaultConfiguration.xml";
-    private final String fullPathFile = "src\\main\\resources\\XML\\defaultLeaderCards.xml";
+    private final String fullPathFile = "/XML/defaultLeaderCards.xml";
 
     @BeforeEach
     public void setUp(){

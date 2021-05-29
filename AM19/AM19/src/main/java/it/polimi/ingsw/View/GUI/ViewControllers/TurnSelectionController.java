@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Popup;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -55,18 +54,17 @@ public class TurnSelectionController extends ViewController{
             b.setDisable(false);
         }
 
-        controller = new MarketboardController();
-        GUIHandler.createPopup(controller, "/FXML/marketboard.fxml");
-        bindActions();
+        /*controller = new MarketboardController();
+        GUIHandler.createHelperWindow(controller, "/FXML/marketboard.fxml");
+        bindActions();*/
     }
 
 
     private void bindActions(){
 
         GUI gui = getGUIReference();
-        /*TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                gui.notifyInteraction(new TakeResourcesInteraction()));*/
-        TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> controller.showWindow());
+        TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
+                gui.notifyInteraction(new TakeResourcesInteraction()));
 
         ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
                 gui.notifyInteraction(new ManageLeaderInteraction()));

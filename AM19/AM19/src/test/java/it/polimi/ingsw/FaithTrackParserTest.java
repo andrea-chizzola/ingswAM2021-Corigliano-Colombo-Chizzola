@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FaithTrackParserTest {
-    String test = "src/test/java/it/polimi/ingsw/XMLSourcesTest/FaithTrackTest.xml";
+    String test = "/FaithTrackTest.xml";
 
     @Test
     public void parseTest(){
