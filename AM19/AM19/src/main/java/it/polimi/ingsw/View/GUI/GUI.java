@@ -3,16 +3,11 @@ package it.polimi.ingsw.View.GUI;
 import it.polimi.ingsw.Client.InteractionObserver;
 import it.polimi.ingsw.Client.ReducedModel.ReducedConfiguration;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import it.polimi.ingsw.Client.MessageSender;
-import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import it.polimi.ingsw.GUI.Gui;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
-import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
-import it.polimi.ingsw.View.GUI.Messages.BuildSelectedResources;
 import it.polimi.ingsw.View.GUI.ViewControllers.*;
 import it.polimi.ingsw.View.GUI.ViewControllers.EndGameController;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
@@ -209,7 +204,6 @@ public class GUI implements View, SubjectView {
     @Override
     public void getResourcesAction() {
 
-        ReducedGameBoard model = GUIHandler.instance().getModel();
         int playerPosition, number;
         String self = model.getPersonalNickname();
         playerPosition = model.getNicknames().indexOf(self);

@@ -482,7 +482,7 @@ public class GameBoardController extends ViewController{
     }
 
     private void helpUseWarehouse(ImageView imageView,Integer slot){
-        List<ResQuantity> list = model.getBoard(model.getPersonalNickname()).getWarehouse();
+        List<ResQuantity> list = getModelReference().getBoard(getModelReference().getPersonalNickname()).getWarehouse();
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             imageView.setOpacity(0.5);

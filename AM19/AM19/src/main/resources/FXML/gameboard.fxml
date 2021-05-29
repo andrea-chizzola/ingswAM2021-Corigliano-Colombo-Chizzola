@@ -69,12 +69,12 @@
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="marketBoardButton" layoutX="909.0" layoutY="151.0" mnemonicParsing="false" text="MARKET BOARD">
+      <Button fx:id="marketBoardButton" layoutX="909.0" layoutY="147.0" mnemonicParsing="false" text="MARKET BOARD">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="otherPlayersButton" layoutX="908.0" layoutY="216.0" mnemonicParsing="false" text="OTHER PLAYERS">
+      <Button fx:id="otherPlayersButton" layoutX="906.0" layoutY="275.0" mnemonicParsing="false" text="OTHER PLAYERS">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
@@ -84,7 +84,12 @@
             <Font name="Times New Roman Bold Italic" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="quitButton" layoutX="943.0" layoutY="284.0" mnemonicParsing="false" text="QUIT">
+      <Button fx:id="quitButton" layoutX="943.0" layoutY="339.0" mnemonicParsing="false" text="QUIT">
+         <font>
+            <Font name="Times New Roman Italic" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="decksButton" layoutX="936.0" layoutY="211.0" mnemonicParsing="false" text="DECKS">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
