@@ -21,25 +21,6 @@ import java.util.*;
 
 public class GameBoardController extends ViewController{
 
-    private class Coordinates{
-
-        private double x;
-        private double y;
-
-        public Coordinates(double x, double y){
-            this.x = x;
-            this.y = y;
-        }
-
-        public double getX(){
-            return x;
-        }
-
-        public double getY() {
-            return y;
-        }
-    }
-
     @FXML
     private Pane pane;
     @FXML
@@ -164,7 +145,7 @@ public class GameBoardController extends ViewController{
 
     private void onQuitClicked(Event event) {
         try {
-            String message = MessageFactory.buildDisconnection("Disconnection request.", "nickname"); //TODO AGGIUNGERE RIFERIMENTO A NICKNAME DEL GIOCATORE
+            String message = MessageFactory.buildDisconnection("Disconnection request.", model.getPersonalNickname());
             getGUIReference().notifyInteraction(message);
         } catch (MalformedMessageException e){
             e.printStackTrace();
@@ -172,6 +153,14 @@ public class GameBoardController extends ViewController{
     }
 
     private void onOtherPlayersClicked(Event event) {
+
+        String myNickname = model.getPersonalNickname();
+
+        for(String nickname : model.getNicknames()){
+            if (!myNickname.equals(nickname)) {
+                GUIHandler.newWindow(new OtherBoardsController(nickname), "/FXML/otherBoards.fxml");
+            }
+        }
 
     }
 
@@ -195,21 +184,21 @@ public class GameBoardController extends ViewController{
      * manages the activation and deactivation of the pope favors
      * @param sections contains the status of each pope favor
      */
-    public void manageSections(List<ItemStatus> sections){  //TODO MANCANO LE IMMAGINI RELATIVE AI POPE FAVOR ATTIVI
+    public void manageSections(List<ItemStatus> sections){
         for(ItemStatus status : sections){
             if(status == ItemStatus.ACTIVE){
                 int section = sections.indexOf(status);
                 switch (section){
                     case 0:
-                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/quadrato giallo attivo.png"));
+                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratogialloattivo.png"));
                         popeFavors.get(section).setImage(image);
                         break;
                     case 1:
-                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadrato arancio attivo.png"));
+                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratoarancioattivo.png"));
                         popeFavors.get(section).setImage(image1);
                         break;
                     case 2:
-                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadrato rosso attivo.png"));
+                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratorossoattivo.png"));
                         popeFavors.get(section).setImage(image2);
                         break;
                 }

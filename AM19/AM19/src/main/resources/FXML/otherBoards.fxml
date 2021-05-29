@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="500.0" fitWidth="870.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/board/gameboard.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="344.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="secondSlot" fitHeight="207.0" fitWidth="146.0" layoutX="509.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="thirdSlot" fitHeight="207.0" fitWidth="146.0" layoutX="680.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="firstLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="191.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="secondLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="371.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="thirdLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="552.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="fourthLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="724.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="14.0" layoutY="522.0" prefHeight="22.0" prefWidth="158.0" text="LEADER CARDS: " textFill="#fffefe">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="firstPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="217.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/quadrato giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="secondPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="430.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/quadrato arancione.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="thirdPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="690.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/quadrato rosso.png" />
+         </image>
+      </ImageView>
+      <Circle fx:id="tile" fill="DODGERBLUE" layoutX="54.0" layoutY="113.0" opacity="0.38" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+      <ImageView fx:id="topResource" fitHeight="26.0" fitWidth="31.0" layoutX="101.0" layoutY="216.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="firstMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="81.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="secondMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="117.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="firstBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="65.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="secondBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="96.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="thirdBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="135.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="coins" fitHeight="41.0" fitWidth="31.0" layoutX="28.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/coin.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="shields" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="383.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/shield.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="stones" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="423.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/stone.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="servants" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="463.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/servant.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="coinsNumber" layoutX="91.0" layoutY="352.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="shieldsNumber" layoutX="91.0" layoutY="393.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="stonesNumber" layoutX="91.0" layoutY="433.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0" textAlignment="RIGHT">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="servantsNumber" layoutX="91.0" layoutY="473.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0" textAlignment="RIGHT">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="932.0" layoutY="27.0" prefHeight="22.0" prefWidth="83.0" text="PLAYER:" textFill="#fffefe">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="nicknameLabel" alignment="CENTER" layoutX="879.0" layoutY="70.0" prefHeight="22.0" prefWidth="178.0" textAlignment="CENTER" textFill="#fffefe">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
