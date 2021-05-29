@@ -171,14 +171,14 @@ public class InitializeResController extends ViewController{
 
     private void setButtonsHandlers(){
 
-        select1.addEventHandler(MouseEvent.MOUSE_RELEASED, action ->{ action1(0);});
-        select2.addEventHandler(MouseEvent.MOUSE_RELEASED, action ->{ action1(1);});
-        select3.addEventHandler(MouseEvent.MOUSE_RELEASED, action ->{ action1(2);});
-        select4.addEventHandler(MouseEvent.MOUSE_RELEASED, action ->{ action1(3);});
+        select1.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> action(0));
+        select2.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> action(1));
+        select3.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> action(2));
+        select4.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> action(3));
 
     }
 
-    private void action1(int i){
+    private void action(int i){
         accumulator.setInitResources(shelves.get(i).getText());
         buttons.get(i).setDisable(true);
     }

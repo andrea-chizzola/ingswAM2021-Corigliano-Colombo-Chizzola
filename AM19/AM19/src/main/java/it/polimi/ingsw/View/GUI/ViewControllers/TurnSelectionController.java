@@ -53,10 +53,6 @@ public class TurnSelectionController extends ViewController{
             Button b = turns.get(s);
             b.setDisable(false);
         }
-
-        /*controller = new MarketboardController();
-        GUIHandler.createHelperWindow(controller, "/FXML/marketboard.fxml");
-        bindActions();*/
     }
 
 
