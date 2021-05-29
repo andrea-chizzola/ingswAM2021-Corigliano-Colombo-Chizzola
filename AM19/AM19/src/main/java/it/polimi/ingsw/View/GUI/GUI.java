@@ -7,6 +7,7 @@ import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.Model.Resources.ResourceColor;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
 import it.polimi.ingsw.View.GUI.ViewControllers.*;
 import it.polimi.ingsw.View.GUI.ViewControllers.EndGameController;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class GUI implements View, SubjectView {
 
@@ -93,7 +95,48 @@ public class GUI implements View, SubjectView {
 
     @Override
     public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName) {
+        int whites=0;
+        List<String> marbles = new LinkedList<>();
+        for(int i=0; i<marblesTray.size(); i++){
+            if(marblesTray.get(i).getResourceAssociated().getColor() == ResourceColor.WHITE){
+                whites++;
+            }
+            else marbles.add(getMarbleImage(marblesTray.get(i)));
+        }
+        List<String> transformations = whiteModifications.stream().map(Marble::toString).collect(Collectors.toList());
+        MarbleSelectionController controller = new MarbleSelectionController();
+        controller.attachGUIReference(this);
+        controller.attachModelReference(model);
+        int finalWhites = whites;
+        Platform.runLater(()->{
+            GUIHandler.newWindow(controller, "/FXML/marbleSelection.fxml");
+            controller.showMarblesUpdate(marbles, transformations, finalWhites);
+        });
+    }
 
+    private String getMarbleImage(Marble marble){
+        switch(marble.getResourceAssociated().getColor()){
+            case RED: {
+                return "MarbleRed.PNG";
+            }
+            case BLUE: {
+                return "MarbleBlue.PNG";
+            }
+            case GRAY: {
+                return "MarbleGray.PNG";
+            }
+            case WHITE: {
+                return "MarbleWhite.PNG";
+            }
+            case PURPLE: {
+                return "MarblePurple.PNG";
+            }
+            case YELLOW: {
+                return "MarbleYellow.PNG";
+            }
+            default:
+                return "MarbleWhite.PNG";
+        }
     }
 
     @Override
