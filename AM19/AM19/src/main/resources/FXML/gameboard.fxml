@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -8,20 +9,41 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="500.0" fitWidth="870.0" pickOnBounds="true">
          <image>
             <Image url="@../Images/board/gameboard.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="344.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="secondSlot" fitHeight="207.0" fitWidth="146.0" layoutX="509.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="thirdSlot" fitHeight="207.0" fitWidth="146.0" layoutX="680.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="firstLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="191.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="secondLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="371.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="thirdLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="552.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="fourthLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="732.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="344.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="secondSlot" fitHeight="207.0" fitWidth="146.0" layoutX="509.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="thirdSlot" fitHeight="207.0" fitWidth="146.0" layoutX="680.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="firstLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="191.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="secondLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="371.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="thirdLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="552.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="fourthLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="732.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
       <Label layoutX="14.0" layoutY="522.0" prefHeight="22.0" prefWidth="158.0" text="LEADER CARDS: " textFill="#fffefe">
          <font>
             <Font name="Times New Roman Bold Italic" size="18.0" />
@@ -47,12 +69,12 @@
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="marketBoardButton" layoutX="909.0" layoutY="147.0" mnemonicParsing="false" text="MARKET BOARD">
+      <Button fx:id="marketBoardButton" layoutX="909.0" layoutY="151.0" mnemonicParsing="false" text="MARKET BOARD">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="otherPlayersButton" layoutX="906.0" layoutY="275.0" mnemonicParsing="false" text="OTHER PLAYERS">
+      <Button fx:id="otherPlayersButton" layoutX="908.0" layoutY="216.0" mnemonicParsing="false" text="OTHER PLAYERS">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
@@ -62,37 +84,67 @@
             <Font name="Times New Roman Bold Italic" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="quitButton" layoutX="943.0" layoutY="339.0" mnemonicParsing="false" text="QUIT">
+      <Button fx:id="quitButton" layoutX="943.0" layoutY="284.0" mnemonicParsing="false" text="QUIT">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
       </Button>
       <Circle fx:id="tile" fill="#2bf507" layoutX="54.0" layoutY="113.0" opacity="0.5" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
-      <ImageView fx:id="topResource" fitHeight="26.0" fitWidth="31.0" layoutX="101.0" layoutY="216.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="firstMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="85.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="secondMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="120.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="firstBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="65.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="secondBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="96.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="thirdBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="135.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="topResource" fitHeight="26.0" fitWidth="31.0" layoutX="101.0" layoutY="216.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="firstMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="85.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="secondMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="120.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="firstBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="65.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="secondBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="96.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
+      <ImageView fx:id="thirdBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="135.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor></ImageView>
       <ImageView fx:id="coins" fitHeight="41.0" fitWidth="31.0" layoutX="28.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/punchboard/coin.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
       </ImageView>
       <ImageView fx:id="shields" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="383.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/punchboard/shield.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
       </ImageView>
       <ImageView fx:id="stones" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="423.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/punchboard/stone.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
       </ImageView>
       <ImageView fx:id="servants" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="463.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Images/punchboard/servant.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
       </ImageView>
       <Label fx:id="coinsNumber" layoutX="91.0" layoutY="352.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
          <font>
@@ -120,10 +172,18 @@
          </image>
       </ImageView>
       <ImageView fx:id="actionToken" fitHeight="59.0" fitWidth="66.0" layoutX="242.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="decksButton" layoutX="936.0" layoutY="211.0" mnemonicParsing="false" text="DECKS">
+      <Button fx:id="personalProduction" layoutX="219.0" layoutY="419.0" mnemonicParsing="false" text="Select Production">
          <font>
-            <Font name="Times New Roman Italic" size="14.0" />
+            <Font size="10.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
       </Button>
+      <Label fx:id="errorStrongbox" layoutX="30.0" layoutY="318.0" prefHeight="17.0" prefWidth="106.0" text="Empty resource!" textFill="#ff0202">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
    </children>
 </Pane>
