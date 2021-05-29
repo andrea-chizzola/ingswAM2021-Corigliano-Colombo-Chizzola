@@ -181,6 +181,7 @@ public class GUI implements View, SubjectView {
     @Override
     public void selectLeaderAction() {
 
+        Platform.runLater(()-> gameBoardController.initializeLeaders());
     }
 
     @Override
@@ -190,15 +191,17 @@ public class GUI implements View, SubjectView {
 
     @Override
     public void leaderAction() {
+        Platform.runLater(()-> gameBoardController.setManageLeader());
     }
 
     @Override
     public void buyCardAction() {
+        Platform.runLater(()-> gameBoardController.setBuyCard());
     }
 
     @Override
     public void doProductionsAction() {
-
+        Platform.runLater(()-> gameBoardController.setDoProduction());
     }
 
     @Override
@@ -207,18 +210,19 @@ public class GUI implements View, SubjectView {
         int playerPosition, number;
         String self = model.getPersonalNickname();
         playerPosition = model.getNicknames().indexOf(self);
-         number = model.getConfiguration().getInitialResources().get(playerPosition);
-        //int number=1;
-        Accumulator accumulator = new Accumulator();
+        number = model.getConfiguration().getInitialResources().get(playerPosition);
+
+        InitializeResController controller = new InitializeResController();
+        controller.attachGUIReference(this);
+        controller.startInitialization(number);
+
         if(number>0) {
-            InitializeResController controller = new InitializeResController(accumulator);
             Platform.runLater(() -> {
                 GUIHandler.newWindow(controller, "/FXML/initializeResources.fxml");
                 controller.initResources(number);
             });
         }
 
-        //notifyInteraction(new BuildSelectedResources().buildMessage(accumulator));
     }
 
     @Override
@@ -228,7 +232,8 @@ public class GUI implements View, SubjectView {
 
     @Override
     public boolean swapAction() {
-        return false;
+        Platform.runLater(()-> gameBoardController.setSwap());
+        return true;
     }
 
     @Override

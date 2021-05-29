@@ -1,9 +1,15 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
+import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
+import it.polimi.ingsw.View.GUI.Messages.BuildSelectedResources;
+import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +17,8 @@ import java.util.List;
 
 public class InitializeResController extends ViewController{
 
+    @FXML
+    private AnchorPane anchorPane;
     @FXML
     private MenuButton resource1;
     @FXML
@@ -67,6 +75,8 @@ public class InitializeResController extends ViewController{
     private Button select3;
     @FXML
     private Button select4;
+    @FXML
+    private Button actionButton;
 
     private List<Button> buttons;
     private List<MenuButton> resources;
@@ -77,9 +87,17 @@ public class InitializeResController extends ViewController{
     private List<TextField> shelves;
 
     private Accumulator accumulator;
+    private BuildMessage builder;
 
-    public InitializeResController(Accumulator accumulator){
-        this.accumulator = accumulator;
+    public InitializeResController(){
+        this.accumulator = new Accumulator();
+        this.builder = new BuildSelectedResources();
+    }
+
+
+    public void startInitialization(int num){
+        if(num == 0)
+            getGUIReference().notifyInteraction(builder.buildMessage(new Accumulator()));
     }
 
     @FXML
@@ -142,6 +160,8 @@ public class InitializeResController extends ViewController{
         for(Button button : buttons)
             button.setVisible(false);
 
+        actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, this::sendMessage);
+
         setItemHandlers(coins,"coin");
         setItemHandlers(shields,"shield");
         setItemHandlers(servants,"servant");
@@ -149,24 +169,29 @@ public class InitializeResController extends ViewController{
         setButtonsHandlers();
     }
 
+    private void sendMessage(Event event) {
+        getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
+        resource1.getScene().getWindow().hide();
+    }
+
     private void setItemHandlers(List<MenuItem> list, String resource){
 
         list.get(0).setOnAction( event ->{
             accumulator.setInitResources(resource);
             resources.get(0).setDisable(true);
-            buttons.get(0).setVisible(true);});
+            /*buttons.get(0).setVisible(true);*/});
         list.get(1).setOnAction( event ->{
             accumulator.setInitResources(resource);
             resources.get(1).setDisable(true);
-            buttons.get(1).setVisible(true);});
+           /* buttons.get(1).setVisible(true);*/});
         list.get(2).setOnAction(event ->{
             accumulator.setInitResources(resource);
             resources.get(2).setDisable(true);
-            buttons.get(2).setVisible(true);});
+            /*buttons.get(2).setVisible(true);*/});
         list.get(3).setOnAction(event ->{
             accumulator.setInitResources(resource);
             resources.get(3).setDisable(true);
-            buttons.get(3).setVisible(true);});
+            /*buttons.get(3).setVisible(true);*/});
     }
 
     private void setButtonsHandlers(){
@@ -181,11 +206,15 @@ public class InitializeResController extends ViewController{
     private void action1(int i){
         accumulator.setInitResources(shelves.get(i).getText());
         buttons.get(i).setDisable(true);
+        buttons.get(i).setOpacity(0.5);
+        resources.get(i).setDisable(false);
     }
 
     public void initResources(int num){
         for(int i=0; i<num; i++){
             resources.get(i).setVisible(true);
+            resources.get(i).setDisable(true);
+            buttons.get(i).setVisible(true);
             shelves.get(i).setVisible(true);
         }
     }

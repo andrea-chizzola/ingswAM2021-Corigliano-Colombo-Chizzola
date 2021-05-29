@@ -26,6 +26,7 @@ public class Accumulator {
     private StringBuilder marblesActions = new StringBuilder();
     private int source;
     private int target;
+    private boolean sourceSet = false;
 
     //
     private StringBuilder warehouse = new StringBuilder();
@@ -66,12 +67,10 @@ public class Accumulator {
         marblesActions.append(string).append(splitter);
     }
 
-    public void setSwapSource(int source){
-        this.source = source;
-    }
-
-    public void setSwapTarget(int target){
-        this.target = target;
+    public void setSwap(int shelf){
+        if(sourceSet)
+            this.target = shelf;
+        else this.source = shelf;
     }
 
     public void setPosition(int position){
@@ -99,7 +98,7 @@ public class Accumulator {
     }
 
     public void setLeaderCards(String card){
-        developmentCards.append(card).append(splitter);
+        leaderCards.append(card).append(splitter);
     }
 
     public void setChosenProducts(String string){
@@ -130,6 +129,8 @@ public class Accumulator {
 
     public String buildLeaderUpdate(){
 
+        System.out.println("ciaoooo");
+        System.out.println(leaderCards.toString());
         String input = leaderCards.length()==0 ? "" : leaderCards.substring(0, leaderCards.length()-1);
         String[] selections = input.split(splitter);
         ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();

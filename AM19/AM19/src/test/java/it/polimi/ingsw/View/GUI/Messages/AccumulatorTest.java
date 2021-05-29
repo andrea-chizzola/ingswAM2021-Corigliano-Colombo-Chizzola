@@ -32,10 +32,10 @@ class AccumulatorTest {
 
     @Test
     void test3(){
-
+/*
         accumulator.setSwapTarget(1);
         accumulator.setSwapSource(2);
-        System.out.println(accumulator.buildSwap());
+        System.out.println(accumulator.buildSwap());*/
     }
 
 }

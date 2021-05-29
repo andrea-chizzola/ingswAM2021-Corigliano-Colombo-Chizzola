@@ -6,8 +6,7 @@ import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.GUIHandler;
-import it.polimi.ingsw.View.GUI.Messages.Accumulator;
-import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
+import it.polimi.ingsw.View.GUI.Messages.*;
 import javafx.animation.PauseTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -85,6 +84,12 @@ public class GameBoardController extends ViewController{
     private Button personalProduction;
     @FXML
     private Button actionButton;
+    @FXML
+    private Button swap1;
+    @FXML
+    private Button swap2;
+    @FXML
+    private Button swap3;
     @FXML
     private Circle tile;
     @FXML
@@ -171,6 +176,8 @@ public class GameBoardController extends ViewController{
 
     private void sendMessage(Event event) {
         getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
+        resetTurn();
+        actionButton.setDisable(true);
     }
 
     private void onQuitClicked(Event event) {
@@ -589,6 +596,19 @@ public class GameBoardController extends ViewController{
         thirdSlot.setDisable(!b);
     }
 
+    private void useSwap(){
+        helpUseSwap(swap1,1);
+        helpUseSwap(swap2,2);
+        helpUseSwap(swap3,3);
+    }
+
+    private void helpUseSwap(Button button, int shelf){
+        button.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
+            accumulator.setSwap(shelf);
+            button.setOpacity(0.5);
+            button.setDisable(true);});
+    }
+
     /**
      * adds the events handlers to the images associated with the leader cards
      */
@@ -603,7 +623,7 @@ public class GameBoardController extends ViewController{
 
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
-            imageView.setOpacity(0.5);
+            imageView.setOpacity(0.8);
             imageView.setDisable(true);
             imageView.setVisible(true);
             accumulator.setLeaderCards(number.toString());
@@ -644,25 +664,37 @@ public class GameBoardController extends ViewController{
         personalProduction.setDisable(true);
         personalProduction.setVisible(false);
 
-        resetImage(firstSlot);
-        resetImage(secondSlot);
-        resetImage(thirdSlot);
+        resetImage(firstSlot,1);
+        resetImage(secondSlot,1);
+        resetImage(thirdSlot,1);
 
-        resetImage(firstLeaderCard);
-        resetImage(secondLeaderCard);
-        resetImage(thirdLeaderCard);
-        resetImage(fourthLeaderCard);
+        resetImage(firstLeaderCard,0.5);
+        resetImage(secondLeaderCard,0.5);
+        resetImage(thirdLeaderCard,0.5);
+        resetImage(fourthLeaderCard,0.5);
+
+        swap1.setVisible(false);
+        swap2.setVisible(false);
+        swap3.setVisible(false);
     }
 
-    private void resetImage(ImageView imageView){
-        imageView.setOpacity(1);
+    private void resetImage(ImageView imageView, double opacity){
+        imageView.setOpacity(opacity);
     }
 
+    public void initializeLeaders(){
+        this.accumulator = new Accumulator();
+        this.builder = new BuildLeaderUpdate();
+        enableLeaderCards(true);
+        actionButton.setDisable(false);
+    }
 
     /**
      * sets the correct buttons and images to play the turn
      */
     public void setDoProduction(){
+        this.accumulator = new Accumulator();
+        this.builder = new BuildDoProduction();
         enableWarehouse(true);
         enableStrongbox(true);
         enableLeaderCards(true);
@@ -678,6 +710,8 @@ public class GameBoardController extends ViewController{
      * sets the correct buttons and images to play the turn
      */
     public void setBuyCard(){
+        this.accumulator = new Accumulator();
+        this.builder = new BuildBuyCard();
         enableWarehouse(true);
         enableStrongbox(true);
         enableSlots(true);
@@ -688,14 +722,28 @@ public class GameBoardController extends ViewController{
      * sets the correct buttons and images to play the turn
      */
     public void setManageLeader(){
+        this.accumulator = new Accumulator();
+        this.builder = new BuildLeaderAction();
         enableLeaderCards(true);
         actionButton.setDisable(false);
     }
-    /*
+
+
+    /**
+     * sets the correct buttons and images to play the turn
+     */
     public void setSwap(){
+        this.accumulator = new Accumulator();
+        this.builder = new BuildSwap();
         enableWarehouse(true);
+        swap1.setVisible(true);
+        swap1.setOpacity(1);
+        swap2.setVisible(true);
+        swap2.setOpacity(1);
+        swap3.setVisible(true);
+        swap3.setOpacity(1);
         actionButton.setDisable(false);
-    }*/
+    }
 
 
 
