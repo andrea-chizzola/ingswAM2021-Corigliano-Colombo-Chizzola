@@ -1,29 +1,23 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
-import it.polimi.ingsw.Client.ReducedModel.ReducedConfiguration;
+import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import it.polimi.ingsw.Exceptions.MalformedMessageException;
+
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
-import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.GUIHandler;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-public class GameBoardController extends ViewController{
+public class OtherBoardsController extends ViewController{
 
     @FXML
     private Pane pane;
@@ -60,18 +54,6 @@ public class GameBoardController extends ViewController{
     @FXML
     private ImageView thirdBottomResource;
     @FXML
-    private ImageView blackCross;
-    @FXML
-    private ImageView actionToken;
-    @FXML
-    private Button menuButton;
-    @FXML
-    private Button marketBoardButton;
-    @FXML
-    private Button otherPlayersButton;
-    @FXML
-    private Button quitButton;
-    @FXML
     private Circle tile;
     @FXML
     private Label coinsNumber;
@@ -81,10 +63,10 @@ public class GameBoardController extends ViewController{
     private Label stonesNumber;
     @FXML
     private Label servantsNumber;
+    @FXML
+    private Label nicknameLabel;
 
     private List<Coordinates> positions;
-
-    private List<Coordinates> blackPositions;
 
     private List<ImageView> warehouse;
 
@@ -94,16 +76,18 @@ public class GameBoardController extends ViewController{
 
     private List<ImageView> popeFavors;
 
+    private String nickname;
+
     private ReducedGameBoard model = GUIHandler.instance().getModel();
 
+    public OtherBoardsController(String nickname) {
+        this.nickname = nickname;
+    }
 
     @FXML
     private void initialize(){
 
-        menuButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMenuClicked);
-        marketBoardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMarketBoardClicked);
-        otherPlayersButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onOtherPlayersClicked);
-        quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onQuitClicked);
+        nicknameLabel.setText(nickname);
 
         warehouse = new ArrayList<>();
         setWarehouse(warehouse);
@@ -120,50 +104,75 @@ public class GameBoardController extends ViewController{
         positions = new ArrayList<>();
         setPositions(positions);
 
-        blackPositions = new ArrayList<>();
-        setBlackPositions(blackPositions);
-        blackCross.setVisible(false);
+        fillBoard();
 
     }
 
-    private void onQuitClicked(Event event) {
-        try {
-            String message = MessageFactory.buildDisconnection("Disconnection request.", model.getPersonalNickname());
-            getGUIReference().notifyInteraction(message);
-        } catch (MalformedMessageException e){
-            e.printStackTrace();
-        }
+    /**
+     * retrieves the status of the board associated to the player
+     */
+    public void fillBoard(){
+
+        ReducedBoard board = model.getBoard(nickname);
+
+        changePosition(board.getFaithPoints());
+        manageSections(board.getSections());
+        manageDevelopmentCards(board.getSlots());
+        manageLeaderCards(board.getLeadersID(), board.getLeadersStatus());
+        setResourceStrongbox(board.getStrongbox());
+        setResourceWarehouse(board.getWarehouse());
+
     }
 
-    private void onOtherPlayersClicked(Event event) {
+    /**
+     * changes the position of the player inside his faith track
+     * @param position represents the new player's position
+     */
+    private void changePosition(int position){
 
-        String myNickname = model.getPersonalNickname();
+        tile.setLayoutX(positions.get(position).getX());
+        tile.setLayoutY(positions.get(position).getY());
 
-        for(String nickname : model.getNicknames()){
-            if (!myNickname.equals(nickname)) {
-                GUIHandler.newWindow(new OtherBoardsController(nickname), "/FXML/otherBoards.fxml");
+    }
+
+    /**
+     * manages the selection and activation of the leader cards
+     * @param cards contains the leader cards
+     * @param status contains the status of each leader card
+     */
+    private void manageLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status) {
+
+        for (Integer slot : cards.keySet()) {
+            String path = model.getConfiguration().getLeaderCard(cards.get(slot)).getPath();
+            if (status.get(slot) == ItemStatus.ACTIVE) {
+                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
+                leaderCards.get(slot - 1).setImage(card);
+            } else {
+                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
+                leaderCards.get(slot - 1).setImage(card);
+                leaderCards.get(slot - 1).setOpacity(0.5);
             }
         }
-
     }
 
-    private void onMarketBoardClicked(Event event) {
+    /**
+     * manages the selection of the development cards
+     * @param slots contains the development cards
+     */
+    private void manageDevelopmentCards(Map<Integer, String> slots){
 
-    }
-
-    private void onMenuClicked(Event event) {
-
-    }
-
-    public Scene getScene() {
-        return pane.getScene();
+        for(Integer slot : slots.keySet()){
+            String path = model.getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
+            Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
+            developmentCards.get(slot - 1).setImage(card);
+        }
     }
 
     /**
      * manages the activation and deactivation of the pope favors
      * @param sections contains the status of each pope favor
      */
-    public void manageSections(List<ItemStatus> sections){
+    private void manageSections(List<ItemStatus> sections){
         for(ItemStatus status : sections){
             if(status == ItemStatus.ACTIVE){
                 int section = sections.indexOf(status);
@@ -187,62 +196,10 @@ public class GameBoardController extends ViewController{
     }
 
     /**
-     * manages the selection of the development cards
-     * @param slots contains the development cards
-     */
-    public void manageDevelopmentCards(Map<Integer, String> slots){
-        for(ImageView image : developmentCards){
-            image.setVisible(false);
-        }
-        for(Integer slot : slots.keySet()){
-            String path = model.getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
-            Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
-            developmentCards.get(slot - 1).setImage(card);
-            developmentCards.get(slot - 1).setVisible(true);
-        }
-    }
-
-    /**
-     * manages the selection and activation of the leader cards
-     * @param cards contains the leader cards
-     * @param status contains the status of each leader card
-     */
-    public void manageLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status){
-        for(ImageView image : leaderCards){
-            image.setVisible(false);
-        }
-        for(Integer slot : cards.keySet()){
-            String path = model.getConfiguration().getLeaderCard(cards.get(slot)).getPath();
-            if(status.get(slot) == ItemStatus.ACTIVE){
-                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
-                leaderCards.get(slot - 1).setImage(card);
-                leaderCards.get(slot - 1).setVisible(true);
-            }else{
-                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
-                leaderCards.get(slot - 1).setImage(card);
-                leaderCards.get(slot - 1).setVisible(true);
-                leaderCards.get(slot - 1).setOpacity(0.5);
-            }
-        }
-    }
-
-
-    public void manageTopToken(Optional<String> action){
-        if(action.isEmpty())
-            return;
-
-        String image = model.getConfiguration().getActionTokenCard(action.get()).getImage();
-        Image token = new Image("/Images/punchboard/" + image);
-        actionToken.setImage(token);
-        actionToken.setVisible(true);
-    }
-
-
-    /**
      * stores the selected resources inside the strongbox
      * @param strongbox contains the resources to store
      */
-    public void setResourceStrongbox(List<ResQuantity> strongbox){
+    private void setResourceStrongbox(List<ResQuantity> strongbox){
 
         for(ResQuantity resQuantity : strongbox) {
             switch (resQuantity.getResource().getColor()) {
@@ -266,7 +223,7 @@ public class GameBoardController extends ViewController{
      * stores the selected resources inside the warehouse
      * @param warehouseRes contains the resources to store
      */
-    public void setResourceWarehouse(List<ResQuantity> warehouseRes){
+    private void setResourceWarehouse(List<ResQuantity> warehouseRes){
 
         for(ResQuantity resQuantity : warehouseRes){
             if(resQuantity.getQuantity() == 0){
@@ -276,22 +233,18 @@ public class GameBoardController extends ViewController{
                     case YELLOW:
                         Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
                         break;
                     case BLUE:
                         Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image1);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
                         break;
                     case GRAY:
                         Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image2);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
                         break;
                     case PURPLE:
                         Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image3);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
                         break;
                 }
             }
@@ -332,52 +285,17 @@ public class GameBoardController extends ViewController{
     }
 
     /**
-     * changes the position of the player inside his faith track
-     * @param position represents the new player's position
-     */
-    public void changePosition(int position){
-
-        tile.setLayoutX(positions.get(position).getX());
-        tile.setLayoutY(positions.get(position).getY());
-
-    }
-
-    /**
-     * changes Lorenzo's position inside the faith track
-     * @param position represents Lorenzo's position
-     */
-    public void changeBlackPosition(int position){
-
-        blackCross.setLayoutX(blackPositions.get(position).getX());
-        blackCross.setLayoutY(blackPositions.get(position).getY());
-
-    }
-
-    /**
-     * makes Lorenzo's black cross visible in case of a single player game
-     */
-    public void visualizeBlackCross(){
-        blackCross.setVisible(true);
-    }
-
-    /**
      * sets the ImageView associated to each slot in the warehouse
      * @param warehouse contains the ImageViews associated the warehouse
      */
     private void setWarehouse(List<ImageView> warehouse){
 
         warehouse.add(topResource);
-        topResource.setVisible(false);
         warehouse.add(firstMidResource);
-        firstMidResource.setVisible(false);
         warehouse.add(secondMidResource);
-        secondMidResource.setVisible(false);
         warehouse.add(firstBottomResource);
-        firstBottomResource.setVisible(false);
         warehouse.add(secondBottomResource);
-        secondBottomResource.setVisible(false);
         warehouse.add(thirdBottomResource);
-        thirdBottomResource.setVisible(false);
 
     }
 
@@ -388,11 +306,8 @@ public class GameBoardController extends ViewController{
     private void setDevelopmentCards(List<ImageView> developmentCards){
 
         developmentCards.add(firstSlot);
-        firstSlot.setVisible(false);
         developmentCards.add(secondSlot);
-        secondSlot.setVisible(false);
         developmentCards.add(thirdSlot);
-        thirdSlot.setVisible(false);
 
     }
 
@@ -403,13 +318,9 @@ public class GameBoardController extends ViewController{
     private void setLeaderCards(List<ImageView> leaderCards){
 
         leaderCards.add(firstLeaderCard);
-        firstLeaderCard.setVisible(false);
         leaderCards.add(secondLeaderCard);
-        secondLeaderCard.setVisible(false);
         leaderCards.add(thirdLeaderCard);
-        thirdLeaderCard.setVisible(false);
         leaderCards.add(fourthLeaderCard);
-        fourthLeaderCard.setVisible(false);
 
     }
 
@@ -456,40 +367,6 @@ public class GameBoardController extends ViewController{
         positions.add(new Coordinates(734, 45));
         positions.add(new Coordinates(779, 45));
         positions.add(new Coordinates(817, 45));
-
-    }
-
-    /**
-     * sets the positions related to each tile of the faith track (only for Lorenzo's black cross)
-     * @param positions contains the coordinates of each tile
-     */
-    private void setBlackPositions(List<Coordinates> positions){
-
-        positions.add(new Coordinates(39, 95));
-        positions.add(new Coordinates(81, 95));
-        positions.add(new Coordinates(120, 95));
-        positions.add(new Coordinates(120, 64));
-        positions.add(new Coordinates(120, 30));
-        positions.add(new Coordinates(166, 30));
-        positions.add(new Coordinates(211, 30));
-        positions.add(new Coordinates(249, 30));
-        positions.add(new Coordinates(293, 30));
-        positions.add(new Coordinates(337,30));
-        positions.add(new Coordinates(337, 64));
-        positions.add(new Coordinates(337, 95));
-        positions.add(new Coordinates(378, 95));
-        positions.add(new Coordinates(420, 95));
-        positions.add(new Coordinates(465, 95));
-        positions.add(new Coordinates(509, 95));
-        positions.add(new Coordinates(552, 95));
-        positions.add(new Coordinates(552, 64));
-        positions.add(new Coordinates(552, 30));
-        positions.add(new Coordinates(594, 30));
-        positions.add(new Coordinates(633, 30));
-        positions.add(new Coordinates(675, 30));
-        positions.add(new Coordinates(717, 30));
-        positions.add(new Coordinates(759, 30));
-        positions.add(new Coordinates(805, 30));
 
     }
 
