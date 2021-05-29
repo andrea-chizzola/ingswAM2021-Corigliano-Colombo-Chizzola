@@ -27,43 +27,13 @@ public class GUIHandler extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        /*FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 575, 534);
         stage.setScene(scene);
         ViewController controller = fxmlLoader.getController();
         controller.attachGUIReference(gui);
         controller.attachModelReference(gui.getModelReference());
-        stage.show();*/
-
-        try {
-            /*List<String> transformations = new LinkedList<>();
-            transformations.add("MarbleBlue");
-            transformations.add("MarblePurple");
-            List<String> selected = new LinkedList<>();
-            selected.add("MarbleBlue.PNG");
-            selected.add("MarbleRed.PNG");
-            MarbleSelectionController controller = new MarbleSelectionController();
-            controller.attachGUIReference(gui);
-            controller.attachModelReference(gui.getModelReference());
-            ReducedGameBoard model = gui.getModelReference();
-            List<Marble> prova = new LinkedList<>();
-            prova.add(new MarbleBlue());
-            prova.add(new MarbleWhite());
-            prova.add(new MarbleRed());
-            model.setSelectedMarbles(prova);
-            newWindow(controller, "/FXML/marbleSelection.fxml");
-            controller.showMarblesUpdate(selected, transformations, 1);*/
-            List<Marble> prova1 = new LinkedList<>();
-            prova1.add(new MarbleBlue());
-            prova1.add(new MarbleWhite());
-            prova1.add(new MarbleRed());
-            List<Marble> prova2 = new LinkedList<>();
-            prova2.add(new MarbleBlue());
-            prova2.add(new MarblePurple());
-            gui.showMarblesUpdate(prova1, prova2, "test");
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        stage.show();
     }
 
     @Override
