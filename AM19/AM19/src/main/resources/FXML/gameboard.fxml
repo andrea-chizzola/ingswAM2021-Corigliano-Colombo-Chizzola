@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="500.0" fitWidth="870.0" pickOnBounds="true">
          <image>
@@ -190,5 +190,10 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
+      <Button fx:id="actionButton" layoutX="915.0" layoutY="460.0" mnemonicParsing="false" text="Perform Action">
+         <font>
+            <Font name="Times New Roman Italic" size="14.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

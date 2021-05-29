@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
+import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
 import javafx.animation.PauseTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -83,6 +84,8 @@ public class GameBoardController extends ViewController{
     @FXML
     private Button personalProduction;
     @FXML
+    private Button actionButton;
+    @FXML
     private Circle tile;
     @FXML
     private Label coinsNumber;
@@ -108,9 +111,9 @@ public class GameBoardController extends ViewController{
     private List<ImageView> popeFavors;
 
     private DecksController decksController;
-
     private MarketboardController marketboardController;
     private Accumulator accumulator;
+    private BuildMessage builder;
 
 
     @FXML
@@ -121,7 +124,9 @@ public class GameBoardController extends ViewController{
         otherPlayersButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onOtherPlayersClicked);
         quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onQuitClicked);
         decksButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onDecksClicked);
+        actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, this::sendMessage);
 
+        actionButton.setDisable(true);
         errorStrongbox.setVisible(false);
 
         warehouse = new ArrayList<>();
@@ -161,7 +166,11 @@ public class GameBoardController extends ViewController{
         useSlots();
         useLeaders();
         usePersonalProduction();
-        //resetTurn();
+        resetTurn();
+    }
+
+    private void sendMessage(Event event) {
+        getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
     }
 
     private void onQuitClicked(Event event) {
@@ -627,6 +636,7 @@ public class GameBoardController extends ViewController{
      * resets all the images view and buttons that was changed during the game
      */
     public void resetTurn(){
+        actionButton.setDisable(true);
         enableWarehouse(false);
         enableStrongbox(false);
         enableLeaderCards(false);
@@ -642,7 +652,6 @@ public class GameBoardController extends ViewController{
         resetImage(secondLeaderCard);
         resetImage(thirdLeaderCard);
         resetImage(fourthLeaderCard);
-
     }
 
     private void resetImage(ImageView imageView){
@@ -661,6 +670,7 @@ public class GameBoardController extends ViewController{
         personalProduction.setOpacity(1);
         personalProduction.setDisable(false);
         personalProduction.setVisible(true);
+        actionButton.setDisable(false);
 
     }
 
@@ -671,6 +681,7 @@ public class GameBoardController extends ViewController{
         enableWarehouse(true);
         enableStrongbox(true);
         enableSlots(true);
+        actionButton.setDisable(false);
     }
 
     /**
@@ -678,10 +689,12 @@ public class GameBoardController extends ViewController{
      */
     public void setManageLeader(){
         enableLeaderCards(true);
+        actionButton.setDisable(false);
     }
     /*
     public void setSwap(){
         enableWarehouse(true);
+        actionButton.setDisable(false);
     }*/
 
 
