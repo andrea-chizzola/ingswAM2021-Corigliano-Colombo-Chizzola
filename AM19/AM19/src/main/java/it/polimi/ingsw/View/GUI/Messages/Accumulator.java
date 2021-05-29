@@ -70,7 +70,10 @@ public class Accumulator {
     public void setSwap(int shelf){
         if(sourceSet)
             this.target = shelf;
-        else this.source = shelf;
+        else {
+            this.source = shelf;
+            this.sourceSet = true;
+        }
     }
 
     public void setPosition(int position){

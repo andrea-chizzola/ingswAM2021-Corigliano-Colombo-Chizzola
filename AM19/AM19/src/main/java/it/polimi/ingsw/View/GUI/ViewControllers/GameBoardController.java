@@ -171,6 +171,7 @@ public class GameBoardController extends ViewController{
         useSlots();
         useLeaders();
         usePersonalProduction();
+        useSwap();
         resetTurn();
     }
 
@@ -603,9 +604,9 @@ public class GameBoardController extends ViewController{
     }
 
     private void helpUseSwap(Button button, int shelf){
-        button.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
+        button.setOnAction(action -> {
             accumulator.setSwap(shelf);
-            button.setOpacity(0.5);
+            button.setOpacity(0.3);
             button.setDisable(true);});
     }
 

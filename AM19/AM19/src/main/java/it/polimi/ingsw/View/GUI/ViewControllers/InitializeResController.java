@@ -171,7 +171,7 @@ public class InitializeResController extends ViewController{
 
     private void sendMessage(Event event) {
         getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
-        resource1.getScene().getWindow().hide();
+        anchorPane.getScene().getWindow().hide();
     }
 
     private void setItemHandlers(List<MenuItem> list, String resource){

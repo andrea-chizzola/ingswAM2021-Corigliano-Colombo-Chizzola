@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="anchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="anchorPane" fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <MenuButton fx:id="resource1" layoutX="316.0" layoutY="141.0" mnemonicParsing="false" text="MenuButton">
+      <MenuButton fx:id="resource1" layoutX="316.0" layoutY="141.0" mnemonicParsing="false" text="Resource">
         <items>
           <MenuItem fx:id="coin1" mnemonicParsing="false" text="COIN" />
           <MenuItem fx:id="shield1" mnemonicParsing="false" text="SHIELD" />
@@ -18,7 +18,7 @@
             <MenuItem fx:id="stone1" mnemonicParsing="false" text="STONE" />
         </items>
       </MenuButton>
-      <MenuButton fx:id="resource2" layoutX="316.0" layoutY="190.0" mnemonicParsing="false" text="MenuButton">
+      <MenuButton fx:id="resource2" layoutX="316.0" layoutY="190.0" mnemonicParsing="false" text="Resource">
          <items>
             <MenuItem fx:id="coin2" mnemonicParsing="false" text="COIN" />
             <MenuItem fx:id="shield2" mnemonicParsing="false" text="SHIELD" />
@@ -26,7 +26,7 @@
             <MenuItem fx:id="stone2" mnemonicParsing="false" text="STONE" />
          </items>
       </MenuButton>
-      <MenuButton fx:id="resource3" layoutX="315.0" layoutY="241.0" mnemonicParsing="false" text="MenuButton">
+      <MenuButton fx:id="resource3" layoutX="315.0" layoutY="241.0" mnemonicParsing="false" text="Resource">
          <items>
             <MenuItem fx:id="coin3" mnemonicParsing="false" text="COIN" />
             <MenuItem fx:id="shield3" mnemonicParsing="false" text="SHIELD" />
@@ -34,7 +34,7 @@
             <MenuItem fx:id="stone3" mnemonicParsing="false" text="STONE" />
          </items>
       </MenuButton>
-      <MenuButton fx:id="resource4" layoutX="314.0" layoutY="292.0" mnemonicParsing="false" text="MenuButton">
+      <MenuButton fx:id="resource4" layoutX="314.0" layoutY="292.0" mnemonicParsing="false" text="Resource">
          <items>
             <MenuItem fx:id="coin4" mnemonicParsing="false" text="COIN" />
             <MenuItem fx:id="shield4" mnemonicParsing="false" text="SHIELD" />

@@ -55,8 +55,8 @@ public class TurnSelectionController extends ViewController{
         }
 
         /*controller = new MarketboardController();
-        GUIHandler.createHelperWindow(controller, "/FXML/marketboard.fxml");
-        bindActions();*/
+        GUIHandler.createHelperWindow(controller, "/FXML/marketboard.fxml");*/
+        bindActions();
     }
 
 
