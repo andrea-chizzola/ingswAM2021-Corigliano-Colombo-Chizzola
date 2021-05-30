@@ -32,7 +32,7 @@ public class CLIPainter{
     private static final int END_BOX_WIDTH = 60;
     private static final int END_BOX_LENGTH = 20;
 
-    private static CLIColors baseFont = CLIColors.F_BLACK;
+    private static CLIColors baseFont = CLIColors.F_WHITE;
 
     /**
      * this method prints the logo of the game

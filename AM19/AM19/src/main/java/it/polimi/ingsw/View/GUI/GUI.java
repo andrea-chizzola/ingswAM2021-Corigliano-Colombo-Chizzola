@@ -22,24 +22,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GUI implements View, SubjectView {
-
-    //TODO QUI VA LA LISTA DEI CONTROLLER USATI/CHE SERVE RICHIAMARE
     private List<ViewController> controllers = new ArrayList<>();
 
     private GameBoardController gameBoardController;
-
-    private TurnSelectionController turnSelectionController;
+    private Map<String, ViewController> playerBoards;
 
     private LoadingController loadingController;
-
-    private DecksController decksController;
 
     private ReducedGameBoard model;
 
     private InteractionObserver interactionObserver;
-
-    //TODO: le immagini dovrebbero essere ricostruite dalla GUI. Ai controller dovrebbero arrivare i path già pronti
-
     private final String path = "/Images/front/";
 
     public GUI (ReducedGameBoard model){
@@ -56,13 +48,25 @@ public class GUI implements View, SubjectView {
 
     @Override
     public void initialize() {
+        List<String> nicknames = model.getNicknames();
+        String self = model.getPersonalNickname();
 
-        gameBoardController = new GameBoardController();
-        controllers.add(gameBoardController);
+        /*gameBoardController = new GameBoardController();
+        playerBoards.put(self, gameBoardController);
         gameBoardController.attachGUIReference(this);
         gameBoardController.attachModelReference(model);
         Platform.runLater(() -> GUIHandler.newWindow(gameBoardController, "/FXML/gameboard.fxml"));
 
+        for(String name : nicknames){
+            if(!name.equals(self)) {
+                gameBoardController.addPlayer(name);
+                DummyController controller = new DummyController();
+                playerBoards.put(name, controller);
+                controller.attachGUIReference(this);
+                controller.attachModelReference(model);
+                Platform.runLater(() -> GUIHandler.createHelperWindow(controller, "/FXML/gameboard.fxml"));
+            }
+        }*/
     }
 
     @Override
@@ -154,45 +158,47 @@ public class GUI implements View, SubjectView {
     @Override
     public void showBoxes(List<ResQuantity> warehouse, List<ResQuantity> strongBox, String nickName) {
 
-        if(!nickName.equals(model.getPersonalNickname())) return;
+        /*DummyController controller = playerBoards.get(nickname);
 
         Platform.runLater(() -> {
-            gameBoardController.setResourceWarehouse(warehouse);
-            gameBoardController.setResourceStrongbox(strongBox);
-        });
+            controller.setResourceWarehouse(warehouse);
+            controller.setResourceStrongbox(strongBox);
+        });*/
 
     }
 
     @Override
     public void showSlotsUpdate(Map<Integer, String> slots, String nickName) {
 
-        if(!nickName.equals(model.getPersonalNickname())) return;
+        /*DummyController controller = playerBoards.get(nickname);
 
-        Platform.runLater(() -> gameBoardController.manageDevelopmentCards(slots));
+        Platform.runLater(() -> controller.manageDevelopmentCards(slots));*/
 
     }
 
     @Override
     public void showLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status, String nickName) {
 
-        if(!nickName.equals(model.getPersonalNickname())) return;
+        /*DummyController controller = playerBoards.get(nickname);
 
-        Platform.runLater(() -> gameBoardController.manageLeaderCards(cards, status));
+        Platform.runLater(() -> controller.manageLeaderCards(cards, status));*/
 
     }
 
     @Override
     public void showFaithUpdate(Map<String, Integer> faith, Map<String, List<ItemStatus>> sections, Optional<Integer> faithLorenzo, Optional<List<ItemStatus>> sectionsLorenzo) {
 
-        String nickname = model.getPersonalNickname();
-        Platform.runLater(() -> {
-            gameBoardController.changePosition(faith.get(nickname));
-            gameBoardController.manageSections(sections.get(nickname));
-            if(faithLorenzo.isPresent() && sectionsLorenzo.isPresent()){
-                gameBoardController.visualizeBlackCross();
-                gameBoardController.changeBlackPosition(faithLorenzo.get());
-            }
-        });
+       /* for(String name : faith.keySet()) {
+            DummyController controller = playerBoards.get(name);
+            Platform.runLater(() -> {
+                gameBoardController.changePosition(faith.get(name));
+                gameBoardController.manageSections(sections.get(name));
+                if (faithLorenzo.isPresent() && sectionsLorenzo.isPresent()) {
+                    gameBoardController.visualizeBlackCross();
+                    gameBoardController.changeBlackPosition(faithLorenzo.get());
+                }
+            });
+        }*/
 
     }
 
@@ -277,6 +283,16 @@ public class GUI implements View, SubjectView {
         return true;
     }
 
+    /**
+     * this method is used to show the board of a player (different from the current one)
+     * @param nickname is the nickname of the target player
+     */
+    @Override
+    public void showOthers(String nickname) {
+        /*DummyController controller = playerBoards.get(nickname);
+        Platform.runLater(()-> controller.setVisible());*/
+    }
+
     @Override
     public void attachInteractionObserver(InteractionObserver observer) {
         interactionObserver = observer;
@@ -297,19 +313,4 @@ public class GUI implements View, SubjectView {
         interactionObserver.updatePersonalNickname(nickname);
     }
 
-
-    public void showLoadingScreen(){
-
-        LoadingController loadingController = new LoadingController();
-        //Platform.runLater(() -> loadRoot(loadingController.getScene(), "/FXML/loading.fxml"));
-
-    }
-
-    public DecksController getDecksController() {
-        return decksController;
-    }
-
-    public void setDecksController(DecksController decksController) {
-        this.decksController = decksController;
-    }
 }

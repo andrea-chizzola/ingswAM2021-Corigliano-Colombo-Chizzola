@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.*;
+import it.polimi.ingsw.View.PlayerInteractions.SeeOthersInteraction;
 import javafx.animation.PauseTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -78,8 +79,8 @@ public class GameBoardController extends ViewController{
     private Button marketBoardButton;
     @FXML
     private Button decksButton;
-    @FXML
-    private Button otherPlayersButton;
+    /*@FXML
+    private Button otherPlayersButton;*/
     @FXML
     private Button quitButton;
     @FXML
@@ -134,6 +135,8 @@ public class GameBoardController extends ViewController{
     private Label extraShelf1Label;
     @FXML
     private Label extraShelfString;
+    @FXML
+    private MenuButton otherPlayersMenu;
 
 
     private List<Coordinates> positions;
@@ -166,7 +169,7 @@ public class GameBoardController extends ViewController{
 
         menuButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMenuClicked);
         marketBoardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMarketBoardClicked);
-        otherPlayersButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onOtherPlayersClicked);
+        //otherPlayersButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onOtherPlayersClicked);
         quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onQuitClicked);
         decksButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onDecksClicked);
         actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, this::sendMessage);
@@ -241,7 +244,7 @@ public class GameBoardController extends ViewController{
         }
     }
 
-    private void onOtherPlayersClicked(Event event) {
+    /*private void onOtherPlayersClicked(Event event) {
 
         String myNickname = getModelReference().getPersonalNickname();
 
@@ -254,6 +257,16 @@ public class GameBoardController extends ViewController{
             }
         }
 
+    }*/
+
+    private void onOtherPlayersClicked(String nickname) {
+        getGUIReference().notifyInteraction(new SeeOthersInteraction(nickname));
+    }
+
+    public void addPlayer(String nickname){
+        MenuItem item = new MenuItem(nickname);
+        otherPlayersMenu.getItems().add(item);
+        item.setOnAction(e -> onOtherPlayersClicked(nickname));
     }
 
     private void onMarketBoardClicked(Event event) {

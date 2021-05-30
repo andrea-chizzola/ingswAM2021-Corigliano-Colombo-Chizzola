@@ -374,7 +374,7 @@ public class ClientController implements ClientConnectionListener, InteractionOb
         Map<String, Integer> map = message.getEndGamePoints();
         view.showEndGame(map);
 
-        //Here the connection should be closed (client side)
+        //TODO Here the connection should be closed (client side)
     }
 
     /**
