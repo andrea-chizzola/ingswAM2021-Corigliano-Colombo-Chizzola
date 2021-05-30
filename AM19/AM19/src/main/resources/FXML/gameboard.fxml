@@ -245,5 +245,35 @@
             <Font size="10.0" />
          </font>
       </MenuButton>
+      <ImageView fx:id="extraShelf1" fitHeight="26.0" fitWidth="31.0" layoutX="644.0" layoutY="566.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="extraShelf2" fitHeight="26.0" fitWidth="31.0" layoutX="644.0" layoutY="613.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <Label fx:id="extraShelf2Label" layoutX="690.0" layoutY="618.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="extraShelf1Label" layoutX="690.0" layoutY="571.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="extraShelfString" layoutX="641.0" layoutY="525.0" prefHeight="17.0" prefWidth="106.0" text="EXTRA SHELVES" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorExtraShelf" layoutX="641.0" layoutY="542.0" prefHeight="17.0" prefWidth="106.0" text="Empty resource!" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

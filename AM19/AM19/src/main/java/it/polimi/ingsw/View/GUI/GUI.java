@@ -8,7 +8,6 @@ import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.ResourceColor;
-import it.polimi.ingsw.View.GUI.Messages.Accumulator;
 import it.polimi.ingsw.View.GUI.ViewControllers.*;
 import it.polimi.ingsw.View.GUI.ViewControllers.EndGameController;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
