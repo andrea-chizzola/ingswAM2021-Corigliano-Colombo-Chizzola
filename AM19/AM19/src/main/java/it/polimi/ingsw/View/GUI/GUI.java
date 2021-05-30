@@ -223,13 +223,12 @@ public class GUI implements View, SubjectView {
 
     @Override
     public void selectLeaderAction() {
-
         Platform.runLater(()-> gameBoardController.initializeLeaders());
     }
 
     @Override
     public void selectMarketAction() {
-
+        Platform.runLater(()-> gameBoardController.setMarketAction());
     }
 
     @Override

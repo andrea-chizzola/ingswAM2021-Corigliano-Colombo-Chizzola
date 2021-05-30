@@ -156,7 +156,8 @@ public class MarbleSelectionController extends ViewController{
             accumulator.setMarblesActions(action);
             accumulator.setMarblesActions(slots);
         }
-        System.out.println(accumulator.buildActionMarble());
+        getGUIReference().notifyInteraction(accumulator.buildActionMarble());
+        mainPane.getScene().getWindow().hide();
     }
 
     private void hideTransformations(){

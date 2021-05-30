@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -91,6 +93,12 @@ public class GameBoardController extends ViewController{
     @FXML
     private Button swap3;
     @FXML
+    private Button slotButton1;
+    @FXML
+    private Button slotButton2;
+    @FXML
+    private Button slotButton3;
+    @FXML
     private Circle tile;
     @FXML
     private Label coinsNumber;
@@ -102,12 +110,27 @@ public class GameBoardController extends ViewController{
     private Label servantsNumber;
     @FXML
     private Label errorStrongbox;
+    @FXML
+    private MenuButton leader1select;
+    @FXML
+    private MenuItem INSERT1;
+    @FXML
+    private MenuItem DISCARD1;
+    @FXML
+    private MenuButton leader2select;
+    @FXML
+    private MenuItem INSERT2;
+    @FXML
+    private MenuItem DISCARD2;
 
     private List<Coordinates> positions;
 
     private List<Coordinates> blackPositions;
 
     private List<ImageView> warehouse;
+
+    private List<ImageView> warehouse2;
+    private List<ImageView> warehouse3;
 
     private List<ImageView> developmentCards;
 
@@ -117,6 +140,7 @@ public class GameBoardController extends ViewController{
 
     private DecksController decksController;
     private MarketboardController marketboardController;
+    private ChosenResourcesController chosenResourcesController;
     private Accumulator accumulator;
     private BuildMessage builder;
 
@@ -135,6 +159,13 @@ public class GameBoardController extends ViewController{
         errorStrongbox.setVisible(false);
 
         warehouse = new ArrayList<>();
+        warehouse2 = new ArrayList<>();
+        warehouse3 = new ArrayList<>();
+        warehouse2.add(firstMidResource);
+        warehouse2.add(secondMidResource);
+        warehouse3.add(firstBottomResource);
+        warehouse3.add(secondBottomResource);
+        warehouse3.add(thirdBottomResource);
         setWarehouse(warehouse);
 
         developmentCards = new ArrayList<>();
@@ -169,9 +200,11 @@ public class GameBoardController extends ViewController{
         useWarehouse();
         useStrongbox();
         useSlots();
+        useSlotsButtons();
         useLeaders();
         usePersonalProduction();
         useSwap();
+        useLeaderSelection();
         resetTurn();
     }
 
@@ -329,7 +362,7 @@ public class GameBoardController extends ViewController{
      * @param warehouseRes contains the resources to store
      */
     public void setResourceWarehouse(List<ResQuantity> warehouseRes){
-
+/*
         for(ResQuantity resQuantity : warehouseRes){
             if(resQuantity.getQuantity() == 0){
                 warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(false);
@@ -339,30 +372,89 @@ public class GameBoardController extends ViewController{
                         Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image);
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                       // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
                         break;
                     case BLUE:
                         Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image1);
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
                         break;
                     case GRAY:
                         Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image2);
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
                         break;
                     case PURPLE:
                         Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image3);
                         warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                       // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        break;
+                }
+            }
+        }*/
+
+        for(int i=0; i<warehouseRes.size(); i++){
+            ResQuantity resQuantity = warehouseRes.get(i);
+            if(resQuantity.getQuantity() == 0){
+                insertWarehouse(i+1,0,null);
+            }else{
+                switch (resQuantity.getResource().getColor()) {
+                    case YELLOW:
+                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image);
+                        // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        break;
+                    case BLUE:
+                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image1);
+                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        break;
+                    case GRAY:
+                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image2);
+                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        break;
+                    case PURPLE:
+                        Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image3);
+                        // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
                         break;
                 }
             }
         }
+    }
 
+    private void insertWarehouse(int shelf, int quantity, Image image){
+        if(shelf == 1){
+            if(quantity == 1) {
+                topResource.setImage(image);
+                topResource.setVisible(true);
+                topResource.setOpacity(1);
+            }else
+                topResource.setVisible(false);
+        }
+        if(shelf == 2)
+            for (int i = 0; i < warehouse2.size(); i++) {
+               if(i<quantity) {
+                   warehouse2.get(i).setImage(image);
+                   warehouse2.get(i).setVisible(true);
+                   warehouse2.get(i).setOpacity(1);
+               }else
+                   warehouse2.get(i).setVisible(false);
+            }
+
+        if(shelf == 3)
+            for (int i = 0; i < warehouse3.size(); i++) {
+                if(i<quantity) {
+                    warehouse3.get(i).setImage(image);
+                    warehouse3.get(i).setVisible(true);
+                    warehouse3.get(i).setOpacity(1);
+                }else
+                    warehouse3.get(i).setVisible(false);
+            }
     }
 
     /**
@@ -499,14 +591,12 @@ public class GameBoardController extends ViewController{
     }
 
     private void helpUseWarehouse(ImageView imageView,Integer slot){
-        List<ResQuantity> list = getModelReference().getBoard(getModelReference().getPersonalNickname()).getWarehouse();
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             imageView.setOpacity(0.5);
             imageView.setDisable(true);
             imageView.setVisible(true);
-            accumulator.setWarehouse(slot.toString());
-            accumulator.setWarehouse(list.get(slot-1).getResource().getColor().toString());});
+            accumulator.setWarehouse(slot);});
     }
 
     /**
@@ -583,9 +673,9 @@ public class GameBoardController extends ViewController{
             imageView.setOpacity(0.5);
             imageView.setDisable(true);
             imageView.setVisible(true);
-            accumulator.setDevelopmentCards(slot.toString());
-            accumulator.setSlot(slot);});
+            accumulator.setDevelopmentCards(slot.toString());});
     }
+
 
     /**
      * enable or disable the event handlers of the images associated with the slots
@@ -595,6 +685,26 @@ public class GameBoardController extends ViewController{
         firstSlot.setDisable(!b);
         secondSlot.setDisable(!b);
         thirdSlot.setDisable(!b);
+    }
+
+    private void useSlotsButtons(){
+        helpUseSlotsButtons(slotButton1,1);
+        helpUseSlotsButtons(slotButton2,2);
+        helpUseSlotsButtons(slotButton3,3);
+    }
+
+    private void helpUseSlotsButtons(Button button, Integer slot){
+
+        button.setOnAction(action -> {
+            button.setOpacity(0.5);
+            enableSlotsButtons(false);
+            accumulator.setSlot(slot);});
+    }
+
+    private void enableSlotsButtons(Boolean b){
+        slotButton1.setDisable(!b);
+        slotButton2.setDisable(!b);
+        slotButton3.setDisable(!b);
     }
 
     private void useSwap(){
@@ -608,6 +718,12 @@ public class GameBoardController extends ViewController{
             accumulator.setSwap(shelf);
             button.setOpacity(0.3);
             button.setDisable(true);});
+    }
+
+    private void enableSwap(Boolean b){
+        swap1.setDisable(!b);
+        swap2.setDisable(!b);
+        swap3.setDisable(!b);
     }
 
     /**
@@ -627,8 +743,7 @@ public class GameBoardController extends ViewController{
             imageView.setOpacity(0.8);
             imageView.setDisable(true);
             imageView.setVisible(true);
-            accumulator.setLeaderCards(number.toString());
-            accumulator.setLeaderCard(number);});
+            accumulator.setLeaderCards(number.toString());});
     }
 
     /**
@@ -640,6 +755,27 @@ public class GameBoardController extends ViewController{
         secondLeaderCard.setDisable(!b);
         thirdLeaderCard.setDisable(!b);
         fourthLeaderCard.setDisable(!b);
+    }
+
+
+    private void useLeaderSelection(){
+        helpUseLeaderSelection(leader1select,INSERT1,1,"INSERT");
+        helpUseLeaderSelection(leader2select,INSERT2,2,"INSERT");
+        helpUseLeaderSelection(leader1select,DISCARD1,1,"DISCARD");
+        helpUseLeaderSelection(leader2select,DISCARD2,2,"DISCARD");
+    }
+
+    private void helpUseLeaderSelection(MenuButton button, MenuItem item, int position, String action){
+        item.setOnAction(event ->{
+            accumulator.setAction(action);
+            accumulator.setLeaderCard(position);
+            enableLeaderSelections(false);
+            button.setOpacity(0.3);});
+    }
+
+    private void enableLeaderSelections(boolean b){
+        leader1select.setDisable(!b);
+        leader2select.setDisable(!b);
     }
 
     /**
@@ -677,6 +813,13 @@ public class GameBoardController extends ViewController{
         swap1.setVisible(false);
         swap2.setVisible(false);
         swap3.setVisible(false);
+
+        slotButton1.setVisible(false);
+        slotButton2.setVisible(false);
+        slotButton3.setVisible(false);
+
+        leader1select.setVisible(false);
+        leader2select.setVisible(false);
     }
 
     private void resetImage(ImageView imageView, double opacity){
@@ -705,6 +848,20 @@ public class GameBoardController extends ViewController{
         personalProduction.setVisible(true);
         actionButton.setDisable(false);
 
+        chosenResourcesController = new ChosenResourcesController();
+        chosenResourcesController.attachGUIReference(getGUIReference());
+        chosenResourcesController.attachModelReference(getModelReference());
+        chosenResourcesController.setAccumulator(accumulator);
+        GUIHandler.createHelperWindow(chosenResourcesController, "/FXML/chosenResources.fxml");
+
+    }
+
+    /**
+     * sets the correct buttons and images to play the turn
+     */
+    public void setMarketAction(){
+        resetTurn();
+        marketboardController.setAccumulator();
     }
 
     /**
@@ -713,9 +870,16 @@ public class GameBoardController extends ViewController{
     public void setBuyCard(){
         this.accumulator = new Accumulator();
         this.builder = new BuildBuyCard();
+        decksController.setAccumulator(accumulator);
         enableWarehouse(true);
         enableStrongbox(true);
-        enableSlots(true);
+        enableSlotsButtons(true);
+        slotButton1.setVisible(true);
+        slotButton2.setVisible(true);
+        slotButton3.setVisible(true);
+        slotButton1.setOpacity(1);
+        slotButton2.setOpacity(1);
+        slotButton3.setOpacity(1);
         actionButton.setDisable(false);
     }
 
@@ -725,7 +889,13 @@ public class GameBoardController extends ViewController{
     public void setManageLeader(){
         this.accumulator = new Accumulator();
         this.builder = new BuildLeaderAction();
-        enableLeaderCards(true);
+        enableLeaderSelections(true);
+        if(firstLeaderCard.isVisible())
+            leader1select.setVisible(true);
+        if(secondLeaderCard.isVisible())
+            leader2select.setVisible(true);
+        leader1select.setOpacity(1);
+        leader2select.setOpacity(1);
         actionButton.setDisable(false);
     }
 
@@ -737,6 +907,7 @@ public class GameBoardController extends ViewController{
         this.accumulator = new Accumulator();
         this.builder = new BuildSwap();
         enableWarehouse(true);
+        enableSwap(true);
         swap1.setVisible(true);
         swap1.setOpacity(1);
         swap2.setVisible(true);

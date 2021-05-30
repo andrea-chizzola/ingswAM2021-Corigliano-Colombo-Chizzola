@@ -53,30 +53,37 @@ public class TurnSelectionController extends ViewController{
             Button b = turns.get(s);
             b.setDisable(false);
         }
+        bindActions();
     }
 
 
     private void bindActions(){
 
         GUI gui = getGUIReference();
-        TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                gui.notifyInteraction(new TakeResourcesInteraction()));
+        TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+                gui.notifyInteraction(new TakeResourcesInteraction());
+                mainPane.getScene().getWindow().hide();});
 
-        ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                gui.notifyInteraction(new ManageLeaderInteraction()));
+        ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+                gui.notifyInteraction(new ManageLeaderInteraction());
+                mainPane.getScene().getWindow().hide();});
 
-        BuyCardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                gui.notifyInteraction(new BuyCardInteraction()));
+        BuyCardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+                gui.notifyInteraction(new BuyCardInteraction());
+                mainPane.getScene().getWindow().hide();});
 
-        DoProduction.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                gui.notifyInteraction(new DoProductionInteraction()));
+        DoProduction.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+                gui.notifyInteraction(new DoProductionInteraction());
+                mainPane.getScene().getWindow().hide();});
 
-        SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                gui.notifyInteraction(new SwapInteraction()));
+        SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+                gui.notifyInteraction(new SwapInteraction());
+                mainPane.getScene().getWindow().hide();});
 
         ExitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
                 gui.notifyInteraction(MessageFactory.buildExit("End of turn selection"));
+                mainPane.getScene().getWindow().hide();
             } catch (MalformedMessageException e) {
                 e.printStackTrace();
                 //TODO exit from client

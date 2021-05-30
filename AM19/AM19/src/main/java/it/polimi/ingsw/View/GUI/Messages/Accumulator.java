@@ -29,7 +29,8 @@ public class Accumulator {
     private boolean sourceSet = false;
 
     //
-    private StringBuilder warehouse = new StringBuilder();
+   // private StringBuilder warehouse = new StringBuilder();
+    private Map<Integer,Integer> warehouse = new HashMap<>();
     private StringBuilder strongbox = new StringBuilder();
 
     //buy_card
@@ -41,7 +42,7 @@ public class Accumulator {
     private StringBuilder leaderCards = new StringBuilder();
     private StringBuilder chosenProducts = new StringBuilder();
     private StringBuilder chosenMaterials = new StringBuilder();
-    private boolean personalProduction;
+    private boolean personalProduction = false;
 
     //manage_leader
     private int leaderCard;
@@ -83,9 +84,13 @@ public class Accumulator {
     public void setSlot(int slot){
         this.slot = slot;
     }
-
+/*
     public void setWarehouse(String warehouse){
         this.warehouse.append(warehouse).append(splitter);
+    }*/
+
+    public void setWarehouse(int shelf){
+        warehouse.put(shelf,warehouse.getOrDefault(shelf,0)+1);
     }
 
     public void setStrongbox(String strongbox){
@@ -130,10 +135,17 @@ public class Accumulator {
         }
     }
 
+    private String getStringWarehouse(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i : warehouse.keySet()){
+            stringBuilder.append(i).append(splitter);
+            stringBuilder.append(warehouse.get(i)).append(splitter);
+        }
+        return stringBuilder.length()==0 ? "" : stringBuilder.substring(0, stringBuilder.length()-1);
+    }
+
     public String buildLeaderUpdate(){
 
-        System.out.println("ciaoooo");
-        System.out.println(leaderCards.toString());
         String input = leaderCards.length()==0 ? "" : leaderCards.substring(0, leaderCards.length()-1);
         String[] selections = input.split(splitter);
         ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();
@@ -187,10 +199,10 @@ public class Accumulator {
 
         ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();
         String id = model.getDecks().get(position-1);
-        //System.out.println("Debug");
+
         DevelopmentCard card = model.getConfiguration().getDevelopmentCard(id);
 
-        String warehouse =  this.warehouse.length()==0 ? "" : this.warehouse.substring(0, this.warehouse.length()-1);
+        String warehouse = getStringWarehouse();
         String strongbox = this.strongbox.length()==0 ? "" : this.strongbox.substring(0, this.strongbox.length()-1);
 
         try {
@@ -209,7 +221,8 @@ public class Accumulator {
         String developmentCards = this.developmentCards.length()==0 ? "" : this.developmentCards.substring(0,this.developmentCards.length()-1);
         String leaderMessage = helpCards(model.getBoard(model.getCurrentPlayer()).getLeadersID(),leaderCards);
         String devMessage = helpCards(model.getBoard(model.getCurrentPlayer()).getSlots(),developmentCards);
-        String warehouse =  this.warehouse.length()==0 ? "" : this.warehouse.substring(0, this.warehouse.length()-1);
+        //String warehouse =  this.warehouse.length()==0 ? "" : this.warehouse.substring(0, this.warehouse.length()-1);
+        String warehouse = getStringWarehouse();
         String strongbox = this.strongbox.length()==0 ? "" : this.strongbox.substring(0, this.strongbox.length()-1);
         String chosenProducts = this.chosenProducts.length()==0 ? "" : this.chosenProducts.substring(0, this.chosenProducts.length()-1);
         String chosenMaterials = this.chosenMaterials.length()==0 ? "" : this.chosenMaterials.substring(0, this.chosenMaterials.length()-1);

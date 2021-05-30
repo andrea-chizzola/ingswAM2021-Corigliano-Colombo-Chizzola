@@ -1,4 +1,8 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
+import it.polimi.ingsw.View.GUI.Messages.Accumulator;
+import it.polimi.ingsw.View.GUI.Messages.BuildMarketSelection;
+import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
+import it.polimi.ingsw.View.View;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -39,26 +43,35 @@ public class MarketboardController extends ViewController {
     List<ImageView> viewTray;
     List<Button> positions;
 
+    Accumulator accumulator;
+    BuildMessage builder;
+
 
     @FXML
     public void initialize(){
         column1.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                System.out.println("column1"));
+                doAction("COLUMN",1));
         column2.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                System.out.println("column2"));
+                doAction("COLUMN",2));
         column3.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                System.out.println("column3"));
+                doAction("COLUMN",3));
         column4.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                System.out.println("column4"));
+                doAction("COLUMN",4));
         row1.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                System.out.println("row1"));
+                doAction("ROW",1));
         row2.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                System.out.println("row2"));
+                doAction("ROW",2));
         row3.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                System.out.println("row3"));
+                doAction("ROW",3));
         initializeTray();
 
         positions = List.of(column1, column2, column3, column4, row1, row2, row3);
+    }
+
+    private void doAction(String tray, int position){
+        accumulator.setMarketTray(tray);
+        accumulator.setMarketNumber(position);
+        getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
     }
 
     private void initializeTray(){
@@ -104,6 +117,11 @@ public class MarketboardController extends ViewController {
         for(Button b : positions){
             b.setVisible(true);
         }
+    }
+
+    public void setAccumulator(){
+        this.accumulator = new Accumulator();
+        this.builder = new BuildMarketSelection();
     }
 
     public void showWindow(){
