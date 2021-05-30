@@ -738,6 +738,7 @@ public class GameBoard implements GameBoardHandler {
             card.setStatus(true);
         }
         virtualView.showLeaderCards(currentPlayer.showLeaderPosition(), currentPlayer.showLeaderStatus(), currentPlayer.getNickname());
+        virtualView.showBoxes(currentPlayer.getWarehouse().showWarehouse(), currentPlayer.getStrongBox().showStrongBox(), currentPlayer.getNickname());
         showAvailableTurns();
     }
 

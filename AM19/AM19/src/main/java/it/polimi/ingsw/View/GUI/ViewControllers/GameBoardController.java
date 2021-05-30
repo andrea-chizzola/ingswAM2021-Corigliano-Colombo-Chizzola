@@ -69,6 +69,8 @@ public class GameBoardController extends BoardUpdate{
     @FXML
     private Label errorStrongbox;
     @FXML
+    private Label errorExtraShelf;
+    @FXML
     private MenuButton leader1select;
     @FXML
     private MenuItem INSERT1;
@@ -80,8 +82,22 @@ public class GameBoardController extends BoardUpdate{
     private MenuItem INSERT2;
     @FXML
     private MenuItem DISCARD2;
+    @FXML
+    private ImageView extraShelf1;
+    @FXML
+    private ImageView extraShelf2;
+    @FXML
+    private Label extraShelf2Label;
+    @FXML
+    private Label extraShelf1Label;
+    @FXML
+    private Label extraShelfString;
+
 
     private List<Coordinates> blackPositions;
+
+    private String resourceExtraShelf1;
+    private String resourceExtraShelf2;
 
     private DecksController decksController;
     private MarketboardController marketboardController;
@@ -91,7 +107,7 @@ public class GameBoardController extends BoardUpdate{
 
 
     @FXML
-    private void initialize(){
+    public void initialize(){
 
         menuButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMenuClicked);
         marketBoardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMarketBoardClicked);
@@ -102,6 +118,7 @@ public class GameBoardController extends BoardUpdate{
 
         actionButton.setDisable(true);
         errorStrongbox.setVisible(false);
+        errorExtraShelf.setVisible(false);
 
         warehouse = new ArrayList<>();
         warehouse2 = new ArrayList<>();
@@ -143,6 +160,7 @@ public class GameBoardController extends BoardUpdate{
         decksController.hideWindow();
 
         useWarehouse();
+        useExtraShelves();
         useStrongbox();
         useSlots();
         useSlotsButtons();
@@ -207,6 +225,124 @@ public class GameBoardController extends BoardUpdate{
         Image token = new Image("/Images/punchboard/" + image);
         actionToken.setImage(token);
         actionToken.setVisible(true);
+    }
+
+    /**
+     * stores the selected resources inside the warehouse
+     * @param warehouseRes contains the resources to store
+     */
+    public void setResourceWarehouse(List<ResQuantity> warehouseRes){
+/*
+        for(ResQuantity resQuantity : warehouseRes){
+            if(resQuantity.getQuantity() == 0){
+                warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(false);
+            }else{
+                switch (resQuantity.getResource().getColor()) {
+                    case YELLOW:
+                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                       // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        break;
+                    case BLUE:
+                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image1);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        break;
+                    case GRAY:
+                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image2);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        break;
+                    case PURPLE:
+                        Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image3);
+                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
+                       // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        break;
+                }
+            }
+        }*/
+
+        for(int i=0; i<warehouseRes.size(); i++){
+            ResQuantity resQuantity = warehouseRes.get(i);
+            boolean isExtra = (i < 3) ? false : true;
+            if(resQuantity.getQuantity() == 0 && !isExtra){
+                insertWarehouse(i+1,0,null, false);
+            }else{
+                switch (resQuantity.getResource().getColor()) {
+                    case YELLOW:
+                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image,isExtra);
+                        break;
+                    case BLUE:
+                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image1,isExtra);
+                        break;
+                    case GRAY:
+                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image2,isExtra);
+                        break;
+                    case PURPLE:
+                        Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image3,isExtra);
+                        break;
+                }
+            }
+        }
+
+    }
+
+    private void insertWarehouseExtra(int shelf, Integer quantity, Image image){
+        extraShelfString.setVisible(true);
+        if(shelf == 4){
+            extraShelf1.setImage(image);
+            extraShelf1.setVisible(true);
+            extraShelf1Label.setText(quantity.toString());
+            extraShelf1Label.setVisible(true);
+        }
+        if(shelf == 5){
+            extraShelf2.setImage(image);
+            extraShelf2.setVisible(true);
+            extraShelf2Label.setText(quantity.toString());
+            extraShelf2Label.setVisible(true);
+        }
+    }
+
+    private void insertWarehouse(int shelf, int quantity, Image image, boolean isExtra){
+        if(isExtra){
+            insertWarehouseExtra(shelf,quantity,image);
+            return;
+        }
+        if(shelf == 1){
+            if(quantity == 1) {
+                topResource.setImage(image);
+                topResource.setVisible(true);
+                topResource.setOpacity(1);
+            }else
+                topResource.setVisible(false);
+        }
+        if(shelf == 2)
+            for (int i = 0; i < warehouse2.size(); i++) {
+                if(i<quantity) {
+                    warehouse2.get(i).setImage(image);
+                    warehouse2.get(i).setVisible(true);
+                    warehouse2.get(i).setOpacity(1);
+                }else
+                    warehouse2.get(i).setVisible(false);
+            }
+
+        if(shelf == 3)
+            for (int i = 0; i < warehouse3.size(); i++) {
+                if(i<quantity) {
+                    warehouse3.get(i).setImage(image);
+                    warehouse3.get(i).setVisible(true);
+                    warehouse3.get(i).setOpacity(1);
+                }else
+                    warehouse3.get(i).setVisible(false);
+            }
     }
 
     /**
@@ -298,6 +434,38 @@ public class GameBoardController extends BoardUpdate{
         firstBottomResource.setDisable(!b);
         secondBottomResource.setDisable(!b);
         thirdBottomResource.setDisable(!b);
+    }
+
+    private void setExtraShelves(){
+        extraShelfString.setVisible(false);
+        extraShelf1.setVisible(false);
+        extraShelf1Label.setVisible(false);
+        extraShelf2.setVisible(false);
+        extraShelf2Label.setVisible(false);
+    }
+
+    private void useExtraShelves(){
+        setExtraShelves();
+        helpUseExtraShelf(extraShelf1,extraShelf1Label,4);
+        helpUseExtraShelf(extraShelf2,extraShelf2Label,5);
+    }
+
+    private void helpUseExtraShelf(ImageView imageView, Label label, int shelf){
+        PauseTransition visiblePause = new PauseTransition(Duration.seconds(0.8));
+        visiblePause.setOnFinished(event -> errorExtraShelf.setVisible(false));
+
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
+            imageView.setVisible(true);
+            Integer i = Integer.parseInt(label.getText());
+            if(i == 0) {
+                errorExtraShelf.setVisible(true);
+                visiblePause.play();
+                return;
+            }
+            i--;
+            label.setText(i.toString());
+            accumulator.setWarehouse(shelf);});
     }
 
 
