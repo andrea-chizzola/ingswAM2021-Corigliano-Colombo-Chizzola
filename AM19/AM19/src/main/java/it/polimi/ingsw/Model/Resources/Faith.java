@@ -83,6 +83,14 @@ public class Faith extends Resource {
         return CLIColors.B_RED;
     }
 
+    /**
+     * @return the image associated with the resource
+     */
+    @Override
+    public String getImage() {
+        return "croce.png";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

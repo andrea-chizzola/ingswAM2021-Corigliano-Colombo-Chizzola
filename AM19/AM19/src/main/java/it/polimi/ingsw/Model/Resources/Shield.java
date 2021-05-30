@@ -84,6 +84,14 @@ public class Shield extends Resource {
         return CLIColors.B_BLUE;
     }
 
+    /**
+     * @return the image associated with the resource
+     */
+    @Override
+    public String getImage() {
+        return "shield.png";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

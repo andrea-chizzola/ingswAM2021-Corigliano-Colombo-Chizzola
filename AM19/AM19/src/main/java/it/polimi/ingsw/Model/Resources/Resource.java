@@ -49,5 +49,10 @@ public abstract class Resource {
      */
     public abstract CLIColors toColor();
 
+    /**
+     * @return the image associated with the resource
+     */
+    public abstract String getImage();
+
 }
 

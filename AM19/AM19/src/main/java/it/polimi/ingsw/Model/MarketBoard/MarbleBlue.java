@@ -68,6 +68,22 @@ public class MarbleBlue implements Marble {
         return new Shield();
     }
 
+    /**
+     * @return the image associated with the marble
+     */
+    @Override
+    public String getImage() {
+        return "MarbleBlue.PNG";
+    }
+
+    /**
+     * @return true if the marble is white, false otherwise
+     */
+    @Override
+    public boolean isWhite() {
+        return false;
+    }
+
 
     @Override
     public String toString() {

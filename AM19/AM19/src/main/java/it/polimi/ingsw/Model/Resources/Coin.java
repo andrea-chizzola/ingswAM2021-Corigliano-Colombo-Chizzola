@@ -85,6 +85,14 @@ public class Coin extends Resource {
         return CLIColors.B_YELLOW;
     }
 
+    /**
+     * @return the image associated with the resource
+     */
+    @Override
+    public String getImage() {
+        return "coin.png";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

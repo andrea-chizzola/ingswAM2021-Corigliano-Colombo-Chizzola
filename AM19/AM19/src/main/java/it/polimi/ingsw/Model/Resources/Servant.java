@@ -83,6 +83,14 @@ public class Servant extends Resource {
         return CLIColors.B_MAGENTA;
     }
 
+    /**
+     * @return the image associated with the resource
+     */
+    @Override
+    public String getImage() {
+        return "servant.png";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

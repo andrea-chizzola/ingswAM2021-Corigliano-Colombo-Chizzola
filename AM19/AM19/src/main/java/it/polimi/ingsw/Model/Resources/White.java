@@ -75,4 +75,12 @@ public class White extends Resource{
     public CLIColors toColor() {
         return null;
     }
+
+    /**
+     * @return the image associated with the resource
+     */
+    @Override
+    public String getImage() {
+        return "white_circle.png";
+    }
 }

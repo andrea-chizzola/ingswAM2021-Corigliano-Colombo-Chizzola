@@ -169,7 +169,7 @@ public class GameBoardController extends ViewController{
         otherPlayersButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onOtherPlayersClicked);
         quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onQuitClicked);
         decksButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onDecksClicked);
-        actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, this::sendMessage);
+        actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, this::notifyInteraction);
 
         actionButton.setDisable(true);
         errorStrongbox.setVisible(false);
@@ -226,7 +226,7 @@ public class GameBoardController extends ViewController{
         resetTurn();
     }
 
-    private void sendMessage(Event event) {
+    private void notifyInteraction(Event event) {
         getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
         resetTurn();
         actionButton.setDisable(true);
@@ -380,39 +380,7 @@ public class GameBoardController extends ViewController{
      * @param warehouseRes contains the resources to store
      */
     public void setResourceWarehouse(List<ResQuantity> warehouseRes){
-/*
-        for(ResQuantity resQuantity : warehouseRes){
-            if(resQuantity.getQuantity() == 0){
-                warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(false);
-            }else{
-                switch (resQuantity.getResource().getColor()) {
-                    case YELLOW:
-                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                       // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case BLUE:
-                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image1);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case GRAY:
-                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image2);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case PURPLE:
-                        Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image3);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                       // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                }
-            }
-        }*/
+
 
         for(int i=0; i<warehouseRes.size(); i++){
             ResQuantity resQuantity = warehouseRes.get(i);
@@ -420,24 +388,8 @@ public class GameBoardController extends ViewController{
             if(resQuantity.getQuantity() == 0 && !isExtra){
                 insertWarehouse(i+1,0,null, false);
             }else{
-                switch (resQuantity.getResource().getColor()) {
-                    case YELLOW:
-                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image,isExtra);
-                        break;
-                    case BLUE:
-                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image1,isExtra);
-                        break;
-                    case GRAY:
-                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image2,isExtra);
-                        break;
-                    case PURPLE:
-                        Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image3,isExtra);
-                        break;
-                }
+                Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/"+resQuantity.getResource().getImage()));
+                insertWarehouse(i+1,resQuantity.getQuantity(),image,isExtra);
             }
         }
 
@@ -559,38 +511,9 @@ public class GameBoardController extends ViewController{
     }
 
     public void setMarketBoard(List<Marble> tray){
-        List<String> trayImages = new LinkedList<>();
-        for(int i=0; i<tray.size(); i++){
-            trayImages.add(getMarbleImage(tray.get(i)));
-        }
-        marketboardController.showMarketUpdate(trayImages);
+        marketboardController.showMarketUpdate(tray);
     }
 
-    //TODO aggiungere immagine di risorse e di biglie alle classi Resource e Marble
-    private String getMarbleImage(Marble marble){
-        switch(marble.getResourceAssociated().getColor()){
-            case RED: {
-                return "/Images/market/MarbleRed.PNG";
-            }
-            case BLUE: {
-                return "/Images/market/MarbleBlue.PNG";
-            }
-            case GRAY: {
-                return "/Images/market/MarbleGray.PNG";
-            }
-            case WHITE: {
-                return "/Images/market/MarbleWhite.PNG";
-            }
-            case PURPLE: {
-                return "/Images/market/MarblePurple.PNG";
-            }
-            case YELLOW: {
-                return "/Images/market/MarbleYellow.PNG";
-            }
-            default:
-                return "/Images/market/MarbleWhite.PNG";
-        }
-    }
 
     /**
      * sets the ImageView associated to each slot in the warehouse
@@ -641,11 +564,17 @@ public class GameBoardController extends ViewController{
      */
     private void enableWarehouse(Boolean b){
         topResource.setDisable(!b);
+        topResource.setOpacity(1);
         firstMidResource.setDisable(!b);
+        firstMidResource.setOpacity(1);
         secondMidResource.setDisable(!b);
+        secondMidResource.setOpacity(1);
         firstBottomResource.setDisable(!b);
+        firstBottomResource.setOpacity(1);
         secondBottomResource.setDisable(!b);
+        secondBottomResource.setOpacity(1);
         thirdBottomResource.setDisable(!b);
+        thirdBottomResource.setOpacity(1);
     }
 
     private void setExtraShelves(){

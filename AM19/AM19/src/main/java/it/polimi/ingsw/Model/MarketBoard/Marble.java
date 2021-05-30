@@ -53,4 +53,14 @@ public interface Marble {
      */
     Resource getResourceAssociated();
 
+    /**
+     * @return the image associated with the marble
+     */
+    String getImage();
+
+    /**
+     * @return true if the marble is white, false otherwise
+     */
+    boolean isWhite();
+
 }

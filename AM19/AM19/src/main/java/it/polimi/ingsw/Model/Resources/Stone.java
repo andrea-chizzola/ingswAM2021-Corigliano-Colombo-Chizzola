@@ -85,6 +85,14 @@ public class Stone extends Resource {
         return CLIColors.B_CYAN;
     }
 
+    /**
+     * @return the image associated with the resource
+     */
+    @Override
+    public String getImage() {
+        return "stone.png";
+    }
+
 
     @Override
     public boolean equals(Object o) {

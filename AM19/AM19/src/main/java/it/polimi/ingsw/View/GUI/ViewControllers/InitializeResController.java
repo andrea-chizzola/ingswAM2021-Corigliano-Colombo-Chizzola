@@ -3,15 +3,12 @@ package it.polimi.ingsw.View.GUI.ViewControllers;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
 import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
 import it.polimi.ingsw.View.GUI.Messages.BuildSelectedResources;
-import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -103,47 +100,13 @@ public class InitializeResController extends ViewController{
     @FXML
     public void initialize(){
 
-        coins = new ArrayList<>();
-        coins.add(coin1);
-        coins.add(coin2);
-        coins.add(coin3);
-        coins.add(coin4);
-
-        shields = new ArrayList<>();
-        shields.add(shield1);
-        shields.add(shield2);
-        shields.add(shield3);
-        shields.add(shield4);
-
-        servants = new ArrayList<>();
-        servants.add(servant1);
-        servants.add(servant2);
-        servants.add(servant3);
-        servants.add(servant4);
-
-        stones = new ArrayList<>();
-        stones.add(stone1);
-        stones.add(stone2);
-        stones.add(stone3);
-        stones.add(stone4);
-
-        shelves = new ArrayList<>();
-        shelves.add(shelf1);
-        shelves.add(shelf2);
-        shelves.add(shelf3);
-        shelves.add(shelf4);
-
-        buttons = new ArrayList<>();
-        buttons.add(select1);
-        buttons.add(select2);
-        buttons.add(select3);
-        buttons.add(select4);
-
-        resources = new ArrayList<>();
-        resources.add(resource1);
-        resources.add(resource2);
-        resources.add(resource3);
-        resources.add(resource4);
+        coins = List.of(coin1,coin2,coin3,coin4);
+        shields = List.of(shield1,shield2,shield3,shield4);
+        servants = List.of(servant1,servant2,servant3,servant4);
+        stones = List.of(stone1,stone2,stone3,stone4);
+        buttons = List.of(select1,select2,select3,select4);
+        resources = List.of(resource1,resource2,resource3,resource4);
+        shelves = List.of(shelf1,shelf2,shelf3,shelf4);
 
         setStart();
 
@@ -204,7 +167,7 @@ public class InitializeResController extends ViewController{
     }
 
     private void action(int i){
-        accumulator.setInitResources(shelves.get(i).getText());
+        accumulator.setInitResourcesShelf(shelves.get(i).getText());
         buttons.get(i).setDisable(true);
         buttons.get(i).setOpacity(0.5);
         resources.get(i).setDisable(false);
