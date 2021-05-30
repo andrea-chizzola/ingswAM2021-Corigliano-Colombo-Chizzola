@@ -24,42 +24,10 @@ import javafx.util.Duration;
 
 import java.util.*;
 
-public class GameBoardController extends ViewController{
+public class GameBoardController extends BoardUpdate{
 
     @FXML
     private Pane pane;
-    @FXML
-    private ImageView firstSlot;
-    @FXML
-    private ImageView secondSlot;
-    @FXML
-    private ImageView thirdSlot;
-    @FXML
-    private ImageView firstLeaderCard;
-    @FXML
-    private ImageView secondLeaderCard;
-    @FXML
-    private ImageView thirdLeaderCard;
-    @FXML
-    private ImageView fourthLeaderCard;
-    @FXML
-    private ImageView firstPopeFavor;
-    @FXML
-    private ImageView secondPopeFavor;
-    @FXML
-    private ImageView thirdPopeFavor;
-    @FXML
-    private ImageView topResource;
-    @FXML
-    private ImageView firstMidResource;
-    @FXML
-    private ImageView secondMidResource;
-    @FXML
-    private ImageView firstBottomResource;
-    @FXML
-    private ImageView secondBottomResource;
-    @FXML
-    private ImageView thirdBottomResource;
     @FXML
     private ImageView blackCross;
     @FXML
@@ -99,16 +67,6 @@ public class GameBoardController extends ViewController{
     @FXML
     private Button slotButton3;
     @FXML
-    private Circle tile;
-    @FXML
-    private Label coinsNumber;
-    @FXML
-    private Label shieldsNumber;
-    @FXML
-    private Label stonesNumber;
-    @FXML
-    private Label servantsNumber;
-    @FXML
     private Label errorStrongbox;
     @FXML
     private MenuButton leader1select;
@@ -123,20 +81,7 @@ public class GameBoardController extends ViewController{
     @FXML
     private MenuItem DISCARD2;
 
-    private List<Coordinates> positions;
-
     private List<Coordinates> blackPositions;
-
-    private List<ImageView> warehouse;
-
-    private List<ImageView> warehouse2;
-    private List<ImageView> warehouse3;
-
-    private List<ImageView> developmentCards;
-
-    private List<ImageView> leaderCards;
-
-    private List<ImageView> popeFavors;
 
     private DecksController decksController;
     private MarketboardController marketboardController;
@@ -229,7 +174,7 @@ public class GameBoardController extends ViewController{
 
         for(String nickname : getModelReference().getNicknames()){
             if (!myNickname.equals(nickname)) {
-                OtherBoardsController controller = new OtherBoardsController(nickname);
+                OtherBoardsController controller = new OtherBoardsController();
                 controller.attachGUIReference(getGUIReference());
                 controller.attachModelReference(getModelReference());
                 GUIHandler.newWindow(controller, "/FXML/otherBoards.fxml");
@@ -254,74 +199,6 @@ public class GameBoardController extends ViewController{
         return pane.getScene();
     }
 
-    /**
-     * manages the activation and deactivation of the pope favors
-     * @param sections contains the status of each pope favor
-     */
-    public void manageSections(List<ItemStatus> sections){
-        for(ItemStatus status : sections){
-            if(status == ItemStatus.ACTIVE){
-                int section = sections.indexOf(status);
-                switch (section){
-                    case 0:
-                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratogialloattivo.png"));
-                        popeFavors.get(section).setImage(image);
-                        break;
-                    case 1:
-                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratoarancioattivo.png"));
-                        popeFavors.get(section).setImage(image1);
-                        break;
-                    case 2:
-                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratorossoattivo.png"));
-                        popeFavors.get(section).setImage(image2);
-                        break;
-                }
-
-            }
-        }
-    }
-
-    /**
-     * manages the selection of the development cards
-     * @param slots contains the development cards
-     */
-    public void manageDevelopmentCards(Map<Integer, String> slots){
-        for(ImageView image : developmentCards){
-            image.setVisible(false);
-        }
-        for(Integer slot : slots.keySet()){
-            String path = getModelReference().getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
-            Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
-            developmentCards.get(slot - 1).setImage(card);
-            developmentCards.get(slot - 1).setVisible(true);
-        }
-    }
-
-    /**
-     * manages the selection and activation of the leader cards
-     * @param cards contains the leader cards
-     * @param status contains the status of each leader card
-     */
-    public void manageLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status){
-        for(ImageView image : leaderCards){
-            image.setVisible(false);
-        }
-        for(Integer slot : cards.keySet()){
-            String path = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
-            if(status.get(slot) == ItemStatus.ACTIVE){
-                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
-                leaderCards.get(slot - 1).setImage(card);
-                leaderCards.get(slot - 1).setVisible(true);
-            }else{
-                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
-                leaderCards.get(slot - 1).setImage(card);
-                leaderCards.get(slot - 1).setVisible(true);
-                leaderCards.get(slot - 1).setOpacity(0.5);
-            }
-        }
-    }
-
-
     public void manageTopToken(Optional<String> action){
         if(action.isEmpty())
             return;
@@ -330,174 +207,6 @@ public class GameBoardController extends ViewController{
         Image token = new Image("/Images/punchboard/" + image);
         actionToken.setImage(token);
         actionToken.setVisible(true);
-    }
-
-
-    /**
-     * stores the selected resources inside the strongbox
-     * @param strongbox contains the resources to store
-     */
-    public void setResourceStrongbox(List<ResQuantity> strongbox){
-
-        for(ResQuantity resQuantity : strongbox) {
-            switch (resQuantity.getResource().getColor()) {
-                case YELLOW:
-                    setCoinsNumber(resQuantity.getQuantity());
-                    break;
-                case BLUE:
-                    setShieldsNumber(resQuantity.getQuantity());
-                    break;
-                case GRAY:
-                    setStonesNumber(resQuantity.getQuantity());
-                    break;
-                case PURPLE:
-                    setServantsNumber(resQuantity.getQuantity());
-                    break;
-            }
-        }
-    }
-
-    /**
-     * stores the selected resources inside the warehouse
-     * @param warehouseRes contains the resources to store
-     */
-    public void setResourceWarehouse(List<ResQuantity> warehouseRes){
-/*
-        for(ResQuantity resQuantity : warehouseRes){
-            if(resQuantity.getQuantity() == 0){
-                warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(false);
-            }else{
-                switch (resQuantity.getResource().getColor()) {
-                    case YELLOW:
-                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                       // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case BLUE:
-                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image1);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case GRAY:
-                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image2);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case PURPLE:
-                        Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image3);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                       // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                }
-            }
-        }*/
-
-        for(int i=0; i<warehouseRes.size(); i++){
-            ResQuantity resQuantity = warehouseRes.get(i);
-            if(resQuantity.getQuantity() == 0){
-                insertWarehouse(i+1,0,null);
-            }else{
-                switch (resQuantity.getResource().getColor()) {
-                    case YELLOW:
-                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image);
-                        // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case BLUE:
-                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image1);
-                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case GRAY:
-                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image2);
-                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case PURPLE:
-                        Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image3);
-                        // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                }
-            }
-        }
-    }
-
-    private void insertWarehouse(int shelf, int quantity, Image image){
-        if(shelf == 1){
-            if(quantity == 1) {
-                topResource.setImage(image);
-                topResource.setVisible(true);
-                topResource.setOpacity(1);
-            }else
-                topResource.setVisible(false);
-        }
-        if(shelf == 2)
-            for (int i = 0; i < warehouse2.size(); i++) {
-               if(i<quantity) {
-                   warehouse2.get(i).setImage(image);
-                   warehouse2.get(i).setVisible(true);
-                   warehouse2.get(i).setOpacity(1);
-               }else
-                   warehouse2.get(i).setVisible(false);
-            }
-
-        if(shelf == 3)
-            for (int i = 0; i < warehouse3.size(); i++) {
-                if(i<quantity) {
-                    warehouse3.get(i).setImage(image);
-                    warehouse3.get(i).setVisible(true);
-                    warehouse3.get(i).setOpacity(1);
-                }else
-                    warehouse3.get(i).setVisible(false);
-            }
-    }
-
-    /**
-     * sets the strongbox coins to the specified number
-     * @param number represents the number of coins
-     */
-    private void setCoinsNumber(Integer number){
-        coinsNumber.setText(number.toString());
-    }
-
-    /**
-     * sets the strongbox shields to the specified number
-     * @param number represents the number of shields
-     */
-    private void setShieldsNumber(Integer number){
-        shieldsNumber.setText(number.toString());
-    }
-
-    /**
-     * sets the strongbox stones to the specified number
-     * @param number represents the number of stones
-     */
-    private void setStonesNumber(Integer number){
-        stonesNumber.setText(number.toString());
-    }
-
-    /**
-     * sets the strongbox servants to the specified number
-     * @param number represents the number of servants
-     */
-    private void setServantsNumber(Integer number){
-        servantsNumber.setText(number.toString());
-    }
-
-    /**
-     * changes the position of the player inside his faith track
-     * @param position represents the new player's position
-     */
-    public void changePosition(int position){
-
-        tile.setLayoutX(positions.get(position).getX());
-        tile.setLayoutY(positions.get(position).getY());
-
     }
 
     /**
@@ -554,27 +263,6 @@ public class GameBoardController extends ViewController{
             default:
                 return "/Images/market/MarbleWhite.PNG";
         }
-    }
-
-    /**
-     * sets the ImageView associated to each slot in the warehouse
-     * @param warehouse contains the ImageViews associated the warehouse
-     */
-    private void setWarehouse(List<ImageView> warehouse){
-
-        warehouse.add(topResource);
-        topResource.setVisible(false);
-        warehouse.add(firstMidResource);
-        firstMidResource.setVisible(false);
-        warehouse.add(secondMidResource);
-        secondMidResource.setVisible(false);
-        warehouse.add(firstBottomResource);
-        firstBottomResource.setVisible(false);
-        warehouse.add(secondBottomResource);
-        secondBottomResource.setVisible(false);
-        warehouse.add(thirdBottomResource);
-        thirdBottomResource.setVisible(false);
-
     }
 
     /**
@@ -915,86 +603,6 @@ public class GameBoardController extends ViewController{
         swap3.setVisible(true);
         swap3.setOpacity(1);
         actionButton.setDisable(false);
-    }
-
-
-
-    /**
-     * sets the ImageView associated to each development card
-     * @param developmentCards contains the ImageViews associated the development cards
-     */
-    private void setDevelopmentCards(List<ImageView> developmentCards){
-
-        developmentCards.add(firstSlot);
-        firstSlot.setVisible(false);
-        developmentCards.add(secondSlot);
-        secondSlot.setVisible(false);
-        developmentCards.add(thirdSlot);
-        thirdSlot.setVisible(false);
-
-    }
-
-    /**
-     * sets the ImageView associated to each leader card
-     * @param leaderCards contains the ImageViews associated the leader cards
-     */
-    private void setLeaderCards(List<ImageView> leaderCards){
-
-        leaderCards.add(firstLeaderCard);
-        firstLeaderCard.setVisible(false);
-        leaderCards.add(secondLeaderCard);
-        secondLeaderCard.setVisible(false);
-        leaderCards.add(thirdLeaderCard);
-        thirdLeaderCard.setVisible(false);
-        leaderCards.add(fourthLeaderCard);
-        fourthLeaderCard.setVisible(false);
-
-    }
-
-    /**
-     * sets the ImageView associated to each pope favor
-     * @param popeFavors contains the ImageViews associated the pope favors
-     */
-    private void setPopeFavors(List<ImageView> popeFavors){
-
-        popeFavors.add(firstPopeFavor);
-        popeFavors.add(secondPopeFavor);
-        popeFavors.add(thirdPopeFavor);
-
-    }
-
-    /**
-     * sets the positions related to each tile of the faith track
-     * @param positions contains the coordinates of each tile
-     */
-    private void setPositions(List<Coordinates> positions){
-
-        positions.add(new Coordinates(54, 113));
-        positions.add(new Coordinates(95, 113));
-        positions.add(new Coordinates(135, 113));
-        positions.add(new Coordinates(135, 78));
-        positions.add(new Coordinates(135, 45));
-        positions.add(new Coordinates(183, 45));
-        positions.add(new Coordinates(220, 45));
-        positions.add(new Coordinates(265, 45));
-        positions.add(new Coordinates(305, 45));
-        positions.add(new Coordinates(350,45));
-        positions.add(new Coordinates(350, 78));
-        positions.add(new Coordinates(350, 113));
-        positions.add(new Coordinates(392, 113));
-        positions.add(new Coordinates(435, 113));
-        positions.add(new Coordinates(481, 113));
-        positions.add(new Coordinates(520, 113));
-        positions.add(new Coordinates(563, 113));
-        positions.add(new Coordinates(563, 78));
-        positions.add(new Coordinates(563, 45));
-        positions.add(new Coordinates(603, 45));
-        positions.add(new Coordinates(648, 45));
-        positions.add(new Coordinates(690, 45));
-        positions.add(new Coordinates(734, 45));
-        positions.add(new Coordinates(779, 45));
-        positions.add(new Coordinates(817, 45));
-
     }
 
     /**
