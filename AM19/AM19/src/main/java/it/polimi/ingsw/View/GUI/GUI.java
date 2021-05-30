@@ -56,6 +56,7 @@ public class GUI implements View, SubjectView {
         gameBoardController.attachGUIReference(this);
         gameBoardController.attachModelReference(model);
         Platform.runLater(() -> GUIHandler.newWindow(gameBoardController, "/FXML/gameboard.fxml"));
+        Platform.runLater(() -> loadingController.closeScene());
 
         for(String name : nicknames){
             if(!name.equals(self)) {
