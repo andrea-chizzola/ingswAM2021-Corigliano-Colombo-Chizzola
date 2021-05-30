@@ -56,6 +56,16 @@ public abstract class BoardUpdate extends ViewController{
     protected Label stonesNumber;
     @FXML
     protected Label servantsNumber;
+    @FXML
+    protected ImageView extraShelf1;
+    @FXML
+    protected ImageView extraShelf2;
+    @FXML
+    protected Label extraShelf2Label;
+    @FXML
+    protected Label extraShelf1Label;
+    @FXML
+    protected Label extraShelfString;
 
     protected List<Coordinates> positions;
 
@@ -188,29 +198,26 @@ public abstract class BoardUpdate extends ViewController{
 
         for(int i=0; i<warehouseRes.size(); i++){
             ResQuantity resQuantity = warehouseRes.get(i);
-            if(resQuantity.getQuantity() == 0){
-                insertWarehouse(i+1,0,null);
+            boolean isExtra = (i < 3) ? false : true;
+            if(resQuantity.getQuantity() == 0 && !isExtra){
+                insertWarehouse(i+1,0,null, false);
             }else{
                 switch (resQuantity.getResource().getColor()) {
                     case YELLOW:
                         Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image);
-                        // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image,isExtra);
                         break;
                     case BLUE:
                         Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image1);
-                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image1,isExtra);
                         break;
                     case GRAY:
                         Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image2);
-                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image2,isExtra);
                         break;
                     case PURPLE:
                         Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
-                        insertWarehouse(i+1,resQuantity.getQuantity(),image3);
-                        // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
+                        insertWarehouse(i+1,resQuantity.getQuantity(),image3,isExtra);
                         break;
                 }
             }
@@ -218,7 +225,27 @@ public abstract class BoardUpdate extends ViewController{
 
     }
 
-    private void insertWarehouse(int shelf, int quantity, Image image){
+    private void insertWarehouseExtra(int shelf, Integer quantity, Image image){
+        extraShelfString.setVisible(true);
+        if(shelf == 4){
+            extraShelf1.setImage(image);
+            extraShelf1.setVisible(true);
+            extraShelf1Label.setText(quantity.toString());
+            extraShelf1Label.setVisible(true);
+        }
+        if(shelf == 5){
+            extraShelf2.setImage(image);
+            extraShelf2.setVisible(true);
+            extraShelf2Label.setText(quantity.toString());
+            extraShelf2Label.setVisible(true);
+        }
+    }
+
+    private void insertWarehouse(int shelf, int quantity, Image image, boolean isExtra){
+        if(isExtra){
+            insertWarehouseExtra(shelf,quantity,image);
+            return;
+        }
         if(shelf == 1){
             if(quantity == 1) {
                 topResource.setImage(image);

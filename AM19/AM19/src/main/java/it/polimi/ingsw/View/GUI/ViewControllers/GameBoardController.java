@@ -82,17 +82,6 @@ public class GameBoardController extends BoardUpdate{
     private MenuItem INSERT2;
     @FXML
     private MenuItem DISCARD2;
-    @FXML
-    private ImageView extraShelf1;
-    @FXML
-    private ImageView extraShelf2;
-    @FXML
-    private Label extraShelf2Label;
-    @FXML
-    private Label extraShelf1Label;
-    @FXML
-    private Label extraShelfString;
-
 
     private List<Coordinates> blackPositions;
 
@@ -227,44 +216,8 @@ public class GameBoardController extends BoardUpdate{
         actionToken.setVisible(true);
     }
 
-    /**
-     * stores the selected resources inside the warehouse
-     * @param warehouseRes contains the resources to store
-     */
+    /*
     public void setResourceWarehouse(List<ResQuantity> warehouseRes){
-/*
-        for(ResQuantity resQuantity : warehouseRes){
-            if(resQuantity.getQuantity() == 0){
-                warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(false);
-            }else{
-                switch (resQuantity.getResource().getColor()) {
-                    case YELLOW:
-                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                       // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case BLUE:
-                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image1);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case GRAY:
-                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image2);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                        //warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                    case PURPLE:
-                        Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setImage(image3);
-                        warehouse.get(warehouseRes.indexOf(resQuantity)).setVisible(true);
-                       // warehouse.get(warehouseRes.indexOf(resQuantity)).setOpacity(1);
-                        break;
-                }
-            }
-        }*/
 
         for(int i=0; i<warehouseRes.size(); i++){
             ResQuantity resQuantity = warehouseRes.get(i);
@@ -344,7 +297,7 @@ public class GameBoardController extends BoardUpdate{
                     warehouse3.get(i).setVisible(false);
             }
     }
-
+*/
     /**
      * changes Lorenzo's position inside the faith track
      * @param position represents Lorenzo's position
