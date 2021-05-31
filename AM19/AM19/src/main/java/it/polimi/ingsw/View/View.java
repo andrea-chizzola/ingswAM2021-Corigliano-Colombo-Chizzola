@@ -1,11 +1,9 @@
 package it.polimi.ingsw.View;
 
-import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,6 +18,12 @@ public interface View {
      */
     void initialize();
 
+    /**
+     * this method is used to show a reply of the server
+     * @param answer is a boolean that tells if the message is an error
+     * @param body is the content of the message
+     * @param nickName is the recipinet of the message
+     */
     void reply(boolean answer, String body, String nickName);
 
     /**
@@ -27,7 +31,6 @@ public interface View {
      * @param answer represents the type of message
      * @param body is the content of the message
      * @param nickName represents the nickname of involved player
-     * @param nickName represents the current state of the game
      */
     void showGameStatus(boolean answer, String body, String nickName, TurnType state);
 
@@ -150,5 +153,11 @@ public interface View {
      * this method is used to catch a swap in the Warehouse
      */
     boolean swapAction();
+
+    /**
+     * this method is used to show the board of a player (different from the current one)
+     * @param nickname is the nickname of the target player
+     */
+    void showOthers(String nickname);
 }
 

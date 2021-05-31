@@ -38,4 +38,8 @@ public class LoadingController extends ViewController{
         System.exit(0);
     }
 
+    public void closeScene(){
+        pane.getScene().getWindow().hide();
+    }
+
 }

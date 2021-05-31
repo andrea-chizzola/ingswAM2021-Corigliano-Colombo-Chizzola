@@ -77,6 +77,11 @@ public class CLI implements View, SubjectView {
     protected String[][] viewStatus;
 
     /**
+     * this attribute is a matrix that contains the current state of the players board
+     */
+    private Map<String, String[][]> playersBoard;
+
+    /**
      * this attribute represents a matrix that contains all the cards in common decks
      */
     private String[][] decksStatus;
@@ -132,6 +137,7 @@ public class CLI implements View, SubjectView {
         typed = new StringBuilder();
         interaction = new StringBuilder();
         busyInput = new Object();
+        playersBoard = new HashMap<>();
         inputReader(in);
 
         CLIPainter.printLogo();
@@ -149,7 +155,7 @@ public class CLI implements View, SubjectView {
                 BufferedReader in = new BufferedReader(new InputStreamReader(input));
                 String s = "";
                 while ((s = in.readLine()) != null) {
-                    addInput(s);
+                    manageInput(s);
                 }
             } catch (IOException | NullPointerException e) {
                 System.out.println("Cannot open the input stream of CLI");
@@ -157,6 +163,23 @@ public class CLI implements View, SubjectView {
                 //TODO CLOSE CLIENT AND CONNECTION. CANNOT OPEN INPUT STREAM
             }
         }).start();
+    }
+
+    /**
+     * this method is used to manage the input of a player
+     * @param s is the input String
+     */
+    private void manageInput(String s){
+        if(s.length()>=10 && s.equals("DISCONNECT")) {
+            notifyDisconnection();
+            return;
+        }
+
+        if(s.length() >=5 && s.startsWith("SEE")){
+            showOthers(s.substring(4));
+            return;
+        }
+        addInput(s);
     }
 
     /**
@@ -168,6 +191,18 @@ public class CLI implements View, SubjectView {
             typed.append(s);
             availableInput = true;
             busyInput.notifyAll();
+        }
+    }
+
+    /**
+     * this helper method is used to notify a disconnection
+     */
+    private void notifyDisconnection(){
+        try {
+            notifyInteraction(MessageFactory.buildDisconnection(
+                    "I want to be disconnected", model.getPersonalNickname()));
+        } catch (MalformedMessageException e) {
+            //exit from client
         }
     }
 
@@ -197,6 +232,11 @@ public class CLI implements View, SubjectView {
         plot(viewStatus);
     }
 
+    public void plotOthers(String nickname){
+        String[][] target = playersBoard.get(nickname);
+        plot(target);
+    }
+
     /**
      * this method is used to print the status of the shared decks
      */
@@ -223,20 +263,26 @@ public class CLI implements View, SubjectView {
     @Override
     public void initialize() {
         List<Integer> shelves = model.getConfiguration().getShelves();
+        List<String> players = model.getNicknames();
         int nSlots = model.getConfiguration().getSlotNumber();
-        int nPlayers = model.getNicknames().size();
+        int nPlayers = players.size();
+        String self = model.getPersonalNickname();
         PLAYERS_Y = (((nPlayers == 1)? 2 : nPlayers) + 1) * (CLIPainter.getSquareLength() + 1);
-        viewStatus = new String[VERTICAL_SIZE+PLAYERS_Y][HORIZONTAL_SIZE];
 
-        CLIPainter.fill(viewStatus, 0, 0, HORIZONTAL_SIZE, VERTICAL_SIZE+PLAYERS_Y);
+        for(String name : players) {
+            String[][] view = new String[VERTICAL_SIZE + PLAYERS_Y][HORIZONTAL_SIZE];
+            playersBoard.put(name, view);
+            CLIPainter.fill(view, 0, 0, HORIZONTAL_SIZE, VERTICAL_SIZE + PLAYERS_Y);
+            CLIPainter.paintWarehouse(view, WAREHOUSE_Y + PLAYERS_Y, WAREHOUSE_X, shelves, new LinkedList<>());
+            CLIPainter.paintExtraSlots(view, EXTRA_Y + PLAYERS_Y, EXTRA_X, new LinkedList<>());
+            CLIPainter.paintStrongbox(view, STRONGBOX_Y + PLAYERS_Y, STRONGBOX_X, new LinkedList<>());
+            showPersonalProduction();
+
+            for (int i = 0; i < nSlots; i++)
+                CLIPainter.devCardPainter(view, PLAYERS_Y + 1, BOXES_X + 30 * i + 20, "EMPTY");
+        }
         CLIPainter.fill(decksStatus, 0, 0, HORIZONTAL_SIZE, DECKS_VERTICAL_SIZE);
-        CLIPainter.paintWarehouse(viewStatus, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, shelves, new LinkedList<>());
-        CLIPainter.paintExtraSlots(viewStatus, EXTRA_Y+PLAYERS_Y, EXTRA_X, new LinkedList<>());
-        CLIPainter.paintStrongbox(viewStatus, STRONGBOX_Y+PLAYERS_Y, STRONGBOX_X, new LinkedList<>());
-        showPersonalProduction();
-
-        for(int i=0; i<nSlots; i++)
-            CLIPainter.devCardPainter(viewStatus, PLAYERS_Y+1, BOXES_X + 30*i+20, "EMPTY");
+        viewStatus = playersBoard.get(self);
     }
 
     @Override
@@ -298,7 +344,7 @@ public class CLI implements View, SubjectView {
     @Override
     public void showBoxes(List<ResQuantity> warehouse, List<ResQuantity> strongBox, String nickName) {
 
-        if(!nickName.equals(model.getPersonalNickname())) return;
+        String[][] view = playersBoard.get(nickName);
         List<ResQuantity> resources = new LinkedList<>();
         List<ResQuantity> extra = new LinkedList<>();
         int defaultSlots = model.getConfiguration().getSlotNumber();
@@ -321,14 +367,14 @@ public class CLI implements View, SubjectView {
         }
 
         extra.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
-        CLIPainter.paintWarehouse(viewStatus, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, model.getConfiguration().getShelves(), resources);
-        CLIPainter.paintExtraSlots(viewStatus, EXTRA_Y+PLAYERS_Y, EXTRA_X, extra);
+        CLIPainter.paintWarehouse(view, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, model.getConfiguration().getShelves(), resources);
+        CLIPainter.paintExtraSlots(view, EXTRA_Y+PLAYERS_Y, EXTRA_X, extra);
 
         strongBox.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
         for(ResQuantity r : strongBox){
             strongboxString.append(r.toString()).append(" / ");
         }
-        CLIPainter.paintStrongbox(viewStatus, STRONGBOX_Y+PLAYERS_Y, STRONGBOX_X, strongBox);
+        CLIPainter.paintStrongbox(view, STRONGBOX_Y+PLAYERS_Y, STRONGBOX_X, strongBox);
 
 
         out.println("The new status of your boxes is:\nWarehouse: " + warehouseString);
@@ -342,10 +388,10 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void showSlotsUpdate(Map<Integer, String> slots, String nickname) {
-        if(!nickname.equals(model.getPersonalNickname())) return;
+        String[][] view = playersBoard.get(nickname);
         for(int i : slots.keySet()){
             DevelopmentCard card = model.getConfiguration().getDevelopmentCard(slots.get(i));
-            CLIPainter.devCardPainter(viewStatus, PLAYERS_Y+1, BOXES_X + 30*(i-1)+20, card.toString());
+            CLIPainter.devCardPainter(view, PLAYERS_Y+1, BOXES_X + 30*(i-1)+20, card.toString());
         }
     }
 
@@ -356,7 +402,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void showLeaderCards(Map<Integer,String> cards, Map<Integer,ItemStatus> status, String nickName){
-        if(!nickName.equals(model.getPersonalNickname())) return;
+        String[][] view = playersBoard.get(nickName);
         int num = model.getConfiguration().getNumLeader();
 
         for(int i=1; i<=num; i++){
@@ -364,9 +410,9 @@ public class CLI implements View, SubjectView {
                 String id = cards.get(i);
                 LeaderCard card = model.getConfiguration().getLeaderCard(id);
                 card.setStatus(status.get(i).getBoolValue());
-                CLIPainter.leaderCardPainter(viewStatus, PLAYERS_Y + 1 + LEADER_Y, BOXES_X + 28 * (i - 1) + 8, card.toString());
+                CLIPainter.leaderCardPainter(view, PLAYERS_Y + 1 + LEADER_Y, BOXES_X + 28 * (i - 1) + 8, card.toString());
             }
-            else CLIPainter.leaderCardPainter(viewStatus, PLAYERS_Y + 1 + LEADER_Y, BOXES_X + 28 * (i - 1) + 8, "EMPTY");
+            else CLIPainter.leaderCardPainter(view, PLAYERS_Y + 1 + LEADER_Y, BOXES_X + 28 * (i - 1) + 8, "EMPTY");
         }
     }
 
@@ -380,20 +426,22 @@ public class CLI implements View, SubjectView {
     @Override
     public void showFaithUpdate(Map<String, Integer> faith, Map<String, List<ItemStatus>> sections,
                                 Optional<Integer> faithLorenzo, Optional<List<ItemStatus>> sectionsLorenzo) {
-
         List<Integer> start = model.getConfiguration().getSectionsStart(),
                 end = model.getConfiguration().getSectionsEnd(),
                 points = model.getConfiguration().getSectionsPoints(),
                 faithTrack = model.getConfiguration().getTrackPoints();
-
         List<String> names = model.getNicknames();
-        if(faithLorenzo.isPresent() && sectionsLorenzo.isPresent()){
+        if (faithLorenzo.isPresent() && sectionsLorenzo.isPresent()) {
             faith.put("Lorenzo", faithLorenzo.get());
             sections.put("Lorenzo", new LinkedList<>(sectionsLorenzo.get()));
             names.add("Lorenzo");
         }
-        CLIPainter.paintFaithTrack (viewStatus, FAITHTRACK_Y, FAITHTRACK_X,
-                faithTrack, names, faith, sections, start, end, points);
+
+        for(String name : playersBoard.keySet()) {
+            String[][] view = playersBoard.get(name);
+            CLIPainter.paintFaithTrack(view, FAITHTRACK_Y, FAITHTRACK_X,
+                    faithTrack, names, faith, sections, start, end, points);
+        }
     }
 
     /**
@@ -509,8 +557,7 @@ public class CLI implements View, SubjectView {
         plotView();
         StringBuilder available = new StringBuilder();
         for(String string : turns) available.append(string).append(", ");
-        available.append("SHOW_DECKS").append(", DISCONNECT");
-        turns.add("DISCONNECT");
+        available.append("SHOW_DECKS;");
         String s = "";
         do{
             out.println("\nSelect your turn type; available turns: " + available);
@@ -560,19 +607,9 @@ public class CLI implements View, SubjectView {
             case("EXIT"): {
                 try {
                     notifyInteraction(MessageFactory.buildExit("End of turn selection"));
-                }catch(MalformedMessageException e){
-                    //exit from client
-                }
-                break;
-            }
-            case("DISCONNECT"): {
-                try {
-                    notifyInteraction(MessageFactory.buildDisconnection(
-                            "I want to be disconnected", model.getPersonalNickname()));
                 } catch (MalformedMessageException e) {
                     //exit from client
                 }
-
                 break;
             }
         }
@@ -918,12 +955,13 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void getResourcesAction() {
-        int playerPosition, number;
+        int playerPosition, number, players;
         String self = model.getPersonalNickname(), selection = "";
         playerPosition = model.getNicknames().indexOf(self);
         number = model.getConfiguration().getInitialResources().get(playerPosition);
+        players = model.getNicknames().size();
 
-        plotView();
+        if(players!=1) plotView();
 
         if(number>0) {
             String[] sequence;
@@ -982,6 +1020,20 @@ public class CLI implements View, SubjectView {
             //exit from client
         }
         return true;
+    }
+
+    /**
+     * this method is used to show the board of a player (different from the current one)
+     * @param nickname is the nickname of the target player
+     */
+    @Override
+    public void showOthers(String nickname) {
+        if(!playersBoard.containsKey(nickname)){
+            out.println("The player may not be logged in.");
+            return;
+        }
+        plotOthers(nickname);
+        out.println("\n");
     }
 
     /**

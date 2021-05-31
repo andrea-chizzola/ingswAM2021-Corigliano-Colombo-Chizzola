@@ -56,13 +56,16 @@ public class LoginController extends ViewController{
         return pane.getScene();
     }
 
+
+
     private void onSinglePlayerButtonClicked(Event event){
         if(checkUsername()) {
             try {
-                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 1);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
+                LoadingController controller = new LoadingController();
+                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
             } catch (MalformedMessageException e) {
                 e.printStackTrace();
             }
@@ -75,7 +78,8 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 2);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                LoadingController controller = new LoadingController();
+                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -88,7 +92,8 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 3);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                LoadingController controller = new LoadingController();
+                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -101,7 +106,8 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 4);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                LoadingController controller = new LoadingController();
+                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -114,7 +120,8 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), false, 0);
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                LoadingController controller = new LoadingController();
+                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -127,7 +134,8 @@ public class LoginController extends ViewController{
                 String message = MessageFactory.buildReconnection("Reconnection request.", nicknameField.getText());
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
-                GUIHandler.loadRoot(pane.getScene(), "/FXML/loading.fxml");
+                LoadingController controller = new LoadingController();
+                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }

@@ -233,6 +233,11 @@ public class VirtualView implements View {
     @Override
     public boolean swapAction() { return true; }
 
+    @Override
+    public void showOthers(String nickname) {
+
+    }
+
     /**
      * this method show the player's personal production.
      */

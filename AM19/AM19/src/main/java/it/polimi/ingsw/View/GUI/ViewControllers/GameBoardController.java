@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.*;
+import it.polimi.ingsw.View.PlayerInteractions.SeeOthersInteraction;
 import javafx.animation.PauseTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -20,46 +21,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.*;
 
-public class GameBoardController extends ViewController{
+public class GameBoardController extends BoardUpdate{
 
     @FXML
     private Pane pane;
-    @FXML
-    private ImageView firstSlot;
-    @FXML
-    private ImageView secondSlot;
-    @FXML
-    private ImageView thirdSlot;
-    @FXML
-    private ImageView firstLeaderCard;
-    @FXML
-    private ImageView secondLeaderCard;
-    @FXML
-    private ImageView thirdLeaderCard;
-    @FXML
-    private ImageView fourthLeaderCard;
-    @FXML
-    private ImageView firstPopeFavor;
-    @FXML
-    private ImageView secondPopeFavor;
-    @FXML
-    private ImageView thirdPopeFavor;
-    @FXML
-    private ImageView topResource;
-    @FXML
-    private ImageView firstMidResource;
-    @FXML
-    private ImageView secondMidResource;
-    @FXML
-    private ImageView firstBottomResource;
-    @FXML
-    private ImageView secondBottomResource;
-    @FXML
-    private ImageView thirdBottomResource;
     @FXML
     private ImageView blackCross;
     @FXML
@@ -78,8 +48,8 @@ public class GameBoardController extends ViewController{
     private Button marketBoardButton;
     @FXML
     private Button decksButton;
-    @FXML
-    private Button otherPlayersButton;
+    /*@FXML
+    private Button otherPlayersButton;*/
     @FXML
     private Button quitButton;
     @FXML
@@ -99,16 +69,6 @@ public class GameBoardController extends ViewController{
     @FXML
     private Button slotButton3;
     @FXML
-    private Circle tile;
-    @FXML
-    private Label coinsNumber;
-    @FXML
-    private Label shieldsNumber;
-    @FXML
-    private Label stonesNumber;
-    @FXML
-    private Label servantsNumber;
-    @FXML
     private Label errorStrongbox;
     @FXML
     private Label errorExtraShelf;
@@ -125,31 +85,9 @@ public class GameBoardController extends ViewController{
     @FXML
     private MenuItem DISCARD2;
     @FXML
-    private ImageView extraShelf1;
-    @FXML
-    private ImageView extraShelf2;
-    @FXML
-    private Label extraShelf2Label;
-    @FXML
-    private Label extraShelf1Label;
-    @FXML
-    private Label extraShelfString;
-
-
-    private List<Coordinates> positions;
+    private MenuButton otherPlayersMenu;
 
     private List<Coordinates> blackPositions;
-
-    private List<ImageView> warehouse;
-
-    private List<ImageView> warehouse2;
-    private List<ImageView> warehouse3;
-
-    private List<ImageView> developmentCards;
-
-    private List<ImageView> leaderCards;
-
-    private List<ImageView> popeFavors;
 
     private String resourceExtraShelf1;
     private String resourceExtraShelf2;
@@ -166,7 +104,7 @@ public class GameBoardController extends ViewController{
 
         menuButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMenuClicked);
         marketBoardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMarketBoardClicked);
-        otherPlayersButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onOtherPlayersClicked);
+        //otherPlayersButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onOtherPlayersClicked);
         quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onQuitClicked);
         decksButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onDecksClicked);
         actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, this::notifyInteraction);
@@ -204,13 +142,9 @@ public class GameBoardController extends ViewController{
         decksController = new DecksController();
         marketboardController = new MarketboardController();
 
-        marketboardController.attachGUIReference(getGUIReference());
-        marketboardController.attachModelReference(getModelReference());
         GUIHandler.createHelperWindow(marketboardController, "/FXML/marketboard.fxml");
         marketboardController.hideWindow();
 
-        decksController.attachGUIReference(getGUIReference());
-        decksController.attachModelReference(getModelReference());
         GUIHandler.createHelperWindow(decksController, "/FXML/decks.fxml");
         decksController.hideWindow();
 
@@ -241,19 +175,29 @@ public class GameBoardController extends ViewController{
         }
     }
 
-    private void onOtherPlayersClicked(Event event) {
+    /*private void onOtherPlayersClicked(Event event) {
 
         String myNickname = getModelReference().getPersonalNickname();
 
         for(String nickname : getModelReference().getNicknames()){
             if (!myNickname.equals(nickname)) {
-                OtherBoardsController controller = new OtherBoardsController(nickname);
+                OtherBoardsController controller = new OtherBoardsController();
                 controller.attachGUIReference(getGUIReference());
                 controller.attachModelReference(getModelReference());
                 GUIHandler.newWindow(controller, "/FXML/otherBoards.fxml");
             }
         }
 
+    }*/
+
+    private void onOtherPlayersClicked(String nickname) {
+        getGUIReference().notifyInteraction(new SeeOthersInteraction(nickname));
+    }
+
+    public void addPlayer(String nickname){
+        MenuItem item = new MenuItem(nickname);
+        otherPlayersMenu.getItems().add(item);
+        item.setOnAction(e -> onOtherPlayersClicked(nickname));
     }
 
     private void onMarketBoardClicked(Event event) {
@@ -272,74 +216,6 @@ public class GameBoardController extends ViewController{
         return pane.getScene();
     }
 
-    /**
-     * manages the activation and deactivation of the pope favors
-     * @param sections contains the status of each pope favor
-     */
-    public void manageSections(List<ItemStatus> sections){
-        for(ItemStatus status : sections){
-            if(status == ItemStatus.ACTIVE){
-                int section = sections.indexOf(status);
-                switch (section){
-                    case 0:
-                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratogialloattivo.png"));
-                        popeFavors.get(section).setImage(image);
-                        break;
-                    case 1:
-                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratoarancioattivo.png"));
-                        popeFavors.get(section).setImage(image1);
-                        break;
-                    case 2:
-                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratorossoattivo.png"));
-                        popeFavors.get(section).setImage(image2);
-                        break;
-                }
-
-            }
-        }
-    }
-
-    /**
-     * manages the selection of the development cards
-     * @param slots contains the development cards
-     */
-    public void manageDevelopmentCards(Map<Integer, String> slots){
-        for(ImageView image : developmentCards){
-            image.setVisible(false);
-        }
-        for(Integer slot : slots.keySet()){
-            String path = getModelReference().getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
-            Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
-            developmentCards.get(slot - 1).setImage(card);
-            developmentCards.get(slot - 1).setVisible(true);
-        }
-    }
-
-    /**
-     * manages the selection and activation of the leader cards
-     * @param cards contains the leader cards
-     * @param status contains the status of each leader card
-     */
-    public void manageLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status){
-        for(ImageView image : leaderCards){
-            image.setVisible(false);
-        }
-        for(Integer slot : cards.keySet()){
-            String path = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
-            if(status.get(slot) == ItemStatus.ACTIVE){
-                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
-                leaderCards.get(slot - 1).setImage(card);
-                leaderCards.get(slot - 1).setVisible(true);
-            }else{
-                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
-                leaderCards.get(slot - 1).setImage(card);
-                leaderCards.get(slot - 1).setVisible(true);
-                leaderCards.get(slot - 1).setOpacity(0.5);
-            }
-        }
-    }
-
-
     public void manageTopToken(Optional<String> action){
         if(action.isEmpty())
             return;
@@ -350,35 +226,7 @@ public class GameBoardController extends ViewController{
         actionToken.setVisible(true);
     }
 
-
-    /**
-     * stores the selected resources inside the strongbox
-     * @param strongbox contains the resources to store
-     */
-    public void setResourceStrongbox(List<ResQuantity> strongbox){
-
-        for(ResQuantity resQuantity : strongbox) {
-            switch (resQuantity.getResource().getColor()) {
-                case YELLOW:
-                    setCoinsNumber(resQuantity.getQuantity());
-                    break;
-                case BLUE:
-                    setShieldsNumber(resQuantity.getQuantity());
-                    break;
-                case GRAY:
-                    setStonesNumber(resQuantity.getQuantity());
-                    break;
-                case PURPLE:
-                    setServantsNumber(resQuantity.getQuantity());
-                    break;
-            }
-        }
-    }
-
-    /**
-     * stores the selected resources inside the warehouse
-     * @param warehouseRes contains the resources to store
-     */
+    /*
     public void setResourceWarehouse(List<ResQuantity> warehouseRes){
 
 
@@ -426,12 +274,12 @@ public class GameBoardController extends ViewController{
         }
         if(shelf == 2)
             for (int i = 0; i < warehouse2.size(); i++) {
-               if(i<quantity) {
-                   warehouse2.get(i).setImage(image);
-                   warehouse2.get(i).setVisible(true);
-                   warehouse2.get(i).setOpacity(1);
-               }else
-                   warehouse2.get(i).setVisible(false);
+                if(i<quantity) {
+                    warehouse2.get(i).setImage(image);
+                    warehouse2.get(i).setVisible(true);
+                    warehouse2.get(i).setOpacity(1);
+                }else
+                    warehouse2.get(i).setVisible(false);
             }
 
         if(shelf == 3)
@@ -444,50 +292,7 @@ public class GameBoardController extends ViewController{
                     warehouse3.get(i).setVisible(false);
             }
     }
-
-    /**
-     * sets the strongbox coins to the specified number
-     * @param number represents the number of coins
-     */
-    private void setCoinsNumber(Integer number){
-        coinsNumber.setText(number.toString());
-    }
-
-    /**
-     * sets the strongbox shields to the specified number
-     * @param number represents the number of shields
-     */
-    private void setShieldsNumber(Integer number){
-        shieldsNumber.setText(number.toString());
-    }
-
-    /**
-     * sets the strongbox stones to the specified number
-     * @param number represents the number of stones
-     */
-    private void setStonesNumber(Integer number){
-        stonesNumber.setText(number.toString());
-    }
-
-    /**
-     * sets the strongbox servants to the specified number
-     * @param number represents the number of servants
-     */
-    private void setServantsNumber(Integer number){
-        servantsNumber.setText(number.toString());
-    }
-
-    /**
-     * changes the position of the player inside his faith track
-     * @param position represents the new player's position
-     */
-    public void changePosition(int position){
-
-        tile.setLayoutX(positions.get(position).getX());
-        tile.setLayoutY(positions.get(position).getY());
-
-    }
-
+*/
     /**
      * changes Lorenzo's position inside the faith track
      * @param position represents Lorenzo's position
@@ -514,27 +319,6 @@ public class GameBoardController extends ViewController{
         marketboardController.showMarketUpdate(tray);
     }
 
-
-    /**
-     * sets the ImageView associated to each slot in the warehouse
-     * @param warehouse contains the ImageViews associated the warehouse
-     */
-    private void setWarehouse(List<ImageView> warehouse){
-
-        warehouse.add(topResource);
-        topResource.setVisible(false);
-        warehouse.add(firstMidResource);
-        firstMidResource.setVisible(false);
-        warehouse.add(secondMidResource);
-        secondMidResource.setVisible(false);
-        warehouse.add(firstBottomResource);
-        firstBottomResource.setVisible(false);
-        warehouse.add(secondBottomResource);
-        secondBottomResource.setVisible(false);
-        warehouse.add(thirdBottomResource);
-        thirdBottomResource.setVisible(false);
-
-    }
 
     /**
      * adds the events handlers to the images associated with the warehouse
@@ -846,8 +630,6 @@ public class GameBoardController extends ViewController{
         actionButton.setDisable(false);
 
         chosenResourcesController = new ChosenResourcesController();
-        chosenResourcesController.attachGUIReference(getGUIReference());
-        chosenResourcesController.attachModelReference(getModelReference());
         chosenResourcesController.setAccumulator(accumulator);
         GUIHandler.createHelperWindow(chosenResourcesController, "/FXML/chosenResources.fxml");
 
@@ -914,86 +696,6 @@ public class GameBoardController extends ViewController{
         actionButton.setDisable(false);
     }
 
-
-
-    /**
-     * sets the ImageView associated to each development card
-     * @param developmentCards contains the ImageViews associated the development cards
-     */
-    private void setDevelopmentCards(List<ImageView> developmentCards){
-
-        developmentCards.add(firstSlot);
-        firstSlot.setVisible(false);
-        developmentCards.add(secondSlot);
-        secondSlot.setVisible(false);
-        developmentCards.add(thirdSlot);
-        thirdSlot.setVisible(false);
-
-    }
-
-    /**
-     * sets the ImageView associated to each leader card
-     * @param leaderCards contains the ImageViews associated the leader cards
-     */
-    private void setLeaderCards(List<ImageView> leaderCards){
-
-        leaderCards.add(firstLeaderCard);
-        firstLeaderCard.setVisible(false);
-        leaderCards.add(secondLeaderCard);
-        secondLeaderCard.setVisible(false);
-        leaderCards.add(thirdLeaderCard);
-        thirdLeaderCard.setVisible(false);
-        leaderCards.add(fourthLeaderCard);
-        fourthLeaderCard.setVisible(false);
-
-    }
-
-    /**
-     * sets the ImageView associated to each pope favor
-     * @param popeFavors contains the ImageViews associated the pope favors
-     */
-    private void setPopeFavors(List<ImageView> popeFavors){
-
-        popeFavors.add(firstPopeFavor);
-        popeFavors.add(secondPopeFavor);
-        popeFavors.add(thirdPopeFavor);
-
-    }
-
-    /**
-     * sets the positions related to each tile of the faith track
-     * @param positions contains the coordinates of each tile
-     */
-    private void setPositions(List<Coordinates> positions){
-
-        positions.add(new Coordinates(54, 113));
-        positions.add(new Coordinates(95, 113));
-        positions.add(new Coordinates(135, 113));
-        positions.add(new Coordinates(135, 78));
-        positions.add(new Coordinates(135, 45));
-        positions.add(new Coordinates(183, 45));
-        positions.add(new Coordinates(220, 45));
-        positions.add(new Coordinates(265, 45));
-        positions.add(new Coordinates(305, 45));
-        positions.add(new Coordinates(350,45));
-        positions.add(new Coordinates(350, 78));
-        positions.add(new Coordinates(350, 113));
-        positions.add(new Coordinates(392, 113));
-        positions.add(new Coordinates(435, 113));
-        positions.add(new Coordinates(481, 113));
-        positions.add(new Coordinates(520, 113));
-        positions.add(new Coordinates(563, 113));
-        positions.add(new Coordinates(563, 78));
-        positions.add(new Coordinates(563, 45));
-        positions.add(new Coordinates(603, 45));
-        positions.add(new Coordinates(648, 45));
-        positions.add(new Coordinates(690, 45));
-        positions.add(new Coordinates(734, 45));
-        positions.add(new Coordinates(779, 45));
-        positions.add(new Coordinates(817, 45));
-
-    }
-
     /**
      * sets the positions related to each tile of the faith track (only for Lorenzo's black cross)
      * @param positions contains the coordinates of each tile
@@ -1026,6 +728,14 @@ public class GameBoardController extends ViewController{
         positions.add(new Coordinates(759, 30));
         positions.add(new Coordinates(805, 30));
 
+    }
+
+    public void showWindow(){
+        ((Stage) pane.getScene().getWindow()).show();
+    }
+
+    public void hideWindow(){
+        pane.getScene().getWindow().hide();
     }
 
 }

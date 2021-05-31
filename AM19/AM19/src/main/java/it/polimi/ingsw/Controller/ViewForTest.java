@@ -221,4 +221,9 @@ public class ViewForTest implements View {
     public boolean swapAction() {
         return true;
     }
+
+    @Override
+    public void showOthers(String nickname) {
+
+    }
 }

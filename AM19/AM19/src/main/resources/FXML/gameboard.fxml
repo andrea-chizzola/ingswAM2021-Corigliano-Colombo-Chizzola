@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="500.0" fitWidth="870.0" pickOnBounds="true">
          <image>
@@ -72,11 +72,6 @@
          </font>
       </Button>
       <Button fx:id="marketBoardButton" layoutX="909.0" layoutY="147.0" mnemonicParsing="false" text="MARKET BOARD">
-         <font>
-            <Font name="Times New Roman Italic" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="otherPlayersButton" layoutX="906.0" layoutY="275.0" mnemonicParsing="false" text="OTHER PLAYERS">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
@@ -275,5 +270,10 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
+      <MenuButton fx:id="otherPlayersMenu" layoutX="895.0" layoutY="272.0" mnemonicParsing="false" text="OTHER PLAYERS">
+         <font>
+            <Font name="Times New Roman" size="14.0" />
+         </font>
+      </MenuButton>
    </children>
 </Pane>
