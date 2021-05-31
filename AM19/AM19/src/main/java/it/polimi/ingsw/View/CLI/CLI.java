@@ -176,7 +176,6 @@ public class CLI implements View, SubjectView {
         }
 
         if(s.length() >=5 && s.startsWith("SEE")){
-            //notifyInteraction(new SeeOthersInteraction(s.substring(4)));
             showOthers(s.substring(4));
             return;
         }

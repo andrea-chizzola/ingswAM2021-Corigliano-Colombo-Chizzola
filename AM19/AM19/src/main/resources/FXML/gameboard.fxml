@@ -271,10 +271,6 @@
          </font>
       </Label>
       <MenuButton fx:id="otherPlayersMenu" layoutX="895.0" layoutY="272.0" mnemonicParsing="false" text="OTHER PLAYERS">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
          <font>
             <Font name="Times New Roman" size="14.0" />
          </font>

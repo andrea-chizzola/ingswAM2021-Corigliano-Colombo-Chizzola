@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 import java.util.List;
 import java.util.Map;
@@ -406,4 +407,7 @@ public abstract class BoardUpdate extends ViewController{
 
     }
 
+    public abstract void showWindow();
+
+    public abstract  void hideWindow();
 }

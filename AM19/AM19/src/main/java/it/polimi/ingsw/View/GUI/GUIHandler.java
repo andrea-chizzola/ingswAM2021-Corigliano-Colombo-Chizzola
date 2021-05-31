@@ -23,6 +23,7 @@ import java.util.List;
 public class GUIHandler extends Application {
 
     private static GUI gui;
+    private static ReducedGameBoard model;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -31,8 +32,6 @@ public class GUIHandler extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 575, 534);
         stage.setScene(scene);
         ViewController controller = fxmlLoader.getController();
-        controller.attachGUIReference(gui);
-        controller.attachModelReference(gui.getModelReference());
         stage.show();
     }
 
@@ -50,8 +49,13 @@ public class GUIHandler extends Application {
         return gui;
     }
 
-    public static void setGUIReference(GUI reference){
-        gui = reference;
+    public static ReducedGameBoard getModelReference(){
+        return model;
+    }
+
+    public static void setInstanceReference(GUI view, ReducedGameBoard data){
+        gui = view;
+        model = data;
     }
 
     public static <T> T loadRoot(Scene scene, String fxmlPath) {

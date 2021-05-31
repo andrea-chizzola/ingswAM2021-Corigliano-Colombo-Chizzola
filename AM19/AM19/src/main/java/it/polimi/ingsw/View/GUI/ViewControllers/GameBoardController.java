@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.*;
@@ -141,13 +142,9 @@ public class GameBoardController extends BoardUpdate{
         decksController = new DecksController();
         marketboardController = new MarketboardController();
 
-        marketboardController.attachGUIReference(getGUIReference());
-        marketboardController.attachModelReference(getModelReference());
         GUIHandler.createHelperWindow(marketboardController, "/FXML/marketboard.fxml");
         marketboardController.hideWindow();
 
-        decksController.attachGUIReference(getGUIReference());
-        decksController.attachModelReference(getModelReference());
         GUIHandler.createHelperWindow(decksController, "/FXML/decks.fxml");
         decksController.hideWindow();
 
@@ -671,8 +668,6 @@ public class GameBoardController extends BoardUpdate{
         actionButton.setDisable(false);
 
         chosenResourcesController = new ChosenResourcesController();
-        chosenResourcesController.attachGUIReference(getGUIReference());
-        chosenResourcesController.attachModelReference(getModelReference());
         chosenResourcesController.setAccumulator(accumulator);
         GUIHandler.createHelperWindow(chosenResourcesController, "/FXML/chosenResources.fxml");
 
@@ -771,6 +766,14 @@ public class GameBoardController extends BoardUpdate{
         positions.add(new Coordinates(759, 30));
         positions.add(new Coordinates(805, 30));
 
+    }
+
+    public void showWindow(){
+        ((Stage) pane.getScene().getWindow()).show();
+    }
+
+    public void hideWindow(){
+        pane.getScene().getWindow().hide();
     }
 
 }

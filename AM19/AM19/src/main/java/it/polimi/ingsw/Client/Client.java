@@ -74,7 +74,7 @@ public class Client implements MessageSender {
             cli.launch();
         }else{
             GUI gui = new GUI(reducedModel);
-            GUIHandler.setGUIReference(gui);
+            GUIHandler.setInstanceReference(gui, reducedModel);
             clientController = new ClientController(reducedModel, gui, this);
             clientController.runController();
             gui.attachInteractionObserver(clientController);

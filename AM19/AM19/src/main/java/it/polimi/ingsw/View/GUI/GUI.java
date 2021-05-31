@@ -25,7 +25,7 @@ public class GUI implements View, SubjectView {
     private List<ViewController> controllers = new ArrayList<>();
 
     private GameBoardController gameBoardController;
-    private Map<String, ViewController> playerBoards;
+    private Map<String, BoardUpdate> playerBoards;
 
     private LoadingController loadingController;
 
@@ -35,7 +35,9 @@ public class GUI implements View, SubjectView {
     private final String path = "/Images/front/";
 
     public GUI (ReducedGameBoard model){
+
         this.model = model;
+        playerBoards = new HashMap<>();
     }
 
     public ReducedGameBoard getModelReference(){
@@ -51,23 +53,23 @@ public class GUI implements View, SubjectView {
         List<String> nicknames = model.getNicknames();
         String self = model.getPersonalNickname();
 
-        /*gameBoardController = new GameBoardController();
+        gameBoardController = new GameBoardController();
         playerBoards.put(self, gameBoardController);
-        gameBoardController.attachGUIReference(this);
-        gameBoardController.attachModelReference(model);
         Platform.runLater(() -> GUIHandler.newWindow(gameBoardController, "/FXML/gameboard.fxml"));
         Platform.runLater(() -> loadingController.closeScene());
 
         for(String name : nicknames){
             if(!name.equals(self)) {
-                gameBoardController.addPlayer(name);
-                DummyController controller = new DummyController();
+                OtherBoardsController controller = new OtherBoardsController();
                 playerBoards.put(name, controller);
-                controller.attachGUIReference(this);
-                controller.attachModelReference(model);
-                Platform.runLater(() -> GUIHandler.createHelperWindow(controller, "/FXML/gameboard.fxml"));
+                Platform.runLater(
+                        () -> {
+                            GUIHandler.createHelperWindow(controller, "/FXML/otherBoards.fxml");
+                            gameBoardController.addPlayer(name);
+                        });
             }
-        }*/
+
+        }
     }
 
     @Override
@@ -84,8 +86,6 @@ public class GUI implements View, SubjectView {
     public void showAvailableTurns(List<String> turns, String player) {
 
         TurnSelectionController controller = new TurnSelectionController();
-        controller.attachGUIReference(this);
-        controller.attachModelReference(model);
         controller.setAvailableActions(turns);
 
         Platform.runLater(() ->
@@ -109,8 +109,6 @@ public class GUI implements View, SubjectView {
         }
         List<String> transformations = whiteModifications.stream().map(Marble::toString).collect(Collectors.toList());
         MarbleSelectionController controller = new MarbleSelectionController();
-        controller.attachGUIReference(this);
-        controller.attachModelReference(model);
         int finalWhites = whites;
         Platform.runLater(()->{
             GUIHandler.newWindow(controller, "/FXML/marbleSelection.fxml");
@@ -159,47 +157,50 @@ public class GUI implements View, SubjectView {
     @Override
     public void showBoxes(List<ResQuantity> warehouse, List<ResQuantity> strongBox, String nickName) {
 
-        /*DummyController controller = playerBoards.get(nickname);
+        BoardUpdate controller = playerBoards.get(nickName);
 
         Platform.runLater(() -> {
             controller.setResourceWarehouse(warehouse);
             controller.setResourceStrongbox(strongBox);
-        });*/
+        });
 
     }
 
     @Override
     public void showSlotsUpdate(Map<Integer, String> slots, String nickName) {
 
-        /*DummyController controller = playerBoards.get(nickname);
-
-        Platform.runLater(() -> controller.manageDevelopmentCards(slots));*/
+        BoardUpdate controller = playerBoards.get(nickName);
+        Platform.runLater(() -> controller.manageDevelopmentCards(slots));
 
     }
 
     @Override
     public void showLeaderCards(Map<Integer, String> cards, Map<Integer, ItemStatus> status, String nickName) {
 
-        /*DummyController controller = playerBoards.get(nickname);
+        BoardUpdate controller = playerBoards.get(nickName);
 
-        Platform.runLater(() -> controller.manageLeaderCards(cards, status));*/
+        Platform.runLater(() -> controller.manageLeaderCards(cards, status));
 
     }
 
     @Override
     public void showFaithUpdate(Map<String, Integer> faith, Map<String, List<ItemStatus>> sections, Optional<Integer> faithLorenzo, Optional<List<ItemStatus>> sectionsLorenzo) {
 
-       /* for(String name : faith.keySet()) {
-            DummyController controller = playerBoards.get(name);
+       for(String name : faith.keySet()) {
+            BoardUpdate controller = playerBoards.get(name);
             Platform.runLater(() -> {
-                gameBoardController.changePosition(faith.get(name));
-                gameBoardController.manageSections(sections.get(name));
-                if (faithLorenzo.isPresent() && sectionsLorenzo.isPresent()) {
-                    gameBoardController.visualizeBlackCross();
-                    gameBoardController.changeBlackPosition(faithLorenzo.get());
-                }
+                controller.changePosition(faith.get(name));
+                controller.manageSections(sections.get(name));
             });
-        }*/
+        }
+        if (faithLorenzo.isPresent() && sectionsLorenzo.isPresent()) {
+            Platform.runLater(() ->
+                    {
+                        gameBoardController.visualizeBlackCross();
+                        gameBoardController.changeBlackPosition(faithLorenzo.get());
+                    }
+            );
+        }
 
     }
 
@@ -261,7 +262,6 @@ public class GUI implements View, SubjectView {
         number = model.getConfiguration().getInitialResources().get(playerPosition);
 
         InitializeResController controller = new InitializeResController();
-        controller.attachGUIReference(this);
         controller.startInitialization(number);
 
         if(number>0) {
@@ -290,8 +290,9 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void showOthers(String nickname) {
-        /*DummyController controller = playerBoards.get(nickname);
-        Platform.runLater(()-> controller.setVisible());*/
+        if(!playerBoards.containsKey(nickname)) return;
+        BoardUpdate controller = playerBoards.get(nickname);
+        Platform.runLater(controller::showWindow);
     }
 
     @Override

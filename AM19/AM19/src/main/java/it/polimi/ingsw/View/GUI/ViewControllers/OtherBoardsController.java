@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,4 +55,11 @@ public class OtherBoardsController extends BoardUpdate{
 
     }
 
+    public void showWindow(){
+        ((Stage) pane.getScene().getWindow()).show();
+    }
+
+    public void hideWindow(){
+        pane.getScene().getWindow().hide();
+    }
 }
