@@ -31,7 +31,7 @@ public class GUIHandler extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("/FXML/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 575, 534);
         stage.setScene(scene);
-        ViewController controller = fxmlLoader.getController();
+        gui.setMainScene(scene);
         stage.show();
     }
 

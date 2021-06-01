@@ -53,7 +53,6 @@ public interface View {
      * @param whiteModifications represents the available modifications for
      * @param nickName represents the nickname of the player who made the selection
      */
-    //to be renamed . Magari si manda a tutti, così tutti vedono la selezione, ma solo il player specifico può agire
     void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName);
 
 
@@ -143,11 +142,6 @@ public interface View {
      * this action is used to catch the resources chosen by a player
      */
     void getResourcesAction();
-
-    /**
-     * this method show the player's personal production.
-     */
-    void showPersonalProduction();
 
     /**
      * this method is used to catch a swap in the Warehouse

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedConfiguration;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
@@ -15,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +64,7 @@ public class DecksController extends ViewController {
 
     private List<ImageView> cards;
     private Accumulator accumulator;
+    private final String path = "/Images/front/";
 
     @FXML
     public void initialize() {
@@ -118,10 +121,14 @@ public class DecksController extends ViewController {
 
     public void showDecksUpdate(Map<Integer, String> decks) {
         emptyDecks();
-        for (int i : decks.keySet()) {
+        ReducedConfiguration config = getModelReference().getConfiguration();
+
+        for(int i : decks.keySet()){
+            String id = decks.get(i);
+            String image = path + config.getDevelopmentCard(id).getPath();
             ImageView view = cards.get(i);
             view.setVisible(true);
-            view.setImage(new Image(decks.get(i)));
+            view.setImage(new Image(image));
         }
     }
 

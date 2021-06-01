@@ -237,10 +237,4 @@ public class VirtualView implements View {
     public void showOthers(String nickname) {
 
     }
-
-    /**
-     * this method show the player's personal production.
-     */
-    @Override
-    public void showPersonalProduction() {}
 }

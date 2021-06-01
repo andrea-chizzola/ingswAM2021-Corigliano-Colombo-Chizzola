@@ -43,9 +43,9 @@ public class MarketboardController extends ViewController {
 
     List<ImageView> viewTray;
     List<Button> positions;
-
     Accumulator accumulator;
     BuildMessage builder;
+    private final String path = "/Images/market/";
 
 
     @FXML
@@ -65,8 +65,8 @@ public class MarketboardController extends ViewController {
         row3.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
                 doAction("ROW",3));
         initializeTray();
-
         positions = List.of(column1, column2, column3, column4, row1, row2, row3);
+        disableButtons();
     }
 
     private void doAction(String tray, int position){
@@ -78,17 +78,12 @@ public class MarketboardController extends ViewController {
     private void initializeTray(){
 
         viewTray = new LinkedList<>();
-        Image image = new Image("/Images/market/MarbleWhite.PNG");
-        ImageView view = new ImageView(image);
-        view.setFitWidth(33);
-        view.setFitHeight(33);
-        view.setLayoutX(227);
-        view.setLayoutY(60);
-        viewTray.add(view);
+        Image image;
+        ImageView view;
 
         for(int i=0; i<3; i++){
             for(int j=0; j<4; j++) {
-                image = new Image("/Images/market/MarbleWhite.PNG");
+                image = new Image(path+"MarbleWhite.PNG");
                 view = new ImageView(image);
                 view.setFitWidth(33);
                 view.setFitHeight(33);
@@ -98,12 +93,20 @@ public class MarketboardController extends ViewController {
                 viewTray.add(view);
             }
         }
+
+        image = new Image(path+"MarbleWhite.PNG");
+        view = new ImageView(image);
+        view.setFitWidth(33);
+        view.setFitHeight(33);
+        view.setLayoutX(227);
+        view.setLayoutY(60);
+        viewTray.add(view);
         mainPane.getChildren().addAll(viewTray);
     }
 
     public void showMarketUpdate(List<Marble> tray) {
         for(int i=0; i<viewTray.size(); i++){
-            Image image = new Image("/Images/market/" + tray.get(i).getImage());
+            Image image = new Image(path + tray.get(i).getImage());
             viewTray.get(i).setImage(image);
         }
     }

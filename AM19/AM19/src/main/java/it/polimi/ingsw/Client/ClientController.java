@@ -174,6 +174,7 @@ public class ClientController implements ClientConnectionListener, InteractionOb
 
         loginHandler(message);
         if(!message.isOk()) actionHandler(model.getModelState());
+        view.reply(message.isOk(), message.getBody(), message.getPlayer());
 
     }
 

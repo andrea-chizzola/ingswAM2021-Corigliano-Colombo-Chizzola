@@ -275,5 +275,15 @@
             <Font name="Times New Roman" size="14.0" />
          </font>
       </MenuButton>
+      <Label layoutX="929.0" layoutY="539.0" prefHeight="22.0" prefWidth="83.0" text="PLAYER:" textFill="#fffefe">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="nicknameLabel" alignment="CENTER" layoutX="889.0" layoutY="80.0" prefHeight="22.0" prefWidth="178.0" textAlignment="CENTER" textFill="#fffefe">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="18.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

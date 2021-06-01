@@ -1,17 +1,14 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
-import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
-import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.*;
 import it.polimi.ingsw.View.PlayerInteractions.SeeOthersInteraction;
 import javafx.animation.PauseTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -19,17 +16,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.*;
 
-public class GameBoardController extends BoardUpdate{
+public class InteractiveBoardController extends BoardController {
 
-    @FXML
-    private Pane pane;
     @FXML
     private ImageView blackCross;
     @FXML
@@ -48,8 +40,6 @@ public class GameBoardController extends BoardUpdate{
     private Button marketBoardButton;
     @FXML
     private Button decksButton;
-    /*@FXML
-    private Button otherPlayersButton;*/
     @FXML
     private Button quitButton;
     @FXML
@@ -88,52 +78,36 @@ public class GameBoardController extends BoardUpdate{
     private MenuButton otherPlayersMenu;
 
     private List<Coordinates> blackPositions;
-
-    private String resourceExtraShelf1;
-    private String resourceExtraShelf2;
-
     private DecksController decksController;
     private MarketboardController marketboardController;
     private ChosenResourcesController chosenResourcesController;
     private Accumulator accumulator;
     private BuildMessage builder;
 
+    /**
+     * this method is the constructor of the class
+     * @param nickname is the name of the player who owns the board
+     */
+    public InteractiveBoardController(String nickname) {
+        super(nickname);
+    }
 
+    /**
+     * This method is used to initialize the scene
+     */
     @FXML
+    @Override
     public void initialize(){
-
-        menuButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMenuClicked);
-        marketBoardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMarketBoardClicked);
-        //otherPlayersButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onOtherPlayersClicked);
-        quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onQuitClicked);
-        decksButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onDecksClicked);
-        actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, this::notifyInteraction);
+        super.initialize();
+        menuButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> onMenuClicked());
+        marketBoardButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event ->onMarketBoardClicked());
+        quitButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> onQuitClicked());
+        decksButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> onDecksClicked());
+        actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> notifyInteraction());
 
         actionButton.setDisable(true);
         errorStrongbox.setVisible(false);
         errorExtraShelf.setVisible(false);
-
-        warehouse = new ArrayList<>();
-        warehouse2 = new ArrayList<>();
-        warehouse3 = new ArrayList<>();
-        warehouse2.add(firstMidResource);
-        warehouse2.add(secondMidResource);
-        warehouse3.add(firstBottomResource);
-        warehouse3.add(secondBottomResource);
-        warehouse3.add(thirdBottomResource);
-        setWarehouse(warehouse);
-
-        developmentCards = new ArrayList<>();
-        setDevelopmentCards(developmentCards);
-
-        leaderCards = new ArrayList<>();
-        setLeaderCards(leaderCards);
-
-        popeFavors = new ArrayList<>();
-        setPopeFavors(popeFavors);
-
-        positions = new ArrayList<>();
-        setPositions(positions);
 
         blackPositions = new ArrayList<>();
         setBlackPositions(blackPositions);
@@ -160,13 +134,19 @@ public class GameBoardController extends BoardUpdate{
         resetTurn();
     }
 
-    private void notifyInteraction(Event event) {
+    /**
+     * this helper method is used to notify the action of the player to the controller
+     */
+    private void notifyInteraction() {
         getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
         resetTurn();
         actionButton.setDisable(true);
     }
 
-    private void onQuitClicked(Event event) {
+    /**
+     * this method is called to handle a quit request
+     */
+    private void onQuitClicked() {
         try {
             String message = MessageFactory.buildDisconnection("Disconnection request.", getModelReference().getPersonalNickname());
             getGUIReference().notifyInteraction(message);
@@ -175,45 +155,43 @@ public class GameBoardController extends BoardUpdate{
         }
     }
 
-    /*private void onOtherPlayersClicked(Event event) {
-
-        String myNickname = getModelReference().getPersonalNickname();
-
-        for(String nickname : getModelReference().getNicknames()){
-            if (!myNickname.equals(nickname)) {
-                OtherBoardsController controller = new OtherBoardsController();
-                controller.attachGUIReference(getGUIReference());
-                controller.attachModelReference(getModelReference());
-                GUIHandler.newWindow(controller, "/FXML/otherBoards.fxml");
-            }
-        }
-
-    }*/
-
+    /**
+     * this method is used to notify the willingness of the player of seeing a board of another player
+     * @param nickname is the name of the target player
+     */
     private void onOtherPlayersClicked(String nickname) {
         getGUIReference().notifyInteraction(new SeeOthersInteraction(nickname));
     }
 
+    /**
+     * this method is used to add the name of a player to the otherPlayersMenu
+     * @param nickname
+     */
     public void addPlayer(String nickname){
         MenuItem item = new MenuItem(nickname);
         otherPlayersMenu.getItems().add(item);
         item.setOnAction(e -> onOtherPlayersClicked(nickname));
     }
 
-    private void onMarketBoardClicked(Event event) {
+    /**
+     * this method is used to handle the request of a player of seeing the MarketBoard
+     */
+    private void onMarketBoardClicked() {
         marketboardController.showWindow();
     }
 
-    private void onDecksClicked(Event event) {
+    /**
+     * this method is used to handle the request of a player of seeing the shared decks
+     */
+    private void onDecksClicked() {
         decksController.showWindow();
     }
 
-    private void onMenuClicked(Event event) {
+    /**
+     * this method is used to handle the request of a player of using the menu
+     */
+    private void onMenuClicked() {
 
-    }
-
-    public Scene getScene() {
-        return pane.getScene();
     }
 
     public void manageTopToken(Optional<String> action){
@@ -226,73 +204,6 @@ public class GameBoardController extends BoardUpdate{
         actionToken.setVisible(true);
     }
 
-    /*
-    public void setResourceWarehouse(List<ResQuantity> warehouseRes){
-
-
-        for(int i=0; i<warehouseRes.size(); i++){
-            ResQuantity resQuantity = warehouseRes.get(i);
-            boolean isExtra = (i < 3) ? false : true;
-            if(resQuantity.getQuantity() == 0 && !isExtra){
-                insertWarehouse(i+1,0,null, false);
-            }else{
-                Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/"+resQuantity.getResource().getImage()));
-                insertWarehouse(i+1,resQuantity.getQuantity(),image,isExtra);
-            }
-        }
-
-    }
-
-    private void insertWarehouseExtra(int shelf, Integer quantity, Image image){
-        extraShelfString.setVisible(true);
-        if(shelf == 4){
-            extraShelf1.setImage(image);
-            extraShelf1.setVisible(true);
-            extraShelf1Label.setText(quantity.toString());
-            extraShelf1Label.setVisible(true);
-        }
-        if(shelf == 5){
-            extraShelf2.setImage(image);
-            extraShelf2.setVisible(true);
-            extraShelf2Label.setText(quantity.toString());
-            extraShelf2Label.setVisible(true);
-        }
-    }
-
-    private void insertWarehouse(int shelf, int quantity, Image image, boolean isExtra){
-        if(isExtra){
-            insertWarehouseExtra(shelf,quantity,image);
-            return;
-        }
-        if(shelf == 1){
-            if(quantity == 1) {
-                topResource.setImage(image);
-                topResource.setVisible(true);
-                topResource.setOpacity(1);
-            }else
-                topResource.setVisible(false);
-        }
-        if(shelf == 2)
-            for (int i = 0; i < warehouse2.size(); i++) {
-                if(i<quantity) {
-                    warehouse2.get(i).setImage(image);
-                    warehouse2.get(i).setVisible(true);
-                    warehouse2.get(i).setOpacity(1);
-                }else
-                    warehouse2.get(i).setVisible(false);
-            }
-
-        if(shelf == 3)
-            for (int i = 0; i < warehouse3.size(); i++) {
-                if(i<quantity) {
-                    warehouse3.get(i).setImage(image);
-                    warehouse3.get(i).setVisible(true);
-                    warehouse3.get(i).setOpacity(1);
-                }else
-                    warehouse3.get(i).setVisible(false);
-            }
-    }
-*/
     /**
      * changes Lorenzo's position inside the faith track
      * @param position represents Lorenzo's position
@@ -311,10 +222,18 @@ public class GameBoardController extends BoardUpdate{
         blackCross.setVisible(true);
     }
 
+    /**
+     * this method is used to update the state of the shared decks
+     * @param decks is a map that represents the new state of the shared decks
+     */
     public void setDecks(Map<Integer, String> decks){
         decksController.showDecksUpdate(decks);
     }
 
+    /**
+     * this method is used to update the state of the MarketBoard
+     * @param tray is a list that represents the new state of the marketboard
+     */
     public void setMarketBoard(List<Marble> tray){
         marketboardController.showMarketUpdate(tray);
     }
@@ -361,6 +280,9 @@ public class GameBoardController extends BoardUpdate{
         thirdBottomResource.setOpacity(1);
     }
 
+    /**
+     * this method is used to make the strongbox invisible
+     */
     private void setExtraShelves(){
         extraShelfString.setVisible(false);
         extraShelf1.setVisible(false);
@@ -369,12 +291,21 @@ public class GameBoardController extends BoardUpdate{
         extraShelf2Label.setVisible(false);
     }
 
+    /**
+     * this helper method is used to make the extra shelves of the warehouse clickable
+     */
     private void useExtraShelves(){
         setExtraShelves();
         helpUseExtraShelf(extraShelf1,extraShelf1Label,4);
         helpUseExtraShelf(extraShelf2,extraShelf2Label,5);
     }
 
+    /**
+     * this helper method is used to make an extra shelf of the warehouse clickable
+     * @param imageView is the ImageView that represents the extra slot
+     * @param label represents the amount of resources in the shelf
+     * @param shelf represents the position of the shelf
+     */
     private void helpUseExtraShelf(ImageView imageView, Label label, int shelf){
         PauseTransition visiblePause = new PauseTransition(Duration.seconds(0.8));
         visiblePause.setOnFinished(event -> errorExtraShelf.setVisible(false));
@@ -382,14 +313,14 @@ public class GameBoardController extends BoardUpdate{
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             imageView.setVisible(true);
-            Integer i = Integer.parseInt(label.getText());
+            int i = Integer.parseInt(label.getText());
             if(i == 0) {
                 errorExtraShelf.setVisible(true);
                 visiblePause.play();
                 return;
             }
             i--;
-            label.setText(i.toString());
+            label.setText(String.valueOf(i));
             accumulator.setWarehouse(shelf);});
     }
 
@@ -406,6 +337,12 @@ public class GameBoardController extends BoardUpdate{
 
     }
 
+    /**
+     * this helper method is used to make a resource in the Strongbox clickable
+     * @param imageView is the ImageView that represents the resource
+     * @param label is the amount of that resource
+     * @param resource is the name of the resource
+     */
     private void helpUseStrongbox(ImageView imageView, Label label, String resource){
         PauseTransition visiblePause = new PauseTransition(Duration.seconds(0.8));
         visiblePause.setOnFinished(event -> errorStrongbox.setVisible(false));
@@ -413,14 +350,14 @@ public class GameBoardController extends BoardUpdate{
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             imageView.setVisible(true);
-            Integer i = Integer.parseInt(label.getText());
+            int i = Integer.parseInt(label.getText());
             if(i == 0) {
                 errorStrongbox.setVisible(true);
                 visiblePause.play();
                 return;
             }
             i--;
-            label.setText(i.toString());
+            label.setText(String.valueOf(i));
             accumulator.setStrongbox(resource);
             accumulator.setStrongbox("1");});
 
@@ -641,6 +578,8 @@ public class GameBoardController extends BoardUpdate{
     public void setMarketAction(){
         resetTurn();
         marketboardController.setAccumulator();
+        marketboardController.activateButtons();
+        marketboardController.showWindow();
     }
 
     /**
@@ -730,12 +669,6 @@ public class GameBoardController extends BoardUpdate{
 
     }
 
-    public void showWindow(){
-        ((Stage) pane.getScene().getWindow()).show();
-    }
-
-    public void hideWindow(){
-        pane.getScene().getWindow().hide();
-    }
-
+    //TODO ovverride showwindow e hide window. Aggiungere l'etichetta del player
 }
+

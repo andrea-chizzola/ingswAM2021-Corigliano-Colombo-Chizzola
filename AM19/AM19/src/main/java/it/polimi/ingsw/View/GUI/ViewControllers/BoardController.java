@@ -10,11 +10,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BoardUpdate extends ViewController{
+public class BoardController extends ViewController{
 
+    @FXML
+    private Pane pane;
+    @FXML
+    private Label nicknameLabel;
     @FXML
     protected ImageView firstSlot;
     @FXML
@@ -68,19 +73,84 @@ public abstract class BoardUpdate extends ViewController{
     @FXML
     protected Label extraShelfString;
 
+
     protected List<Coordinates> positions;
-
     protected List<ImageView> warehouse;
-
     protected List<ImageView> warehouse2;
-
     protected List<ImageView> warehouse3;
-
     protected List<ImageView> developmentCards;
-
     protected List<ImageView> leaderCards;
-
     protected List<ImageView> popeFavors;
+    private final String nickname;
+    private final String cardPath = "/Images/front/";
+    private final String boardPath = "/Images/punchboard/";
+
+    /**
+     * this method is the constructor of the class
+     * @param nickname is the name of the player who owns the board
+     */
+    public BoardController(String nickname){
+        this.nickname=nickname;
+    }
+
+    /**
+     * This method is used to initialize the scene
+     */
+    @FXML
+    public void initialize(){
+
+        nicknameLabel.setText(nickname);
+
+        warehouse2 = List.of(firstMidResource, secondMidResource);
+        warehouse3 = List.of(firstBottomResource, secondBottomResource, thirdBottomResource);
+        warehouse = List.of(topResource, firstMidResource, secondMidResource
+                , firstBottomResource, secondBottomResource, thirdBottomResource);
+        setWarehouse();
+
+        developmentCards = List.of(firstSlot, secondSlot, thirdSlot);
+        setDevelopmentCards();
+
+        leaderCards = List.of(firstLeaderCard, secondLeaderCard, thirdLeaderCard, fourthLeaderCard);
+        setLeaderCards();
+
+        popeFavors = List.of(firstPopeFavor, secondPopeFavor, thirdPopeFavor);
+
+        positions = new ArrayList<>();
+        setPositions(positions);
+    }
+
+    /**
+     * sets the ImageView associated to each slot in the warehouse
+     */
+    protected void setWarehouse(){
+        topResource.setVisible(false);
+        firstMidResource.setVisible(false);
+        secondMidResource.setVisible(false);
+        firstBottomResource.setVisible(false);
+        secondBottomResource.setVisible(false);
+        thirdBottomResource.setVisible(false);
+    }
+
+    /**
+     * sets the ImageView associated to each development card
+     */
+    protected void setDevelopmentCards(){
+        firstSlot.setVisible(false);
+        secondSlot.setVisible(false);
+        thirdSlot.setVisible(false);
+    }
+
+    /**
+     * sets the ImageView associated to each leader card
+     */
+    protected void setLeaderCards(){
+
+        firstLeaderCard.setVisible(false);
+        secondLeaderCard.setVisible(false);
+        thirdLeaderCard.setVisible(false);
+        fourthLeaderCard.setVisible(false);
+
+    }
 
     /**
      * changes the position of the player inside his faith track
@@ -93,6 +163,7 @@ public abstract class BoardUpdate extends ViewController{
 
     }
 
+
     /**
      * manages the selection and activation of the leader cards
      * @param cards contains the leader cards
@@ -104,13 +175,13 @@ public abstract class BoardUpdate extends ViewController{
             image.setVisible(false);
         }
         for(Integer slot : cards.keySet()){
-            String path = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
+            String image = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
             if(status.get(slot) == ItemStatus.ACTIVE){
-                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
+                Image card = new Image(getClass().getResourceAsStream(cardPath + image));
                 leaderCards.get(slot - 1).setImage(card);
                 leaderCards.get(slot - 1).setVisible(true);
             }else{
-                Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
+                Image card = new Image(getClass().getResourceAsStream(cardPath + image));
                 leaderCards.get(slot - 1).setImage(card);
                 leaderCards.get(slot - 1).setVisible(true);
                 leaderCards.get(slot - 1).setOpacity(0.5);
@@ -148,15 +219,15 @@ public abstract class BoardUpdate extends ViewController{
                 int section = sections.indexOf(status);
                 switch (section){
                     case 0:
-                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratogialloattivo.png"));
+                        Image image = new Image(getClass().getResourceAsStream(boardPath + "quadratogialloattivo.png"));
                         popeFavors.get(section).setImage(image);
                         break;
                     case 1:
-                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratoarancioattivo.png"));
+                        Image image1 = new Image(getClass().getResourceAsStream(boardPath + "quadratoarancioattivo.png"));
                         popeFavors.get(section).setImage(image1);
                         break;
                     case 2:
-                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/quadratorossoattivo.png"));
+                        Image image2 = new Image(getClass().getResourceAsStream(boardPath + "quadratorossoattivo.png"));
                         popeFavors.get(section).setImage(image2);
                         break;
                 }
@@ -199,25 +270,25 @@ public abstract class BoardUpdate extends ViewController{
 
         for(int i=0; i<warehouseRes.size(); i++){
             ResQuantity resQuantity = warehouseRes.get(i);
-            boolean isExtra = (i < 3) ? false : true;
+            boolean isExtra = i >= 3;
             if(resQuantity.getQuantity() == 0 && !isExtra){
                 insertWarehouse(i+1,0,null, false);
             }else{
                 switch (resQuantity.getResource().getColor()) {
                     case YELLOW:
-                        Image image = new Image(getClass().getResourceAsStream("/Images/punchboard/coin.png"));
+                        Image image = new Image(getClass().getResourceAsStream(boardPath + "coin.png"));
                         insertWarehouse(i+1,resQuantity.getQuantity(),image,isExtra);
                         break;
                     case BLUE:
-                        Image image1 = new Image(getClass().getResourceAsStream("/Images/punchboard/shield.png"));
+                        Image image1 = new Image(getClass().getResourceAsStream(boardPath + "shield.png"));
                         insertWarehouse(i+1,resQuantity.getQuantity(),image1,isExtra);
                         break;
                     case GRAY:
-                        Image image2 = new Image(getClass().getResourceAsStream("/Images/punchboard/stone.png"));
+                        Image image2 = new Image(getClass().getResourceAsStream(boardPath + "stone.png"));
                         insertWarehouse(i+1,resQuantity.getQuantity(),image2,isExtra);
                         break;
                     case PURPLE:
-                        Image image3 = new Image(getClass().getResourceAsStream("/Images/punchboard/servant.png"));
+                        Image image3 = new Image(getClass().getResourceAsStream(boardPath + "servant.png"));
                         insertWarehouse(i+1,resQuantity.getQuantity(),image3,isExtra);
                         break;
                 }
@@ -226,6 +297,57 @@ public abstract class BoardUpdate extends ViewController{
 
     }
 
+    /**
+     * this helper method is used to insert a resource in the warehouse
+     * @param shelf is the position of the extra shelf
+     * @param quantity is the amount of resources to be inserted in the extra shelf
+     * @param image is the image that represents the inserted resource
+     * @param isExtra is true if the resource will be inserted in an extra slot
+     */
+    private void insertWarehouse(int shelf, int quantity, Image image, boolean isExtra){
+        if(isExtra){
+            insertWarehouseExtra(shelf,quantity,image);
+            return;
+        }
+        if(shelf == 1){
+            if(quantity == 1) {
+                topResource.setImage(image);
+                topResource.setVisible(true);
+                topResource.setOpacity(1);
+            }else
+                topResource.setVisible(false);
+        }
+        if(shelf == 2) {
+            insertWarehouseHelper(quantity, image, warehouse2);
+        }
+
+        if(shelf == 3)
+            insertWarehouseHelper(quantity, image, warehouse3);
+    }
+
+    /**
+     * this private helper is used to represents all the resources in a shelf
+     * @param quantity is the amount of resources to be represented
+     * @param image is the image that represents the resources
+     * @param warehouse is the list of ImageViews that represents the warehouse
+     */
+    private void insertWarehouseHelper(int quantity, Image image, List<ImageView> warehouse) {
+        for (int i = 0; i < warehouse.size(); i++) {
+            if(i<quantity) {
+                warehouse.get(i).setImage(image);
+                warehouse.get(i).setVisible(true);
+                warehouse.get(i).setOpacity(1);
+            }else
+                warehouse.get(i).setVisible(false);
+        }
+    }
+
+    /**
+     * this helper method is used to insert a resource in an extra shelf
+     * @param shelf is the position of the extra shelf
+     * @param quantity is the amount of resources to be inserted in the extra shelf
+     * @param image is the image that represents the inserted resource
+     */
     private void insertWarehouseExtra(int shelf, Integer quantity, Image image){
         extraShelfString.setVisible(true);
         if(shelf == 4){
@@ -240,105 +362,6 @@ public abstract class BoardUpdate extends ViewController{
             extraShelf2Label.setText(quantity.toString());
             extraShelf2Label.setVisible(true);
         }
-    }
-
-    private void insertWarehouse(int shelf, int quantity, Image image, boolean isExtra){
-        if(isExtra){
-            insertWarehouseExtra(shelf,quantity,image);
-            return;
-        }
-        if(shelf == 1){
-            if(quantity == 1) {
-                topResource.setImage(image);
-                topResource.setVisible(true);
-                topResource.setOpacity(1);
-            }else
-                topResource.setVisible(false);
-        }
-        if(shelf == 2)
-            for (int i = 0; i < warehouse2.size(); i++) {
-                if(i<quantity) {
-                    warehouse2.get(i).setImage(image);
-                    warehouse2.get(i).setVisible(true);
-                    warehouse2.get(i).setOpacity(1);
-                }else
-                    warehouse2.get(i).setVisible(false);
-            }
-
-        if(shelf == 3)
-            for (int i = 0; i < warehouse3.size(); i++) {
-                if(i<quantity) {
-                    warehouse3.get(i).setImage(image);
-                    warehouse3.get(i).setVisible(true);
-                    warehouse3.get(i).setOpacity(1);
-                }else
-                    warehouse3.get(i).setVisible(false);
-            }
-    }
-
-    /**
-     * sets the ImageView associated to each slot in the warehouse
-     * @param warehouse contains the ImageViews associated the warehouse
-     */
-    protected void setWarehouse(List<ImageView> warehouse){
-
-        warehouse.add(topResource);
-        topResource.setVisible(false);
-        warehouse.add(firstMidResource);
-        firstMidResource.setVisible(false);
-        warehouse.add(secondMidResource);
-        secondMidResource.setVisible(false);
-        warehouse.add(firstBottomResource);
-        firstBottomResource.setVisible(false);
-        warehouse.add(secondBottomResource);
-        secondBottomResource.setVisible(false);
-        warehouse.add(thirdBottomResource);
-        thirdBottomResource.setVisible(false);
-
-    }
-
-    /**
-     * sets the ImageView associated to each development card
-     * @param developmentCards contains the ImageViews associated the development cards
-     */
-    protected void setDevelopmentCards(List<ImageView> developmentCards){
-
-        developmentCards.add(firstSlot);
-        firstSlot.setVisible(false);
-        developmentCards.add(secondSlot);
-        secondSlot.setVisible(false);
-        developmentCards.add(thirdSlot);
-        thirdSlot.setVisible(false);
-
-    }
-
-    /**
-     * sets the ImageView associated to each leader card
-     * @param leaderCards contains the ImageViews associated the leader cards
-     */
-    protected void setLeaderCards(List<ImageView> leaderCards){
-
-        leaderCards.add(firstLeaderCard);
-        firstLeaderCard.setVisible(false);
-        leaderCards.add(secondLeaderCard);
-        secondLeaderCard.setVisible(false);
-        leaderCards.add(thirdLeaderCard);
-        thirdLeaderCard.setVisible(false);
-        leaderCards.add(fourthLeaderCard);
-        fourthLeaderCard.setVisible(false);
-
-    }
-
-    /**
-     * sets the ImageView associated to each pope favor
-     * @param popeFavors contains the ImageViews associated the pope favors
-     */
-    protected void setPopeFavors(List<ImageView> popeFavors){
-
-        popeFavors.add(firstPopeFavor);
-        popeFavors.add(secondPopeFavor);
-        popeFavors.add(thirdPopeFavor);
-
     }
 
     /**
@@ -407,7 +430,12 @@ public abstract class BoardUpdate extends ViewController{
 
     }
 
-    public abstract void showWindow();
 
-    public abstract  void hideWindow();
+    public void showWindow(){
+        ((Stage) pane.getScene().getWindow()).show();
+    }
+
+    public void hideWindow(){
+        pane.getScene().getWindow().hide();
+    }
 }

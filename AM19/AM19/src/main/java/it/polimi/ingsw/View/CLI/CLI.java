@@ -232,6 +232,10 @@ public class CLI implements View, SubjectView {
         plot(viewStatus);
     }
 
+    /**
+     * this method is used to plot the personal board of another player
+     * @param nickname is the name of the target player
+     */
     public void plotOthers(String nickname){
         String[][] target = playersBoard.get(nickname);
         plot(target);
@@ -276,7 +280,7 @@ public class CLI implements View, SubjectView {
             CLIPainter.paintWarehouse(view, WAREHOUSE_Y + PLAYERS_Y, WAREHOUSE_X, shelves, new LinkedList<>());
             CLIPainter.paintExtraSlots(view, EXTRA_Y + PLAYERS_Y, EXTRA_X, new LinkedList<>());
             CLIPainter.paintStrongbox(view, STRONGBOX_Y + PLAYERS_Y, STRONGBOX_X, new LinkedList<>());
-            showPersonalProduction();
+            showPersonalProduction(name);
 
             for (int i = 0; i < nSlots; i++)
                 CLIPainter.devCardPainter(view, PLAYERS_Y + 1, BOXES_X + 30 * i + 20, "EMPTY");
@@ -287,6 +291,11 @@ public class CLI implements View, SubjectView {
 
     @Override
     public void reply(boolean answer, String body, String nickName) {
+        if(!answer) {
+            out.println("Error:" + body + "\nSomething seems wrong... What about trying again?");
+            return;
+        }
+        out.println("Action successfully performed. Let's wait for the game to start...");
 
     }
 
@@ -299,11 +308,9 @@ public class CLI implements View, SubjectView {
     public void showGameStatus(boolean answer, String body, String nickname, TurnType state) {
         if(!answer){
             out.println("Error during: " + state + "\nYou've done something wrong, let's try again");
+            return;
         }
-        else{
-            out.println("Action successfully performed. Let's proceed further.");
-        }
-        //TODO Scrivere che stai performando una certa azione e che il gioco prosegue correttamente.
+        out.println("Action successfully performed. Let's proceed further.");
     }
 
     /**
@@ -348,10 +355,10 @@ public class CLI implements View, SubjectView {
         List<ResQuantity> resources = new LinkedList<>();
         List<ResQuantity> extra = new LinkedList<>();
         int defaultSlots = model.getConfiguration().getSlotNumber();
-
         StringBuilder warehouseString = new StringBuilder();
         StringBuilder extraBoxString = new StringBuilder();
         StringBuilder strongboxString = new StringBuilder();
+
         for(int i=0; i<warehouse.size(); i++){
             ResQuantity r = warehouse.get(i);
             if(i<=defaultSlots) {
@@ -439,8 +446,9 @@ public class CLI implements View, SubjectView {
 
         for(String name : playersBoard.keySet()) {
             String[][] view = playersBoard.get(name);
-            CLIPainter.paintFaithTrack(view, FAITHTRACK_Y, FAITHTRACK_X,
-                    faithTrack, names, faith, sections, start, end, points);
+            CLIPainter.paintFaithTrack(view,  FAITHTRACK_Y, FAITHTRACK_X, faithTrack, names, faith, start, end);
+            CLIPainter.paintPopeFavours(view,  FAITHTRACK_Y, FAITHTRACK_X, names.size(), faithTrack, points);
+            CLIPainter.paintSectionsStatus(view,  FAITHTRACK_Y, FAITHTRACK_X, sections, names);
         }
     }
 
@@ -451,7 +459,6 @@ public class CLI implements View, SubjectView {
     @Override
     public void showTopToken(Optional<String> action) {
         if(action.isEmpty()) return;
-        //fare il controllo che il top token corrisponda a qualcosa di esistente
         String content = model.getConfiguration().getActionTokenCard(action.get()).toString();
         CLIPainter.paintToken(viewStatus,TOKEN_Y+RESOURCES_Y+PERSONAL_Y, TOKEN_X, content);
     }
@@ -475,7 +482,6 @@ public class CLI implements View, SubjectView {
         out.println(nickname + "has been disconnected");
     }
 
-    //MODIFY AS SOON YOU HAVE THE MESSAGES AND THE CONTROLLER
     /**
      * this method is used to add a player to the game
      */
@@ -567,14 +573,6 @@ public class CLI implements View, SubjectView {
             if(s.equals("SHOW_DECKS")) plotDecks();
         }
         while(!turns.contains(s));
-        /*try {
-            if(s.equals("DISCONNECT"))
-                viewObserver.update(MessageFactory.buildDisconnection("I want to be disconnected", model.getPersonalNickname()));
-            else
-                viewObserver.update(MessageFactory.buildSelectedTurn(s, "Selection of the turn type"));
-        }catch(MalformedMessageException e){
-            //exit from client
-        }*/
         actionMapper(s);
     }
 
@@ -751,9 +749,9 @@ public class CLI implements View, SubjectView {
     public void leaderAction() {
         String action, player = model.getCurrentPlayer();
         Map<Integer,String> leadersID = model.getBoard(player).getLeadersID();
-        String[] sequence = new String[1];
-        int position = -1;
-        try {
+        String[] sequence;
+        int position;
+        //try {
             do {
                 out.println("It's time to put your leader cards in action. " +
                         "\nYou can both discard and activate your cards. Command :- number:ACTION" +
@@ -763,10 +761,10 @@ public class CLI implements View, SubjectView {
             }while(sequence.length!=2 || !isInt(sequence[0]) || !leadersID.containsKey(Integer.parseInt(sequence[0])));
 
             position = Integer.parseInt(sequence[0]);
-        }catch (IndexOutOfBoundsException | NumberFormatException e){
+        /*}catch (IndexOutOfBoundsException | NumberFormatException e){
             // return;
-        }
-
+        }*/
+        //TODO testare che questo TRY-CATCH serva. Secondo me si può togliere
         try {
             notifyInteraction(MessageFactory.buildLeaderAction(leadersID.get(position), position, sequence[1], "Action on leader"));
         }catch(MalformedMessageException e){
@@ -912,7 +910,6 @@ public class CLI implements View, SubjectView {
         String action;
         String[] selection;
         StringBuilder sequence = new StringBuilder();
-        //out.println("Select your cards. Command:- position1:position2:...");
         do{
             out.println("Select your cards. Command:- position1:position2:... or ENTER to skip");
             action = getInput();
@@ -984,11 +981,11 @@ public class CLI implements View, SubjectView {
     /**
      * this method show the player's personal production.
      */
-    @Override
     //add personal production materials and products to parser or ViewModel
-    public void showPersonalProduction() {
+    public void showPersonalProduction(String nickname) {
         Production production = model.getConfiguration().getPersonalProduction();
-        CLIPainter.paintPersonalProduction(viewStatus, PRODUCTION_Y + RESOURCES_Y, PRODUCTION_X,
+        String[][] view = playersBoard.get(nickname);
+        CLIPainter.paintPersonalProduction(view, PRODUCTION_Y + RESOURCES_Y, PRODUCTION_X,
                 production.getMaterials(), production.getProducts(),
                 production.getCustomMaterials(), production.getCustomProducts());
 
@@ -1001,12 +998,7 @@ public class CLI implements View, SubjectView {
     public boolean swapAction() {
         String decision;
         String[] selections;
-        /*do {
-            out.println("Would you like to perform a slot swap? [YES/NO]");
-            decision = getInput();
-        }while(!decision.toUpperCase().equals("YES") && !decision.toUpperCase().equals("NO"));
-        if(decision.toUpperCase().equals("NO")) return false;*/
-        do{
+       do{
             out.println("Select the source and the target slots for swapping. Command:- source:target");
             decision = getInput();
             selections = decision.split(":");

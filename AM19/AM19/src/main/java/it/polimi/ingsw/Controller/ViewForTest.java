@@ -207,14 +207,6 @@ public class ViewForTest implements View {
     }
 
     /**
-     * this method show the player's personal production.
-     */
-    @Override
-    public void showPersonalProduction() {
-
-    }
-
-    /**
      * this method is used to catch a swap in the Warehouse
      */
     @Override
