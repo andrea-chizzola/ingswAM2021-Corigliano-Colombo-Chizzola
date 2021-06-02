@@ -101,7 +101,8 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void showGameStatus(boolean answer, String body, String nickName, TurnType state) {
-
+        //inizializzazione game, ma mai negativa
+        //TODO togliere il booleano
     }
 
     /**
@@ -313,7 +314,7 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void swapAction() {
-        Platform.runLater(()-> gameBoardController.setSwap());
+        Platform.runLater(()-> interactiveBoardController.setSwap());
     }
 
     /**

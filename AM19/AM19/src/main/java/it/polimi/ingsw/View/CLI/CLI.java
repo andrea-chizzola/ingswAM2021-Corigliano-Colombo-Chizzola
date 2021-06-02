@@ -778,7 +778,7 @@ public class CLI implements View, SubjectView {
             position = Integer.parseInt(sequence[0]);
         /*}catch (IndexOutOfBoundsException | NumberFormatException e){
             // return;
-        }
+        }*/
         accumulator.setLeaderCard(position);
         accumulator.setAction(sequence[1]);
 
