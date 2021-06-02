@@ -146,7 +146,7 @@ public interface View {
     /**
      * this method is used to catch a swap in the Warehouse
      */
-    boolean swapAction();
+    void swapAction();
 
     /**
      * this method is used to show the board of a player (different from the current one)

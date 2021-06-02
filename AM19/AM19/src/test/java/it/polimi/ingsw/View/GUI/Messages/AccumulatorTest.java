@@ -1,17 +1,18 @@
 package it.polimi.ingsw.View.GUI.Messages;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccumulatorTest {
-
+/*
     private Accumulator accumulator;
 
     @BeforeEach
     void setup(){
-        accumulator = new Accumulator();
+        accumulator = new Accumulator(new ReducedGameBoard());
     }
 
     @Test
@@ -35,7 +36,7 @@ class AccumulatorTest {
 /*
         accumulator.setSwapTarget(1);
         accumulator.setSwapSource(2);
-        System.out.println(accumulator.buildSwap());*/
+        System.out.println(accumulator.buildSwap());
     }
-
+*/
 }

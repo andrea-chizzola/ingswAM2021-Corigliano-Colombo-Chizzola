@@ -18,6 +18,13 @@ public interface InteractionObserver {
      * @param message is the representation of the interaction
      */
     void updateInteraction(String message);
+
+    /**
+     * this method is used to notify the SOLO game
+     * @param message is the representation of the interaction
+     */
+    void updateInteractionSolo(String message);
+
     /**
      * this method is used to notify the nickname chosen by the player
      * @param nickname is the nickname chosen by the player

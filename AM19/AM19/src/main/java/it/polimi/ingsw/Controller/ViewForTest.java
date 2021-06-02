@@ -210,8 +210,7 @@ public class ViewForTest implements View {
      * this method is used to catch a swap in the Warehouse
      */
     @Override
-    public boolean swapAction() {
-        return true;
+    public void swapAction() {
     }
 
     @Override

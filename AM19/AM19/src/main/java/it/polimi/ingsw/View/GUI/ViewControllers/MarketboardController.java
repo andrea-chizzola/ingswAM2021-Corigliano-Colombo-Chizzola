@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
+import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
 import it.polimi.ingsw.View.GUI.Messages.BuildMarketSelection;
 import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
@@ -124,7 +125,7 @@ public class MarketboardController extends ViewController {
     }
 
     public void setAccumulator(){
-        this.accumulator = new Accumulator();
+        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildMarketSelection();
     }
 

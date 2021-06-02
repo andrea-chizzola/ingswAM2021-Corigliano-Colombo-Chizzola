@@ -312,9 +312,8 @@ public class GUI implements View, SubjectView {
      * this method is used to catch a swap in the Warehouse
      */
     @Override
-    public boolean swapAction() {
-        Platform.runLater(()-> interactiveBoardController.setSwap());
-        return true;
+    public void swapAction() {
+        Platform.runLater(()-> gameBoardController.setSwap());
     }
 
     /**
@@ -356,8 +355,18 @@ public class GUI implements View, SubjectView {
     }
 
     /**
-     * this method is used to notify the nickname selected by a player to the observers
-     * @param nickname is the name chosen by the players
+     * this method is used to notify the SOLO game
+     *
+     * @param message is the representation of the interaction
+     */
+    @Override
+    public void notifyInteractionSolo(String message) {
+        interactionObserver.updateInteractionSolo(message);
+    }
+
+    /**
+     * this method is used to notify a performed interaction
+     * @param nickname is the name of the player
      */
     @Override
     public void notifyNickname(String nickname) {

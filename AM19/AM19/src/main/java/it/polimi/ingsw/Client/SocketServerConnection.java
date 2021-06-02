@@ -16,7 +16,7 @@ import java.util.TimerTask;
 /**
  * Handles client side the connection between client and server
  */
-public class SocketServerConnection implements ServerConnection, Runnable{
+public class SocketServerConnection implements ServerConnection{
 
     private Socket socket;
     private Client client;
@@ -67,13 +67,6 @@ public class SocketServerConnection implements ServerConnection, Runnable{
 
     }
 
-    /**
-     * @return returns the socket's listener
-     */
-    @Override
-    public ClientConnectionListener getListener() {
-        return clientController;
-    }
 
     /**
      * sends a new message to the server

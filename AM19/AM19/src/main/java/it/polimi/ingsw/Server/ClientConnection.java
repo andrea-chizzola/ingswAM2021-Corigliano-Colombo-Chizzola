@@ -15,14 +15,14 @@ public interface ClientConnection {
     /**
      * Adds a new listener to the socket connection between server and client
      * @param listener represents the new listener
-     */
-    void addListener(ConnectionListener listener);
+     *//*
+    void addListener(ConnectionListener listener);*/
 
     /**
      *
      * @return returns the socket's listener
-     */
-    ConnectionListener getListener();
+     *//*
+    ConnectionListener getListener();*/
 
     /**
      * sends a new message to the client

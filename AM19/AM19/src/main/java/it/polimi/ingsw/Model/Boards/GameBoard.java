@@ -362,6 +362,7 @@ public class GameBoard implements GameBoardHandler {
      * This method allows the current player to end his turn.
      * @throws InvalidActionException if the player can't do this action.
      */
+    @Override
     public void exit() throws InvalidActionException{
         checkTurn(TurnType.EXIT);
         endTurnMove();

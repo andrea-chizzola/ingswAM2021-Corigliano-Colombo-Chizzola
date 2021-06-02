@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
+import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
 import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
 import it.polimi.ingsw.View.GUI.Messages.BuildSelectedResources;
@@ -86,8 +87,14 @@ public class InitializeResController extends ViewController{
     private BuildMessage builder;
 
     public InitializeResController(){
-        this.accumulator = new Accumulator();
+        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildSelectedResources();
+    }
+
+
+    public void startInitialization(int num){
+        if(num == 0)
+            getGUIReference().notifyInteraction(builder.buildMessage(new Accumulator(GUIHandler.getGUIReference().getModelReference())));
     }
 
     @FXML
