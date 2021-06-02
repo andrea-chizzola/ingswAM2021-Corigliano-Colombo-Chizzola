@@ -33,6 +33,7 @@ public class GUIHandler extends Application {
         stage.setScene(scene);
         gui.setMainScene(scene);
         stage.show();
+        stage.setResizable(true);
     }
 
     @Override

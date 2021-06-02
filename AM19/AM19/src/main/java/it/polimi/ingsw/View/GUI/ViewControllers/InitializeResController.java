@@ -3,7 +3,6 @@ package it.polimi.ingsw.View.GUI.ViewControllers;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
 import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
 import it.polimi.ingsw.View.GUI.Messages.BuildSelectedResources;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;

@@ -65,7 +65,11 @@ public class GUI implements View, SubjectView {
         interactiveBoardController = new InteractiveBoardController(self);
         playerBoards.put(self, interactiveBoardController);
         Platform.runLater(() ->
-                GUIHandler.loadRoot(mainScene, interactiveBoardController, path + "gameboard.fxml"));
+        {
+            GUIHandler.loadRoot(mainScene, interactiveBoardController, path + "gameboard.fxml");
+            mainScene.getWindow().setHeight(720);
+            mainScene.getWindow().setWidth(1080);
+        });
 
         for(String name : nicknames){
             if(!name.equals(self)) {
