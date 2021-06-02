@@ -23,6 +23,8 @@ public class LoginController extends ViewController{
     @FXML
     private TextField nicknameField;
     @FXML
+    private MenuItem soloButton;
+    @FXML
     private MenuItem singlePlayerButton;
     @FXML
     private MenuItem twoPlayersButton;
@@ -41,6 +43,7 @@ public class LoginController extends ViewController{
 
         invalidNicknameLabel.setVisible(false);
 
+        soloButton.setOnAction(this::onSoloButtonClicked);
         singlePlayerButton.setOnAction(this::onSinglePlayerButtonClicked);
         twoPlayersButton.setOnAction(this::onTwoPlayersButtonClicked);
         threePlayersButton.setOnAction(this::onThreePlayersButtonClicked);
@@ -56,6 +59,21 @@ public class LoginController extends ViewController{
         return pane.getScene();
     }
 
+
+
+    private void onSoloButtonClicked(Event event){
+        if(checkUsername()){
+            try {
+                String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 1);
+                getGUIReference().notifyNickname(nicknameField.getText());
+                getGUIReference().notifyInteractionSolo(message);
+                LoadingController controller = new LoadingController();
+                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
+            } catch (MalformedMessageException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
     private void onSinglePlayerButtonClicked(Event event){

@@ -34,6 +34,7 @@
       </Label>
       <MenuButton fx:id="createGameButton" layoutX="68.0" layoutY="340.0" mnemonicParsing="false" text="Create Game">
         <items>
+            <MenuItem fx:id="soloButton" mnemonicParsing="false" text="Local match" />
           <MenuItem fx:id="singlePlayerButton" mnemonicParsing="false" text="Single Player" />
           <MenuItem fx:id="twoPlayersButton" mnemonicParsing="false" text="2 Players" />
             <MenuItem fx:id="threePlayersButton" mnemonicParsing="false" text="3 Players" />

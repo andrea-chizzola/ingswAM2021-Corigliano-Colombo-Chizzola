@@ -16,4 +16,7 @@ public interface MessageSender {
      * @param message is the content of the message
      */
     void firstMessage(String message);
+
+
+    void firstMessageSolo(String message);
 }

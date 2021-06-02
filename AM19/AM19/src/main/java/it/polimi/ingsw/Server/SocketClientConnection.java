@@ -15,7 +15,6 @@ import java.util.TimerTask;
 public class SocketClientConnection implements ClientConnection, Runnable {
 
     private Socket socket;
-    private Server server;
     private boolean pong;
     private final String socketID;
     private ConnectionListener handler;
@@ -23,23 +22,15 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private NetworkBuffer buffer;
     private PrintWriter out;
 
-    public SocketClientConnection(Socket socket, Server server, String socketID, ConnectionListener handler) {
+    public SocketClientConnection(Socket socket, String socketID, ConnectionListener handler) {
 
         this.socket = socket;
-        this.server = server;
         this.socketID = socketID;
         this.handler = handler;
         pong = true;
 
     }
 
-    /**
-     * @return returns the socket's listener
-     */
-    @Override
-    public ConnectionListener getListener() {
-        return handler;
-    }
 
     /**
      * Closes the connection between the server and the client
@@ -59,16 +50,6 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
     }
 
-    /**
-     * Adds a new listener of the socket connection between server and client
-     *
-     * @param listener represents the new listener
-     */
-    @Override
-    public void addListener(ConnectionListener listener) {
-        this.handler = listener;
-
-    }
 
     /**
      * sends a new message to the client

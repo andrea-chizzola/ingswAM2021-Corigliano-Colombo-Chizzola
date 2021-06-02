@@ -11,6 +11,7 @@ import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.View.GUI.Messages.*;
 import it.polimi.ingsw.View.PlayerInteractions.*;
 import it.polimi.ingsw.View.SubjectView;
 import it.polimi.ingsw.View.View;
@@ -65,6 +66,9 @@ public class CLI implements View, SubjectView {
 
     private final int END_X = 53;
     private final int END_Y = 19;
+
+    private BuildMessage builder;
+    private Accumulator accumulator;
 
     /**
      * this attribute is a reference to the reduced model of the view
@@ -489,6 +493,22 @@ public class CLI implements View, SubjectView {
             player = getInput();
         }while(player.length()<=0);
 
+
+        do{
+            out.println("Tell me if you want to start a solo game [YES/NO]: ");
+            first = getAssertion(getInput());
+        }while(!first.equals("true") && !first.equals("false"));
+        if(first.equals("true")){
+            notifyNickname(player);
+            try {
+                notifyInteractionSolo(MessageFactory.buildConnection("Connection request", player, true, 1));
+            }catch(MalformedMessageException e){
+                //CLOSE CONNECTION
+            }
+            return;
+        }
+
+
         do{
             out.println("Tell me if you want to start a new game [YES/NO]: ");
             first = getAssertion(getInput());
@@ -621,6 +641,8 @@ public class CLI implements View, SubjectView {
     //put the number of default leaders from configuration file
     @Override
     public void selectLeaderAction() {
+        accumulator = new Accumulator(model);
+        builder = new BuildLeaderUpdate();
         String action;
         String[] selections;
         Map<Integer, String> cards = model.getBoard(model.getCurrentPlayer()).getLeadersID();
@@ -632,18 +654,8 @@ public class CLI implements View, SubjectView {
             selections = action.split(":");
         } while (selections.length != 2 && !isIntSequence(selections, 1) && !containsKeys(cards, selections));
 
-        Map<Integer, ItemStatus> map = new HashMap<>();
-        for(int i : cards.keySet()) map.put(i, ItemStatus.DISCARDED);
-        try {
-            for (String selection : selections) map.put(Integer.parseInt(selection), ItemStatus.ACTIVE);
-        }catch (NumberFormatException e){}
-
-        try{
-            notifyInteraction(MessageFactory.buildLeaderUpdate(cards, map,
-                    "Leader cards initialization managing.", model.getCurrentPlayer()));
-        }catch(MalformedMessageException e){
-            //exit from client
-        }
+        accumulator.setLeaderCards(action);
+        notifyInteraction(builder.buildMessage(accumulator));
     }
 
     /**
@@ -676,6 +688,8 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void selectMarketAction() {
+        accumulator = new Accumulator(model);
+        builder = new BuildMarketSelection();
         String s;
         out.println("Select your resources from the market. Choose wisely");
         do {
@@ -683,12 +697,10 @@ public class CLI implements View, SubjectView {
             s = getInput();
         } while(!isValidMarketSelection(s));
         String[] selection = s.split(":");
-        try {
-            notifyInteraction(MessageFactory.buildMarketSelection(selection[0], Integer.parseInt(selection[1])
-                    , "Selection of a row or a column from the market."));
-        }catch (MalformedMessageException e){
-            //exit from client
-        }
+        accumulator.setMarketTray(selection[0]);
+        accumulator.setMarketNumber(Integer.parseInt(selection[1]));
+
+        notifyInteraction(builder.buildMessage(accumulator));
     }
 
     /**
@@ -719,29 +731,29 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName) {
-        StringBuilder builder = new StringBuilder();
+        accumulator = new Accumulator(model);
+        builder = new BuildActionMarble();
+
+        StringBuilder stringBuilder = new StringBuilder();
 
         for(int i=0; i<marblesTray.size(); i++){
-            builder.append(marblesTray.get(i).toString()).append(", ");
+            stringBuilder.append(marblesTray.get(i).toString()).append(", ");
         }
-        out.println("You have selected the marbles: " + builder);
+        out.println("You have selected the marbles: " + stringBuilder);
 
         if(whiteModifications.size()>0) {
-            builder.setLength(0);
+            stringBuilder.setLength(0);
             for (Marble whiteModification : whiteModifications) {
-                builder.append(whiteModification.toString()).append(", ");
+                stringBuilder.append(whiteModification.toString()).append(", ");
             }
-            out.println("The possible transformations for white marbles are: " + builder);
+            out.println("The possible transformations for white marbles are: " + stringBuilder);
         }
         out.println("Type your action. Command:- MarbleColor:ACTION:TargetSlot\n " +
                 "eg. MarbleBlue:INSERT:2:MarbleYellow:DISCARD:0");
         String action = getInput();
-        try {
-            notifyInteraction(MessageFactory.buildActionMarble(action, "Marbles managing"));
-        }
-        catch(MalformedMessageException e){
-            //Close the client because of the error
-        }
+        accumulator.setMarblesActions(action);
+
+        notifyInteraction(builder.buildMessage(accumulator));
     }
 
     /**
@@ -749,6 +761,9 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void leaderAction() {
+        accumulator = new Accumulator(model);
+        builder = new BuildLeaderAction();
+
         String action, player = model.getCurrentPlayer();
         Map<Integer,String> leadersID = model.getBoard(player).getLeadersID();
         String[] sequence = new String[1];
@@ -766,13 +781,10 @@ public class CLI implements View, SubjectView {
         }catch (IndexOutOfBoundsException | NumberFormatException e){
             // return;
         }
+        accumulator.setLeaderCard(position);
+        accumulator.setAction(sequence[1]);
 
-        try {
-            notifyInteraction(MessageFactory.buildLeaderAction(leadersID.get(position), position, sequence[1], "Action on leader"));
-        }catch(MalformedMessageException e){
-            //exit from client;
-        }
-
+        notifyInteraction(builder.buildMessage(accumulator));
     }
 
     /**
@@ -780,11 +792,12 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void buyCardAction(){
+        accumulator = new Accumulator(model);
+        builder = new BuildBuyCard();
+
         plotDecks();
         String[] selection;
         String action;
-        String warehouse;
-        String strongbox;
 
         out.println("\nWhat about buying a new card? The decks are ordered from the left to the right.");
         do{
@@ -793,24 +806,17 @@ public class CLI implements View, SubjectView {
             selection = action.split(":");
         }while(!isCardOK(selection));
         int position = Integer.parseInt(selection[0]), slot = Integer.parseInt(selection[1]);
-        String id = model.getDecks().get(position-1);
-        //System.out.println("Debug");
-        DevelopmentCard card = model.getConfiguration().getDevelopmentCard(id);
 
+        accumulator.setPosition(position);
+        accumulator.setSlot(slot);
 
         out.println("Now select your resources from the warehouse.");
-        warehouse = helpWarehouse();
+        accumulator.setWarehouse(helpWarehouse());
 
         out.println("You can also get something from your strongbox.");
-        strongbox = helpResSequence();
+        accumulator.setStrongbox(helpResSequence());
 
-        try {
-            notifyInteraction(MessageFactory.buildBuyCard(card.getCardColor().getColor(),
-                    card.getCardLevel(), slot, id, "Buy card", warehouse, strongbox));
-
-        }catch(MalformedMessageException e){
-            //exit from client
-        }
+        notifyInteraction(builder.buildMessage(accumulator));
     }
 
     /**
@@ -863,8 +869,11 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void doProductionsAction(){
-        String action, warehouse, strongbox, customResources, customProducts, leaders = "", developments = "";
-        boolean decision;
+        accumulator = new Accumulator(model);
+        builder = new BuildDoProduction();
+
+        String action, leaders = "", developments = "";
+
         out.println("So you want to produce some resources... good choice. Let's start");
 
         do{
@@ -872,35 +881,32 @@ public class CLI implements View, SubjectView {
             action = getAssertion(getInput());
         }while(!action.equals("true") && !action.equals("false"));
 
-        decision = Boolean.parseBoolean(action);
+        if(Boolean.parseBoolean(action))
+            accumulator.setPersonalProduction();
 
         if(model.getBoard(model.getCurrentPlayer()).getLeadersID().keySet().size()>1) {
             out.println("What about leader cards? Select them. Command:- card1:card2... [positions]");
             leaders = helpCards(model.getBoard(model.getCurrentPlayer()).getLeadersID());
+            accumulator.setLeaderCards(leaders);
         }
         if(model.getBoard(model.getCurrentPlayer()).getSlots().keySet().size()>1) {
             out.println("Don't forget your development cards! Select them. Command:- card1:card2... [positions]");
             developments = helpCards(model.getBoard(model.getCurrentPlayer()).getSlots());
+            accumulator.setDevelopmentCards(developments);
         }
         out.println("Select your custom materials:");
-        customResources = helpResSequence();
+        accumulator.setChosenMaterials(helpResSequence());
 
         out.println("Select your custom products:");
-        customProducts = helpResSequence();
+        accumulator.setChosenProducts(helpResSequence());
 
         out.println("What is a production without some waste of resources?");
         out.println("Now select your resources from the warehouse.");
-        warehouse = helpWarehouse();
+        accumulator.setWarehouse(helpWarehouse());
         out.println("You can also get something from your strongbox.");
-        strongbox = helpResSequence();
+        accumulator.setStrongbox(helpResSequence());
 
-        try {
-            notifyInteraction(MessageFactory.BuildDoProduction(decision,developments,
-                    leaders,customResources,customProducts,warehouse, strongbox, "Do production"));
-        } catch (MalformedMessageException e) {
-            //exit from client
-        }
-
+        notifyInteraction(builder.buildMessage(accumulator));
     }
 
     /**
@@ -911,8 +917,7 @@ public class CLI implements View, SubjectView {
     private String helpCards(Map<Integer, String> cards){
         String action;
         String[] selection;
-        StringBuilder sequence = new StringBuilder();
-        //out.println("Select your cards. Command:- position1:position2:...");
+
         do{
             out.println("Select your cards. Command:- position1:position2:... or ENTER to skip");
             action = getInput();
@@ -920,12 +925,7 @@ public class CLI implements View, SubjectView {
         }while(!action.isEmpty()  && (!isIntSequence(selection,1) || !containsCard(selection, cards)));
 
         if(selection.length == 0) return "";
-        if(action.isEmpty()) return action;
-        for(String s : selection){
-            int position = Integer.parseInt(s);
-            sequence.append(position).append(":").append(cards.get(position)).append(":");
-        }
-        return sequence.equals("")? "":sequence.substring(0, sequence.length()-1);
+        return action;
     }
 
     /**
@@ -955,6 +955,9 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void getResourcesAction() {
+        accumulator = new Accumulator(model);
+        builder = new BuildSelectedResources();
+
         int playerPosition, number, players;
         String self = model.getPersonalNickname(), selection = "";
         playerPosition = model.getNicknames().indexOf(self);
@@ -972,12 +975,9 @@ public class CLI implements View, SubjectView {
                 sequence = selection.split(":");
             } while (sequence.length % 2 != 0 && isIntSequence(sequence, 2));
         }
+        accumulator.setInitResources(selection);
 
-        try{
-            notifyInteraction(MessageFactory.buildSelectedResources(selection, "Selection of resources during initialization"));
-        }catch(MalformedMessageException e){
-            //exit from client
-        }
+        notifyInteraction(builder.buildMessage(accumulator));
     }
 
 
@@ -998,28 +998,24 @@ public class CLI implements View, SubjectView {
      * this method is used to catch a swap in the Warehouse
      */
     @Override
-    public boolean swapAction() {
+    public void swapAction() {
+        accumulator = new Accumulator(model);
+        builder = new BuildSwap();
+
         String decision;
         String[] selections;
-        /*do {
-            out.println("Would you like to perform a slot swap? [YES/NO]");
-            decision = getInput();
-        }while(!decision.toUpperCase().equals("YES") && !decision.toUpperCase().equals("NO"));
-        if(decision.toUpperCase().equals("NO")) return false;*/
+
         do{
             out.println("Select the source and the target slots for swapping. Command:- source:target");
             decision = getInput();
             selections = decision.split(":");
         }
         while(!isIntSequence(selections,1));
-        try{
-            notifyInteraction(MessageFactory.buildSwap(Integer.parseInt(selections[0]),Integer.parseInt(selections[1])
-                    , "Swapping two shelves of the warehouse"));
-        }
-        catch(MalformedMessageException e){
-            //exit from client
-        }
-        return true;
+
+        accumulator.setSwap(Integer.parseInt(selections[0]));
+        accumulator.setSwap(Integer.parseInt(selections[1]));
+
+        notifyInteraction(builder.buildMessage(accumulator));
     }
 
     /**
@@ -1061,6 +1057,16 @@ public class CLI implements View, SubjectView {
     @Override
     public void notifyInteraction(String message) {
         interactionObserver.updateInteraction(message);
+    }
+
+    /**
+     * this method is used to notify the SOLO game
+     *
+     * @param message is the representation of the interaction
+     */
+    @Override
+    public void notifyInteractionSolo(String message) {
+        interactionObserver.updateInteractionSolo(message);
     }
 
     /**

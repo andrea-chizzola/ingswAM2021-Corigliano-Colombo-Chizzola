@@ -5,7 +5,7 @@ import it.polimi.ingsw.Messages.ClientConnectionListener;
 /**
  * interface containing the necessary methods to handle the connection between client and server
  */
-public interface ServerConnection {
+public interface ServerConnection extends Runnable{
 
     /**
      * Closes the connection between client and server
@@ -15,8 +15,8 @@ public interface ServerConnection {
     /**
      *
      * @return returns the socket's listener
-     */
-    ClientConnectionListener getListener();
+     *//*
+    ClientConnectionListener getListener();*/
 
     /**
      * sends a new message to the server

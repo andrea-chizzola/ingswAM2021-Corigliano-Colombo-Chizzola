@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
+import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.View.CLI.CLI;
 import it.polimi.ingsw.View.GUI.GUI;
 import it.polimi.ingsw.View.GUI.GUIHandler;
@@ -17,7 +18,7 @@ public class Client implements MessageSender {
     private static final String GUI_ARG = "--gui";
     private static final String CLI_ARG = "--cli";
 
-    private SocketServerConnection connection;
+    private ServerConnection connection;
     private String ip;
     private int port;
     private boolean useCli;
@@ -37,6 +38,22 @@ public class Client implements MessageSender {
     @Override
     public void sendMessage(String message) {
         connection.send(message);
+    }
+
+
+    @Override
+    public void firstMessageSolo(String message) {
+        establishConnectionSolo();
+        connection.send(message);
+    }
+
+    private void establishConnectionSolo(){
+        SoloConnectionHandler socket = new SoloConnectionHandler();
+        connection = new SoloServerConnection(socket,clientController,this);
+        new Thread(connection).start();
+        socket.attachServerConnection(connection);
+        Server server = new Server(socket);
+        server.startServerSolo();
     }
 
     @Override

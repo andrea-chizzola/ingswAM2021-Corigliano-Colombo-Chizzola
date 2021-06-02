@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.Model.MarketBoard.Marble;
+import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -113,7 +114,7 @@ public class MarbleSelectionController extends ViewController{
     int whites;
 
     public MarbleSelectionController(){
-        accumulator = new Accumulator();
+        accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
     }
 
     @FXML

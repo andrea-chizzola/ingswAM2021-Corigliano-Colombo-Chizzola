@@ -608,7 +608,7 @@ public class GameBoardController extends BoardUpdate{
     }
 
     public void initializeLeaders(){
-        this.accumulator = new Accumulator();
+        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildLeaderUpdate();
         enableLeaderCards(true);
         actionButton.setDisable(false);
@@ -618,7 +618,7 @@ public class GameBoardController extends BoardUpdate{
      * sets the correct buttons and images to play the turn
      */
     public void setDoProduction(){
-        this.accumulator = new Accumulator();
+        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildDoProduction();
         enableWarehouse(true);
         enableStrongbox(true);
@@ -647,7 +647,7 @@ public class GameBoardController extends BoardUpdate{
      * sets the correct buttons and images to play the turn
      */
     public void setBuyCard(){
-        this.accumulator = new Accumulator();
+        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildBuyCard();
         decksController.setAccumulator(accumulator);
         enableWarehouse(true);
@@ -666,7 +666,7 @@ public class GameBoardController extends BoardUpdate{
      * sets the correct buttons and images to play the turn
      */
     public void setManageLeader(){
-        this.accumulator = new Accumulator();
+        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildLeaderAction();
         enableLeaderSelections(true);
         if(firstLeaderCard.isVisible())
@@ -683,7 +683,7 @@ public class GameBoardController extends BoardUpdate{
      * sets the correct buttons and images to play the turn
      */
     public void setSwap(){
-        this.accumulator = new Accumulator();
+        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildSwap();
         enableWarehouse(true);
         enableSwap(true);

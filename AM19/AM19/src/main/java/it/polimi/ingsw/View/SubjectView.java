@@ -27,6 +27,12 @@ public interface SubjectView {
     void notifyInteraction(String message);
 
     /**
+     * this method is used to notify the SOLO game
+     * @param message is the representation of the interaction
+     */
+    void notifyInteractionSolo(String message);
+
+    /**
      * this method is used to notify the nickname selected by a player to the observers
      * @param nickname is the name chosen by the players
      */

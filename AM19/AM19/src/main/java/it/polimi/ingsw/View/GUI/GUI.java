@@ -279,9 +279,8 @@ public class GUI implements View, SubjectView {
     }
 
     @Override
-    public boolean swapAction() {
+    public void swapAction() {
         Platform.runLater(()-> gameBoardController.setSwap());
-        return true;
     }
 
     /**
@@ -308,6 +307,16 @@ public class GUI implements View, SubjectView {
     @Override
     public void notifyInteraction(String message) {
         interactionObserver.updateInteraction(message);
+    }
+
+    /**
+     * this method is used to notify the SOLO game
+     *
+     * @param message is the representation of the interaction
+     */
+    @Override
+    public void notifyInteractionSolo(String message) {
+        interactionObserver.updateInteractionSolo(message);
     }
 
     @Override
