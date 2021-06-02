@@ -2,6 +2,10 @@ package it.polimi.ingsw.Messages;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
+import it.polimi.ingsw.Messages.Enumerations.TurnType;
+import it.polimi.ingsw.Model.Cards.Colors.Blue;
+import it.polimi.ingsw.Model.Cards.Colors.CardColor;
+import it.polimi.ingsw.Model.Cards.Colors.DevColor;
 import it.polimi.ingsw.Model.MarketBoard.*;
 import it.polimi.ingsw.Model.Resources.Coin;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
@@ -116,6 +120,103 @@ class MessageFactoryTest {
     }
 
     @Test
+    void buildExit() {
+        try {
+            assertEquals(messageFactory.buildExit("Exit body."), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>EXIT</messageType><body>Exit body.</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildStartGame(){
+        List list = new ArrayList();
+        list.add("player1");
+        list.add("player2");
+        try {
+            assertEquals(MessageFactory.buildStartGame("Game is starting", list),"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>START_GAME</messageType><activePlayers>player1:player2</activePlayers><body>Game is starting</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildLeaderUpdate(){
+        Map map1 = new HashMap<Integer, String>();
+        map1.put(1, "card");
+        Map map2 = new HashMap<Integer, ItemStatus>();
+        map2.put(1, ItemStatus.ACTIVE);
+        try {
+            assertEquals(MessageFactory.buildLeaderUpdate(map1, map2,"player", "update leader cards"),"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><leaderStatus>1:ACTIVE</leaderStatus><messageType>UPDATE_LEADER_CARDS</messageType><body>update leader cards</body><leaderCards>1:card</leaderCards><player>player</player></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildSelectedResources(){
+        try {
+            assertEquals(MessageFactory.buildSelectedResources("selection", "Selection of resources during initialization"),"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>RESOURCE</messageType><resources>selection</resources><body>Selection of resources during initialization</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildBuyCard(){
+        try {
+            assertEquals(MessageFactory.buildBuyCard(DevColor.BLUE, 2, 1, "id", "Buy card", "warehouse", "strongbox"),"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><strongBox>strongbox</strongBox><messageType>BUY_CARD</messageType><color>blue</color><level>2</level><slot>1</slot><ID>id</ID><body>Buy card</body><warehouse>warehouse</warehouse></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildDoProduction(){
+        try {
+            assertEquals(MessageFactory.BuildDoProduction(true, "developments", "leaders", "custom materials", "custom products", "warehouse", "strongbox", "Do production"),"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><strongBox>strongbox</strongBox><messageType>DO_PRODUCTION</messageType><developmentCards>developments</developmentCards><personalProduction>true</personalProduction><body>Do production</body><chosenProducts>custom products</chosenProducts><warehouse>warehouse</warehouse><leaderCards>leaders</leaderCards><chosenMaterials>custom materials</chosenMaterials></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildLeaderAction(){
+        try {
+            assertEquals(MessageFactory.buildLeaderAction("id", 1, "action", "Action on leader"), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>LEADER_ACTION</messageType><action>action</action><body>Action on leader</body><leaderCards>1:id</leaderCards></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildSwap(){
+        try {
+            assertEquals(MessageFactory.buildSwap(1,3, "swap"), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>SWAP</messageType><source>1</source><body>swap</body><target>3</target></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildMarketSelection(){
+        try {
+            assertEquals(MessageFactory.buildMarketSelection("tray selection", 2, "body"), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><tray>tray selection</tray><number>2</number><messageType>MARKET_SELECTION</messageType><body>body</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildActionMarble(){
+        try {
+            assertEquals(MessageFactory.buildActionMarble("action", "body"), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><marblesActions>action</marblesActions><messageType>ACTION_MARBLE</messageType><body>body</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
     void buildEndGameEmptyMap()  {
         Map<String, Integer> map = new HashMap<>();
         try {
@@ -214,6 +315,24 @@ class MessageFactoryTest {
         try {
             assertEquals(messageFactory.buildDecksUpdate(map, "Decks update."),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>DECKS_UPDATE</messageType><devCards/><body>Decks update.</body></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildGameStatus(){
+        try {
+            assertEquals(MessageFactory.buildGameStatus(false, "ERROR: Missed pong", "player", TurnType.WRONG_STATE), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>GAME_STATUS</messageType><correct>false</correct><state>WRONG_STATE</state><body>ERROR: Missed pong</body><player>player</player></Message>");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void buildReply(){
+        try {
+            assertEquals(MessageFactory.buildReply(true,"reply","player"),"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>REPLY</messageType><correct>true</correct><body>reply</body><player>player</player></Message>");
         } catch (MalformedMessageException e) {
             fail();
         }
