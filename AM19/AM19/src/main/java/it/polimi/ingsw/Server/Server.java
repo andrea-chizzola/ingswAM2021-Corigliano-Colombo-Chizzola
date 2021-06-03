@@ -7,6 +7,8 @@ import it.polimi.ingsw.Client.SoloConnectionHandler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
@@ -15,6 +17,11 @@ import java.util.concurrent.atomic.AtomicLong;
  * Handles the game setup and all incoming connections
  */
 public class Server {
+
+    /**
+     * represents the parameter used to set a port
+     */
+    private static final String PORT_ARG = "-port";
 
     /**
      * represents the port opened by the server to accept new connections
@@ -140,9 +147,13 @@ public class Server {
 
         System.out.println("[SERVER] Masters of Renaissance server. Welcome!");
 
-        if(args.length > 0) {
+        List<String> argList = Arrays.asList(args);
 
-            port = Integer.parseInt(args[2]);
+        if(argList.contains(PORT_ARG)) {
+
+            int portIndex = argList.indexOf(PORT_ARG) + 1;
+            port = Integer.parseInt(argList.get(portIndex));
+
             if(port < 1024 || port > 49151){
                 port = DEFAULT_PORT;
                 System.out.println("[SERVER] Selected port is unavailable. The server will be initialized with default settings.");
