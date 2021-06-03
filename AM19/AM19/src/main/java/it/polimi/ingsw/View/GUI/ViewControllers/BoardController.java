@@ -36,6 +36,14 @@ public class BoardController extends ViewController implements HelperWindow{
     @FXML
     protected ImageView fourthLeaderCard;
     @FXML
+    private ImageView back1;
+    @FXML
+    private ImageView back2;
+    @FXML
+    private ImageView back3;
+    @FXML
+    private ImageView back4;
+    @FXML
     protected ImageView firstPopeFavor;
     @FXML
     protected ImageView secondPopeFavor;
@@ -81,6 +89,7 @@ public class BoardController extends ViewController implements HelperWindow{
     protected List<ImageView> warehouse3;
     protected List<ImageView> developmentCards;
     protected List<ImageView> leaderCards;
+    protected List<ImageView> backs;
     protected List<ImageView> popeFavors;
     private final String nickname;
     private final String cardPath = "/Images/front/";
@@ -112,7 +121,9 @@ public class BoardController extends ViewController implements HelperWindow{
         setDevelopmentCards();
 
         leaderCards = List.of(firstLeaderCard, secondLeaderCard, thirdLeaderCard, fourthLeaderCard);
+        backs = List.of(back1, back2, back3, back4);
         setLeaderCards();
+        setBacks();
 
         popeFavors = List.of(firstPopeFavor, secondPopeFavor, thirdPopeFavor);
 
@@ -145,12 +156,20 @@ public class BoardController extends ViewController implements HelperWindow{
      * sets the ImageView associated to each leader card
      */
     protected void setLeaderCards(){
-
         firstLeaderCard.setVisible(false);
         secondLeaderCard.setVisible(false);
         thirdLeaderCard.setVisible(false);
         fourthLeaderCard.setVisible(false);
+    }
 
+    /**
+     * this method is used to set the backs of the card
+     */
+    protected void setBacks(){
+        back1.setVisible(false);
+        back3.setVisible(false);
+        back3.setVisible(false);
+        back4.setVisible(false);
     }
 
     /**
@@ -175,17 +194,23 @@ public class BoardController extends ViewController implements HelperWindow{
         for(ImageView image : leaderCards){
             image.setVisible(false);
         }
+
+        for(ImageView image : backs){
+            image.setVisible(false);
+        }
         for(Integer slot : cards.keySet()){
             String image = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
             if(status.get(slot) == ItemStatus.ACTIVE){
                 Image card = new Image(getClass().getResourceAsStream(cardPath + image));
                 leaderCards.get(slot - 1).setImage(card);
                 leaderCards.get(slot - 1).setVisible(true);
+                backs.get(slot-1).setVisible(true);
             }else{
                 Image card = new Image(getClass().getResourceAsStream(cardPath + image));
                 leaderCards.get(slot - 1).setImage(card);
                 leaderCards.get(slot - 1).setVisible(true);
                 leaderCards.get(slot - 1).setOpacity(0.5);
+                backs.get(slot-1).setVisible(true);
             }
         }
 
@@ -418,7 +443,7 @@ public class BoardController extends ViewController implements HelperWindow{
         positions.add(new Coordinates(380, 111));
         positions.add(new Coordinates(422, 111));
         positions.add(new Coordinates(464, 111));
-        positions.add(new Coordinates(506, 111));;
+        positions.add(new Coordinates(506, 111));
         positions.add(new Coordinates(549, 111));
         positions.add(new Coordinates(549, 69));
         positions.add(new Coordinates(549, 27));
