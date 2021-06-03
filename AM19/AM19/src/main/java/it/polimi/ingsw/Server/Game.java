@@ -23,6 +23,9 @@ public class Game {
      */
     private final String file = "defaultConfiguration.xml";
 
+    /**
+     * represents the game handler
+     */
     private GamesHandler gamesHandler;
 
     /**
@@ -173,7 +176,6 @@ public class Game {
      * @return returns true if the player associated to the selected id is part of the match
      */
     public boolean containsID(String socketId){ return players.containsKey(socketId); }
-
 
     /**
      *

@@ -389,7 +389,7 @@ public class GamesHandler implements ConnectionListener{
                 removeActiveConnection(socketID);
                 return;
             } catch (MalformedMessageException e){
-                System.err.println("[SERVER] Error occurred while creating a negative reply message");
+                System.out.println("[SERVER] Error occurred while creating a negative reply message");
                 e.printStackTrace();
                 return;
             }
@@ -407,7 +407,7 @@ public class GamesHandler implements ConnectionListener{
                 removeActiveConnection(socketID);
                 return;
             } catch (MalformedMessageException e){
-                System.err.println("[SERVER] Error occurred while creating a negative reply message");
+                System.out.println("[SERVER] Error occurred while creating a negative reply message");
                 e.printStackTrace();
                 return;
             }
@@ -430,7 +430,7 @@ public class GamesHandler implements ConnectionListener{
                 return;
             }
 
-        }else /*if(waitingConnection.size() > 0)*/{
+        }else{
 
             System.out.println("[SERVER] " + nickname + " joined a game.");
             waitingConnection.get(0).addPlayer(nickname, socketID, getConnection(socketID));
@@ -539,7 +539,7 @@ public class GamesHandler implements ConnectionListener{
                         String message = nickname + " just left the game.";
                         game.sendAll(MessageFactory.buildDisconnection(message, nickname));
                     } catch (MalformedMessageException e){
-                        System.err.println("[SERVER] Error occurred while creating a disconnection message");
+                        System.out.println("[SERVER] Error occurred while creating a disconnection message");
                         e.printStackTrace();
                     }
 
@@ -584,7 +584,7 @@ public class GamesHandler implements ConnectionListener{
                 String message = "You have been reconnected to your previous game.";
                 getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
             } catch (MalformedMessageException e){
-                System.err.println("[SERVER] Error occurred while creating a positive reply message");
+                System.out.println("[SERVER] Error occurred while creating a positive reply message");
                 e.printStackTrace();
             }
 
@@ -598,7 +598,7 @@ public class GamesHandler implements ConnectionListener{
                 getConnection(socketID).closeConnection();
                 removeActiveConnection(socketID);
             } catch (MalformedMessageException e){
-                System.err.println("[SERVER] Error occurred while creating a negative reply message");
+                System.out.println("[SERVER] Error occurred while creating a negative reply message");
                 e.printStackTrace();
             }
 
