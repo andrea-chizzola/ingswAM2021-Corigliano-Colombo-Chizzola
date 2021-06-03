@@ -17,6 +17,42 @@ import java.util.Map;
 
 public class BoardController extends ViewController implements HelperWindow{
 
+    /**
+     * private class used to store the coordinates associated to each position of the faith track
+     */
+    private class Coordinates{
+
+        private double x;
+        private double y;
+
+        /**
+         * creates a new position given the associated coordinates
+         * @param x represents the new position's x coordinate
+         * @param y represents the new position's y coordinate
+         */
+        public Coordinates(double x, double y){
+            this.x = x;
+            this.y = y;
+        }
+
+        /**
+         *
+         * @return the x coordinate associated to the selected position
+         */
+        public double getX(){
+            return x;
+        }
+
+        /**
+         *
+         * @return the y coordinate associated to the selected position
+         */
+        public double getY() {
+            return y;
+        }
+
+    }
+
     @FXML
     private AnchorPane pane;
     @FXML
@@ -154,13 +190,29 @@ public class BoardController extends ViewController implements HelperWindow{
     }
 
     /**
+     * @param position represents the selected position
+     * @return the X coordinate associated to the selected position
+     */
+    protected double getXCoordinate(int position){
+        return positions.get(position).getX();
+    }
+
+    /**
+     * @param position represents the selected position
+     * @return the Y coordinate associated to the selected position
+     */
+    protected  double getYCoordinate(int position){
+        return positions.get(position).getY();
+    }
+
+    /**
      * changes the position of the player inside his faith track
      * @param position represents the new player's position
      */
     public void changePosition(int position){
 
-        tile.setLayoutX(positions.get(position).getX());
-        tile.setLayoutY(positions.get(position).getY());
+        tile.setLayoutX(getXCoordinate(position));
+        tile.setLayoutY(getYCoordinate(position));
 
     }
 
@@ -432,10 +484,16 @@ public class BoardController extends ViewController implements HelperWindow{
     }
 
 
+    /**
+     * shows the scene
+     */
     public void showWindow(){
         ((Stage) pane.getScene().getWindow()).show();
     }
 
+    /**
+     * hides the scene
+     */
     public void hideWindow(){
         pane.getScene().getWindow().hide();
     }

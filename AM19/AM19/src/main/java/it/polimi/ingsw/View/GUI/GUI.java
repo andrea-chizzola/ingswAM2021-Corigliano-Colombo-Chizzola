@@ -208,7 +208,7 @@ public class GUI implements View, SubjectView {
     }
 
     /**
-     * this method is used to show
+     * this method is used to show the action token picked by Lorenzo
      * @param action is the ID of the top token
      */
     @Override

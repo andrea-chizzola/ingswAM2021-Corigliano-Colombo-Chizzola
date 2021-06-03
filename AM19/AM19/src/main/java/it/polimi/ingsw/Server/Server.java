@@ -41,6 +41,9 @@ public class Server {
      */
     private AtomicLong idCounter;
 
+    /**
+     * represents the SoloConnectionHandler
+     */
     private SoloConnectionHandler socket;
 
 

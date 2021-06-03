@@ -73,7 +73,6 @@ public class InteractiveBoardController extends BoardController {
     @FXML
     private MenuButton otherPlayersMenu;
 
-    private List<Coordinates> blackPositions;
     private DecksController decksController;
     private MarketboardController marketboardController;
     private ChosenResourcesController chosenResourcesController;
@@ -106,8 +105,6 @@ public class InteractiveBoardController extends BoardController {
         errorStrongbox.setVisible(false);
         errorExtraShelf.setVisible(false);
 
-        blackPositions = new ArrayList<>();
-        setPositions(blackPositions);
         blackCross.setVisible(false);
 
         decksController = new DecksController();
@@ -198,6 +195,10 @@ public class InteractiveBoardController extends BoardController {
         turnSelectionController.showWindow();
     }
 
+    /**
+     * shows the action token picked by Lorenzo
+     * @param action represents the action token
+     */
     public void manageTopToken(Optional<String> action){
         if(action.isEmpty())
             return;
@@ -214,8 +215,8 @@ public class InteractiveBoardController extends BoardController {
      */
     public void changeBlackPosition(int position){
 
-        blackCross.setLayoutX(blackPositions.get(position).getX());
-        blackCross.setLayoutY(blackPositions.get(position).getY());
+        blackCross.setLayoutX(getXCoordinate(position));
+        blackCross.setLayoutY(getYCoordinate(position));
 
     }
 
