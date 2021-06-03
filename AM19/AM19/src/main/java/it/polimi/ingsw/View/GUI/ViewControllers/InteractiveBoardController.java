@@ -9,10 +9,7 @@ import it.polimi.ingsw.View.GUI.Messages.*;
 import it.polimi.ingsw.View.PlayerInteractions.SeeOthersInteraction;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -35,7 +32,7 @@ public class InteractiveBoardController extends BoardController {
     @FXML
     private ImageView servants;
     @FXML
-    private Button menuButton;
+    private Button turnsButton;
     @FXML
     private Button marketBoardButton;
     @FXML
@@ -81,6 +78,7 @@ public class InteractiveBoardController extends BoardController {
     private DecksController decksController;
     private MarketboardController marketboardController;
     private ChosenResourcesController chosenResourcesController;
+    private TurnSelectionController turnSelectionController;
     private Accumulator accumulator;
     private BuildMessage builder;
 
@@ -99,7 +97,7 @@ public class InteractiveBoardController extends BoardController {
     @Override
     public void initialize(){
         super.initialize();
-        menuButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> onMenuClicked());
+        turnsButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> onTurnsButtonClicked());
         marketBoardButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event ->onMarketBoardClicked());
         quitButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> onQuitClicked());
         decksButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> onDecksClicked());
@@ -110,17 +108,23 @@ public class InteractiveBoardController extends BoardController {
         errorExtraShelf.setVisible(false);
 
         blackPositions = new ArrayList<>();
-        setBlackPositions(blackPositions);
+        setPositions(blackPositions);
         blackCross.setVisible(false);
 
         decksController = new DecksController();
         marketboardController = new MarketboardController();
+        turnSelectionController = new TurnSelectionController();
 
-        GUIHandler.createHelperWindow(marketboardController, "/FXML/marketboard.fxml");
+        GUIHandler.createHelperWindow(marketboardController,"/FXML/marketboard.fxml", 350, 400);
         marketboardController.hideWindow();
 
-        GUIHandler.createHelperWindow(decksController, "/FXML/decks.fxml");
+        GUIHandler.createHelperWindow(decksController, "/FXML/decks.fxml", 685, 710);
         decksController.hideWindow();
+
+        GUIHandler.createHelperWindow(turnSelectionController, "/FXML/TurnSelection.fxml", 450, 300);
+        turnSelectionController.hideWindow();
+
+        otherPlayersMenu.setVisible(false);
 
         useWarehouse();
         useExtraShelves();
@@ -171,6 +175,7 @@ public class InteractiveBoardController extends BoardController {
         MenuItem item = new MenuItem(nickname);
         otherPlayersMenu.getItems().add(item);
         item.setOnAction(e -> onOtherPlayersClicked(nickname));
+        otherPlayersMenu.setVisible(true);
     }
 
     /**
@@ -190,8 +195,8 @@ public class InteractiveBoardController extends BoardController {
     /**
      * this method is used to handle the request of a player of using the menu
      */
-    private void onMenuClicked() {
-
+    private void onTurnsButtonClicked() {
+        turnSelectionController.showWindow();
     }
 
     public void manageTopToken(Optional<String> action){
@@ -241,6 +246,15 @@ public class InteractiveBoardController extends BoardController {
      */
     public void setMarketBoard(List<Marble> tray){
         marketboardController.showMarketUpdate(tray);
+    }
+
+    /**
+     * this method is used to set the available turns in the TurnSelection helper window
+     * @param turns is a list that represents the available turns
+     */
+    public void setAvailableTurns(List<String> turns){
+        turnSelectionController.setAvailableActions(turns);
+        turnSelectionController.showWindow();
     }
 
 
@@ -629,7 +643,7 @@ public class InteractiveBoardController extends BoardController {
 
         chosenResourcesController = new ChosenResourcesController();
         chosenResourcesController.setAccumulator(accumulator);
-        GUIHandler.createHelperWindow(chosenResourcesController, "/FXML/chosenResources.fxml");
+        GUIHandler.createNonCloseableWindow(chosenResourcesController,"/FXML/chosenResources.fxml", 565, 535);
 
     }
 
@@ -694,40 +708,6 @@ public class InteractiveBoardController extends BoardController {
         swap3.setVisible(true);
         swap3.setOpacity(1);
         actionButton.setDisable(false);
-    }
-
-    /**
-     * sets the positions related to each tile of the faith track (only for Lorenzo's black cross)
-     * @param positions contains the coordinates of each tile
-     */
-    private void setBlackPositions(List<Coordinates> positions){
-
-        positions.add(new Coordinates(39, 95));
-        positions.add(new Coordinates(81, 95));
-        positions.add(new Coordinates(120, 95));
-        positions.add(new Coordinates(120, 64));
-        positions.add(new Coordinates(120, 30));
-        positions.add(new Coordinates(166, 30));
-        positions.add(new Coordinates(211, 30));
-        positions.add(new Coordinates(249, 30));
-        positions.add(new Coordinates(293, 30));
-        positions.add(new Coordinates(337,30));
-        positions.add(new Coordinates(337, 64));
-        positions.add(new Coordinates(337, 95));
-        positions.add(new Coordinates(378, 95));
-        positions.add(new Coordinates(420, 95));
-        positions.add(new Coordinates(465, 95));
-        positions.add(new Coordinates(509, 95));
-        positions.add(new Coordinates(552, 95));
-        positions.add(new Coordinates(552, 64));
-        positions.add(new Coordinates(552, 30));
-        positions.add(new Coordinates(594, 30));
-        positions.add(new Coordinates(633, 30));
-        positions.add(new Coordinates(675, 30));
-        positions.add(new Coordinates(717, 30));
-        positions.add(new Coordinates(759, 30));
-        positions.add(new Coordinates(805, 30));
-
     }
 
     //TODO ovverride showwindow e hide window. Aggiungere l'etichetta del player

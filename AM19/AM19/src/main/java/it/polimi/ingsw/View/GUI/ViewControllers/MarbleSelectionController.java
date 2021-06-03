@@ -14,7 +14,10 @@ import javafx.stage.Stage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MarbleSelectionController extends ViewController{
+/**
+ * this class represents a controller of a marble selection scene
+ */
+public class MarbleSelectionController extends ViewController {
 
     @FXML
     private AnchorPane mainPane;
@@ -70,14 +73,49 @@ public class MarbleSelectionController extends ViewController{
     @FXML
     private MenuButton transformations4;
 
+    /**
+     * this attribute is a list that contains the ImageView of the marbles
+     */
     private List<ImageView> marbles;
+
+    /**
+     * this attribute is a list that contains reference to the menus
+     * used to select the transformation of a white marble
+     */
     private List<MenuButton> transformationMenus;
+
+    /**
+     * this attribute is a list that contains reference
+     * to the menus used to select the target slots
+     */
     private List<MenuButton> targetMenus;
+
+    /**
+     * this attribute is a list of the checkbox used
+     * to decide whether a marble is going to be kept
+     */
     private List<CheckBox> keepCheckBoxes;
+
+    /**
+     * this attribute represents the marbles selected by the player
+     */
     private List<Marble> selected;
+
+    /**
+     * this attribute represents represents the number of available transformations for a white marble
+     */
     private int nModifications;
+
+    /**
+     * this attribute contains the path of the images of the market
+     */
     private final String path = "/Images/market/";
+
+    /**
+     * this attribute is a reference to an object of type accumulator
+     */
     private Accumulator accumulator;
+
 
     public MarbleSelectionController(){
         accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
@@ -98,6 +136,10 @@ public class MarbleSelectionController extends ViewController{
         doneButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> exitFromWindow());
     }
 
+    /**
+     * this method is used to notify the decision of the player to the current GUI,
+     * and to close the MarbleSelection window
+     */
     public void exitFromWindow(){
         List<Marble> selected = getModelReference().getSelectedMarbles();
         String action, slots, marble;
@@ -106,7 +148,6 @@ public class MarbleSelectionController extends ViewController{
 
             action = (keepCheckBoxes.get(i).isSelected())?"INSERT":"DISCARD";
 
-            //TODO laciare un errore se il player non ha selezionato lo slot. Non inviare discard
             if(action.equals("DISCARD") || targetMenus.get(i).getText().equals("Target Slot"))
                 slots = "0";
             else slots = targetMenus.get(i).getText().substring(6,7);
@@ -124,18 +165,30 @@ public class MarbleSelectionController extends ViewController{
         ((Stage) mainPane.getScene().getWindow()).close();
     }
 
+    /**
+     * this method is used to hide the transformations of the white marbles
+     */
     private void hideTransformations(){
         for(MenuButton menu : transformationMenus){
             menu.setVisible(false);
         }
     }
 
+    /**
+     * this method is used to hide the keep checkboxes
+     */
     private void hideKeepCheckboxes(){
         for(CheckBox box : keepCheckBoxes){
             box.setVisible(false);
         }
     }
 
+    /**
+     * this method is used to show the player the selected marbles
+     * @param marblesTray is a list that represents the selected marbles
+     * @param whiteModifications is a list that represents the available white transformations
+     * @param nSlots is an int that represents the number of available slots in the warehouse
+     */
     public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, int nSlots) {
         selected = new LinkedList<>(marblesTray);
         nModifications = whiteModifications.size();
@@ -152,6 +205,11 @@ public class MarbleSelectionController extends ViewController{
         }
     }
 
+    /**
+     * this method is used to add the MenuItem representing the available shelves
+     * to each target menu
+     * @param nSlots is the number of available slots in the warehouse
+     */
     private void addTargetMenuOptions(int nSlots){
         for (MenuButton menu : targetMenus) {
             for (int j = 0; j < nSlots; j++) {
@@ -162,6 +220,12 @@ public class MarbleSelectionController extends ViewController{
         }
     }
 
+    /**
+     * this method is used to show the available transformations of the white marbles to the player
+     * @param whiteModifications is a list representing the available white transformations
+     * @param menu is the menu button that will show the available transformations
+     * @param checkBox is the checkbox associated to the menu
+     */
     private void showWhiteTransformations(List<Marble> whiteModifications, MenuButton menu, CheckBox checkBox){
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> menu.setVisible(newValue));
         for (Marble whiteModification : whiteModifications) {
@@ -169,5 +233,12 @@ public class MarbleSelectionController extends ViewController{
             menu.getItems().add(item);
             item.setOnAction(e -> menu.setText(item.getText()));
         }
+    }
+
+    /**
+     * this method is used to disable the "done" button of the scene
+     */
+    public void disableInteraction(){
+        doneButton.setVisible(false);
     }
 }

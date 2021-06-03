@@ -1,28 +1,20 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.Client.ReducedModel.ReducedConfiguration;
-import it.polimi.ingsw.Exceptions.IllegalIDException;
-import it.polimi.ingsw.Exceptions.MalformedMessageException;
-import it.polimi.ingsw.Messages.MessageFactory;
-import it.polimi.ingsw.Model.Cards.DevelopmentCard;
-import it.polimi.ingsw.View.GUI.GUI;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
-import it.polimi.ingsw.View.PlayerInteractions.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class DecksController extends ViewController {
+/**
+ * this class represents a controller of a decks scene
+ */
+public class DecksController extends ViewController implements HelperWindow{
 
     @FXML
     private AnchorPane mainPane;
@@ -74,11 +66,19 @@ public class DecksController extends ViewController {
         setDecks();
     }
 
+    /**
+     * this method is used to set the current instance of the message builder
+     * @param accumulator is the reference to the message builder
+     */
     public void setAccumulator(Accumulator accumulator){
         this.accumulator = accumulator;
         enableCards(true);
     }
 
+    /**
+     * this method is used to set the properties ImageView that
+     * contains the top cards of each shared deck
+     */
     private void setDecks(){
         enableCards(false);
         setCardHandler(card1,1);
@@ -95,22 +95,32 @@ public class DecksController extends ViewController {
         setCardHandler(card12,12);
     }
 
-    private void enableCards(boolean b){
-        card1.setDisable(!b);
-        card2.setDisable(!b);
-        card3.setDisable(!b);
-        card4.setDisable(!b);
-        card5.setDisable(!b);
-        card6.setDisable(!b);
-        card7.setDisable(!b);
-        card8.setDisable(!b);
-        card9.setDisable(!b);
-        card10.setDisable(!b);
-        card11.setDisable(!b);
-        card12.setDisable(!b);
-
+    /**
+     * this method is used to make the cards clickable
+     * @param status represents the status of the cards.
+     * It is true if the cards should be made clickable
+     */
+    private void enableCards(boolean status){
+        card1.setDisable(!status);
+        card2.setDisable(!status);
+        card3.setDisable(!status);
+        card4.setDisable(!status);
+        card5.setDisable(!status);
+        card6.setDisable(!status);
+        card7.setDisable(!status);
+        card8.setDisable(!status);
+        card9.setDisable(!status);
+        card10.setDisable(!status);
+        card11.setDisable(!status);
+        card12.setDisable(!status);
     }
 
+    /**
+     * this method is used to set a card invisible,
+     * and to initialize the event associated to the mouse click
+     * @param imageView is the node that represents the image
+     * @param position is the position of the card on the screen
+     */
     private void setCardHandler(ImageView imageView, int position){
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> {
@@ -120,34 +130,42 @@ public class DecksController extends ViewController {
             mainPane.getScene().getWindow().hide();});
     }
 
+    /**
+     * this method is used to update the top card in each deck
+     * @param decks is a map that contains the current state of the shared decks
+     */
     public void showDecksUpdate(Map<Integer, String> decks) {
         emptyDecks();
         ReducedConfiguration config = getModelReference().getConfiguration();
 
         for(int i : decks.keySet()){
             String id = decks.get(i);
-            String image = null;
-            try {
-                image = path + config.getDevelopmentCard(id).getPath();
-            } catch (IllegalIDException e) {
-                e.printStackTrace();
-            }
+            String image = path + config.getDevelopmentCard(id).getPath();
             ImageView view = cards.get(i);
             view.setVisible(true);
             view.setImage(new Image(image));
         }
     }
 
+    /**
+     * this method is used to hide the decks from the scene
+     */
     private void emptyDecks() {
         for (ImageView view : cards) {
             view.setVisible(false);
         }
     }
 
+    /**
+     * this method is used to show the helper window
+     */
     public void showWindow(){
         ((Stage) mainPane.getScene().getWindow()).show();
     }
 
+    /**
+     * this method is used to hide the helper window
+     */
     public void hideWindow(){
         mainPane.getScene().getWindow().hide();
     }

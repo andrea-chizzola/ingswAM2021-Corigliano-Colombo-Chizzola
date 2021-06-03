@@ -68,7 +68,7 @@ public class LoginController extends ViewController{
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteractionSolo(message);
                 LoadingController controller = new LoadingController();
-                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
+                GUIHandler.loadRoot(controller, "/FXML/loading.fxml");
             } catch (MalformedMessageException e) {
                 e.printStackTrace();
             }
@@ -83,7 +83,7 @@ public class LoginController extends ViewController{
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
                 LoadingController controller = new LoadingController();
-                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
+                GUIHandler.loadRoot(controller, "/FXML/loading.fxml");
             } catch (MalformedMessageException e) {
                 e.printStackTrace();
             }
@@ -97,7 +97,7 @@ public class LoginController extends ViewController{
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
                 LoadingController controller = new LoadingController();
-                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
+                GUIHandler.loadRoot(controller, "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -111,7 +111,7 @@ public class LoginController extends ViewController{
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
                 LoadingController controller = new LoadingController();
-                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
+                GUIHandler.loadRoot(controller, "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -125,7 +125,7 @@ public class LoginController extends ViewController{
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
                 LoadingController controller = new LoadingController();
-                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
+                GUIHandler.loadRoot(controller, "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -139,7 +139,7 @@ public class LoginController extends ViewController{
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
                 LoadingController controller = new LoadingController();
-                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
+                GUIHandler.loadRoot(controller, "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }
@@ -153,7 +153,7 @@ public class LoginController extends ViewController{
                 getGUIReference().notifyNickname(nicknameField.getText());
                 getGUIReference().notifyInteraction(message);
                 LoadingController controller = new LoadingController();
-                GUIHandler.loadRoot(pane.getScene(), controller, "/FXML/loading.fxml");
+                GUIHandler.loadRoot(controller, "/FXML/loading.fxml");
             }catch (MalformedMessageException e){
                 e.printStackTrace();
             }

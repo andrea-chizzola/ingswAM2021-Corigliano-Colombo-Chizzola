@@ -10,29 +10,29 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="534.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUI.ViewControllers.LoginController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUI.ViewControllers.LoginController">
    <children>
-      <ImageView fitHeight="575.0" fitWidth="534.0" layoutX="2.0" pickOnBounds="true">
+      <ImageView fitHeight="600.0" fitWidth="450.0" pickOnBounds="true">
          <image>
             <Image url="@../Images/login.png" />
          </image>
       </ImageView>
-      <Label fx:id="nicknameLabel" layoutX="207.0" layoutY="143.0" text="Insert Nickname" textFill="#071a57">
+      <Label fx:id="nicknameLabel" layoutX="148.0" layoutY="154.0" text="Insert your Nickname" textFill="WHITE">
          <font>
             <Font name="Times New Roman Bold Italic" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="nicknameField" layoutX="189.0" layoutY="178.0">
+      <TextField fx:id="nicknameField" layoutX="151.0" layoutY="185.0">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
       </TextField>
-      <Label fx:id="gameModeLabel" layoutX="197.0" layoutY="294.0" text="Select Game Mode" textFill="#071a57">
+      <Label fx:id="gameModeLabel" layoutX="156.0" layoutY="440.0" text="Select Game Mode" textFill="WHITE">
          <font>
             <Font name="Times New Roman Bold Italic" size="18.0" />
          </font>
       </Label>
-      <MenuButton fx:id="createGameButton" layoutX="68.0" layoutY="340.0" mnemonicParsing="false" text="Create Game">
+      <MenuButton fx:id="createGameButton" layoutX="76.0" layoutY="469.0" mnemonicParsing="false" text="Create Game">
         <items>
             <MenuItem fx:id="soloButton" mnemonicParsing="false" text="Local match" />
           <MenuItem fx:id="singlePlayerButton" mnemonicParsing="false" text="Single Player" />
@@ -44,17 +44,17 @@
             <Font name="Times New Roman" size="14.0" />
          </font>
       </MenuButton>
-      <Button fx:id="joinButton" layoutX="230.0" layoutY="340.0" mnemonicParsing="false" text="Join Game">
+      <Button fx:id="joinButton" layoutX="205.0" layoutY="469.0" mnemonicParsing="false" text="Join Game">
          <font>
             <Font name="Times New Roman" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="reconnectButton" layoutX="345.0" layoutY="340.0" mnemonicParsing="false" text="Reconnect">
+      <Button fx:id="reconnectButton" layoutX="303.0" layoutY="469.0" mnemonicParsing="false" text="Reconnect">
          <font>
             <Font name="Times New Roman" size="14.0" />
          </font>
       </Button>
-      <Label fx:id="invalidNicknameLabel" layoutX="36.0" layoutY="182.0" prefHeight="17.0" prefWidth="156.0" text="Please enter a nickname!" textFill="#f60909">
+      <Label fx:id="invalidNicknameLabel" layoutX="152.0" layoutY="221.0" prefHeight="17.0" prefWidth="156.0" text="Please enter a nickname!">
          <font>
             <Font name="Times New Roman Bold Italic" size="14.0" />
          </font>

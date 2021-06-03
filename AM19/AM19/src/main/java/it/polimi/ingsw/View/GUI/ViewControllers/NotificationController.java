@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class NotificationController {
+public class NotificationController extends ViewController{
 
     @FXML
     private AnchorPane mainPane;
@@ -28,7 +28,7 @@ public class NotificationController {
     private boolean isOK;
     private String message;
 
-    NotificationController(boolean isOK, String message){
+    public NotificationController(boolean isOK, String message){
         this.isOK = isOK;
         this.message = message;
     }

@@ -12,20 +12,42 @@ import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 import it.polimi.ingsw.View.SubjectView;
 import it.polimi.ingsw.View.View;
 import javafx.application.Platform;
-import javafx.scene.Scene;
+
 import java.util.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * this class implements the methods to manage the GUI,
+ * and to notify the observers of the View.
+ */
 public class GUI implements View, SubjectView {
 
+    /**
+     * this attribute represents the path of the FXML files
+     */
     private final String path = "/FXML/";
+
+    /**
+     * this attribute represents a reference to the model
+     */
     private final ReducedGameBoard model;
+
+    /**
+     * this attribute represents a reference to the observer of the view
+     */
     private InteractionObserver interactionObserver;
+
+    /**
+     * this attribute represents a reference to the controller of the player's personal board
+     */
     private InteractiveBoardController interactiveBoardController;
+
+    /**
+     * this attribute contains reference to the view controllers of the board of other players
+     */
     private Map<String, BoardController> playerBoards;
-    private Scene mainScene;
 
     /**
      * this method is the constructor of the class
@@ -46,15 +68,6 @@ public class GUI implements View, SubjectView {
     }
 
     /**
-     * this method is used to set the mainScene of the GUI
-     *
-     * @param mainScene is a reference to the mainScene
-     */
-    public void setMainScene(Scene mainScene){
-        this.mainScene = mainScene;
-    }
-
-    /**
      * this method is used to initialize the state of the view
      */
     @Override
@@ -65,18 +78,15 @@ public class GUI implements View, SubjectView {
         interactiveBoardController = new InteractiveBoardController(self);
         playerBoards.put(self, interactiveBoardController);
         Platform.runLater(() ->
-        {
-            GUIHandler.loadRoot(mainScene, interactiveBoardController, path + "gameboard.fxml");
-            mainScene.getWindow().setHeight(720);
-            mainScene.getWindow().setWidth(1080);
-        });
+            GUIHandler.loadMainRoot(interactiveBoardController, path + "gameboard.fxml")
+        );
 
         for(String name : nicknames){
             if(!name.equals(self)) {
                 BoardController controller = new BoardController(name);
                 playerBoards.put(name, controller);
                 Platform.runLater( () ->
-                        { GUIHandler.createHelperWindow(controller, path + "otherBoards.fxml");
+                        { GUIHandler.createHelperWindow(controller, path + "otherBoards.fxml", 1080, 720);
                             interactiveBoardController.addPlayer(name); });
             }
         }
@@ -90,7 +100,9 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void reply(boolean answer, String body, String nickName) {
-
+        NotificationController controller = new NotificationController(answer, body);
+        Platform.runLater(() ->
+                GUIHandler.newWindow(controller,path + "notification.fxml", 400, 250));
     }
 
     /**
@@ -112,12 +124,12 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void showAvailableTurns(List<String> turns, String player) {
-
-        TurnSelectionController controller = new TurnSelectionController();
-        controller.setAvailableActions(turns);
-
-        Platform.runLater(() ->
-                GUIHandler.newWindow(controller,path + "TurnSelection.fxml"));
+        String self = model.getCurrentPlayer();
+        if(player.equals(self))
+        {
+            Platform.runLater(() ->
+                    interactiveBoardController.setAvailableTurns(turns));
+        }
     }
 
     /**
@@ -138,11 +150,21 @@ public class GUI implements View, SubjectView {
     @Override
     public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName) {
         int nSlots = model.getBoard(nickName).getWarehouse().size();
+        String self = model.getPersonalNickname();
         MarbleSelectionController controller = new MarbleSelectionController();
-        Platform.runLater(()->{
-            GUIHandler.newWindow(controller, path + "marbleSelection.fxml");
-            controller.showMarblesUpdate(marblesTray, whiteModifications, nSlots);
-        });
+        if(self.equals(nickName)) {
+            Platform.runLater(() -> {
+                GUIHandler.createNonCloseableWindow(controller, path + "marbleSelection.fxml", 445, 275);
+                controller.showMarblesUpdate(marblesTray, whiteModifications, nSlots);
+            });
+        }
+        else{
+            Platform.runLater(() -> {
+                GUIHandler.newWindow(controller, path + "marbleSelection.fxml", 445, 275);
+                controller.showMarblesUpdate(marblesTray, whiteModifications, nSlots);
+                controller.disableInteraction();
+            });
+        }
     }
 
     /**
@@ -236,7 +258,7 @@ public class GUI implements View, SubjectView {
 
         EndGameController endGameController = new EndGameController();
         Platform.runLater(() -> {
-            GUIHandler.newWindow(endGameController,path + "EndGame.fxml");
+            GUIHandler.newWindow(endGameController,path + "EndGame.fxml", 600, 400);
             endGameController.showEndGame(players);
         });
 
@@ -248,8 +270,10 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void showDisconnection(String nickname) {
-        DisconnectionController disconnectionController = new DisconnectionController(nickname);
-        Platform.runLater(() -> GUIHandler.newWindow(disconnectionController, path + "disconnection.fxml"));
+        String message = nickname + "has been disconnected from the server";
+        NotificationController controller = new NotificationController(true, message);
+        Platform.runLater(() ->
+                GUIHandler.newWindow(controller,path + "notification.fxml", 400, 250));
     }
 
     /**
@@ -305,7 +329,7 @@ public class GUI implements View, SubjectView {
 
         InitializeResController controller = new InitializeResController();
         Platform.runLater(() -> {
-                GUIHandler.newWindow(controller, path + "initializeResources.fxml");
+                GUIHandler.createNonCloseableWindow(controller, path + "initializeResources.fxml", 600, 400);
                 controller.initResources(number); });
     }
 

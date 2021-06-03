@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MarketboardController extends ViewController {
+public class MarketboardController extends ViewController implements HelperWindow{
 
     @FXML
     private AnchorPane mainPane;
@@ -51,31 +51,37 @@ public class MarketboardController extends ViewController {
 
     @FXML
     public void initialize(){
-        column1.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("COLUMN",1));
-        column2.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("COLUMN",2));
-        column3.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("COLUMN",3));
-        column4.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("COLUMN",4));
-        row1.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("ROW",1));
-        row2.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("ROW",2));
-        row3.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("ROW",3));
+        column1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("COLUMN", 1));
+        column2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("COLUMN", 2));
+        column3.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("COLUMN", 3));
+        column4.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("COLUMN", 4));
+        row1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("ROW", 1));
+        row2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("ROW", 2));
+        row3.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("ROW", 3));
+
         initializeTray();
         positions = List.of(column1, column2, column3, column4, row1, row2, row3);
         disableButtons();
     }
 
+    /**
+     * this method is called when a row or a column is clicked to notify
+     * the interaction of the player to the observer of the view
+     * @param tray is the kind of selection (row or column)
+     * @param position is the selected position
+     */
     private void doAction(String tray, int position){
         accumulator.setMarketTray(tray);
         accumulator.setMarketNumber(position);
+        disableButtons();
+        hideWindow();
         getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
+
     }
 
+    /**
+     * this method is used to initialize the market tray
+     */
     private void initializeTray(){
 
         viewTray = new LinkedList<>();
@@ -105,6 +111,10 @@ public class MarketboardController extends ViewController {
         mainPane.getChildren().addAll(viewTray);
     }
 
+    /**
+     * this method is used to update the market tray
+     * @param tray is the current state of the market tray
+     */
     public void showMarketUpdate(List<Marble> tray) {
         for(int i=0; i<viewTray.size(); i++){
             Image image = new Image(path + tray.get(i).getImage());
@@ -112,27 +122,42 @@ public class MarketboardController extends ViewController {
         }
     }
 
+    /**
+     * this method is used to disable all the buttons in the scene
+     */
     public void disableButtons(){
         for(Button b : positions){
             b.setVisible(false);
         }
     }
 
+    /**
+     * this method is used to enable all the buttons in the scene
+     */
     public void activateButtons(){
         for(Button b : positions){
             b.setVisible(true);
         }
     }
 
+    /**
+     * this method is used to set the reference to the message builder
+     */
     public void setAccumulator(){
         this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildMarketSelection();
     }
 
+    /**
+     * this method is used to show the helper window
+     */
     public void showWindow(){
         ((Stage) mainPane.getScene().getWindow()).show();
     }
 
+    /**
+     * this method is used to hide the helper window
+     */
     public void hideWindow(){
         mainPane.getScene().getWindow().hide();
     }
