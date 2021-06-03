@@ -73,6 +73,18 @@ public class InteractiveBoardController extends BoardController {
     private MenuItem DISCARD2;
     @FXML
     private MenuButton otherPlayersMenu;
+    @FXML
+    private Label counterCoins;
+    @FXML
+    private Label counterShields;
+    @FXML
+    private Label counterStones;
+    @FXML
+    private Label counterServants;
+    @FXML
+    private Label counterExtra1;
+    @FXML
+    private Label counterExtra2;
 
     private List<Coordinates> blackPositions;
     private DecksController decksController;
@@ -320,8 +332,8 @@ public class InteractiveBoardController extends BoardController {
      */
     private void useExtraShelves(){
         setExtraShelves();
-        helpUseExtraShelf(extraShelf1,extraShelf1Label,4);
-        helpUseExtraShelf(extraShelf2,extraShelf2Label,5);
+        helpUseExtraShelf(extraShelf1,extraShelf1Label, counterExtra1,4);
+        helpUseExtraShelf(extraShelf2,extraShelf2Label,counterExtra2,5);
     }
 
     /**
@@ -330,11 +342,11 @@ public class InteractiveBoardController extends BoardController {
      * @param label represents the amount of resources in the shelf
      * @param shelf represents the position of the shelf
      */
-    private void helpUseExtraShelf(ImageView imageView, Label label, int shelf){
+    private void helpUseExtraShelf(ImageView imageView, Label label, Label counter, int shelf){
 
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
-            if (actionPauseTransition(imageView, label, errorExtraShelf)) return;
+            if (actionPauseTransition(imageView, label, errorExtraShelf, counter)) return;
             accumulator.setWarehouse(shelf);});
     }
 
@@ -346,19 +358,21 @@ public class InteractiveBoardController extends BoardController {
      * @param error the message of error
      * @return true if the message of error is shown, false otherwise
      */
-    private boolean actionPauseTransition(ImageView imageView, Label label, Label error) {
+    private boolean actionPauseTransition(ImageView imageView, Label label, Label error, Label counter) {
         PauseTransition visiblePause = new PauseTransition(Duration.seconds(0.8));
         visiblePause.setOnFinished(event -> error.setVisible(false));
 
         imageView.setVisible(true);
-        int i = Integer.parseInt(label.getText());
-        if(i == 0) {
+        int i = Integer.parseInt(counter.getText());
+        int j = Integer.parseInt(label.getText());
+        if(i == j) {
             error.setVisible(true);
             visiblePause.play();
             return true;
         }
-        i--;
-        label.setText(String.valueOf(i));
+        i++;
+        counter.setVisible(true);
+        counter.setText(String.valueOf(i));
         return false;
     }
 
@@ -368,10 +382,10 @@ public class InteractiveBoardController extends BoardController {
      */
     private void useStrongbox(){
 
-        helpUseStrongbox(coins,coinsNumber,"COIN");
-        helpUseStrongbox(shields,shieldsNumber,"SHIELD");
-        helpUseStrongbox(stones,stonesNumber,"STONE");
-        helpUseStrongbox(servants,servantsNumber,"SERVANT");
+        helpUseStrongbox(coins,coinsNumber,counterCoins,"COIN");
+        helpUseStrongbox(shields,shieldsNumber,counterShields,"SHIELD");
+        helpUseStrongbox(stones,stonesNumber,counterStones,"STONE");
+        helpUseStrongbox(servants,servantsNumber,counterServants,"SERVANT");
 
     }
 
@@ -381,11 +395,11 @@ public class InteractiveBoardController extends BoardController {
      * @param label is the amount of that resource
      * @param resource is the name of the resource
      */
-    private void helpUseStrongbox(ImageView imageView, Label label, String resource){
+    private void helpUseStrongbox(ImageView imageView, Label label, Label counter,String resource){
 
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
-            if (actionPauseTransition(imageView, label, errorStrongbox)) return;
+            if (actionPauseTransition(imageView, label, errorStrongbox, counter)) return;
             accumulator.setStrongbox(resource);
             accumulator.setStrongbox("1");});
 
@@ -400,6 +414,25 @@ public class InteractiveBoardController extends BoardController {
         shields.setDisable(!b);
         servants.setDisable(!b);
         stones.setDisable(!b);
+    }
+
+    /**
+     * this method resets the counters of the number of selected resources in strongbox and extra shelves
+     */
+    private void resetCounters(){
+        counterCoins.setVisible(false);
+        counterCoins.setText("0");
+        counterServants.setVisible(false);
+        counterServants.setText("0");
+        counterShields.setVisible(false);
+        counterShields.setText("0");
+        counterStones.setVisible(false);
+        counterStones.setText("0");
+
+        counterExtra1.setVisible(false);
+        counterExtra1.setText("0");
+        counterExtra2.setVisible(false);
+        counterExtra2.setText("0");
     }
 
 
@@ -602,6 +635,8 @@ public class InteractiveBoardController extends BoardController {
         resetImage(secondLeaderCard,0.5);
         resetImage(thirdLeaderCard,0.5);
         resetImage(fourthLeaderCard,0.5);
+
+        resetCounters();
 
         swap1.setVisible(false);
         swap2.setVisible(false);
