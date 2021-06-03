@@ -18,12 +18,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * this class implements the methods to manage the GUI,
+ * and to notify the observers of the View.
+ */
 public class GUI implements View, SubjectView {
 
+    /**
+     * this attribute represents the path of the FXML files
+     */
     private final String path = "/FXML/";
+
+    /**
+     * this attribute represents a reference to the model
+     */
     private final ReducedGameBoard model;
+
+    /**
+     * this attribute represents a reference to the observer of the view
+     */
     private InteractionObserver interactionObserver;
+
+    /**
+     * this attribute represents a reference to the controller of the player's personal board
+     */
     private InteractiveBoardController interactiveBoardController;
+
+    /**
+     * this attribute contains reference to the view controllers of the board of other players
+     */
     private Map<String, BoardController> playerBoards;
 
     /**
@@ -127,11 +150,21 @@ public class GUI implements View, SubjectView {
     @Override
     public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName) {
         int nSlots = model.getBoard(nickName).getWarehouse().size();
+        String self = model.getPersonalNickname();
         MarbleSelectionController controller = new MarbleSelectionController();
-        Platform.runLater(()->{
-            GUIHandler.newWindow(controller, path + "marbleSelection.fxml", 445, 275);
-            controller.showMarblesUpdate(marblesTray, whiteModifications, nSlots);
-        });
+        if(self.equals(nickName)) {
+            Platform.runLater(() -> {
+                GUIHandler.createNonCloseableWindow(controller, path + "marbleSelection.fxml", 445, 275);
+                controller.showMarblesUpdate(marblesTray, whiteModifications, nSlots);
+            });
+        }
+        else{
+            Platform.runLater(() -> {
+                GUIHandler.newWindow(controller, path + "marbleSelection.fxml", 445, 275);
+                controller.showMarblesUpdate(marblesTray, whiteModifications, nSlots);
+                controller.disableInteraction();
+            });
+        }
     }
 
     /**
@@ -237,8 +270,6 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void showDisconnection(String nickname) {
-        /*DisconnectionController disconnectionController = new DisconnectionController(nickname);
-        Platform.runLater(() -> GUIHandler.newWindow(disconnectionController, path + "disconnection.fxml"));*/
         String message = nickname + "has been disconnected from the server";
         NotificationController controller = new NotificationController(true, message);
         Platform.runLater(() ->
@@ -298,7 +329,7 @@ public class GUI implements View, SubjectView {
 
         InitializeResController controller = new InitializeResController();
         Platform.runLater(() -> {
-                GUIHandler.newWindow(controller, path + "initializeResources.fxml", 600, 400);
+                GUIHandler.createNonCloseableWindow(controller, path + "initializeResources.fxml", 600, 400);
                 controller.initResources(number); });
     }
 

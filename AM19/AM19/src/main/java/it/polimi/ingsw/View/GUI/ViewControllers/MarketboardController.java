@@ -64,6 +64,12 @@ public class MarketboardController extends ViewController implements HelperWindo
         disableButtons();
     }
 
+    /**
+     * this method is called when a row or a column is clicked to notify
+     * the interaction of the player to the observer of the view
+     * @param tray is the kind of selection (row or column)
+     * @param position is the selected position
+     */
     private void doAction(String tray, int position){
         accumulator.setMarketTray(tray);
         accumulator.setMarketNumber(position);
@@ -73,6 +79,9 @@ public class MarketboardController extends ViewController implements HelperWindo
 
     }
 
+    /**
+     * this method is used to initialize the market tray
+     */
     private void initializeTray(){
 
         viewTray = new LinkedList<>();
@@ -102,6 +111,10 @@ public class MarketboardController extends ViewController implements HelperWindo
         mainPane.getChildren().addAll(viewTray);
     }
 
+    /**
+     * this method is used to update the market tray
+     * @param tray is the current state of the market tray
+     */
     public void showMarketUpdate(List<Marble> tray) {
         for(int i=0; i<viewTray.size(); i++){
             Image image = new Image(path + tray.get(i).getImage());
@@ -109,27 +122,42 @@ public class MarketboardController extends ViewController implements HelperWindo
         }
     }
 
+    /**
+     * this method is used to disable all the buttons in the scene
+     */
     public void disableButtons(){
         for(Button b : positions){
             b.setVisible(false);
         }
     }
 
+    /**
+     * this method is used to enable all the buttons in the scene
+     */
     public void activateButtons(){
         for(Button b : positions){
             b.setVisible(true);
         }
     }
 
+    /**
+     * this method is used to set the reference to the message builder
+     */
     public void setAccumulator(){
         this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildMarketSelection();
     }
 
+    /**
+     * this method is used to show the helper window
+     */
     public void showWindow(){
         ((Stage) mainPane.getScene().getWindow()).show();
     }
 
+    /**
+     * this method is used to hide the helper window
+     */
     public void hideWindow(){
         mainPane.getScene().getWindow().hide();
     }
