@@ -260,7 +260,7 @@ public class GamesHandler implements ConnectionListener{
 
     /**
      * removes the game when over
-     * @param gameId represents the id tof the game to remove
+     * @param gameId represents the id of the game to remove
      * @param playersId contains the id of the players in the selected game
      */
     public void removeGame(String gameId, ArrayList<String> playersId){
@@ -286,6 +286,18 @@ public class GamesHandler implements ConnectionListener{
         }
         suspendedGames.removeAll(removed);
 
+    }
+
+    /**
+     *
+     * @param playersNumber indicates the number of player inside the game
+     * @return the type of the game created
+     */
+    private String getGameType(int playersNumber){
+        if(playersNumber == 1)
+            return "single player";
+        else
+            return "multiplayer";
     }
 
     /**
@@ -331,6 +343,7 @@ public class GamesHandler implements ConnectionListener{
         try {
 
             switch (MessageUtilities.instance().getType(message)) {
+
                 case CONNECTION:
                     ConnectionMessage connectionMessage = new ConnectionMessage(message, Message.MessageType.CONNECTION);
                     String connectionNickname = connectionMessage.getNickname();
@@ -366,6 +379,260 @@ public class GamesHandler implements ConnectionListener{
     }
 
     /**
+     * closes the connection in case of nickname not available
+     * @param nickname represents the player's nickname
+     * @param socketID represents the id related to the socket connection
+     */
+    private void notAvailableNickname(String nickname, String socketID){
+
+        try {
+            String messageError = "Nickname not available. Please choose another nickname and reconnect.";
+            getConnection(socketID).send(MessageFactory.buildReply(false, messageError, nickname));
+            getConnection(socketID).closeConnection();
+            removeActiveConnection(socketID);
+            return;
+        } catch (MalformedMessageException e){
+            System.out.println("[SERVER] Error occurred while creating a negative reply message");
+            e.printStackTrace();
+            return;
+        }
+
+    }
+
+    /**
+     * closes the connection if there are no games to join
+     * @param nickname represents the player's nickname
+     * @param socketID represents the id related to the socket connection
+     */
+    private void noExistingGames(String nickname, String socketID){
+
+        try {
+            String messageError = "Can't find an existing game to join. Reconnect and create a new one.";
+            getConnection(socketID).send(MessageFactory.buildReply(false, messageError, nickname));
+            getConnection(socketID).closeConnection();
+            removeActiveConnection(socketID);
+            return;
+        } catch (MalformedMessageException e){
+            System.out.println("[SERVER] Error occurred while creating a negative reply message");
+            e.printStackTrace();
+            return;
+        }
+
+    }
+
+    /**
+     * creates a new game
+     * @param nickname represents the player's nickname
+     * @param playersNumber represents the number of players associates to the new game
+     * @param socketID represents the id related to the socket connection
+     */
+    private void createGame(String nickname, int playersNumber, String socketID){
+
+        Game game = new Game(this, nickname, socketID, getConnection(socketID), playersNumber, createId());
+        addWaitingGame(game);
+
+        try {
+            String message = "Created a new " + getGameType(playersNumber) + " game.";
+            getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
+        } catch (MalformedMessageException e){
+            System.out.println("[SERVER] Error occurred while creating a positive reply message");
+            e.printStackTrace();
+            return;
+        }
+
+    }
+
+    /**
+     * joins an existing game
+     * @param nickname represents the player's nickname
+     * @param socketID represents the id related to the socket connection
+     */
+    private void joinGame(String nickname, String socketID){
+
+        waitingConnection.get(0).addPlayer(nickname, socketID, getConnection(socketID));
+
+        try{
+            String message = "Joined a game. Please wait for the game to start.";
+            getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
+        } catch (MalformedMessageException e){
+            System.out.println("[SERVER] Error occurred while creating a positive reply message");
+            e.printStackTrace();
+            return;
+        }
+
+    }
+
+    /**
+     * makes the games begin if there are enough players
+     */
+    private void startGames(){
+
+        List<Game> started = new ArrayList<>();
+        for(Game game : waitingConnection){
+            if(game.canStart()){
+                game.setUpGame();
+                addActiveGame(game);
+                started.add(game);
+            }
+        }
+        waitingConnection.removeAll(started);
+
+    }
+
+    /**
+     * closes a game currently in the waiting list
+     * @param game represents the game to close
+     * @param socketId represents the id related to the socket connection of the remaining player
+     */
+    private void closeWaitingGame(Game game, String socketId){
+
+        System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be removed from the waiting list.");
+        game.removePlayer(socketId);
+        getConnection(socketId).closeConnection();
+        removeActiveConnection(socketId);
+        //disconnected.add(game);
+        System.out.println("[SERVER] Game removed correctly.");
+
+    }
+
+    /**
+     * removes a player from the game in the waiting list
+     * @param game represents the game to remove the player from
+     * @param nickname represents the player's nickname
+     * @param socketId represents the id related to the socket connection
+     */
+    private void removeWaitingPlayer(Game game, String nickname, String socketId){
+
+        System.out.println("[SERVER] " + nickname + " will now be removed from the game.");
+        getConnection(socketId).closeConnection();
+        removeActiveConnection(socketId);
+        game.removePlayer(socketId);
+        System.out.println("[SERVER] " + nickname + " correctly removed from the game.");
+
+    }
+
+    /**
+     * adds the game to the suspended ones
+     * @param game represents the game to suspend
+     * @param nickname represents the player's nickname
+     * @param socketId represents the id related to the socket connection
+     */
+    private void suspendGame(Game game, String nickname, String socketId){
+
+        System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be suspended.");
+        game.removePlayer(socketId);
+        game.startSuspensionTimer();
+        getConnection(socketId).closeConnection();
+        removeActiveConnection(socketId);
+        addInactivePlayer(nickname, game.getId());
+        addSuspendedGame(game);
+        //disconnected.add(game);
+        System.out.println("[SERVER] Game suspended correctly.");
+
+    }
+
+    /**
+     * closes an active game
+     * @param game represents the game to close
+     * @param socketId represents the id related to the socket connection of the remaining player
+     */
+    private void closeActiveGame(Game game, String socketId){
+
+        System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be removed from the active ones.");
+        clearInactivePlayers(game.getId());
+        game.removePlayer(socketId);
+        getConnection(socketId).closeConnection();
+        removeActiveConnection(socketId);
+        //disconnected.add(game);
+        System.out.println("[SERVER] Game removed correctly.");
+
+    }
+
+    /**
+     * removes a player from an active game
+     * @param game represents the game to remove the player from
+     * @param nickname represents the player's nickname
+     * @param socketId represents the id related to the socket connection
+     */
+    private void removeActivePlayer(Game game, String nickname, String socketId){
+
+        System.out.println("[SERVER] " + nickname + " will now be removed from the game.");
+        game.removePlayer(socketId);
+        getConnection(socketId).closeConnection();
+        removeActiveConnection(socketId);
+        System.out.println("Players: " + game.getPlayers());
+        System.out.println("Game size: " + game.getActualPlayers());
+        addInactivePlayer(nickname, game.getId());
+        System.out.println("[SERVER] " + nickname + " correctly removed from the game.");
+        try {
+            String message = nickname + " just left the game.";
+            game.sendAll(MessageFactory.buildDisconnection(message, nickname));
+        } catch (MalformedMessageException e){
+            System.out.println("[SERVER] Error occurred while creating a disconnection message");
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * reconnects a player to his previous game
+     * @param nickname represents the player's nickname
+     * @param socketID represents the id related to the socket connection
+     */
+    private void reconnectPlayer(String nickname, String socketID){
+
+        Game game = getGameById(inactivePlayers.get(nickname));
+        game.addPlayer(nickname, socketID, getConnection(socketID));
+        inactivePlayers.remove(nickname);
+        if(suspendedGames.contains(game)) {
+            removeSuspendedGame(game);
+            addActiveGame(game);
+        }
+        System.out.println("[SERVER] " + nickname + " was reconnected to his game.");
+
+        try {
+            String message = "You have been reconnected to your previous game.";
+            getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
+        } catch (MalformedMessageException e){
+            System.out.println("[SERVER] Error occurred while creating a positive reply message");
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * denies the reconnection of a player
+     * @param nickname represents the player's nickname
+     * @param socketID represents the id related to the socket connection
+     */
+    private void denyReconnection(String nickname, String socketID){
+
+        System.out.println("[SERVER] " + nickname + " was not disconnected or his game is now over.");
+
+        try {
+            String messageError = "You were not playing any match or your game is now over.";
+            getConnection(socketID).send(MessageFactory.buildReply(false, messageError, nickname));
+            getConnection(socketID).closeConnection();
+            removeActiveConnection(socketID);
+        } catch (MalformedMessageException e){
+            System.out.println("[SERVER] Error occurred while creating a negative reply message");
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * prints the status of the games
+     */
+    private void printStatus(){
+
+        System.out.println("[SERVER] Waiting list: " + waitingConnection.size());
+        System.out.println("[SERVER] Active games: " + activeGames.size());
+        System.out.println("[SERVER] Suspended games: " + suspendedGames.size());
+
+    }
+
+    /**
      * manages the creation of a new game and the addition of a player to an existing game
      * @param nickname represents the client's nickname
      * @param gameHost indicates if the player wants to create a new jame or join an existing one
@@ -379,86 +646,28 @@ public class GamesHandler implements ConnectionListener{
             return;
         }
         if(!isNicknameAvailable(nickname)){
-
             System.out.println("[SERVER] Nickname \"" + nickname + "\" is currently not available.");
-
-            try {
-                String messageError = "Nickname not available. Please choose another nickname and reconnect.";
-                getConnection(socketID).send(MessageFactory.buildReply(false, messageError, nickname));
-                getConnection(socketID).closeConnection();
-                removeActiveConnection(socketID);
-                return;
-            } catch (MalformedMessageException e){
-                System.out.println("[SERVER] Error occurred while creating a negative reply message");
-                e.printStackTrace();
-                return;
-            }
-
-
+            notAvailableNickname(nickname, socketID);
+            return;
         }
         if(!gameHost && waitingConnection.size() == 0){
-
             System.out.println("[SERVER] Can't find an existing game to join.");
-
-            try {
-                String messageError = "Can't find an existing game to join. Reconnect and create a new one.";
-                getConnection(socketID).send(MessageFactory.buildReply(false, messageError, nickname));
-                getConnection(socketID).closeConnection();
-                removeActiveConnection(socketID);
-                return;
-            } catch (MalformedMessageException e){
-                System.out.println("[SERVER] Error occurred while creating a negative reply message");
-                e.printStackTrace();
-                return;
-            }
+            noExistingGames(nickname, socketID);
+            return;
         }
 
         System.out.println("[SERVER] Adding " + nickname + " to the lobby.");
 
         if(gameHost){
-
             System.out.println("[SERVER] " + nickname + " created a new game.");
-            Game game = new Game(this, nickname, socketID, getConnection(socketID), playersNumber, createId());
-            addWaitingGame(game);
-
-            try {
-                String message = "Created a new single player game.";
-                getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
-            } catch (MalformedMessageException e){
-                System.err.println("[SERVER] Error occurred while creating a positive reply message");
-                e.printStackTrace();
-                return;
-            }
-
+            createGame(nickname, playersNumber, socketID);
         }else{
-
             System.out.println("[SERVER] " + nickname + " joined a game.");
-            waitingConnection.get(0).addPlayer(nickname, socketID, getConnection(socketID));
-
-            try{
-                String message = "Joined a game. Please wait for the game to start.";
-                getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
-            } catch (MalformedMessageException e){
-                System.err.println("[SERVER] Error occurred while creating a positive reply message");
-                e.printStackTrace();
-                return;
-            }
-
+            joinGame(nickname, socketID);
         }
 
-        List<Game> started = new ArrayList<>();
-        for(Game game : waitingConnection){
-            if(game.canStart()){
-                game.setUpGame();
-                addActiveGame(game);
-                started.add(game);
-            }
-        }
-        waitingConnection.removeAll(started);
-
-        System.out.println("[SERVER] Waiting list: " + waitingConnection.size());
-        System.out.println("[SERVER] Active games: " + activeGames.size());
-        System.out.println("[SERVER] Suspended games: " + suspendedGames.size());
+        startGames();
+        printStatus();
 
     }
 
@@ -482,18 +691,10 @@ public class GamesHandler implements ConnectionListener{
         for(Game game : waitingConnection){
             if(game.containsPlayer(nickname) && game.isCorresponding(socketId, nickname)){
                 if(game.getActualPlayers() == 1){
-                    System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be removed from the waiting list.");
-                    game.removePlayer(socketId);
-                    getConnection(socketId).closeConnection();
-                    removeActiveConnection(socketId);
+                    closeWaitingGame(game, socketId);
                     disconnected.add(game);
-                    System.out.println("[SERVER] Game removed correctly.");
                 }else{
-                    System.out.println("[SERVER] " + nickname + " will now be removed from the game.");
-                    getConnection(socketId).closeConnection();
-                    removeActiveConnection(socketId);
-                    game.removePlayer(socketId);
-                    System.out.println("[SERVER] " + nickname + " correctly removed from the game.");
+                    removeWaitingPlayer(game, nickname, socketId);
                 }
                 System.out.println("[SERVER] Disconnection request completed.");
                 break;
@@ -504,45 +705,13 @@ public class GamesHandler implements ConnectionListener{
         for(Game game : activeGames){
             if(game.containsPlayer(nickname) && game.isCorresponding(socketId, nickname)){
                 if(game.getPlayersNumber() == 1) {
-
-                    System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be suspended.");
-                    game.removePlayer(socketId);
-                    game.startSuspensionTimer();
-                    getConnection(socketId).closeConnection();
-                    removeActiveConnection(socketId);
-                    addInactivePlayer(nickname, game.getId());
-                    addSuspendedGame(game);
+                    suspendGame(game, nickname, socketId);
                     disconnected.add(game);
-                    System.out.println("[SERVER] Game suspended correctly.");
-
                 } else if (game.getPlayersNumber() > 1 && game.getActualPlayers() == 1) {
-
-                    System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be removed from the active ones.");
-                    clearInactivePlayers(game.getId());
-                    game.removePlayer(socketId);
-                    getConnection(socketId).closeConnection();
-                    removeActiveConnection(socketId);
+                    closeActiveGame(game, socketId);
                     disconnected.add(game);
-                    System.out.println("[SERVER] Game removed correctly.");
-
                 } else {
-
-                    System.out.println("[SERVER] " + nickname + " will now be removed from the game.");
-                    game.removePlayer(socketId);
-                    getConnection(socketId).closeConnection();
-                    removeActiveConnection(socketId);
-                    System.out.println("Players: " + game.getPlayers());
-                    System.out.println("Game size: " + game.getActualPlayers());
-                    addInactivePlayer(nickname, game.getId());
-                    System.out.println("[SERVER] " + nickname + " correctly removed from the game.");
-                    try {
-                        String message = nickname + " just left the game.";
-                        game.sendAll(MessageFactory.buildDisconnection(message, nickname));
-                    } catch (MalformedMessageException e){
-                        System.out.println("[SERVER] Error occurred while creating a disconnection message");
-                        e.printStackTrace();
-                    }
-
+                    removeActivePlayer(game, nickname, socketId);
                 }
             }
             System.out.println("[SERVER] Disconnection request completed.");
@@ -550,9 +719,7 @@ public class GamesHandler implements ConnectionListener{
         }
         activeGames.removeAll(disconnected);
 
-        System.out.println("[SERVER] Waiting list: " + waitingConnection.size());
-        System.out.println("[SERVER] Active games: " + activeGames.size());
-        System.out.println("[SERVER] Suspended games: " + suspendedGames.size());
+        printStatus();
 
     }
 
@@ -570,43 +737,12 @@ public class GamesHandler implements ConnectionListener{
             return;
         }
         if(inactivePlayers.containsKey(nickname)){
-
-            Game game = getGameById(inactivePlayers.get(nickname));
-            game.addPlayer(nickname, socketID, getConnection(socketID));
-            inactivePlayers.remove(nickname);
-            if(suspendedGames.contains(game)) {
-                removeSuspendedGame(game);
-                addActiveGame(game);
-            }
-            System.out.println("[SERVER] " + nickname + " was reconnected to his game.");
-
-            try {
-                String message = "You have been reconnected to your previous game.";
-                getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
-            } catch (MalformedMessageException e){
-                System.out.println("[SERVER] Error occurred while creating a positive reply message");
-                e.printStackTrace();
-            }
-
+            reconnectPlayer(nickname, socketID);
         }else{
-
-            System.out.println("[SERVER] " + nickname + " was not disconnected or his game is now over.");
-
-            try {
-                String messageError = "You were not playing any match or your game is now over.";
-                getConnection(socketID).send(MessageFactory.buildReply(false, messageError, nickname));
-                getConnection(socketID).closeConnection();
-                removeActiveConnection(socketID);
-            } catch (MalformedMessageException e){
-                System.out.println("[SERVER] Error occurred while creating a negative reply message");
-                e.printStackTrace();
-            }
-
+            denyReconnection(nickname, socketID);
         }
 
-        System.out.println("[SERVER] Waiting list: " + waitingConnection.size());
-        System.out.println("[SERVER] Active games: " + activeGames.size());
-        System.out.println("[SERVER] Suspended games: " + suspendedGames.size());
+        printStatus();
 
     }
 
