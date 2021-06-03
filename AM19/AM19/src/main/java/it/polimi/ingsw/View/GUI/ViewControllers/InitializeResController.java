@@ -11,7 +11,9 @@ import javafx.scene.layout.AnchorPane;
 
 import java.util.List;
 
-
+/**
+ * controller of the selection of the resources during the initialization
+ */
 public class InitializeResController extends ViewController{
 
     @FXML
@@ -86,16 +88,14 @@ public class InitializeResController extends ViewController{
     private Accumulator accumulator;
     private BuildMessage builder;
 
+    /**
+     * constructor
+     */
     public InitializeResController(){
         this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildSelectedResources();
     }
 
-
-    public void startInitialization(int num){
-        if(num == 0)
-            getGUIReference().notifyInteraction(builder.buildMessage(new Accumulator(GUIHandler.getGUIReference().getModelReference())));
-    }
 
     @FXML
     public void initialize(){
@@ -112,6 +112,9 @@ public class InitializeResController extends ViewController{
 
     }
 
+    /**
+     * sets the buttons during the opening of the window
+     */
     private void setStart(){
 
         for (MenuButton res : resources)
@@ -123,7 +126,7 @@ public class InitializeResController extends ViewController{
         for(Button button : buttons)
             button.setVisible(false);
 
-        actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> sendMessage());
+        actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> notifyInteraction());
 
         setItemHandlers(coins,"coin");
         setItemHandlers(shields,"shield");
@@ -133,11 +136,19 @@ public class InitializeResController extends ViewController{
 
     }
 
-    private void sendMessage() {
+    /**
+     * notifies the interaction
+     */
+    private void notifyInteraction() {
         getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
         anchorPane.getScene().getWindow().hide();
     }
 
+    /**
+     * sets the handlers of all the MenuItems passed in the List
+     * @param list List of MenuItem
+     * @param resource the resource associated with the item
+     */
     private void setItemHandlers(List<MenuItem> list, String resource){
 
         list.get(0).setOnAction( event ->{
@@ -157,6 +168,9 @@ public class InitializeResController extends ViewController{
             resources.get(3).setDisable(true);});
     }
 
+    /**
+     * sets the handlers of the buttons
+     */
     private void setButtonsHandlers(){
 
         select1.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> action(0));
@@ -166,6 +180,10 @@ public class InitializeResController extends ViewController{
 
     }
 
+    /**
+     * sets the action of the button
+     * @param i the number of the button to be set
+     */
     private void action(int i){
         accumulator.setInitResourcesShelf(shelves.get(i).getText());
         buttons.get(i).setDisable(true);
@@ -173,9 +191,13 @@ public class InitializeResController extends ViewController{
         resources.get(i).setDisable(false);
     }
 
+    /**
+     * this method set the correct number of buttons to manage the resources according to the number passed as parameter
+     * @param num the number of resources to be initialized
+     */
     public void initResources(int num){
         if(num == 0){
-            sendMessage();
+            notifyInteraction();
             return;
         }
 

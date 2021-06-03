@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.Client.ReducedModel.ReducedConfiguration;
+import it.polimi.ingsw.Exceptions.IllegalIDException;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
@@ -125,7 +126,12 @@ public class DecksController extends ViewController {
 
         for(int i : decks.keySet()){
             String id = decks.get(i);
-            String image = path + config.getDevelopmentCard(id).getPath();
+            String image = null;
+            try {
+                image = path + config.getDevelopmentCard(id).getPath();
+            } catch (IllegalIDException e) {
+                e.printStackTrace();
+            }
             ImageView view = cards.get(i);
             view.setVisible(true);
             view.setImage(new Image(image));

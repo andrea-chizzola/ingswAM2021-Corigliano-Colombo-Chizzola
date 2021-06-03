@@ -2,6 +2,7 @@ package it.polimi.ingsw.View.CLI;
 
 import it.polimi.ingsw.Client.InteractionObserver;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
+import it.polimi.ingsw.Exceptions.IllegalIDException;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
@@ -342,7 +343,12 @@ public class CLI implements View, SubjectView {
         CLIPainter.fill(decksStatus, 0, 0,HORIZONTAL_SIZE, DECKS_VERTICAL_SIZE);
         for(int i : decks.keySet()){
             int row = i/N_DECKS_X, column = i%N_DECKS_X;
-            DevelopmentCard card = model.getConfiguration().getDevelopmentCard(decks.get(i));
+            DevelopmentCard card = null;
+            try {
+                card = model.getConfiguration().getDevelopmentCard(decks.get(i));
+            } catch (IllegalIDException e) {
+                e.printStackTrace();
+            }
             CLIPainter.devCardPainter(decksStatus, 1 + length*row, BOXES_X + width*column, card.toString());
         }
     }
@@ -401,7 +407,12 @@ public class CLI implements View, SubjectView {
     public void showSlotsUpdate(Map<Integer, String> slots, String nickname) {
         String[][] view = playersBoard.get(nickname);
         for(int i : slots.keySet()){
-            DevelopmentCard card = model.getConfiguration().getDevelopmentCard(slots.get(i));
+            DevelopmentCard card = null;
+            try {
+                card = model.getConfiguration().getDevelopmentCard(slots.get(i));
+            } catch (IllegalIDException e) {
+                e.printStackTrace();
+            }
             CLIPainter.devCardPainter(view, PLAYERS_Y+1, BOXES_X + 30*(i-1)+20, card.toString());
         }
     }
@@ -419,7 +430,12 @@ public class CLI implements View, SubjectView {
         for(int i=1; i<=num; i++){
             if(cards.containsKey(i)) {
                 String id = cards.get(i);
-                LeaderCard card = model.getConfiguration().getLeaderCard(id);
+                LeaderCard card = null;
+                try {
+                    card = model.getConfiguration().getLeaderCard(id);
+                } catch (IllegalIDException e) {
+                    e.printStackTrace();
+                }
                 card.setStatus(status.get(i).getBoolValue());
                 CLIPainter.leaderCardPainter(view, PLAYERS_Y + 1 + LEADER_Y, BOXES_X + 28 * (i - 1) + 8, card.toString());
             }
@@ -463,7 +479,12 @@ public class CLI implements View, SubjectView {
     @Override
     public void showTopToken(Optional<String> action) {
         if(action.isEmpty()) return;
-        String content = model.getConfiguration().getActionTokenCard(action.get()).toString();
+        String content = null;
+        try {
+            content = model.getConfiguration().getActionTokenCard(action.get()).toString();
+        } catch (IllegalIDException e) {
+            e.printStackTrace();
+        }
         CLIPainter.paintToken(viewStatus,TOKEN_Y+RESOURCES_Y+PERSONAL_Y, TOKEN_X, content);
     }
 
@@ -882,12 +903,12 @@ public class CLI implements View, SubjectView {
         if(Boolean.parseBoolean(action))
             accumulator.setPersonalProduction();
 
-        if(model.getBoard(model.getCurrentPlayer()).getLeadersID().keySet().size()>1) {
+        if(model.getBoard(model.getCurrentPlayer()).getLeadersID().keySet().size()>=1) {
             out.println("What about leader cards? Select them. Command:- card1:card2... [positions]");
             leaders = helpCards(model.getBoard(model.getCurrentPlayer()).getLeadersID());
             accumulator.setLeaderCards(leaders);
         }
-        if(model.getBoard(model.getCurrentPlayer()).getSlots().keySet().size()>1) {
+        if(model.getBoard(model.getCurrentPlayer()).getSlots().keySet().size()>=1) {
             out.println("Don't forget your development cards! Select them. Command:- card1:card2... [positions]");
             developments = helpCards(model.getBoard(model.getCurrentPlayer()).getSlots());
             accumulator.setDevelopmentCards(developments);

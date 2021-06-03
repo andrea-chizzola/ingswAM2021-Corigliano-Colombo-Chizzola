@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
+import it.polimi.ingsw.Exceptions.IllegalIDException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import javafx.fxml.FXML;
@@ -175,7 +176,12 @@ public class BoardController extends ViewController{
             image.setVisible(false);
         }
         for(Integer slot : cards.keySet()){
-            String image = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
+            String image = null;
+            try {
+                image = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
+            } catch (IllegalIDException e) {
+                e.printStackTrace();
+            }
             if(status.get(slot) == ItemStatus.ACTIVE){
                 Image card = new Image(getClass().getResourceAsStream(cardPath + image));
                 leaderCards.get(slot - 1).setImage(card);
@@ -200,7 +206,12 @@ public class BoardController extends ViewController{
             image.setVisible(false);
         }
         for(Integer slot : slots.keySet()){
-            String path = getModelReference().getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
+            String path = null;
+            try {
+                path = getModelReference().getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
+            } catch (IllegalIDException e) {
+                e.printStackTrace();
+            }
             Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
             developmentCards.get(slot - 1).setImage(card);
             developmentCards.get(slot - 1).setVisible(true);

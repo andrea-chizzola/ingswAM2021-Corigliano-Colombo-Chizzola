@@ -6,6 +6,9 @@ import javafx.scene.layout.AnchorPane;
 
 import java.util.*;
 
+/**
+ * controller of the selection of the end of the game
+ */
 public class EndGameController extends ViewController {
 
     @FXML
@@ -64,7 +67,6 @@ public class EndGameController extends ViewController {
 
     /**
      * manages the end of the game
-     *
      * @param map contains the nicknames of the players and the score associated
      */
     public void showEndGame(Map<String, Integer> map) {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
+import it.polimi.ingsw.Exceptions.IllegalIDException;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
@@ -7,7 +8,6 @@ import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.*;
 import it.polimi.ingsw.View.PlayerInteractions.SeeOthersInteraction;
 import javafx.animation.PauseTransition;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -198,7 +198,12 @@ public class InteractiveBoardController extends BoardController {
         if(action.isEmpty())
             return;
 
-        String image = getModelReference().getConfiguration().getActionTokenCard(action.get()).getImage();
+        String image = null;
+        try {
+            image = getModelReference().getConfiguration().getActionTokenCard(action.get()).getImage();
+        } catch (IllegalIDException e) {
+            e.printStackTrace();
+        }
         Image token = new Image("/Images/punchboard/" + image);
         actionToken.setImage(token);
         actionToken.setVisible(true);
@@ -252,6 +257,11 @@ public class InteractiveBoardController extends BoardController {
         helpUseWarehouse(thirdBottomResource,3);
     }
 
+    /**
+     * sets the handler of the ImageView passed as parameter
+     * @param imageView the ImageView selected
+     * @param slot the slot associated with the imageView
+     */
     private void helpUseWarehouse(ImageView imageView,Integer slot){
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
@@ -307,21 +317,35 @@ public class InteractiveBoardController extends BoardController {
      * @param shelf represents the position of the shelf
      */
     private void helpUseExtraShelf(ImageView imageView, Label label, int shelf){
-        PauseTransition visiblePause = new PauseTransition(Duration.seconds(0.8));
-        visiblePause.setOnFinished(event -> errorExtraShelf.setVisible(false));
 
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
-            imageView.setVisible(true);
-            int i = Integer.parseInt(label.getText());
-            if(i == 0) {
-                errorExtraShelf.setVisible(true);
-                visiblePause.play();
-                return;
-            }
-            i--;
-            label.setText(String.valueOf(i));
+            if (actionPauseTransition(imageView, label, errorExtraShelf)) return;
             accumulator.setWarehouse(shelf);});
+    }
+
+    /**
+     * this method handles the actions to be performed on an ImageView and if the value present in the Label is equal to zero
+     * it shows a temporary message of error
+     * @param imageView the image view
+     * @param label the label associated
+     * @param error the message of error
+     * @return true if the message of error is shown, false otherwise
+     */
+    private boolean actionPauseTransition(ImageView imageView, Label label, Label error) {
+        PauseTransition visiblePause = new PauseTransition(Duration.seconds(0.8));
+        visiblePause.setOnFinished(event -> error.setVisible(false));
+
+        imageView.setVisible(true);
+        int i = Integer.parseInt(label.getText());
+        if(i == 0) {
+            error.setVisible(true);
+            visiblePause.play();
+            return true;
+        }
+        i--;
+        label.setText(String.valueOf(i));
+        return false;
     }
 
 
@@ -344,20 +368,10 @@ public class InteractiveBoardController extends BoardController {
      * @param resource is the name of the resource
      */
     private void helpUseStrongbox(ImageView imageView, Label label, String resource){
-        PauseTransition visiblePause = new PauseTransition(Duration.seconds(0.8));
-        visiblePause.setOnFinished(event -> errorStrongbox.setVisible(false));
 
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
-            imageView.setVisible(true);
-            int i = Integer.parseInt(label.getText());
-            if(i == 0) {
-                errorStrongbox.setVisible(true);
-                visiblePause.play();
-                return;
-            }
-            i--;
-            label.setText(String.valueOf(i));
+            if (actionPauseTransition(imageView, label, errorStrongbox)) return;
             accumulator.setStrongbox(resource);
             accumulator.setStrongbox("1");});
 
@@ -384,6 +398,11 @@ public class InteractiveBoardController extends BoardController {
         helpUseSlots(thirdSlot,3);
     }
 
+    /**
+     * sets the handler of the ImageView passed as parameter
+     * @param imageView the ImageView selected
+     * @param slot the slot associated with the imageView
+     */
     private void helpUseSlots(ImageView imageView, Integer slot){
 
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
@@ -405,12 +424,20 @@ public class InteractiveBoardController extends BoardController {
         thirdSlot.setDisable(!b);
     }
 
+    /**
+     * this method sets the handler to te buttons associated with the selection of the slots
+     */
     private void useSlotsButtons(){
         helpUseSlotsButtons(slotButton1,1);
         helpUseSlotsButtons(slotButton2,2);
         helpUseSlotsButtons(slotButton3,3);
     }
 
+    /**
+     * this method is an helper useful to set a specific button associated with the slots
+     * @param button the button selected
+     * @param slot the number of the slot
+     */
     private void helpUseSlotsButtons(Button button, Integer slot){
 
         button.setOnAction(action -> {
@@ -419,18 +446,30 @@ public class InteractiveBoardController extends BoardController {
             accumulator.setSlot(slot);});
     }
 
+    /**
+     * this method enables all the buttons associated with the slots
+     * @param b, if true the buttons will be enabled, otherwise they will be disabled
+     */
     private void enableSlotsButtons(Boolean b){
         slotButton1.setDisable(!b);
         slotButton2.setDisable(!b);
         slotButton3.setDisable(!b);
     }
 
+    /**
+     * this method sets the handlers to the buttons associated with the swap
+     */
     private void useSwap(){
         helpUseSwap(swap1,1);
         helpUseSwap(swap2,2);
         helpUseSwap(swap3,3);
     }
 
+    /**
+     * this method is an helper useful to set a specific button associated with the swap
+     * @param button the button selected
+     * @param shelf the shelf associated with the button
+     */
     private void helpUseSwap(Button button, int shelf){
         button.setOnAction(action -> {
             accumulator.setSwap(shelf);
@@ -438,6 +477,10 @@ public class InteractiveBoardController extends BoardController {
             button.setDisable(true);});
     }
 
+    /**
+     * this method enables all the buttons associated with the swap
+     * @param b, if true the buttons will be enabled, otherwise they will be disabled
+     */
     private void enableSwap(Boolean b){
         swap1.setDisable(!b);
         swap2.setDisable(!b);
@@ -454,6 +497,11 @@ public class InteractiveBoardController extends BoardController {
         helpUseLeaders(fourthLeaderCard,4);
     }
 
+    /**
+     * this method is an helper useful to set a specific imageView handler associated with the leader cards
+     * @param imageView the imageView selected
+     * @param number the position of the card
+     */
     private void helpUseLeaders(ImageView imageView, Integer number){
 
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
@@ -475,7 +523,9 @@ public class InteractiveBoardController extends BoardController {
         fourthLeaderCard.setDisable(!b);
     }
 
-
+    /**
+     * adds the events handlers to the buttons associated with the leader cards
+     */
     private void useLeaderSelection(){
         helpUseLeaderSelection(leader1select,INSERT1,1,"INSERT");
         helpUseLeaderSelection(leader2select,INSERT2,2,"INSERT");
@@ -483,6 +533,13 @@ public class InteractiveBoardController extends BoardController {
         helpUseLeaderSelection(leader2select,DISCARD2,2,"DISCARD");
     }
 
+    /**
+     * this method is an helper useful to set a specific button associated with the leader cards
+     * @param button the button selected
+     * @param item the MenuItem selected
+     * @param position the position of the card
+     * @param action the action to be performed
+     */
     private void helpUseLeaderSelection(MenuButton button, MenuItem item, int position, String action){
         item.setOnAction(event ->{
             accumulator.setAction(action);
@@ -491,6 +548,10 @@ public class InteractiveBoardController extends BoardController {
             button.setOpacity(0.3);});
     }
 
+    /**
+     * enable or disable the event handlers of the buttons associated with the leader cards
+     * @param b if b=true the events handlers are set as active, otherwise they are set as inactive
+     */
     private void enableLeaderSelections(boolean b){
         leader1select.setDisable(!b);
         leader2select.setDisable(!b);
