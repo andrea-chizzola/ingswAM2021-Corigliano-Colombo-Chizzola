@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MarbleSelectionController extends ViewController{
+public class MarbleSelectionController extends ViewController {
 
     @FXML
     private AnchorPane mainPane;

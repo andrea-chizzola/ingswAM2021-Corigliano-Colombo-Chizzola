@@ -7,283 +7,294 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="500.0" fitWidth="870.0" pickOnBounds="true">
-         <image>
-            <Image url="@../Images/board/gameboard.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="344.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="secondSlot" fitHeight="207.0" fitWidth="146.0" layoutX="509.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="thirdSlot" fitHeight="207.0" fitWidth="146.0" layoutX="680.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="firstLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="191.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="secondLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="371.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="thirdLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="552.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="fourthLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="732.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <Label layoutX="14.0" layoutY="522.0" prefHeight="22.0" prefWidth="158.0" text="LEADER CARDS: " textFill="#fffefe">
-         <font>
-            <Font name="Times New Roman Bold Italic" size="18.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="firstPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="217.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/punchboard/quadrato giallo.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="secondPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="430.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/punchboard/quadrato arancione.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="thirdPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="690.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/punchboard/quadrato rosso.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="menuButton" layoutX="941.0" layoutY="83.0" mnemonicParsing="false" text="MENU">
-         <font>
-            <Font name="Times New Roman Italic" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="marketBoardButton" layoutX="909.0" layoutY="147.0" mnemonicParsing="false" text="MARKET BOARD">
-         <font>
-            <Font name="Times New Roman Italic" size="14.0" />
-         </font>
-      </Button>
-      <Label layoutX="925.0" layoutY="28.0" text="OPTIONS: " textFill="WHITE">
-         <font>
-            <Font name="Times New Roman Bold Italic" size="18.0" />
-         </font>
-      </Label>
-      <Button fx:id="quitButton" layoutX="943.0" layoutY="339.0" mnemonicParsing="false" text="QUIT">
-         <font>
-            <Font name="Times New Roman Italic" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="decksButton" layoutX="936.0" layoutY="211.0" mnemonicParsing="false" text="DECKS">
-         <font>
-            <Font name="Times New Roman Italic" size="14.0" />
-         </font>
-      </Button>
-      <Circle fx:id="tile" fill="#2bf507" layoutX="54.0" layoutY="113.0" opacity="0.5" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
-      <ImageView fx:id="topResource" fitHeight="26.0" fitWidth="31.0" layoutX="101.0" layoutY="216.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="firstMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="85.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="secondMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="120.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="firstBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="65.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="secondBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="96.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="thirdBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="135.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor></ImageView>
-      <ImageView fx:id="coins" fitHeight="41.0" fitWidth="31.0" layoutX="28.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/punchboard/coin.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView fx:id="shields" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="383.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/punchboard/shield.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView fx:id="stones" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="423.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/punchboard/stone.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView fx:id="servants" fitHeight="36.0" fitWidth="31.0" layoutX="28.0" layoutY="463.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/punchboard/servant.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </ImageView>
-      <Label fx:id="coinsNumber" layoutX="91.0" layoutY="352.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
-         <font>
-            <Font name="Times New Roman" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="shieldsNumber" layoutX="91.0" layoutY="393.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
-         <font>
-            <Font name="Times New Roman" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="stonesNumber" layoutX="91.0" layoutY="433.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0" textAlignment="RIGHT">
-         <font>
-            <Font name="Times New Roman" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="servantsNumber" layoutX="91.0" layoutY="473.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0" textAlignment="RIGHT">
-         <font>
-            <Font name="Times New Roman" size="12.0" />
-         </font>
-      </Label>
-      <ImageView fx:id="blackCross" fitHeight="36.0" fitWidth="31.0" layoutX="39.0" layoutY="95.0" opacity="0.5" pickOnBounds="true">
-         <image>
-            <Image url="@../Images/punchboard/croce.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="actionToken" fitHeight="59.0" fitWidth="66.0" layoutX="242.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="personalProduction" layoutX="219.0" layoutY="419.0" mnemonicParsing="false" text="Select Production">
-         <font>
-            <Font size="10.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </Button>
-      <Label fx:id="errorStrongbox" layoutX="30.0" layoutY="318.0" prefHeight="17.0" prefWidth="106.0" text="Empty resource!" textFill="#ff0202">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-      <Button fx:id="actionButton" layoutX="915.0" layoutY="460.0" mnemonicParsing="false" text="Perform Action">
-         <font>
-            <Font name="Times New Roman Italic" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="swap1" layoutX="11.0" layoutY="217.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="38.0" text="Swap">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
-      <Button fx:id="swap2" layoutX="9.0" layoutY="260.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="38.0" text="Swap">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
-      <Button fx:id="swap3" layoutX="9.0" layoutY="304.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="38.0" text="Swap">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
-      <Button fx:id="slotButton1" layoutX="389.0" layoutY="475.0" mnemonicParsing="false" text="Select">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
-      <Button fx:id="slotButton2" layoutX="558.0" layoutY="476.0" mnemonicParsing="false" text="Select">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
-      <Button fx:id="slotButton3" layoutX="734.0" layoutY="476.0" mnemonicParsing="false" text="Select">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
-      <MenuButton fx:id="leader1select" layoutX="240.0" layoutY="475.0" mnemonicParsing="false" text="Action">
-        <items>
-          <MenuItem fx:id="INSERT1" mnemonicParsing="false" text="INSERT" />
-          <MenuItem fx:id="DISCARD1" mnemonicParsing="false" text="DISCARD" />
-        </items>
-         <font>
-            <Font size="10.0" />
-         </font>
-      </MenuButton>
-      <MenuButton fx:id="leader2select" layoutX="419.0" layoutY="475.0" mnemonicParsing="false" text="Action">
-         <items>
-            <MenuItem fx:id="INSERT2" mnemonicParsing="false" text="INSERT" />
-            <MenuItem fx:id="DISCARD2" mnemonicParsing="false" text="DISCARD" />
-         </items>
-         <font>
-            <Font size="10.0" />
-         </font>
-      </MenuButton>
-      <ImageView fx:id="extraShelf1" fitHeight="26.0" fitWidth="31.0" layoutX="644.0" layoutY="566.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView fx:id="extraShelf2" fitHeight="26.0" fitWidth="31.0" layoutX="644.0" layoutY="613.0" pickOnBounds="true" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </ImageView>
-      <Label fx:id="extraShelf2Label" layoutX="690.0" layoutY="618.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
-         <font>
-            <Font name="Times New Roman" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="extraShelf1Label" layoutX="690.0" layoutY="571.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
-         <font>
-            <Font name="Times New Roman" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="extraShelfString" layoutX="641.0" layoutY="525.0" prefHeight="17.0" prefWidth="106.0" text="EXTRA SHELVES" textFill="WHITE">
-         <font>
-            <Font name="System Bold Italic" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="errorExtraShelf" layoutX="641.0" layoutY="542.0" prefHeight="17.0" prefWidth="106.0" text="Empty resource!" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-      <MenuButton fx:id="otherPlayersMenu" layoutX="895.0" layoutY="272.0" mnemonicParsing="false" text="OTHER PLAYERS">
-         <font>
-            <Font name="Times New Roman" size="14.0" />
-         </font>
-      </MenuButton>
-      <Label layoutX="929.0" layoutY="539.0" prefHeight="22.0" prefWidth="83.0" text="PLAYER:" textFill="#fffefe">
-         <font>
-            <Font name="Times New Roman Bold Italic" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="nicknameLabel" alignment="CENTER" layoutX="889.0" layoutY="80.0" prefHeight="22.0" prefWidth="178.0" textAlignment="CENTER" textFill="#fffefe">
-         <font>
-            <Font name="Times New Roman Bold Italic" size="18.0" />
-         </font>
-      </Label>
+      <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" snapToPixel="false" style="-fx-background-color: brown;">
+         <children>
+            <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../Images/handpaintedBoard/personalBoard.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="341.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="secondSlot" fitHeight="207.0" fitWidth="146.0" layoutX="506.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="thirdSlot" fitHeight="207.0" fitWidth="146.0" layoutX="677.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="firstLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="302.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="secondLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="484.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="thirdLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="667.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="fourthLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="849.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="firstPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="219.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/punchboard/quadrato giallo.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="secondPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="433.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/punchboard/quadrato arancione.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="thirdPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="689.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/punchboard/quadrato rosso.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="turnsButton" layoutX="869.0" layoutY="317.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="TURNS">
+               <font>
+                  <Font name="Times New Roman" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="marketBoardButton" layoutX="869.0" layoutY="342.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="MARKET BOARD">
+               <font>
+                  <Font name="Times New Roman" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="quitButton" layoutX="869.0" layoutY="439.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="QUIT">
+               <font>
+                  <Font name="Times New Roman Italic" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="decksButton" layoutX="869.0" layoutY="368.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="DECKS">
+               <font>
+                  <Font name="Times New Roman Italic" size="14.0" />
+               </font>
+            </Button>
+            <ImageView fx:id="topResource" fitHeight="26.0" fitWidth="31.0" layoutX="111.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="firstMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="95.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="secondMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="130.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="firstBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="75.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="secondBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="110.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="thirdBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="145.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="coins" fitHeight="41.0" fitWidth="31.0" layoutX="20.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/punchboard/coin.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="shields" fitHeight="36.0" fitWidth="31.0" layoutX="20.0" layoutY="434.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/punchboard/shield.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="stones" fitHeight="36.0" fitWidth="31.0" layoutX="106.0" layoutY="391.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/punchboard/stone.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="servants" fitHeight="36.0" fitWidth="31.0" layoutX="106.0" layoutY="438.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/punchboard/servant.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <Label fx:id="coinsNumber" layoutX="59.0" layoutY="397.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+               <font>
+                  <Font name="Times New Roman" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="shieldsNumber" layoutX="59.0" layoutY="443.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+               <font>
+                  <Font name="Times New Roman" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="stonesNumber" layoutX="141.0" layoutY="397.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0" textAlignment="RIGHT">
+               <font>
+                  <Font name="Times New Roman" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="servantsNumber" layoutX="141.0" layoutY="443.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0" textAlignment="RIGHT">
+               <font>
+                  <Font name="Times New Roman" size="12.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="blackCross" fitHeight="36.0" fitWidth="31.0" layoutX="37.0" layoutY="111.0" opacity="0.5" pickOnBounds="true">
+               <image>
+                  <Image url="@../Images/punchboard/croce.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="tile" fitHeight="36.0" fitWidth="31.0" layoutX="37.0" layoutY="111.0" opacity="0.5" pickOnBounds="true">
+               <image>
+                  <Image url="@../Images/punchboard/croce.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="actionToken" fitHeight="59.0" fitWidth="66.0" layoutX="248.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="personalProduction" layoutX="229.0" layoutY="337.0" mnemonicParsing="false" text="Select Production">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </Button>
+            <Label fx:id="errorStrongbox" layoutX="67.0" layoutY="369.0" prefHeight="17.0" prefWidth="106.0" text="Empty resource!" textFill="#ff0202">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="actionButton" layoutX="869.0" layoutY="394.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="Perform Action">
+               <font>
+                  <Font name="Times New Roman Italic" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="swap1" layoutX="11.0" layoutY="242.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="38.0" text="Swap">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="swap2" layoutX="11.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="38.0" text="Swap">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="swap3" layoutX="11.0" layoutY="336.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="38.0" text="Swap">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="slotButton1" layoutX="389.0" layoutY="449.0" mnemonicParsing="false" text="Select">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="slotButton2" layoutX="554.0" layoutY="449.0" mnemonicParsing="false" text="Select">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="slotButton3" layoutX="721.0" layoutY="445.0" mnemonicParsing="false" text="Select">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <MenuButton fx:id="leader1select" layoutX="342.0" layoutY="498.0" mnemonicParsing="false" text="Action">
+               <items>
+                  <MenuItem fx:id="INSERT1" mnemonicParsing="false" text="INSERT" />
+                  <MenuItem fx:id="DISCARD1" mnemonicParsing="false" text="DISCARD" />
+               </items>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </MenuButton>
+            <MenuButton fx:id="leader2select" layoutX="530.0" layoutY="498.0" mnemonicParsing="false" text="Action">
+               <items>
+                  <MenuItem fx:id="INSERT2" mnemonicParsing="false" text="INSERT" />
+                  <MenuItem fx:id="DISCARD2" mnemonicParsing="false" text="DISCARD" />
+               </items>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </MenuButton>
+            <ImageView fx:id="extraShelf1" fitHeight="26.0" fitWidth="31.0" layoutX="87.0" layoutY="590.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="extraShelf2" fitHeight="26.0" fitWidth="31.0" layoutX="87.0" layoutY="637.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <Label fx:id="extraShelf2Label" layoutX="133.0" layoutY="642.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+               <font>
+                  <Font name="Times New Roman" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="extraShelf1Label" layoutX="133.0" layoutY="595.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+               <font>
+                  <Font name="Times New Roman" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="extraShelfString" layoutX="84.0" layoutY="549.0" prefHeight="17.0" prefWidth="106.0" text="EXTRA SHELVES" textFill="WHITE">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="errorExtraShelf" layoutX="84.0" layoutY="566.0" prefHeight="17.0" prefWidth="106.0" text="Empty resource!" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <MenuButton fx:id="otherPlayersMenu" layoutX="869.0" layoutY="271.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="155.0" text="OTHER PLAYERS">
+               <font>
+                  <Font name="Times New Roman" size="14.0" />
+               </font>
+            </MenuButton>
+            <Label layoutX="909.0" layoutY="221.0" prefHeight="22.0" prefWidth="76.0" text="PLAYER:" textFill="#fffefe">
+               <font>
+                  <Font name="Times New Roman Bold" size="17.0" />
+               </font>
+            </Label>
+            <Label fx:id="nicknameLabel" alignment="CENTER" layoutX="858.0" layoutY="242.0" prefHeight="22.0" prefWidth="178.0" text="Davide" textAlignment="CENTER" textFill="#fffefe">
+               <font>
+                  <Font name="Times New Roman Bold Italic" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
-</Pane>
+</StackPane>

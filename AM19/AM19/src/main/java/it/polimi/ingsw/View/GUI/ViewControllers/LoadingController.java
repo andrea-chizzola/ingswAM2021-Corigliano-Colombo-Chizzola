@@ -25,7 +25,6 @@ public class LoadingController extends ViewController{
     public void initialize(){
 
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onExitButtonClicked);
-        //getGUIReference().setLoadingController(this);
 
     }
 

@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -14,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class BoardController extends ViewController{
+public class BoardController extends ViewController implements HelperWindow{
 
     @FXML
-    private Pane pane;
+    private AnchorPane pane;
     @FXML
     private Label nicknameLabel;
     @FXML
@@ -53,7 +54,7 @@ public class BoardController extends ViewController{
     @FXML
     protected ImageView thirdBottomResource;
     @FXML
-    protected Circle tile;
+    protected ImageView tile;
     @FXML
     protected Label coinsNumber;
     @FXML
@@ -402,31 +403,31 @@ public class BoardController extends ViewController{
      */
     protected void setPositions(List<Coordinates> positions){
 
-        positions.add(new Coordinates(54, 113));
-        positions.add(new Coordinates(95, 113));
-        positions.add(new Coordinates(135, 113));
-        positions.add(new Coordinates(135, 78));
-        positions.add(new Coordinates(135, 45));
-        positions.add(new Coordinates(183, 45));
-        positions.add(new Coordinates(220, 45));
-        positions.add(new Coordinates(265, 45));
-        positions.add(new Coordinates(305, 45));
-        positions.add(new Coordinates(350,45));
-        positions.add(new Coordinates(350, 78));
-        positions.add(new Coordinates(350, 113));
-        positions.add(new Coordinates(392, 113));
-        positions.add(new Coordinates(435, 113));
-        positions.add(new Coordinates(481, 113));
-        positions.add(new Coordinates(520, 113));
-        positions.add(new Coordinates(563, 113));
-        positions.add(new Coordinates(563, 78));
-        positions.add(new Coordinates(563, 45));
-        positions.add(new Coordinates(603, 45));
-        positions.add(new Coordinates(648, 45));
-        positions.add(new Coordinates(690, 45));
-        positions.add(new Coordinates(734, 45));
-        positions.add(new Coordinates(779, 45));
-        positions.add(new Coordinates(817, 45));
+        positions.add(new Coordinates(37, 111));
+        positions.add(new Coordinates(80, 111));
+        positions.add(new Coordinates(123, 111));
+        positions.add(new Coordinates(123, 69));
+        positions.add(new Coordinates(123, 27));
+        positions.add(new Coordinates(166, 27));
+        positions.add(new Coordinates(208, 27));
+        positions.add(new Coordinates(251, 27));
+        positions.add(new Coordinates(294, 27));
+        positions.add(new Coordinates(337,27));
+        positions.add(new Coordinates(337, 69));
+        positions.add(new Coordinates(337, 111));
+        positions.add(new Coordinates(380, 111));
+        positions.add(new Coordinates(422, 111));
+        positions.add(new Coordinates(464, 111));
+        positions.add(new Coordinates(506, 111));;
+        positions.add(new Coordinates(549, 111));
+        positions.add(new Coordinates(549, 69));
+        positions.add(new Coordinates(549, 27));
+        positions.add(new Coordinates(592, 27));
+        positions.add(new Coordinates(634, 27));
+        positions.add(new Coordinates(677, 27));
+        positions.add(new Coordinates(720, 27));
+        positions.add(new Coordinates(762, 27));
+        positions.add(new Coordinates(804, 27));
 
     }
 

@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class DecksController extends ViewController {
+public class DecksController extends ViewController implements HelperWindow{
 
     @FXML
     private AnchorPane mainPane;

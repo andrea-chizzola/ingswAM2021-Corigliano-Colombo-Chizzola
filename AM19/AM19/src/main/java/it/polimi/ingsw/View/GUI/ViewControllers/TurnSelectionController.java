@@ -8,12 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class TurnSelectionController extends ViewController{
+public class TurnSelectionController extends ViewController implements HelperWindow{
 
 
     private Map<String, Button> turns;
@@ -49,10 +50,6 @@ public class TurnSelectionController extends ViewController{
                 "MANAGE_LEADER", ManageLeaderButton, "BUY_CARD", BuyCardButton, "DO_PRODUCTION", DoProduction,
                 "EXIT", ExitButton);
         disableButtons();
-        for(String s: availableTurns){
-            Button b = turns.get(s);
-            b.setDisable(false);
-        }
         bindActions();
     }
 
@@ -61,22 +58,27 @@ public class TurnSelectionController extends ViewController{
 
         GUI gui = getGUIReference();
         TakeResourcesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+                disableButtons();
                 gui.notifyInteraction(new TakeResourcesInteraction());
                 mainPane.getScene().getWindow().hide();});
 
         ManageLeaderButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+                disableButtons();
                 gui.notifyInteraction(new ManageLeaderInteraction());
                 mainPane.getScene().getWindow().hide();});
 
         BuyCardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+                disableButtons();
                 gui.notifyInteraction(new BuyCardInteraction());
                 mainPane.getScene().getWindow().hide();});
 
         DoProduction.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+                disableButtons();
                 gui.notifyInteraction(new DoProductionInteraction());
                 mainPane.getScene().getWindow().hide();});
 
         SwapButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+                disableButtons();
                 gui.notifyInteraction(new SwapInteraction());
                 mainPane.getScene().getWindow().hide();});
 
@@ -92,7 +94,11 @@ public class TurnSelectionController extends ViewController{
     }
 
     public void setAvailableActions(List<String> availableTurns){
-        this.availableTurns = new LinkedList<>(availableTurns);
+        disableButtons();
+        for(String s: availableTurns){
+            Button b = turns.get(s);
+            b.setDisable(false);
+        }
     }
 
     private void disableButtons(){
@@ -100,5 +106,14 @@ public class TurnSelectionController extends ViewController{
             b.setDisable(true);
         }
     }
+
+    public void showWindow(){
+        ((Stage) mainPane.getScene().getWindow()).show();
+    }
+
+    public void hideWindow(){
+        mainPane.getScene().getWindow().hide();
+    }
+
 }
 

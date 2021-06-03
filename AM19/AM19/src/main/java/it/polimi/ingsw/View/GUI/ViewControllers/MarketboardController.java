@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MarketboardController extends ViewController {
+public class MarketboardController extends ViewController implements HelperWindow{
 
     @FXML
     private AnchorPane mainPane;
@@ -51,20 +51,14 @@ public class MarketboardController extends ViewController {
 
     @FXML
     public void initialize(){
-        column1.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("COLUMN",1));
-        column2.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("COLUMN",2));
-        column3.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("COLUMN",3));
-        column4.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("COLUMN",4));
-        row1.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("ROW",1));
-        row2.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("ROW",2));
-        row3.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->
-                doAction("ROW",3));
+        column1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("COLUMN", 1));
+        column2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("COLUMN", 2));
+        column3.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("COLUMN", 3));
+        column4.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("COLUMN", 4));
+        row1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("ROW", 1));
+        row2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("ROW", 2));
+        row3.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> doAction("ROW", 3));
+
         initializeTray();
         positions = List.of(column1, column2, column3, column4, row1, row2, row3);
         disableButtons();
@@ -73,7 +67,10 @@ public class MarketboardController extends ViewController {
     private void doAction(String tray, int position){
         accumulator.setMarketTray(tray);
         accumulator.setMarketNumber(position);
+        disableButtons();
+        hideWindow();
         getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
+
     }
 
     private void initializeTray(){
