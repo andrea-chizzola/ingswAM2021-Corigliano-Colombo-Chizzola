@@ -34,9 +34,6 @@ public class GUIHandler extends Application {
      */
     private static Stage currentStage;
 
-
-    private GUIHandler(){}
-
     @Override
     public void start(Stage stage) throws Exception {
         currentStage = stage;
