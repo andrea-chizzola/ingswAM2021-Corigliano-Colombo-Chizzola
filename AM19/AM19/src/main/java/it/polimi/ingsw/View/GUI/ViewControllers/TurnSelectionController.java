@@ -14,11 +14,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * this class represents the controller of the turn selection scene
+ */
 public class TurnSelectionController extends ViewController implements HelperWindow{
-
-
-    private Map<String, Button> turns;
-    private List<String> availableTurns = new LinkedList<>();
 
     @FXML
     private GridPane mainPane;
@@ -43,6 +42,12 @@ public class TurnSelectionController extends ViewController implements HelperWin
 
     private MarketboardController controller;
 
+    /**
+     * this map contains the name of the turns (key),
+     * and the buttons associated to them (value)
+     */
+    private Map<String, Button> turns;
+
     @FXML
     public void initialize() {
 
@@ -53,7 +58,9 @@ public class TurnSelectionController extends ViewController implements HelperWin
         bindActions();
     }
 
-
+    /**
+     * this method is used to bind an action to each button of the scene
+     */
     private void bindActions(){
 
         GUI gui = getGUIReference();
@@ -93,6 +100,12 @@ public class TurnSelectionController extends ViewController implements HelperWin
         });
     }
 
+    /**
+     * this method is used to enable the buttons associated to the available turns
+     * (and to disable the other buttons)
+     *
+     * @param availableTurns is a list that contains the name of the available turns
+     */
     public void setAvailableActions(List<String> availableTurns){
         disableButtons();
         for(String s: availableTurns){
@@ -101,16 +114,25 @@ public class TurnSelectionController extends ViewController implements HelperWin
         }
     }
 
+    /**
+     * this method is used to disable all the buttons in the scene
+     */
     private void disableButtons(){
         for(Button b : turns.values()){
             b.setDisable(true);
         }
     }
 
+    /**
+     * this method is used to show the helper window
+     */
     public void showWindow(){
         ((Stage) mainPane.getScene().getWindow()).show();
     }
 
+    /**
+     * this method is used to hide the helper window
+     */
     public void hideWindow(){
         mainPane.getScene().getWindow().hide();
     }

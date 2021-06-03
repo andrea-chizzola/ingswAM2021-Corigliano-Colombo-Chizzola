@@ -5,197 +5,225 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" snapToPixel="false" style="-fx-background-color: brown;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" snapToPixel="false" style="-fx-background-color: brown;">
-         <children>
-            <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../Images/handpaintedBoard/boardOthers.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="341.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="secondSlot" fitHeight="207.0" fitWidth="146.0" layoutX="506.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="thirdSlot" fitHeight="207.0" fitWidth="146.0" layoutX="677.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="firstLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="302.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="secondLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="484.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="thirdLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="667.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="fourthLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="849.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="firstPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="219.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/punchboard/quadrato giallo.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="secondPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="433.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/punchboard/quadrato arancione.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="thirdPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="689.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/punchboard/quadrato rosso.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="topResource" fitHeight="26.0" fitWidth="31.0" layoutX="111.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="firstMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="95.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="secondMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="130.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="firstBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="75.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="secondBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="110.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="thirdBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="145.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="coins" fitHeight="41.0" fitWidth="31.0" layoutX="20.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/punchboard/coin.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="shields" fitHeight="36.0" fitWidth="31.0" layoutX="20.0" layoutY="434.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/punchboard/shield.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="stones" fitHeight="36.0" fitWidth="31.0" layoutX="106.0" layoutY="391.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/punchboard/stone.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="servants" fitHeight="36.0" fitWidth="31.0" layoutX="106.0" layoutY="438.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/punchboard/servant.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <Label fx:id="coinsNumber" layoutX="59.0" layoutY="397.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="shieldsNumber" layoutX="59.0" layoutY="443.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="stonesNumber" layoutX="141.0" layoutY="397.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0" textAlignment="RIGHT">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="servantsNumber" layoutX="141.0" layoutY="443.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0" textAlignment="RIGHT">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-            </Label>
-            <ImageView fx:id="actionToken" fitHeight="59.0" fitWidth="66.0" layoutX="242.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="extraShelf1" fitHeight="26.0" fitWidth="31.0" layoutX="87.0" layoutY="590.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <ImageView fx:id="extraShelf2" fitHeight="26.0" fitWidth="31.0" layoutX="87.0" layoutY="637.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="CLOSED_HAND" />
-               </cursor>
-            </ImageView>
-            <Label fx:id="extraShelf2Label" layoutX="133.0" layoutY="642.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="extraShelf1Label" layoutX="133.0" layoutY="595.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="extraShelfString" layoutX="84.0" layoutY="549.0" prefHeight="17.0" prefWidth="106.0" text="EXTRA SHELVES" textFill="WHITE">
-               <font>
-                  <Font name="System Bold Italic" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="errorExtraShelf" layoutX="84.0" layoutY="566.0" prefHeight="17.0" prefWidth="106.0" text="Empty resource!" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="906.0" layoutY="310.0" prefHeight="22.0" prefWidth="76.0" text="PLAYER:" textFill="#fffefe">
-               <font>
-                  <Font name="Times New Roman Bold" size="17.0" />
-               </font>
-            </Label>
-            <Label fx:id="nicknameLabel" alignment="CENTER" layoutX="855.0" layoutY="331.0" prefHeight="22.0" prefWidth="178.0" text="Davide" textAlignment="CENTER" textFill="#fffefe">
-               <font>
-                  <Font name="Times New Roman Bold Italic" size="18.0" />
-               </font>
-            </Label>
-            <ImageView fx:id="tile" fitHeight="36.0" fitWidth="31.0" layoutX="37.0" layoutY="111.0" opacity="0.5" pickOnBounds="true">
-               <image>
-                  <Image url="@../Images/punchboard/croce.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
+      <ImageView fitHeight="720.0" fitWidth="1080.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/handpaintedBoard/boardOthers.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="back1" fitHeight="207.0" fitWidth="146.0" layoutX="302.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+         <image>
+            <Image url="@../Images/back/cardBackground.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="back2" fitHeight="207.0" fitWidth="146.0" layoutX="484.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+         <image>
+            <Image url="@../Images/back/cardBackground.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="back3" fitHeight="207.0" fitWidth="146.0" layoutX="667.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+         <image>
+            <Image url="@../Images/back/cardBackground.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="back4" fitHeight="207.0" fitWidth="146.0" layoutX="849.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+         <image>
+            <Image url="@../Images/back/cardBackground.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="341.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="secondSlot" fitHeight="207.0" fitWidth="146.0" layoutX="506.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="thirdSlot" fitHeight="207.0" fitWidth="146.0" layoutX="677.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="firstLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="302.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="secondLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="484.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="thirdLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="667.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="fourthLeaderCard" fitHeight="207.0" fitWidth="146.0" layoutX="849.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="firstPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="219.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/quadrato giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="secondPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="433.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/quadrato arancione.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="thirdPopeFavor" fitHeight="51.0" fitWidth="56.0" layoutX="689.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/quadrato rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="topResource" fitHeight="26.0" fitWidth="31.0" layoutX="111.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="firstMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="95.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="secondMidResource" fitHeight="26.0" fitWidth="31.0" layoutX="130.0" layoutY="288.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="firstBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="75.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="secondBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="110.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="thirdBottomResource" fitHeight="26.0" fitWidth="31.0" layoutX="145.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="coins" fitHeight="41.0" fitWidth="31.0" layoutX="20.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/coin.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="shields" fitHeight="36.0" fitWidth="31.0" layoutX="20.0" layoutY="434.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/shield.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="stones" fitHeight="36.0" fitWidth="31.0" layoutX="106.0" layoutY="391.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/stone.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="servants" fitHeight="36.0" fitWidth="31.0" layoutX="106.0" layoutY="438.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/punchboard/servant.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <Label fx:id="coinsNumber" layoutX="59.0" layoutY="397.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="shieldsNumber" layoutX="59.0" layoutY="443.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="stonesNumber" layoutX="141.0" layoutY="397.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0" textAlignment="RIGHT">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="servantsNumber" layoutX="141.0" layoutY="443.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0" textAlignment="RIGHT">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="actionToken" fitHeight="59.0" fitWidth="66.0" layoutX="242.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="extraShelf1" fitHeight="26.0" fitWidth="31.0" layoutX="87.0" layoutY="590.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="extraShelf2" fitHeight="26.0" fitWidth="31.0" layoutX="87.0" layoutY="637.0" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </ImageView>
+      <Label fx:id="extraShelf2Label" layoutX="133.0" layoutY="642.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="extraShelf1Label" layoutX="133.0" layoutY="595.0" prefHeight="17.0" prefWidth="31.0" style="-fx-background-color: white;" text="0">
+         <font>
+            <Font name="Times New Roman" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="extraShelfString" layoutX="84.0" layoutY="549.0" prefHeight="17.0" prefWidth="106.0" text="EXTRA SHELVES" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorExtraShelf" layoutX="84.0" layoutY="566.0" prefHeight="17.0" prefWidth="106.0" text="Empty resource!" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="906.0" layoutY="310.0" prefHeight="22.0" prefWidth="76.0" text="PLAYER:" textFill="#fffefe">
+         <font>
+            <Font name="Times New Roman Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="nicknameLabel" alignment="CENTER" layoutX="855.0" layoutY="331.0" prefHeight="22.0" prefWidth="178.0" text="Davide" textAlignment="CENTER" textFill="#fffefe">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="tile" fitHeight="36.0" fitWidth="31.0" layoutX="37.0" layoutY="111.0" opacity="0.5" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/punchboard/croce.png" />
+         </image>
+      </ImageView>
    </children>
-</StackPane>
+</AnchorPane>
