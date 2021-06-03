@@ -15,7 +15,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <Text fx:id="NotificationContent" layoutX="48.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Content">
+      <Text fx:id="NotificationContent" layoutX="48.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Content">
          <font>
             <Font size="14.0" />
          </font>
