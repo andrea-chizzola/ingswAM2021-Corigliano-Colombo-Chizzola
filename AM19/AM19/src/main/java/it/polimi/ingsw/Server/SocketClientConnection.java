@@ -15,7 +15,6 @@ import java.util.TimerTask;
 public class SocketClientConnection implements ClientConnection, Runnable {
 
     private Socket socket;
-    private Server server;
     private boolean pong;
     private final String socketID;
     private ConnectionListener handler;
@@ -23,22 +22,13 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private NetworkBuffer buffer;
     private PrintWriter out;
 
-    public SocketClientConnection(Socket socket, Server server, String socketID, ConnectionListener handler) {
+    public SocketClientConnection(Socket socket, String socketID, ConnectionListener handler) {
 
         this.socket = socket;
-        this.server = server;
         this.socketID = socketID;
         this.handler = handler;
         pong = true;
 
-    }
-
-    /**
-     * @return returns the socket's listener
-     */
-    @Override
-    public ConnectionListener getListener() {
-        return handler;
     }
 
     /**
@@ -47,26 +37,15 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     @Override
     public synchronized void closeConnection() {
 
-        System.out.println("[CONNECTION] Closing socket connection...");
+        System.out.println("[SERVER] Closing socket connection...");
         try {
             socket.close();
             in.close();
             out.close();
-            System.out.println("[CONNECTION] Closed socket connection.");
+            System.out.println("[SERVER] Closed socket connection.");
         } catch (IOException e) {
-            System.err.println("[CONNECTION] Error when closing socket");
+            System.out.println("[SERVER] Error occurred when closing socket");
         }
-
-    }
-
-    /**
-     * Adds a new listener of the socket connection between server and client
-     *
-     * @param listener represents the new listener
-     */
-    @Override
-    public void addListener(ConnectionListener listener) {
-        this.handler = listener;
 
     }
 
@@ -80,7 +59,6 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         out.println(message);
         out.flush();
-        System.out.println( "To: "+socketID+"  "+message);
 
     }
 
@@ -123,7 +101,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     /**
      * starts the ping pong protocol between server and client
      */
-    public void startPingTimer() {
+    private void startPingTimer() {
 
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
@@ -162,7 +140,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         } catch (IOException e) {
 
             e.printStackTrace();
-            System.err.println("[SERVER] Error occurred while opening input and output streams.");
+            System.out.println("[SERVER] Error occurred while opening input and output streams.");
 
         }
 
@@ -174,7 +152,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
             while ((read = in.readLine()) != null) {
 
-                System.out.println("[SERVER] Received: " + read + " from: "+socketID);
+                //System.out.println("[SERVER] Received: " + read + " from: "+socketID);
                 messageHandler(read);
 
             }
@@ -183,8 +161,8 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         } catch (IOException e) {
 
-            System.err.println(e.getMessage());
-            System.err.println("[SERVER] Connection error.");
+            System.out.println(e.getMessage());
+            System.out.println("[SERVER] Connection closed.");
 
         }
     }

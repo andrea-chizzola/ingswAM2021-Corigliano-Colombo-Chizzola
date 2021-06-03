@@ -19,17 +19,15 @@ import java.util.TimerTask;
 public class SocketServerConnection implements ServerConnection, Runnable{
 
     private Socket socket;
-    private Client client;
     private boolean pong;
     private ClientConnectionListener clientController;
     private BufferedReader in;
     private NetworkBuffer buffer;
     private PrintWriter out;
 
-    public SocketServerConnection(Socket socket, ClientConnectionListener clientController, Client client){
+    public SocketServerConnection(Socket socket, ClientConnectionListener clientController){
 
         this.socket = socket;
-        this.client = client;
         this.clientController = clientController;
         pong = true;
 
@@ -42,7 +40,7 @@ public class SocketServerConnection implements ServerConnection, Runnable{
         } catch (IOException e){
 
             e.printStackTrace();
-            System.err.println("[CLIENT] Error occurred while opening input and output streams.");
+            System.out.println("[CLIENT] Error occurred while opening input and output streams.");
 
         }
 
@@ -54,25 +52,17 @@ public class SocketServerConnection implements ServerConnection, Runnable{
     @Override
     public void closeConnection() {
 
-        System.out.println("[CONNECTION] Closing socket connection...");
+        System.out.println("[CLIENT] Closing socket connection...");
         try {
             socket.close();
             in.close();
             out.close();
-            System.out.println("[CONNECTION] Closed socket connection.");
+            System.out.println("[CLIENT] Closed socket connection.");
         } catch (IOException e) {
-            System.err.println("[CONNECTION] Error when closing socket");
+            System.out.println("[CLIENT] Error occurred when closing socket");
         }
         System.exit(0);
 
-    }
-
-    /**
-     * @return returns the socket's listener
-     */
-    @Override
-    public ClientConnectionListener getListener() {
-        return clientController;
     }
 
     /**
@@ -103,7 +93,7 @@ public class SocketServerConnection implements ServerConnection, Runnable{
     /**
      * starts the ping pong protocol between client and server
      */
-    public void startPingTimer() {
+    private void startPingTimer() {
 
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
@@ -144,7 +134,7 @@ public class SocketServerConnection implements ServerConnection, Runnable{
             try {
                 clientController.onReceivedMessage(buffer.get());
             } catch (EmptyBufferException e){
-                System.out.println("[SERVER] The buffer is empty!");
+                System.out.println("[CLIENT] The buffer is empty!");
             }
         }
 
@@ -170,8 +160,8 @@ public class SocketServerConnection implements ServerConnection, Runnable{
 
         }catch (IOException e){
 
-            System.err.println(e.getMessage());
-            System.err.println("[CLIENT] Connection error.");
+            System.out.println(e.getMessage());
+            System.out.println("[CLIENT] Connection closed.");
 
         }
 

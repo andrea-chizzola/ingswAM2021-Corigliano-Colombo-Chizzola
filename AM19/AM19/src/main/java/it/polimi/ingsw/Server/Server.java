@@ -22,8 +22,6 @@ public class Server {
     /**
      * represents the server socket
      */
-
-
     private ServerSocket serverSocket;
 
     /**
@@ -74,7 +72,7 @@ public class Server {
 
         } catch (IOException e) {
 
-            System.err.println("[SERVER] Connection error. Unavailable port");
+            System.out.println("[SERVER] Connection closed. Unavailable port");
             e.printStackTrace();
 
         }
@@ -88,11 +86,11 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 String id = createId();
                 System.out.println("[SERVER] Accepted new connection (ID = "+ id + ")");
-                executor.submit(new SocketClientConnection(socket, this, id, handler));
+                executor.submit(new SocketClientConnection(socket, id, handler));
 
             } catch (IOException e) {
 
-                System.err.println("[SERVER] Connection error. Closing socket");
+                System.out.println("[SERVER] Connection closed. Closing socket.");
                 break;
 
             }
@@ -103,8 +101,10 @@ public class Server {
 
     }
 
-
-
+    /**
+     * manages the initialization of the server
+     * @param args contains the initialization information required to start a new server
+     */
     public static void main(String[] args ){
 
         final int DEFAULT_PORT = 1234;

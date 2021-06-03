@@ -13,18 +13,6 @@ public interface ClientConnection {
     void closeConnection();
 
     /**
-     * Adds a new listener to the socket connection between server and client
-     * @param listener represents the new listener
-     */
-    void addListener(ConnectionListener listener);
-
-    /**
-     *
-     * @return returns the socket's listener
-     */
-    ConnectionListener getListener();
-
-    /**
      * sends a new message to the client
      * @param message represents the message sent
      */

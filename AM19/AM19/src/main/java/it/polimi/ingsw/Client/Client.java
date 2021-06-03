@@ -39,29 +39,40 @@ public class Client implements MessageSender {
         connection.send(message);
     }
 
+    /**
+     * manages the first message exchanged between Client and Server
+     *
+     * @param message is the content of the message
+     */
     @Override
     public void firstMessage(String message) {
         establishConnection();
         connection.send(message);
     }
 
+    /**
+     * establishes the connection to the server
+     */
     private void establishConnection(){
         try {
             Socket socket = new Socket(ip, port);
 
             System.out.println("[CLIENT] Connecting to server...");
             System.out.println("[CLIENT] Connected to server on port " + port);
-            connection = new SocketServerConnection(socket, clientController,this);
+            connection = new SocketServerConnection(socket, clientController);
             new Thread(connection).start();
 
         } catch (IOException e) {
 
-            System.err.println("[CLIENT] Connection error. Unavailable sever");
+            System.out.println("[CLIENT] Connection error. Unavailable sever");
             e.printStackTrace();
 
         }
     }
 
+    /**
+     * instantiates client's components depending on the parameters passed to the main
+     */
     public void startClient(){
 
         ReducedGameBoard reducedModel = new ReducedGameBoard("defaultConfiguration.xml");
@@ -82,6 +93,10 @@ public class Client implements MessageSender {
         }
     }
 
+    /**
+     * manages the initialization of the client
+     * @param args contains the initialization information required to start a new client
+     */
     public static void main(String[] args){
 
         final String DEFAULT_IP = "127.0.0.1";
