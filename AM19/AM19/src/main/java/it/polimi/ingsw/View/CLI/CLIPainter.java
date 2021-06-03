@@ -175,42 +175,17 @@ public class CLIPainter{
              List<ResQuantity> materials, List<ResQuantity> products, int customM, int customP){
 
         //drawing of custom materials
-        for(int i=0; i<customM; i++){
-            spherePainter(target, V_OFFSET+2+i*(SPHERE_LENGTH+2)+1, H_OFFSET+3,
-                    "?",CLIColors.B_WHITE , baseFont);
-        }
-
+        paintCustomResource(target, V_OFFSET+3, H_OFFSET+3,customM);
         //drawing of custom products
-        for(int i=0; i<customP; i++){
-            spherePainter(target, V_OFFSET+2+i*(SPHERE_LENGTH+2)+1, SPHERE_WIDTH*2 + H_OFFSET+1,
-                    "?",CLIColors.B_WHITE , baseFont);
-        }
-
+        paintCustomResource(target, V_OFFSET+3, SPHERE_WIDTH*2 + H_OFFSET+1, customP);
         //drawing of non-customizable materials
-        int c=0;
-        for(int i=0; i<materials.size(); i++){
-            ResQuantity res = materials.get(i);
-            for(int j=0; j < res.getQuantity(); j++){
-                spherePainter(target, V_OFFSET+2+(c+customM)*(SPHERE_LENGTH+2)+1, H_OFFSET+3,
-                        " ", res.getResource().toColor(), baseFont);
-                c++;
-            }
-        }
-
+        paintNonCustomResource(target, V_OFFSET+3, H_OFFSET+3, materials, customM);
         //drawing of non-customizable products
-        int k=0;
-        for(int i=0; i<products.size(); i++){
-            ResQuantity res = products.get(i);
-            for(int j=0; j< res.getQuantity(); j++) {
-                spherePainter(target, V_OFFSET + 2 + (k + customP) * (SPHERE_LENGTH + 2), SPHERE_WIDTH * 2 + H_OFFSET + 1,
-                        " ", res.getResource().toColor(), baseFont);
-                k++;
-            }
-        }
+        paintNonCustomResource(target, V_OFFSET+3, SPHERE_WIDTH * 2 + H_OFFSET + 1, products, customP);
 
         int width, length, mid;
         width = (SPHERE_WIDTH + 1) * 2 + 9;
-        length = (SPHERE_LENGTH + 2) * (Math.max(c + customM, k + customP)) + 2;
+        length = (SPHERE_LENGTH + 2) * (Math.max(materials.size() + customM, products.size() + customP)) + 2;
         mid = width/2;
 
         insertString(target, V_OFFSET, H_OFFSET, "Personal production:", baseFont);
@@ -220,6 +195,37 @@ public class CLIPainter{
         paintRectangle(target, V_OFFSET+1, H_OFFSET, width, length, baseFont);
     }
 
+    /**
+     * this helper method is used to paint a set of custom resources in a personal production
+     * @param target is the matrix on which the resources will be painted
+     * @param V_OFFSET is the vertical starting position of the resources on the matrix
+     * @param H_OFFSET is the horizontal starting position of the resources on the matrix
+     * @param custom is the number of custom resources
+     */
+    private static void paintCustomResource(String[][] target, int V_OFFSET, int H_OFFSET, int custom){
+        for(int i=0; i<custom; i++){
+            spherePainter(target, V_OFFSET+i*(SPHERE_LENGTH+2), H_OFFSET,
+                    "?",CLIColors.B_WHITE , baseFont);
+        }
+    }
+
+    /**
+     * this helper method is used to paint a set of non custom resources in a personal production
+     * @param target is the matrix on which the resources will be painted
+     * @param V_OFFSET is the vertical starting position of the resources on the matrix
+     * @param H_OFFSET is the horizontal starting position of the resources on the matrix
+     * @param custom is the number of custom resources painted
+     */
+    private static void paintNonCustomResource(String[][] target, int V_OFFSET, int H_OFFSET
+            , List<ResQuantity> resources, int custom){
+        for(int i=0; i<resources.size(); i++){
+            ResQuantity res = resources.get(i);
+            for(int j=0; j < res.getQuantity(); j++){
+                spherePainter(target, V_OFFSET+(i+custom)*(SPHERE_LENGTH+2), H_OFFSET,
+                        " ", res.getResource().toColor(), baseFont);
+            }
+        }
+    }
     /**
      * this method is used to paint the top token in the board
      * @param target is the matrix in which the item will be painted
@@ -290,37 +296,22 @@ public class CLIPainter{
     }
 
     /**
-     * this method is used to paint the player's FaithTrack and Sections
+     * this method is used to paint the player's FaithTrack
      * @param target is the matrix in which the item will be painted
      * @param V_OFFSET is the vertical position of the item
      * @param H_OFFSET is the horizontal position of the item
      * @param trackPoints represents the structure of the FaithTrack
      * @param players is a list of the names of the players
      * @param faith is a map that contains the faith achieved by the players
-     * @param sections is the status of the player's vatican sections
      * @param start is the start of the vatican report sections
      * @param end is the end of the vatican report sections
-     * @param sectionPoints are the points of each pope favor
      */
-    //separare questo metodo in due metodi.  Uno per la faithtrack, uno per le section status e uno per i pope favor
     public static void paintFaithTrack
             (String[][] target, int V_OFFSET, int H_OFFSET, List<Integer> trackPoints, List<String> players,
-             Map<String, Integer> faith, Map<String, List<ItemStatus>> sections, List<Integer> start, List<Integer> end,
-            List<Integer> sectionPoints){
-        int length = trackPoints.size(), num = players.size(), val, big=0, offset=0, position, from=0, to=0;
-        String background = CLIColors.B_BLUE.getColor();
-        List<String> coloredPoints = new LinkedList<>();
+             Map<String, Integer> faith, List<Integer> start, List<Integer> end){
+        int length = trackPoints.size(), val, big=0, offset=0, position;
 
-        //suppongo che le sezioni papali siano separate almeno da una cella. Questo codice è da mettere in un helper.
-        for(int i=0; i < trackPoints.size(); i++){
-            String value = "";
-            if(i>=start.get(from) && i<=end.get(to)) value = background + value;
-            if(i>end.get(to)){
-                from++;
-                to++;
-            }
-            coloredPoints.add(value);
-        }
+        List<String> coloredPoints = computeSectionLimits(start, end, trackPoints.size());
 
         // drawing FaithTracks and player's position
         for(int i=0; i<length; i++){
@@ -347,8 +338,72 @@ public class CLIPainter{
                 }
             }
         }
-        //drawing section status
-        for(int i=0; i<num; i++){
+
+        //paint the rectangle around each player's faithTrack
+        for(int k=0; k<players.size(); k++) {
+            paintRectangle(target, V_OFFSET + k * (SQUARE_LENGTH + 1) + 1, H_OFFSET,
+                    length * SQUARE_WIDTH + 1 + big, SQUARE_LENGTH, baseFont);
+        }
+    }
+
+    /**
+     * this method is used to paint the PopeFavors
+     * @param target is the matrix on which the PopeFavors will be printed
+     * @param V_OFFSET is the vertical position of the item
+     * @param H_OFFSET is the horizontal position of the item
+     * @param nPlayers is the number of players in the game
+     * @param trackPoints represents the structure of the FaithTrack
+     * @param sectionPoints represents the points associated to each vatican section
+     */
+    public static void paintPopeFavours(String[][] target, int V_OFFSET, int H_OFFSET,int nPlayers
+            , List<Integer> trackPoints, List<Integer> sectionPoints){
+
+        int totalVOffset, totalHOffset;
+        totalHOffset = SQUARE_WIDTH*trackPoints.size()/2 - 3*FAVOR_WIDTH/2;
+        totalVOffset = (SQUARE_LENGTH+1)*nPlayers + 1;
+        insertString(target, totalVOffset+V_OFFSET - 1, H_OFFSET, "Vatican Report Section Favors: ", baseFont);
+        for(int i=0; i<sectionPoints.size(); i++){
+            paintRectangle(target,totalVOffset+V_OFFSET,
+                    totalHOffset + H_OFFSET+i*(FAVOR_WIDTH+2), FAVOR_WIDTH, FAVOR_LENGTH, baseFont);
+            target[totalVOffset+V_OFFSET+ FAVOR_LENGTH/2][totalHOffset + H_OFFSET+i*(FAVOR_WIDTH+2) + FAVOR_WIDTH/2] = sectionPoints.get(i).toString();
+        }
+    }
+
+    /**
+     * this helper method is used to compute the limits of vatican report sections
+     * @param start represents the starting point of each vatican report section
+     * @param end represents the end point of each vatican report section
+     * @param trackPoints represents the structure of the FaithTrack
+     * @return a List of String representing the color of each position in the faithTrack. The colored positions
+     * are the one inside of a vatican report section.
+     */
+    private static List<String> computeSectionLimits(List<Integer> start, List<Integer> end, int trackPoints){
+        int from=0, to=0;
+        String background = CLIColors.B_BLUE.getColor();
+        List<String> coloredPoints = new LinkedList<>();
+        for(int i=0; i < trackPoints; i++){
+            String value = "";
+            if(i>=start.get(from) && i<=end.get(to)) value = background + value;
+            if(i>end.get(to)){
+                from++;
+                to++;
+            }
+            coloredPoints.add(value);
+        }
+        return coloredPoints;
+    }
+
+    /**
+     * this method is used to display the state of players' vatican report sections and to display players' nicknames
+     * @param target is the matrix on which the PopeFavors will be printed
+     * @param V_OFFSET is the vertical position of the item
+     * @param H_OFFSET is the horizontal position of the item
+     * @param sections is a map that represents the state of players' sections
+     * @param players is a list of the names of the players
+     */
+    public static void paintSectionsStatus(String[][] target, int V_OFFSET, int H_OFFSET
+            , Map<String, List<ItemStatus>> sections, List<String> players){
+        for(int i=0; i<players.size(); i++){
             List<ItemStatus> section = sections.get(players.get(i));
             StringBuilder status = new StringBuilder();
             status.append(players.get(i)).append(" n^").append(i+1).append(": ");
@@ -356,19 +411,6 @@ public class CLIPainter{
             for(int j=0; j<section.size(); j++){
                 target[V_OFFSET + i * (SQUARE_LENGTH+1)][H_OFFSET +size+j*2] = section.get(j).getFaithSymbol();
             }
-            paintRectangle(target,V_OFFSET + i * (SQUARE_LENGTH+1)+1, H_OFFSET,
-                    length * SQUARE_WIDTH + 1 + big, SQUARE_LENGTH, baseFont);
-        }
-
-        // drawing PopeFavours value
-        int totalVOffset, totalHOffset;
-        totalHOffset = SQUARE_WIDTH*trackPoints.size()/2 - 3*FAVOR_WIDTH/2;
-        totalVOffset = (SQUARE_LENGTH+1)*players.size() + 1;
-        insertString(target, totalVOffset+V_OFFSET - 1, H_OFFSET, "Vatican Report Section Favors: ", baseFont);
-        for(int i=0; i<sectionPoints.size(); i++){
-            paintRectangle(target,totalVOffset+V_OFFSET,
-                    totalHOffset + H_OFFSET+i*(FAVOR_WIDTH+2), FAVOR_WIDTH, FAVOR_LENGTH, baseFont);
-            target[totalVOffset+V_OFFSET+ FAVOR_LENGTH/2][totalHOffset + H_OFFSET+i*(FAVOR_WIDTH+2) + FAVOR_WIDTH/2] = sectionPoints.get(i).toString();
         }
     }
 

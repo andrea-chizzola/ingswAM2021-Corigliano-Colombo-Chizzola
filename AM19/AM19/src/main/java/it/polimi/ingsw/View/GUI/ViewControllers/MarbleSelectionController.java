@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.Model.MarketBoard.Marble;
+import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -8,10 +9,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.util.LinkedList;
 import java.util.List;
 
-public class MarbleSelectionController extends ViewController{
+public class MarbleSelectionController extends ViewController {
 
     @FXML
     private AnchorPane mainPane;
@@ -47,49 +50,13 @@ public class MarbleSelectionController extends ViewController{
     private MenuButton targetSlot1;
 
     @FXML
-    private MenuItem menu1Shelf1;
-
-    @FXML
-    private MenuItem menu1Shelf2;
-
-    @FXML
-    private MenuItem menu1Shelf3;
-
-    @FXML
     private MenuButton targetSlot3;
-
-    @FXML
-    private MenuItem menu3Shelf1;
-
-    @FXML
-    private MenuItem menu3Shelf2;
-
-    @FXML
-    private MenuItem menu3Shelf3;
 
     @FXML
     private MenuButton targetSlot4;
 
     @FXML
-    private MenuItem menu4Shelf1;
-
-    @FXML
-    private MenuItem menu4Shelf2;
-
-    @FXML
-    private MenuItem menu4Shelf3;
-
-    @FXML
     private MenuButton targetSlot2;
-
-    @FXML
-    private MenuItem menu2Shelf1;
-
-    @FXML
-    private MenuItem menu2Shelf2;
-
-    @FXML
-    private MenuItem menu2Shelf3;
 
     @FXML
     private MenuButton transformations1;
@@ -107,13 +74,13 @@ public class MarbleSelectionController extends ViewController{
     private List<MenuButton> transformationMenus;
     private List<MenuButton> targetMenus;
     private List<CheckBox> keepCheckBoxes;
+    private List<Marble> selected;
+    private int nModifications;
     private final String path = "/Images/market/";
     private Accumulator accumulator;
-    int colored;
-    int whites;
 
     public MarbleSelectionController(){
-        accumulator = new Accumulator();
+        accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
     }
 
     @FXML
@@ -128,36 +95,33 @@ public class MarbleSelectionController extends ViewController{
         keep2.selectedProperty().addListener((observable, oldValue, newValue) -> targetSlot2.setVisible(newValue));
         keep3.selectedProperty().addListener((observable, oldValue, newValue) -> targetSlot3.setVisible(newValue));
         keep4.selectedProperty().addListener((observable, oldValue, newValue) -> targetSlot4.setVisible(newValue));
-        setTargetMenu(targetSlot1, menu1Shelf1, menu1Shelf2, menu1Shelf3);
-        setTargetMenu(targetSlot2, menu2Shelf1, menu2Shelf2, menu2Shelf3);
-        setTargetMenu(targetSlot3, menu3Shelf1, menu3Shelf2, menu3Shelf3);
-        setTargetMenu(targetSlot4, menu4Shelf1, menu4Shelf2, menu4Shelf3);
         doneButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> exitFromWindow());
     }
 
     public void exitFromWindow(){
         List<Marble> selected = getModelReference().getSelectedMarbles();
-        int c=0, k=0;
+        String action, slots, marble;
+
         for(int i=0; i<selected.size(); i++){
-            String action, slots, marble;
-            if(selected.get(i).toString().equals("MarbleWhite")){
-                action = (keepCheckBoxes.get(colored + c ).isSelected())?"INSERT":"DISCARD";
-                slots = (action.equals("DISCARD"))?"0":targetMenus.get(colored + c).getText().substring(6,7);
-                marble = (action.equals("DISCARD"))?"MarbleWhite":transformationMenus.get(colored + c).getText();
-                c++;
-            }
-            else{
-                action = (keepCheckBoxes.get(k).isSelected())?"INSERT":"DISCARD";
-                slots = (action.equals("DISCARD"))?"0":targetMenus.get(k).getText().substring(6,7);
-                marble = selected.get(i).toString();
-                k++;
-            }
+
+            action = (keepCheckBoxes.get(i).isSelected())?"INSERT":"DISCARD";
+
+            //TODO laciare un errore se il player non ha selezionato lo slot. Non inviare discard
+            if(action.equals("DISCARD") || targetMenus.get(i).getText().equals("Target Slot"))
+                slots = "0";
+            else slots = targetMenus.get(i).getText().substring(6,7);
+
+            if(selected.get(i).isWhite())
+                marble = (action.equals("DISCARD")||nModifications==0)?"MarbleWhite":transformationMenus.get(i).getText();
+            else marble = selected.get(i).toString();
+
             accumulator.setMarblesActions(marble);
             accumulator.setMarblesActions(action);
             accumulator.setMarblesActions(slots);
         }
+
         getGUIReference().notifyInteraction(accumulator.buildActionMarble());
-        mainPane.getScene().getWindow().hide();
+        ((Stage) mainPane.getScene().getWindow()).close();
     }
 
     private void hideTransformations(){
@@ -171,35 +135,37 @@ public class MarbleSelectionController extends ViewController{
             box.setVisible(false);
         }
     }
-    private void setTargetMenu(MenuButton targetSlot, MenuItem menuShelf1, MenuItem menuShelf2, MenuItem menuShelf3) {
-        targetSlot.setVisible(false);
-        menuShelf1.setOnAction(e -> targetSlot.setText(menuShelf1.getText()));
-        menuShelf2.setOnAction(e -> targetSlot.setText(menuShelf2.getText()));
-        menuShelf3.setOnAction(e -> targetSlot.setText(menuShelf3.getText()));
-    }
-    //TODO qui non devono arrivare biglie bianche
-    //whiteModifications sono parole
-    public void showMarblesUpdate(List<String> marblesTray, List<String> whiteModifications, int whites){
-        colored = marblesTray.size();
-        this.whites = whites;
+
+    public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, int nSlots) {
+        selected = new LinkedList<>(marblesTray);
+        nModifications = whiteModifications.size();
+        addTargetMenuOptions(nSlots);
+
         for(int i=0; i<marblesTray.size(); i++){
-            Image image = new Image(MarbleSelectionController.class.getResourceAsStream(path + marblesTray.get(i)));
+            String imageName = marblesTray.get(i).getImage();
+            Image image = new Image(MarbleSelectionController.class.getResourceAsStream(path + imageName));
             marbles.get(i).setImage(image);
             keepCheckBoxes.get(i).setVisible(true);
-        }
-        Image marbleWhite = new Image(MarbleSelectionController.class.getResourceAsStream(path + "MarbleWhite.PNG"));
-        int whitesStart = marblesTray.size();
-        for(int j=whitesStart; j< whitesStart + whites; j++){
-            marbles.get(j).setImage(marbleWhite);
-            showWhiteTransformations(whiteModifications, transformationMenus.get(j), keepCheckBoxes.get(j));
-            keepCheckBoxes.get(j).setVisible(true);
+            if(marblesTray.get(i).isWhite() && whiteModifications.size()>0)
+                showWhiteTransformations(whiteModifications, transformationMenus.get(i), keepCheckBoxes.get(i));
+
         }
     }
 
-    private void showWhiteTransformations(List<String> whiteModifications, MenuButton menu, CheckBox checkBox){
+    private void addTargetMenuOptions(int nSlots){
+        for (MenuButton menu : targetMenus) {
+            for (int j = 0; j < nSlots; j++) {
+                MenuItem item = new MenuItem("Shelf " + (j + 1));
+                menu.getItems().add(item);
+                item.setOnAction(e -> menu.setText(item.getText()));
+            }
+        }
+    }
+
+    private void showWhiteTransformations(List<Marble> whiteModifications, MenuButton menu, CheckBox checkBox){
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> menu.setVisible(newValue));
-        for(int i=0; i<whiteModifications.size(); i++){
-            MenuItem item = new MenuItem(whiteModifications.get(i));
+        for (Marble whiteModification : whiteModifications) {
+            MenuItem item = new MenuItem(whiteModification.toString());
             menu.getItems().add(item);
             item.setOnAction(e -> menu.setText(item.getText()));
         }

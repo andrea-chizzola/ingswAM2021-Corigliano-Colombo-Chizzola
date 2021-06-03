@@ -231,16 +231,10 @@ public class VirtualView implements View {
      * this method is used to catch a swap in the warehouse
      */
     @Override
-    public boolean swapAction() { return true; }
+    public void swapAction() { }
 
     @Override
     public void showOthers(String nickname) {
 
     }
-
-    /**
-     * this method show the player's personal production.
-     */
-    @Override
-    public void showPersonalProduction() {}
 }

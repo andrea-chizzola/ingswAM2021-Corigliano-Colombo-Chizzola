@@ -1,6 +1,17 @@
 package it.polimi.ingsw.CLITest;
 
+import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
+import it.polimi.ingsw.Model.Cards.DevelopmentCard;
+import it.polimi.ingsw.Model.Cards.LeaderCard;
+import it.polimi.ingsw.Model.MarketBoard.Marble;
+import it.polimi.ingsw.Model.MarketBoard.MarbleBlue;
+import it.polimi.ingsw.Model.MarketBoard.MarbleGray;
+import it.polimi.ingsw.Model.MarketBoard.MarbleRed;
+import it.polimi.ingsw.Model.Resources.*;
 import it.polimi.ingsw.View.CLI.CLIColors;
+import it.polimi.ingsw.View.CLI.CLIPainter;
+import it.polimi.ingsw.xmlParser.ConfigurationParser;
+import org.junit.jupiter.api.*;
 
 import java.util.*;
 
@@ -20,7 +31,7 @@ public class CLIPainterTest {
             Arrays.fill(s, CLIColors.RESET.getColor() + " ");
         }
     }
-/*
+
     @Test
     public void printLogoTest(){
         CLIPainter.printLogo();
@@ -132,7 +143,9 @@ public class CLIPainterTest {
         sectionPoints.add(3);
         sectionPoints.add(4);
         CLIPainter.paintFaithTrack(test, 0,0 , track,
-                players, faith, sections, start, end, sectionPoints);
+                players, faith, start, end);
+        CLIPainter.paintPopeFavours(test, 0, 0, players.size(), track, sectionPoints);
+        CLIPainter.paintSectionsStatus(test, 0, 0, sections, players);
         plot(test);
 
     }
@@ -201,5 +214,5 @@ public class CLIPainterTest {
             plot(test);
         }
     }
-*/
+
 }

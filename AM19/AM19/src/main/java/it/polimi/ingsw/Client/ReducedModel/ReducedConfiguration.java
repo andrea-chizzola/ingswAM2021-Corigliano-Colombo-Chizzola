@@ -86,7 +86,7 @@ public class ReducedConfiguration {
     private int numLeader;
 
     public ReducedConfiguration(String file){
-        // GESTIRE CODICE DEL SERVER! I PARSER POTREBBERO FALLIRE! Il client in quel caso deve terminare con errore!
+        //TODO GESTIRE CODICE DEL SERVER! I PARSER POTREBBERO FALLIRE! Il client in quel caso deve terminare con errore!
         //trasformare i get delle mappe in get or default
 
         this.configurationFile = file;

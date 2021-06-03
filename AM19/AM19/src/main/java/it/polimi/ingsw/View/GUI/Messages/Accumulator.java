@@ -5,7 +5,6 @@ import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
-import it.polimi.ingsw.View.GUI.GUIHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +16,11 @@ public class Accumulator {
 
     private final String splitter = ":";
 
+    /**
+     * the reduced model of the client
+     */
+    private ReducedGameBoard model;
+
 
     /**
      * StringBuilder useful to generate the string which represents the resources selected by the player during the initialization of the game
@@ -25,7 +29,7 @@ public class Accumulator {
 
     //market
     /**
-     * It represents the choice of the marketboard
+     * It represents the choice of the marketBoard
      */
     private String tray;
     /**
@@ -49,12 +53,17 @@ public class Accumulator {
      */
     private boolean sourceSet = false;
 
-    //
-   // private StringBuilder warehouse = new StringBuilder();
+
     /**
      * Map useful to generate the string which represents  the resources selected by the player from the warehouse
      */
     private Map<Integer,Integer> warehouse = new HashMap<>();
+
+    /**
+     * StringBuilder useful to generate the string which represents the resources selected by the player from the warehouse
+     */
+    private StringBuilder warehouseString = new StringBuilder();
+
     /**
      * StringBuilder useful to generate the string which represents the resources selected by the player from the strongBox
      */
@@ -101,6 +110,17 @@ public class Accumulator {
      * It represents the action selected by the player about the leader card
      */
     private String action;
+
+
+
+    /**
+     * Constructor
+     * @param model the reduced model
+     */
+    public Accumulator(ReducedGameBoard model){
+        this.model = model;
+    }
+
 
 
     /**
@@ -169,10 +189,7 @@ public class Accumulator {
     public void setSlot(int slot){
         this.slot = slot;
     }
-/*
-    public void setWarehouse(String warehouse){
-        this.warehouse.append(warehouse).append(splitter);
-    }*/
+
 
     /**
      * adds one to the number of resources that the players selects from the shelf
@@ -181,6 +198,12 @@ public class Accumulator {
     public void setWarehouse(int shelf){
         warehouse.put(shelf,warehouse.getOrDefault(shelf,0)+1);
     }
+
+    /**
+     * Appends to the StringBuilder associated with the warehouse the String passed as parameter
+     * @param warehouse
+     */
+    public void setWarehouse(String warehouse){warehouseString.append(warehouse).append(splitter);}
 
     /**
      * Appends to the StringBuilder associated with the strongBox the String passed as parameter
@@ -262,12 +285,13 @@ public class Accumulator {
      * @return a String which represents the field warehouse of the message
      */
     private String getStringWarehouse(){
-        StringBuilder stringBuilder = new StringBuilder();
-        for(int i : warehouse.keySet()){
-            stringBuilder.append(i).append(splitter);
-            stringBuilder.append(warehouse.get(i)).append(splitter);
+        if(warehouseString.length() == 0) {
+            for (int i : warehouse.keySet()) {
+                warehouseString.append(i).append(splitter);
+                warehouseString.append(warehouse.get(i)).append(splitter);
+            }
         }
-        return stringBuilder.length()==0 ? "" : stringBuilder.substring(0, stringBuilder.length()-1);
+        return warehouseString.length()==0 ? "" : warehouseString.substring(0, warehouseString.length()-1);
     }
 
     /**
@@ -277,7 +301,7 @@ public class Accumulator {
 
         String input = leaderCards.length()==0 ? "" : leaderCards.substring(0, leaderCards.length()-1);
         String[] selections = input.split(splitter);
-        ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();
+
         Map<Integer, String> cards = model.getBoard(model.getCurrentPlayer()).getLeadersID();
         Map<Integer, ItemStatus> map = new HashMap<>();
         for(int i : cards.keySet()) map.put(i, ItemStatus.DISCARDED);
@@ -338,7 +362,6 @@ public class Accumulator {
      */
     public String buildBuyCard(){
 
-        ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();
         String id = model.getDecks().get(position-1);
 
         DevelopmentCard card = model.getConfiguration().getDevelopmentCard(id);
@@ -360,12 +383,12 @@ public class Accumulator {
      * @return a String which is the message do production
      */
     public String buildDoProduction(){
-        ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();
+
         String leaderCards = this.leaderCards.length()==0 ? "" : this.leaderCards.substring(0, this.leaderCards.length()-1);
         String developmentCards = this.developmentCards.length()==0 ? "" : this.developmentCards.substring(0,this.developmentCards.length()-1);
         String leaderMessage = helpCards(model.getBoard(model.getCurrentPlayer()).getLeadersID(),leaderCards);
         String devMessage = helpCards(model.getBoard(model.getCurrentPlayer()).getSlots(),developmentCards);
-        //String warehouse =  this.warehouse.length()==0 ? "" : this.warehouse.substring(0, this.warehouse.length()-1);
+
         String warehouse = getStringWarehouse();
         String strongbox = this.strongbox.length()==0 ? "" : this.strongbox.substring(0, this.strongbox.length()-1);
         String chosenProducts = this.chosenProducts.length()==0 ? "" : this.chosenProducts.substring(0, this.chosenProducts.length()-1);
@@ -406,7 +429,7 @@ public class Accumulator {
      * @return a String which is the message leader action
      */
     public String buildLeaderAction() {
-        ReducedGameBoard model = GUIHandler.getGUIReference().getModelReference();
+
         String player = model.getCurrentPlayer();
         Map<Integer, String> leadersID = model.getBoard(player).getLeadersID();
         try {

@@ -174,6 +174,7 @@ public class ClientController implements ClientConnectionListener, InteractionOb
 
         loginHandler(message);
         if(!message.isOk()) actionHandler(model.getModelState());
+        view.reply(message.isOk(), message.getBody(), message.getPlayer());
 
     }
 
@@ -508,6 +509,16 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     public void updatePersonalNickname(String nickname) {
         model.setPersonalNickname(nickname);
         model.setCurrentPlayer(nickname);
+    }
+
+    /**
+     * this method is used to notify the SOLO game
+     *
+     * @param message is the representation of the interaction
+     */
+    @Override
+    public void updateInteractionSolo(String message) {
+        messageSender.firstMessageSolo(message);
     }
 }
 

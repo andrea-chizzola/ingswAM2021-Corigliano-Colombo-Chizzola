@@ -1,9 +1,9 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
+import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
 import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
 import it.polimi.ingsw.View.GUI.Messages.BuildSelectedResources;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -87,14 +87,14 @@ public class InitializeResController extends ViewController{
     private BuildMessage builder;
 
     public InitializeResController(){
-        this.accumulator = new Accumulator();
+        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildSelectedResources();
     }
 
 
     public void startInitialization(int num){
         if(num == 0)
-            getGUIReference().notifyInteraction(builder.buildMessage(new Accumulator()));
+            getGUIReference().notifyInteraction(builder.buildMessage(new Accumulator(GUIHandler.getGUIReference().getModelReference())));
     }
 
     @FXML
@@ -123,16 +123,17 @@ public class InitializeResController extends ViewController{
         for(Button button : buttons)
             button.setVisible(false);
 
-        actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, this::sendMessage);
+        actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> sendMessage());
 
         setItemHandlers(coins,"coin");
         setItemHandlers(shields,"shield");
         setItemHandlers(servants,"servant");
         setItemHandlers(stones,"stone");
         setButtonsHandlers();
+
     }
 
-    private void sendMessage(Event event) {
+    private void sendMessage() {
         getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
         anchorPane.getScene().getWindow().hide();
     }
@@ -141,20 +142,19 @@ public class InitializeResController extends ViewController{
 
         list.get(0).setOnAction( event ->{
             accumulator.setInitResources(resource);
-            resources.get(0).setDisable(true);
-            /*buttons.get(0).setVisible(true);*/});
+            resources.get(0).setDisable(true);});
+
         list.get(1).setOnAction( event ->{
             accumulator.setInitResources(resource);
-            resources.get(1).setDisable(true);
-           /* buttons.get(1).setVisible(true);*/});
+            resources.get(1).setDisable(true);});
+
         list.get(2).setOnAction(event ->{
             accumulator.setInitResources(resource);
-            resources.get(2).setDisable(true);
-            /*buttons.get(2).setVisible(true);*/});
+            resources.get(2).setDisable(true);});
+
         list.get(3).setOnAction(event ->{
             accumulator.setInitResources(resource);
-            resources.get(3).setDisable(true);
-            /*buttons.get(3).setVisible(true);*/});
+            resources.get(3).setDisable(true);});
     }
 
     private void setButtonsHandlers(){
@@ -174,6 +174,11 @@ public class InitializeResController extends ViewController{
     }
 
     public void initResources(int num){
+        if(num == 0){
+            sendMessage();
+            return;
+        }
+
         for(int i=0; i<num; i++){
             resources.get(i).setVisible(true);
             resources.get(i).setDisable(true);

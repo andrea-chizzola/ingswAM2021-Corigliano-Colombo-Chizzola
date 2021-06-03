@@ -2,6 +2,8 @@ package it.polimi.ingsw.Server;
 
 
 
+import it.polimi.ingsw.Client.SoloConnectionHandler;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -39,16 +41,39 @@ public class Server {
      */
     private AtomicLong idCounter;
 
+    private SoloConnectionHandler socket;
+
+
     /**
      * creates a new server accepting clients to the port selected
      * @param port represents the port opened by the server to accept new connections
      */
     public Server(int port) {
-
         this.port = port;
         idCounter = new AtomicLong();
         this.handler = new GamesHandler();
 
+    }
+
+    /**
+     * creates a new server with a SoloConnectionHandler
+     * @param socket represents the connection handler
+     */
+    public Server(SoloConnectionHandler socket){
+        this.port = 1234;
+        idCounter = new AtomicLong();
+        this.handler = new GamesHandler();
+        this.socket = socket;
+    }
+
+
+    /**
+     * Initializes and starts the server (solo game)
+     */
+    public void startServerSolo(){
+        SoloClientConnection connection = new SoloClientConnection(socket,createId(),handler);
+        new Thread(connection).start();
+        socket.attachClientConnection(connection);
     }
 
     /**
