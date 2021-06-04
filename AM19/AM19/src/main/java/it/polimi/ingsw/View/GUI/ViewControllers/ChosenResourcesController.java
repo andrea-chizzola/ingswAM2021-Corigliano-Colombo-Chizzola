@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+/**
+ * controller of the selection of the resources during the production
+ */
 public class ChosenResourcesController extends ViewController{
 
     @FXML
@@ -48,6 +51,9 @@ public class ChosenResourcesController extends ViewController{
         bindAction();
     }
 
+    /**
+     * initializes the buttons
+     */
     private void bindAction(){
         actionButton.setOnAction(actionEvent -> {
             actionButton.getScene().getWindow().hide();
@@ -63,6 +69,13 @@ public class ChosenResourcesController extends ViewController{
         addEventProducts(selectStones2,stones2,"STONE");
     }
 
+    /**
+     * this method adds an event handler to the button
+     * it is useful for the buttons related to the chosen materials
+     * @param button the button
+     * @param text TextField from which the text is get
+     * @param resource the resource associated with the button
+     */
     private void addEventMaterials(Button button, TextField text, String resource){
         button.setOnAction(actionEvent -> {
             accumulator.setChosenMaterials(resource);
@@ -72,6 +85,13 @@ public class ChosenResourcesController extends ViewController{
         });
     }
 
+    /**
+     * this method adds an event handler to the button
+     * it is useful for the buttons related to the chosen products
+     * @param button the button
+     * @param text TextField from which the text is get
+     * @param resource the resource associated with the button
+     */
     private void addEventProducts(Button button, TextField text, String resource){
         button.setOnAction(actionEvent -> {
             accumulator.setChosenProducts(resource);
@@ -81,6 +101,10 @@ public class ChosenResourcesController extends ViewController{
         });
     }
 
+    /**
+     * this method sets the accumulator passed as parameter
+     * @param accumulator the accumulator
+     */
     public void setAccumulator(Accumulator accumulator){
         this.accumulator = accumulator;
     }

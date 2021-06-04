@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.ReducedModel;
 
+import it.polimi.ingsw.Exceptions.IllegalIDException;
 import it.polimi.ingsw.Model.ActionTokens.Action;
 import it.polimi.ingsw.Model.Boards.FaithTrack.VaticanReportSection;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
@@ -177,11 +178,11 @@ public class ReducedConfiguration {
      * @return the requested leader card.
      * @throws IllegalArgumentException if ID does not correspond to any leader cards
      */
-    public LeaderCard getLeaderCard(String id) throws IllegalArgumentException{
+    public LeaderCard getLeaderCard(String id) throws IllegalIDException{
         List<LeaderCard> card = leaderCardList.stream()
                 .filter(c -> c.getId().equalsIgnoreCase(id))
                 .collect(Collectors.toList());
-        if(card.size() == 0) throw new IllegalArgumentException("Non existent element");
+        if(card.size() == 0) throw new IllegalIDException("Non existent element");
         return card.get(0);
     }
 
@@ -199,11 +200,11 @@ public class ReducedConfiguration {
      * @return the requested development card.
      * @throws IllegalArgumentException if ID does not correspond to any development cards
      */
-    public DevelopmentCard getDevelopmentCard(String id) throws IllegalArgumentException{
+    public DevelopmentCard getDevelopmentCard(String id) throws IllegalIDException{
         List<DevelopmentCard> card = developmentCardList.stream()
                 .filter(c -> c.getId().equalsIgnoreCase(id))
                 .collect(Collectors.toList());
-        if(card.size() == 0) throw new IllegalArgumentException("Non existent element");
+        if(card.size() == 0) throw new IllegalIDException("Non existent element");
         return card.get(0);
     }
 
@@ -221,11 +222,11 @@ public class ReducedConfiguration {
      * @return the requested actiontoken.
      * @throws IllegalArgumentException if ID does not correspond to any action tokens
      */
-    public Action getActionTokenCard(String id) throws IllegalArgumentException{
+    public Action getActionTokenCard(String id) throws IllegalIDException{
         List<Action> tokens = actionTokenList.stream()
                 .filter(c -> c.getId().equalsIgnoreCase(id))
                 .collect(Collectors.toList());
-        if(tokens.size() == 0) throw new IllegalArgumentException("Non existent element");
+        if(tokens.size() == 0) throw new IllegalIDException("Non existent element");
         return tokens.get(0);
     }
 

@@ -181,7 +181,7 @@ public class DevelopmentDeck {
                 try {
                     card = readTop(colors.get(j), i);
                     map.put((i-1)*colors.size()+j, card.getId());
-                }catch (IllegalArgumentException e){e.printStackTrace();}
+                }catch (IllegalArgumentException e){/*e.printStackTrace();*/}
             }
         }
 

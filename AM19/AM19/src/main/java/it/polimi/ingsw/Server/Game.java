@@ -216,7 +216,6 @@ public class Game {
         }
         gamesHandler.removeGame(getId(), new ArrayList<>(players.keySet()));
         System.out.println("[SERVER] Game " + getId() + " closed correctly");
-
     }
 
     /**
