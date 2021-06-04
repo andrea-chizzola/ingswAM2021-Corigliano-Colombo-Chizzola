@@ -14,6 +14,10 @@ import java.util.function.Supplier;
 
 import static java.lang.Integer.parseInt;
 
+/**
+ * This class contains utilities methods useful to parsing the messages
+ * It is a Singleton
+ */
 public class MessageUtilities {
 
     private static Map<String, Supplier<Resource>> resources = new HashMap<>();
@@ -22,6 +26,9 @@ public class MessageUtilities {
     private static MessageUtilities instance;
     private static final String splitter = ":";
 
+    /**
+     * constructor
+     */
     private MessageUtilities() {
         resources.put("COIN", Coin::new);
         resources.put("SERVANT", Servant::new);
@@ -44,6 +51,9 @@ public class MessageUtilities {
 
     }
 
+    /**
+     * @return the instance of the singleton
+     */
     public static MessageUtilities instance() {
         if (instance == null) {
             instance = new MessageUtilities();
@@ -51,6 +61,11 @@ public class MessageUtilities {
         return instance;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @return MessageType which represents the enum type of the message
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public Message.MessageType getType(String message) throws MalformedMessageException{
         String type = MessageParser.getMessageTag(message,"messageType");
         Message.MessageType messageType;
@@ -63,6 +78,12 @@ public class MessageUtilities {
         return messageType;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return the turn type correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public TurnType getTurnType(String message, String tag) throws MalformedMessageException{
         String type = MessageParser.getMessageTag(message,tag);
         TurnType turnType;
@@ -75,6 +96,12 @@ public class MessageUtilities {
         return turnType;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return the TraySelection correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public TraySelection getTray(String message, String tag) throws MalformedMessageException{
         String type = MessageParser.getMessageTag(message,tag);
         TraySelection traySelection;
@@ -87,6 +114,11 @@ public class MessageUtilities {
         return traySelection;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @return the body of the message
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public String getBody(String message)  throws MalformedMessageException{
         String body = MessageParser.getMessageTag(message,"body");
         if(body == null)
@@ -94,6 +126,12 @@ public class MessageUtilities {
         return body;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return List of Integer which represents the shelves correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public List<Integer> getShelves(String message, String tag) throws MalformedMessageException {
 
         String warehouse = MessageParser.getMessageTag(message,tag);
@@ -101,8 +139,6 @@ public class MessageUtilities {
         List<Integer> shelves = new ArrayList<>();
         if(warehouse.length() == 0) return shelves;
         String[] string = warehouse.split(splitter);
-
-        if(warehouse.equals("")) return shelves;
 
         if(string.length%2 != 0 || string.length == 0)
             throw new MalformedMessageException();
@@ -117,6 +153,12 @@ public class MessageUtilities {
     }
 
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return List of Integer which represents the number of resources, for each shelf, correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public List<Integer> getQuantity(String message, String tag) throws MalformedMessageException{
 
         String warehouse = MessageParser.getMessageTag(message,tag);
@@ -140,6 +182,12 @@ public class MessageUtilities {
     }
 
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return List of ResQuantity correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public List<ResQuantity> getResQuantityList(String message, String tag) throws MalformedMessageException{
 
         String messageString = MessageParser.getMessageTag(message,tag);
@@ -173,31 +221,14 @@ public class MessageUtilities {
         return list;
     }
 
-    /*public Map<Integer, ResQuantity> getResAndPosition(String message, String tag) throws MalformedMessageException{
 
-        String content = MessageParser.getMessageTag(message, tag);
-        Map<Integer, ResQuantity> map = new HashMap<>();
-        String[] string = content.split(splitter);
-        int position, quantity;
-        String key;
-        ResQuantity res;
-
-        if(string.length%3 != 0){
-            throw new MalformedMessageException();
-        }
-
-        for(int i=0; i<string.length/3; i++){
-            key = string[i*3];
-            try {
-                position = parseInt(string[(i*3)+1]);
-                quantity = parseInt(string[(i*3)+2]);
-            }catch (NumberFormatException e){throw new MalformedMessageException("ParseInt fail!");}
-            res = new ResQuantity(resources.get(key).get(), quantity);
-            map.put(position, res);
-        }
-        return map;
-    }*/
-
+    /**
+     * To use in case of ActionMarble message
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return List of Marble correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public List<Marble> getMarbleFromAction(String message, String tag) throws MalformedMessageException{
 
         String messageString = MessageParser.getMessageTag(message,tag);
@@ -222,6 +253,12 @@ public class MessageUtilities {
         return list;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return List of Marble correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public List<Marble> getMarbleList(String message, String tag) throws MalformedMessageException{
         String messageString = MessageParser.getMessageTag(message,tag);
 
@@ -244,7 +281,12 @@ public class MessageUtilities {
         return list;
     }
 
-
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return PlayerAction correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public PlayerAction getAction(String message, String tag) throws MalformedMessageException{
         String messageString = MessageParser.getMessageTag(message,tag);
         PlayerAction action;
@@ -256,6 +298,13 @@ public class MessageUtilities {
         return action;
     }
 
+    /**
+     * To use in case of ActionMarble message
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return List of PlayerAction correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public List<PlayerAction> getActions(String message, String tag) throws MalformedMessageException{
 
         String messageString = MessageParser.getMessageTag(message,tag);
@@ -284,6 +333,12 @@ public class MessageUtilities {
         return list;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return List of ItemStatus correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public List<ItemStatus> getStatusList(String message, String tag) throws MalformedMessageException{
         String messageString = MessageParser.getMessageTag(message, tag);
         List<ItemStatus> list = new LinkedList<>();
@@ -304,6 +359,13 @@ public class MessageUtilities {
         return list;
     }
 
+    /**
+     * To use in case of ActionMarble message
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return List of Integer (which represents the shelves) correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public List<Integer> getShelvesActions(String message, String tag) throws MalformedMessageException{
 
         String messageString = MessageParser.getMessageTag(message,tag);
@@ -328,6 +390,12 @@ public class MessageUtilities {
         return list;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return List of Resource correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public List<Resource> getResources(String message, String tag) throws MalformedMessageException{
 
         String messageString = MessageParser.getMessageTag(message,tag);
@@ -336,10 +404,6 @@ public class MessageUtilities {
         if(messageString.length() == 0) return list;
         String[] string = messageString.split(splitter);
         String key;
-
-        if(messageString.equals("")){
-            return list;
-        }
 
         if(string.length%2 != 0 || string.length == 0) {
             throw new MalformedMessageException();
@@ -355,6 +419,12 @@ public class MessageUtilities {
     }
 
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return CardColor correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public CardColor getCardColor(String message, String tag) throws MalformedMessageException{
 
         String color = MessageParser.getMessageTag(message,tag);
@@ -365,6 +435,12 @@ public class MessageUtilities {
         return cardColor.get(color.toUpperCase()).get();
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return Map(Integer-String) correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public Map<Integer,String> getMapIntegerString(String message, String tag) throws MalformedMessageException{
 
         String messageString = MessageParser.getMessageTag(message,tag);
@@ -392,6 +468,12 @@ public class MessageUtilities {
         return map;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return Map(String-Integer) correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public Map<String, Integer> getMapStringInteger(String message, String tag) throws MalformedMessageException {
         String content = MessageParser.getMessageTag(message,tag);
         Map<String, Integer> table = new HashMap<>();
@@ -413,33 +495,13 @@ public class MessageUtilities {
         return table;
     }
 
-    public Map<Integer,Boolean> getMapIntegerBoolean(String message, String tag) throws MalformedMessageException{
 
-        String messageString = MessageParser.getMessageTag(message,tag);
-
-        Map<Integer,Boolean> map = new HashMap<>();
-        String[] string = messageString.split(splitter);
-        int key;
-        boolean value;
-
-        if(messageString.equals("")){
-            return map;
-        }
-
-        if(string.length%2 != 0 || string.length == 0)
-            throw new MalformedMessageException();
-
-        for(int i=0; i<string.length/2; i++){
-
-            try {
-                key = parseInt(string[i*2]);
-                value = Boolean.parseBoolean(string[(i*2)+1]);
-                map.put(key,value);
-            }catch (NumberFormatException e){throw new MalformedMessageException("ParseInt fail!");}
-        }
-        return map;
-    }
-
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return Map(Integer-ItemStatus) correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public Map<Integer, ItemStatus> getMapIntegerItemStatus(String message, String tag) throws MalformedMessageException{
         String messageString = MessageParser.getMessageTag(message, tag);
         Map<Integer, ItemStatus> map = new HashMap<>();
@@ -469,6 +531,12 @@ public class MessageUtilities {
         return map;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return the Integer correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public int getInteger(String message, String tag) throws MalformedMessageException{
         String messageString = MessageParser.getMessageTag(message,tag);
         int i;
@@ -479,6 +547,12 @@ public class MessageUtilities {
         return i;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return the String correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public String getString(String message, String tag) throws MalformedMessageException{
         String messageString = MessageParser.getMessageTag(message,tag);
         if(messageString == null)
@@ -486,11 +560,23 @@ public class MessageUtilities {
         return messageString;
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return the boolean correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public boolean getBoolean(String message, String tag) throws MalformedMessageException{
         String messageString = MessageParser.getMessageTag(message,tag);
         return Boolean.parseBoolean(messageString);
     }
 
+    /**
+     * @param message the message to be parsed
+     * @param tag the name of the tag of the XML file
+     * @return List of String correspondent to the value present in the tag
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
     public List<String> getListString(String message, String tag) throws MalformedMessageException{
         String messageString = MessageParser.getMessageTag(message,tag);
 

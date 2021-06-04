@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" snapToPixel="false" style="-fx-background-color: brown;">
          <children>
@@ -223,7 +223,7 @@
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </Button>
-            <Label fx:id="errorStrongbox" layoutX="67.0" layoutY="369.0" prefHeight="17.0" prefWidth="106.0" text="Empty resource!" textFill="#ff0202">
+            <Label fx:id="errorStrongbox" layoutX="46.0" layoutY="372.0" prefHeight="17.0" prefWidth="130.0" text="All resources selected!" textFill="#ff0202">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -306,7 +306,7 @@
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="errorExtraShelf" layoutX="84.0" layoutY="566.0" prefHeight="17.0" prefWidth="106.0" text="Empty resource!" textFill="WHITE">
+            <Label fx:id="errorExtraShelf" layoutX="72.0" layoutY="566.0" prefHeight="17.0" prefWidth="130.0" text="All resources selected!" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -324,6 +324,36 @@
             <Label fx:id="nicknameLabel" alignment="CENTER" layoutX="858.0" layoutY="242.0" prefHeight="22.0" prefWidth="178.0" text="Davide" textAlignment="CENTER" textFill="#fffefe">
                <font>
                   <Font name="Times New Roman Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="counterCoins" layoutX="10.0" layoutY="398.0" text="0" textFill="#17ff13">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="counterShields" layoutX="10.0" layoutY="444.0" text="0" textFill="#17ff13">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="counterStones" layoutX="97.0" layoutY="397.0" text="0" textFill="#17ff13">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="counterServants" layoutX="97.0" layoutY="443.0" text="0" textFill="#17ff13">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="counterExtra1" layoutX="71.0" layoutY="595.0" text="0" textFill="#17ff13">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="counterExtra2" layoutX="72.0" layoutY="642.0" text="0" textFill="#17ff13">
+               <font>
+                  <Font name="System Bold" size="12.0" />
                </font>
             </Label>
          </children>
