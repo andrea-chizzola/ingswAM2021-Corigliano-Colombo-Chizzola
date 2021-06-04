@@ -87,10 +87,7 @@ public class ReducedConfiguration {
 
     public ReducedConfiguration(String file){
         //TODO GESTIRE CODICE DEL SERVER! I PARSER POTREBBERO FALLIRE! Il client in quel caso deve terminare con errore!
-        //trasformare i get delle mappe in get or default
-
         this.configurationFile = file;
-
         nRows = ConfigurationParser.parseMarketRows(file);
         nColumns = ConfigurationParser.parseMarketColumns(file);
         slotNumber = ConfigurationParser.getNumSlots(file);
@@ -218,7 +215,7 @@ public class ReducedConfiguration {
     /**
      * this method is used to retrieve an action token by its ID
      * @param id is the id of the action token
-     * @return the requested actiontoken.
+     * @return the requested ActionToken.
      * @throws IllegalArgumentException if ID does not correspond to any action tokens
      */
     public Action getActionTokenCard(String id) throws IllegalArgumentException{
