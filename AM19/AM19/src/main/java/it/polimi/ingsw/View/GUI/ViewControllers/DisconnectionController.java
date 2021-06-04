@@ -15,10 +15,18 @@ public class DisconnectionController extends ViewController{
     @FXML
     private Label message;
 
+    /**
+     * creates a new disconnection scene
+     * @param playerNickname represents the nickname of the disconnected player
+     */
     public DisconnectionController(String playerNickname) {
         setNickname(playerNickname);
     }
 
+    /**
+     * displays the nickname of the disconnected player
+     * @param nickname represents the nickname of the disconnected player
+     */
     private void setNickname(String nickname){
         playerNickname.setText(nickname);
     }

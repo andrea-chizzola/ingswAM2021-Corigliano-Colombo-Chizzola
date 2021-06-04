@@ -20,6 +20,38 @@
                   <Image url="@../Images/handpaintedBoard/personalBoard.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="back1" fitHeight="207.0" fitWidth="146.0" layoutX="302.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+               <image>
+                  <Image url="@../Images/back/cardBackground.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="back2" fitHeight="207.0" fitWidth="146.0" layoutX="484.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+               <image>
+                  <Image url="@../Images/back/cardBackground.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="back3" fitHeight="207.0" fitWidth="146.0" layoutX="667.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+               <image>
+                  <Image url="@../Images/back/cardBackground.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="back4" fitHeight="207.0" fitWidth="146.0" layoutX="849.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+               <image>
+                  <Image url="@../Images/back/cardBackground.jpg" />
+               </image>
+            </ImageView>
             <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="341.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="CLOSED_HAND" />

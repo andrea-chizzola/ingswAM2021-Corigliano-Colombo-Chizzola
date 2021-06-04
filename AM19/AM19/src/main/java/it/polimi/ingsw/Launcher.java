@@ -11,6 +11,10 @@ public class Launcher {
     private static final String SERVER_ARG = "-server";
     private static final String CLIENT_ARG = "-client";
 
+    /**
+     * starts the Client or the Server depending on the selected parameters
+     * @param args contains the initialization parameters
+     */
     public static void main(String[] args) {
 
         List<String> argList = Arrays.asList(args);

@@ -18,6 +18,42 @@ import java.util.Map;
 
 public class BoardController extends ViewController implements HelperWindow{
 
+    /**
+     * private class used to store the coordinates associated to each position of the faith track
+     */
+    private class Coordinates{
+
+        private double x;
+        private double y;
+
+        /**
+         * creates a new position given the associated coordinates
+         * @param x represents the new position's x coordinate
+         * @param y represents the new position's y coordinate
+         */
+        public Coordinates(double x, double y){
+            this.x = x;
+            this.y = y;
+        }
+
+        /**
+         *
+         * @return the x coordinate associated to the selected position
+         */
+        public double getX(){
+            return x;
+        }
+
+        /**
+         *
+         * @return the y coordinate associated to the selected position
+         */
+        public double getY() {
+            return y;
+        }
+
+    }
+
     @FXML
     private AnchorPane pane;
     @FXML
@@ -36,6 +72,14 @@ public class BoardController extends ViewController implements HelperWindow{
     protected ImageView thirdLeaderCard;
     @FXML
     protected ImageView fourthLeaderCard;
+    @FXML
+    private ImageView back1;
+    @FXML
+    private ImageView back2;
+    @FXML
+    private ImageView back3;
+    @FXML
+    private ImageView back4;
     @FXML
     protected ImageView firstPopeFavor;
     @FXML
@@ -82,6 +126,7 @@ public class BoardController extends ViewController implements HelperWindow{
     protected List<ImageView> warehouse3;
     protected List<ImageView> developmentCards;
     protected List<ImageView> leaderCards;
+    protected List<ImageView> backs;
     protected List<ImageView> popeFavors;
     private final String nickname;
     private final String cardPath = "/Images/front/";
@@ -113,7 +158,9 @@ public class BoardController extends ViewController implements HelperWindow{
         setDevelopmentCards();
 
         leaderCards = List.of(firstLeaderCard, secondLeaderCard, thirdLeaderCard, fourthLeaderCard);
+        backs = List.of(back1, back2, back3, back4);
         setLeaderCards();
+        setBacks();
 
         popeFavors = List.of(firstPopeFavor, secondPopeFavor, thirdPopeFavor);
 
@@ -146,12 +193,36 @@ public class BoardController extends ViewController implements HelperWindow{
      * sets the ImageView associated to each leader card
      */
     protected void setLeaderCards(){
-
         firstLeaderCard.setVisible(false);
         secondLeaderCard.setVisible(false);
         thirdLeaderCard.setVisible(false);
         fourthLeaderCard.setVisible(false);
+    }
 
+    /**
+     * this method is used to set the backs of the card
+     */
+    protected void setBacks(){
+        back1.setVisible(false);
+        back3.setVisible(false);
+        back3.setVisible(false);
+        back4.setVisible(false);
+    }
+
+    /**
+     * @param position represents the selected position
+     * @return the X coordinate associated to the selected position
+     */
+    protected double getXCoordinate(int position){
+        return positions.get(position).getX();
+    }
+
+    /**
+     * @param position represents the selected position
+     * @return the Y coordinate associated to the selected position
+     */
+    protected  double getYCoordinate(int position){
+        return positions.get(position).getY();
     }
 
     /**
@@ -160,8 +231,8 @@ public class BoardController extends ViewController implements HelperWindow{
      */
     public void changePosition(int position){
 
-        tile.setLayoutX(positions.get(position).getX());
-        tile.setLayoutY(positions.get(position).getY());
+        tile.setLayoutX(getXCoordinate(position));
+        tile.setLayoutY(getYCoordinate(position));
 
     }
 
@@ -176,6 +247,10 @@ public class BoardController extends ViewController implements HelperWindow{
         for(ImageView image : leaderCards){
             image.setVisible(false);
         }
+
+        for(ImageView image : backs){
+            image.setVisible(false);
+        }
         for(Integer slot : cards.keySet()){
             String image = null;
             try {
@@ -187,11 +262,13 @@ public class BoardController extends ViewController implements HelperWindow{
                 Image card = new Image(getClass().getResourceAsStream(cardPath + image));
                 leaderCards.get(slot - 1).setImage(card);
                 leaderCards.get(slot - 1).setVisible(true);
+                backs.get(slot-1).setVisible(true);
             }else{
                 Image card = new Image(getClass().getResourceAsStream(cardPath + image));
                 leaderCards.get(slot - 1).setImage(card);
                 leaderCards.get(slot - 1).setVisible(true);
                 leaderCards.get(slot - 1).setOpacity(0.5);
+                backs.get(slot-1).setVisible(true);
             }
         }
 
@@ -429,7 +506,7 @@ public class BoardController extends ViewController implements HelperWindow{
         positions.add(new Coordinates(380, 111));
         positions.add(new Coordinates(422, 111));
         positions.add(new Coordinates(464, 111));
-        positions.add(new Coordinates(506, 111));;
+        positions.add(new Coordinates(506, 111));
         positions.add(new Coordinates(549, 111));
         positions.add(new Coordinates(549, 69));
         positions.add(new Coordinates(549, 27));
@@ -443,10 +520,16 @@ public class BoardController extends ViewController implements HelperWindow{
     }
 
 
+    /**
+     * shows the scene
+     */
     public void showWindow(){
         ((Stage) pane.getScene().getWindow()).show();
     }
 
+    /**
+     * hides the scene
+     */
     public void hideWindow(){
         pane.getScene().getWindow().hide();
     }

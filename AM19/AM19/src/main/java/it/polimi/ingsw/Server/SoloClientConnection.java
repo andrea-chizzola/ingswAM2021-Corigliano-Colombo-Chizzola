@@ -7,7 +7,6 @@ public class SoloClientConnection implements ClientConnection, Runnable{
 
 
     private SoloConnectionHandler socket;
-    private Server server;
     private final String socketID;
     private ConnectionListener handler;
 

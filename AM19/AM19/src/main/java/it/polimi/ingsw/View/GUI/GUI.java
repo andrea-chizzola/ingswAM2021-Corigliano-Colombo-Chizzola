@@ -96,7 +96,7 @@ public class GUI implements View, SubjectView {
      * this method is used to show a reply of the server
      * @param answer is a boolean that tells if the message is an error
      * @param body is the content of the message
-     * @param nickName is the recipinet of the message
+     * @param nickName is the receiver of the message
      */
     @Override
     public void reply(boolean answer, String body, String nickName) {
@@ -177,7 +177,7 @@ public class GUI implements View, SubjectView {
     }
 
     /**
-     * this method is used to show an update of one's warehouse and stringbox
+     * this method is used to show an update of one's warehouse and strongbox
      * @param warehouse represent the current state of the warehouse
      * @param strongBox represent the current state of the strongbox
      * @param nickName represents the name of the player affected by the changes
@@ -241,7 +241,7 @@ public class GUI implements View, SubjectView {
     }
 
     /**
-     * this method is used to show
+     * this method is used to show the action token picked by Lorenzo
      * @param action is the ID of the top token
      */
     @Override

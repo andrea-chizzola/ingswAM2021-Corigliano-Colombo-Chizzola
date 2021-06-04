@@ -31,25 +31,23 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
     }
 
-
     /**
      * Closes the connection between the server and the client
      */
     @Override
     public synchronized void closeConnection() {
 
-        System.out.println("[CONNECTION] Closing socket connection...");
+        System.out.println("[SERVER] Closing socket connection...");
         try {
             socket.close();
             in.close();
             out.close();
-            System.out.println("[CONNECTION] Closed socket connection.");
+            System.out.println("[SERVER] Closed socket connection.");
         } catch (IOException e) {
-            System.err.println("[CONNECTION] Error when closing socket");
+            System.out.println("[SERVER] Error occurred when closing socket");
         }
 
     }
-
 
     /**
      * sends a new message to the client
@@ -61,7 +59,6 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
         out.println(message);
         out.flush();
-        System.out.println( "To: "+socketID+"  "+message);
 
     }
 
@@ -104,7 +101,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     /**
      * starts the ping pong protocol between server and client
      */
-    public void startPingTimer() {
+    private void startPingTimer() {
 
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
@@ -143,7 +140,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         } catch (IOException e) {
 
             e.printStackTrace();
-            System.err.println("[SERVER] Error occurred while opening input and output streams.");
+            System.out.println("[SERVER] Error occurred while opening input and output streams.");
 
         }
 
@@ -155,17 +152,17 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
             while ((read = in.readLine()) != null) {
 
-                System.out.println("[SERVER] Received: " + read + " from: "+socketID);
+                //System.out.println("[SERVER] Received: " + read + " from: "+socketID);
                 messageHandler(read);
 
             }
-            handler.onMissingPong(socketID);
+            //handler.onMissingPong(socketID);
             closeConnection();
 
         } catch (IOException e) {
 
-            System.err.println(e.getMessage());
-            System.err.println("[SERVER] Connection error.");
+            System.out.println(e.getMessage());
+            System.out.println("[SERVER] Connection closed.");
 
         }
     }
