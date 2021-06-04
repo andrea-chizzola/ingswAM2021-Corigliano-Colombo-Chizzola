@@ -325,8 +325,10 @@ public class GamesHandler implements ConnectionListener{
 
         }else{
 
-            getConnection(socketId).closeConnection();
-            removeActiveConnection(socketId);
+            if (activeConnections.containsKey(socketId)) {
+                getConnection(socketId).closeConnection();
+                removeActiveConnection(socketId);
+            }
 
         }
 

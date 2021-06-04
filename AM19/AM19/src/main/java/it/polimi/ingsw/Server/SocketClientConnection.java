@@ -156,7 +156,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
                 messageHandler(read);
 
             }
-            handler.onMissingPong(socketID);
+            //handler.onMissingPong(socketID);
             closeConnection();
 
         } catch (IOException e) {
