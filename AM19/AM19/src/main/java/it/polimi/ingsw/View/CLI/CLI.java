@@ -347,7 +347,7 @@ public class CLI implements View, SubjectView {
             try {
                 card = model.getConfiguration().getDevelopmentCard(decks.get(i));
             } catch (IllegalIDException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             CLIPainter.devCardPainter(decksStatus, 1 + length*row, BOXES_X + width*column, card.toString());
         }
@@ -411,7 +411,7 @@ public class CLI implements View, SubjectView {
             try {
                 card = model.getConfiguration().getDevelopmentCard(slots.get(i));
             } catch (IllegalIDException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             CLIPainter.devCardPainter(view, PLAYERS_Y+1, BOXES_X + 30*(i-1)+20, card.toString());
         }
@@ -434,7 +434,7 @@ public class CLI implements View, SubjectView {
                 try {
                     card = model.getConfiguration().getLeaderCard(id);
                 } catch (IllegalIDException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
                 card.setStatus(status.get(i).getBoolValue());
                 CLIPainter.leaderCardPainter(view, PLAYERS_Y + 1 + LEADER_Y, BOXES_X + 28 * (i - 1) + 8, card.toString());
@@ -483,7 +483,7 @@ public class CLI implements View, SubjectView {
         try {
             content = model.getConfiguration().getActionTokenCard(action.get()).toString();
         } catch (IllegalIDException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         CLIPainter.paintToken(viewStatus,TOKEN_Y+RESOURCES_Y+PERSONAL_Y, TOKEN_X, content);
     }

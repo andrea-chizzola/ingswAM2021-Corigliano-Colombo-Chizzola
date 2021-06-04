@@ -5,6 +5,8 @@ import it.polimi.ingsw.Exceptions.IllegalIDException;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.MessageFactory;
+import it.polimi.ingsw.Model.Cards.Colors.DevColor;
+import it.polimi.ingsw.Model.Cards.Colors.Green;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 
 import java.util.HashMap;
@@ -365,19 +367,23 @@ public class Accumulator {
 
         String id = model.getDecks().get(position-1);
 
-        DevelopmentCard card = null;
+        DevColor color;
+        int level;
         try {
-            card = model.getConfiguration().getDevelopmentCard(id);
+            DevelopmentCard card = model.getConfiguration().getDevelopmentCard(id);
+            color = card.getCardColor().getColor();
+            level = card.getCardLevel();
+
         } catch (IllegalIDException e) {
-            e.printStackTrace();
+            level = -1;
+            color = DevColor.GREEN;
         }
 
         String warehouse = getStringWarehouse();
         String strongbox = this.strongbox.length()==0 ? "" : this.strongbox.substring(0, this.strongbox.length()-1);
 
         try {
-           return MessageFactory.buildBuyCard(card.getCardColor().getColor(),
-                    card.getCardLevel(), slot, id, "Buy card", warehouse, strongbox);
+           return MessageFactory.buildBuyCard(color, level, slot, id, "Buy card", warehouse, strongbox);
 
         }catch(MalformedMessageException e){
             //exit from client

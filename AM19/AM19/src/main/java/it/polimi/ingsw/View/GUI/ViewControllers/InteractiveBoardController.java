@@ -219,7 +219,7 @@ public class InteractiveBoardController extends BoardController {
         try {
             image = getModelReference().getConfiguration().getActionTokenCard(action.get()).getImage();
         } catch (IllegalIDException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         Image token = new Image("/Images/punchboard/" + image);
         actionToken.setImage(token);
