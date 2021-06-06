@@ -71,7 +71,10 @@ public class Game {
 
     }
 
-    //TODO: ELIMINARE GETTER E LE RELATIVE PRINT
+    /**
+     *
+     * @return a map containing the players currently in the game and their related ID
+     */
     public Map<String, String> getPlayers() {
         return new HashMap<>(players);
     }
