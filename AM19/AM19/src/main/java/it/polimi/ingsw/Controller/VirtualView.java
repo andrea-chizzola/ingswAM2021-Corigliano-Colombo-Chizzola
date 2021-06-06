@@ -155,7 +155,7 @@ public class VirtualView implements View {
         try {
             String message = MessageFactory.buildEndGame(players,"game ended");
             game.sendAll(message);
-            game.endGame();
+            //game.endGame();
         }catch (MalformedMessageException e){e.printStackTrace();}
     }
 
