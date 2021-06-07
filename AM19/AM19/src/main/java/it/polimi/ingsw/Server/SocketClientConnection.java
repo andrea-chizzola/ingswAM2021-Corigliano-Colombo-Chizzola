@@ -63,18 +63,6 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     }
 
     /**
-     * sends a new message to the client asynchronously
-     *
-     * @param message represents the message to send
-     */
-    @Override
-    public void asyncSend(String message) {
-
-        new Thread(() -> send(message)).start();
-
-    }
-
-    /**
      * handles the messages received from the client
      * @param read represents the message received
      */
@@ -87,7 +75,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         }
 
         if(buffer.getPong()) pong = true;
-        else if(buffer.getPing()) asyncSend("<pong/>");
+        else if(buffer.getPing()) send("<pong/>");
         else {
             try {
                 String string = buffer.get();
@@ -109,7 +97,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             public void run() {
 
                 if (pong) {
-                    asyncSend("<ping/>");
+                    send("<ping/>");
                     pong = false;
                 } else {
                     System.out.println("[SERVER] No pong received. Client will now be disconnected.");

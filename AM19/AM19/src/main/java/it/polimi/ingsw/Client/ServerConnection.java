@@ -18,10 +18,4 @@ public interface ServerConnection extends Runnable{
      */
     void send(String message);
 
-    /**
-     * sends a new message to the sever asynchronously
-     * @param message represents the message sent
-     */
-    void asyncSend(String message);
-
 }

@@ -304,8 +304,8 @@ public class BoardController extends ViewController implements HelperWindow{
     public void manageSections(List<ItemStatus> sections){
 
         for(ItemStatus status : sections){
+            int section = sections.indexOf(status);
             if(status == ItemStatus.ACTIVE){
-                int section = sections.indexOf(status);
                 switch (section){
                     case 0:
                         Image image = new Image(getClass().getResourceAsStream(boardPath + "quadratogialloattivo.png"));
@@ -321,6 +321,8 @@ public class BoardController extends ViewController implements HelperWindow{
                         break;
                 }
 
+            }else if(status == ItemStatus.DISCARDED){
+                popeFavors.get(section).setVisible(false);
             }
         }
 

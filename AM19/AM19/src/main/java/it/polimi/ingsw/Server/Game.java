@@ -71,7 +71,10 @@ public class Game {
 
     }
 
-    //TODO: ELIMINARE GETTER E LE RELATIVE PRINT
+    /**
+     *
+     * @return a map containing the players currently in the game and their related ID
+     */
     public Map<String, String> getPlayers() {
         return new HashMap<>(players);
     }
@@ -204,19 +207,6 @@ public class Game {
      * @return returns true if the game can start
      */
     public boolean canStart(){ return getActualPlayers() == playersNumber; }
-
-    /**
-     * ends the game closing the socket connections and removing it from the GamesHandler
-     */
-    public void endGame(){
-
-        System.out.println("[SERVER] Closing game...");
-        for(String nickname : connections.keySet()){
-            connections.get(nickname).closeConnection();
-        }
-        gamesHandler.removeGame(getId(), new ArrayList<>(players.keySet()));
-        System.out.println("[SERVER] Game " + getId() + " closed correctly");
-    }
 
     /**
      * checks if after the timer at least one player has been reconnected to the game

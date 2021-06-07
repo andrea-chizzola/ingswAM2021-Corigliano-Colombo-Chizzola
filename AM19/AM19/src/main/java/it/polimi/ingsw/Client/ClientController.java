@@ -525,5 +525,13 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     public void updateInteractionSolo(String message) {
         messageSender.firstMessageSolo(message);
     }
+
+    /**
+     * this method is used to close the client
+     */
+    @Override
+    public void close(){
+        messageSender.close();
+    }
 }
 

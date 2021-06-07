@@ -17,6 +17,14 @@ public interface MessageSender {
      */
     void firstMessage(String message);
 
-
+    /**
+     * this method is used to send the first String message to the MessageSender in case of a local match
+     * @param message is the content of the message
+     */
     void firstMessageSolo(String message);
+
+    /**
+     * this method is used to close the client
+     */
+    void close();
 }

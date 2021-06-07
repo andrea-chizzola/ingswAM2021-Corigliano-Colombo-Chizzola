@@ -38,17 +38,6 @@ public class SoloServerConnection implements ServerConnection{
         socket.notifyServer(message);
     }
 
-
-    /**
-     * sends a new message to the sever asynchronously
-     *
-     * @param message represents the message sent
-     */
-    @Override
-    public void asyncSend(String message) {
-
-    }
-
     /**
      * manages client-server connection and communication
      */

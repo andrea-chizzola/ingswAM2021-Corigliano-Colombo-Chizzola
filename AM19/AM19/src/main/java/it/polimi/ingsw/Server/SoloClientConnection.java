@@ -38,15 +38,6 @@ public class SoloClientConnection implements ClientConnection, Runnable{
     }
 
     /**
-     * sends a new message to the client asynchronously
-     * @param message represents the message sent
-     */
-    @Override
-    public void asyncSend(String message) {
-
-    }
-
-    /**
      * manages server-client connection and communication
      */
     @Override
