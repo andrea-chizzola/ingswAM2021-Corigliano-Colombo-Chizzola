@@ -20,71 +20,71 @@ public class ReducedConfiguration {
      * this attribute represents the name of the configuration file
      */
 
-    private String configurationFile;
+    private final String configurationFile;
     /**
      * this attribute represents the number of rows in the market board
      */
-    private int nRows;
+    private final int nRows;
 
     /**
      * this attribute represents the number of columns in the market board
      */
-    private int nColumns;
+    private final int nColumns;
 
     /**
      * this attribute represents the length of the faith track
      */
-    private int trackLength;
+    private final int trackLength;
 
     /**
      * this attribute represents the value of each position of the faith track
      */
-    private List<Integer> trackPoints;
+    private final List<Integer> trackPoints;
 
     /**
      * this attribute represents the number of available slots in each board
      */
-    private int slotNumber;
+    private final int slotNumber;
 
     /**
      * this attribute represents the number of shelves of each warehouse
      */
-    private List<Integer> shelves;
+    private final List<Integer> shelves;
 
     /**
      * this attribute represents the list of existing leader cards
      */
-    private List<LeaderCard> leaderCardList;
+    private final List<LeaderCard> leaderCardList;
 
     /**
      * this attribute represents the list of existing leader cards
      */
-    private List<DevelopmentCard> developmentCardList;
+    private final List<DevelopmentCard> developmentCardList;
 
     /**
      * thia ttribute represents the list of existing development cards
      */
-    private List<Action> actionTokenList;
+    private final List<Action> actionTokenList;
 
     /**
      * this attribute represents the structure of a personal production
      */
-    private Production personalProduction;
+    private final Production personalProduction;
 
     /**
      * this attribute represents the structure of a player's vatican report sections
      */
-    private List<VaticanReportSection> sections;
+    private final List<VaticanReportSection> sections;
 
     /**
      * this attribute represents the quantity of initial resources of each player
      */
-    private List<Integer> initialResources;
+    private final List<Integer> initialResources;
 
     /**
      * this attribute represents the number of leaders given to each player at the beginning of the game
      */
-    private int numLeader;
+    private final int numLeader;
 
     public ReducedConfiguration(String file){
         //TODO GESTIRE CODICE DEL SERVER! I PARSER POTREBBERO FALLIRE! Il client in quel caso deve terminare con errore!

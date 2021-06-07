@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.InteractionObserver;
+import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
@@ -149,7 +150,8 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName) {
-        int nSlots = model.getBoard(nickName).getWarehouse().size();
+        ReducedBoard board = model.getBoard(nickName);
+        int nSlots = board.getWarehouse().size();
         String self = model.getPersonalNickname();
         MarbleSelectionController controller = new MarbleSelectionController();
         if(self.equals(nickName)) {

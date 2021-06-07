@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View.GUI.Messages;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Exceptions.IllegalIDException;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
@@ -305,7 +306,10 @@ public class Accumulator {
         String input = leaderCards.length()==0 ? "" : leaderCards.substring(0, leaderCards.length()-1);
         String[] selections = input.split(splitter);
 
-        Map<Integer, String> cards = model.getBoard(model.getCurrentPlayer()).getLeadersID();
+        String currentPlayer = model.getCurrentPlayer();
+        ReducedBoard board = model.getBoard(currentPlayer);
+
+        Map<Integer, String> cards = board.getLeadersID();
         Map<Integer, ItemStatus> map = new HashMap<>();
         for(int i : cards.keySet()) map.put(i, ItemStatus.DISCARDED);
         try {
@@ -314,7 +318,7 @@ public class Accumulator {
 
         try{
             return MessageFactory.buildLeaderUpdate(cards, map,
-                    "Leader cards initialization managing.", model.getCurrentPlayer());
+                    "Leader cards initialization managing.", currentPlayer);
         }catch(MalformedMessageException e){
             //exit from client
             return "";
@@ -398,8 +402,12 @@ public class Accumulator {
 
         String leaderCards = this.leaderCards.length()==0 ? "" : this.leaderCards.substring(0, this.leaderCards.length()-1);
         String developmentCards = this.developmentCards.length()==0 ? "" : this.developmentCards.substring(0,this.developmentCards.length()-1);
-        String leaderMessage = helpCards(model.getBoard(model.getCurrentPlayer()).getLeadersID(),leaderCards);
-        String devMessage = helpCards(model.getBoard(model.getCurrentPlayer()).getSlots(),developmentCards);
+
+        String currentPlayer = model.getCurrentPlayer();
+        ReducedBoard board = model.getBoard(currentPlayer);
+
+        String leaderMessage = helpCards(board.getLeadersID(),leaderCards);
+        String devMessage = helpCards(board.getSlots(),developmentCards);
 
         String warehouse = getStringWarehouse();
         String strongbox = this.strongbox.length()==0 ? "" : this.strongbox.substring(0, this.strongbox.length()-1);
@@ -443,7 +451,9 @@ public class Accumulator {
     public String buildLeaderAction() {
 
         String player = model.getCurrentPlayer();
-        Map<Integer, String> leadersID = model.getBoard(player).getLeadersID();
+        ReducedBoard board = model.getBoard(player);
+
+        Map<Integer, String> leadersID = board.getLeadersID();
         try {
             return MessageFactory.buildLeaderAction(leadersID.get(this.leaderCard), this.leaderCard, action, "Action on leader");
         } catch (MalformedMessageException e) {
