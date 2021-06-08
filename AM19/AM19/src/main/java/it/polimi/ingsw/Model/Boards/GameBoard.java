@@ -234,18 +234,23 @@ public class GameBoard implements GameBoardHandler {
         }
     }
 
+
     /**
      * @return returns a map (nickName - totalPoints)
      */
     public Map<String,Integer> getTotalPoints(){
-        Map<String,Integer> map = new HashMap<>();
+        /*Map<String,Integer> map = new HashMap<>();
         for(Board board : players){
             map.put(board.getNickname(),board.getTotalPoints());
         }
         for(Board board : disconnectedPlayers){
             map.put(board.getNickname(),board.getTotalPoints());
         }
-        return map;
+        return map;*/
+        ArrayList<Board> list = new ArrayList<>();
+        list.addAll(players);
+        list.addAll(disconnectedPlayers);
+        return customMode.findWinnerMessage(list);
     }
 
     /**
@@ -268,6 +273,8 @@ public class GameBoard implements GameBoardHandler {
     private void checkTurn(TurnType turn) throws InvalidActionException{
         if(!isAllInitialized())
             throw new InvalidActionException("Initialization not ended!");
+        if(gameEnded)
+            throw new InvalidActionException("The game is ended!");
         if(!correctTurns.contains(turn))
             throw new InvalidActionException("You can't do this action now!");
     }

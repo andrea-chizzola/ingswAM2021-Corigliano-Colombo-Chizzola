@@ -52,26 +52,15 @@ public class MultiplePlayer implements CustomMode{
      * @return returns the message showed to the players when the match is over
      */
     @Override
-    public String findWinnerMessage(ArrayList<Board> boards) {
+    public Map<String,Integer> findWinnerMessage(ArrayList<Board> boards) {
 
-        String result = new String("Final Leaderboard: \n");
+        Map<String,Integer> map = new HashMap<>();
 
-        Collections.sort(boards, (Board b1, Board b2) -> {
-            if(b1.getTotalPoints() < b2.getTotalPoints()) return -1;
-            else if(b1.getTotalPoints() > b2.getTotalPoints()) return 1;
-            else if(b1.getTotalPoints() == b2.getTotalPoints() && b1.getTotalResources() < b2.getTotalResources()) return -1;
-            else if(b1.getTotalPoints() == b2.getTotalPoints() && b1.getTotalResources() > b2.getTotalResources()) return 1;
-            else return 0;
-        });
-
-        for(int i = boards.size() - 1; i >= 0; i--){
-
-            result = result + (boards.size() - i) + " " + boards.get(i).getNickname() + " " + boards.get(i).getTotalPoints() + "\n";
-
+        for(Board board : boards){
+            map.put(board.getNickname(),board.getTotalPoints());
         }
 
-        return result;
-
+        return map;
     }
 
     @Override

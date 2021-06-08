@@ -4,10 +4,7 @@ import it.polimi.ingsw.Model.Decks.ActionTokenDeck;
 import it.polimi.ingsw.Model.Boards.FaithTrack.FaithTrack;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.*;
 
 /**
  * public class used to implement the endTurnAction method along with the necessary methods in case of a single player match
@@ -115,7 +112,10 @@ public class SinglePlayer implements CustomMode{
      * @return returns the message showed to the player when the match is over
      */
     @Override
-    public String findWinnerMessage(ArrayList<Board> boards) {
+    public Map<String,Integer> findWinnerMessage(ArrayList<Board> boards) {
+
+        Map<String,Integer> map = new HashMap<>();
+        map.put(boards.get(0).getNickname(),boards.get(0).getTotalPoints());
 
         int cardNumber = 0;
 
@@ -123,13 +123,13 @@ public class SinglePlayer implements CustomMode{
             cardNumber = cardNumber + slot.getNumberOfCards();
         }
 
-        if(cardNumber >= 7 || boards.get(0).getFaithTrack().isEndTrack()){
-            return "Congratulations! You defeated Lorenzo il Magnifico with "
-                    + boards.get(0).getTotalPoints()
-                    + " total points.";
+        if(cardNumber >= 7 || boards.get(0).getFaithTrack().isEndTrack()) {
+            map.put("Lorenzo", 0);
+            return map;
         }
-        else return "Game Over! Lorenzo il Magnifico won. Final score: "
-                + boards.get(0).getTotalPoints();
+
+        map.put("Lorenzo", 9999);
+        return map;
     }
 
 
