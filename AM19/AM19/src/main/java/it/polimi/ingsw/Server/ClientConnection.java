@@ -18,11 +18,4 @@ public interface ClientConnection {
      */
     void send(String message);
 
-    /**
-     * sends a new message to the client asynchronously
-     * @param message represents the message sent
-     */
-    void asyncSend(String message);
-
-
 }

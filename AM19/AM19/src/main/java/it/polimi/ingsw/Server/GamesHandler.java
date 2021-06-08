@@ -265,6 +265,8 @@ public class GamesHandler implements ConnectionListener{
      */
     public void removeGame(String gameId, ArrayList<String> playersId){
 
+        System.out.println("[SERVER] Closing game...");
+
         clearInactivePlayers(gameId);
 
         for(String id : playersId){
@@ -285,6 +287,8 @@ public class GamesHandler implements ConnectionListener{
             }
         }
         suspendedGames.removeAll(removed);
+
+        System.out.println("[SERVER] Game " + gameId + " closed correctly");
 
     }
 

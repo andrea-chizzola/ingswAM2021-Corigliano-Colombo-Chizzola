@@ -79,18 +79,6 @@ public class SocketServerConnection implements ServerConnection{
     }
 
     /**
-     * sends a new message to the sever asynchronously
-     *
-     * @param message represents the message sent
-     */
-    @Override
-    public void asyncSend(String message) {
-
-        new Thread(() -> send(message)).start();
-
-    }
-
-    /**
      * starts the ping pong protocol between client and server
      */
     private void startPingTimer() {
@@ -101,7 +89,7 @@ public class SocketServerConnection implements ServerConnection{
             public void run() {
 
                 if (pong) {
-                    asyncSend("<ping/>");
+                    send("<ping/>");
                     pong = false;
                 } else {
                     System.out.println("[CLIENT] No pong received. Client will now be disconnected.");
@@ -129,7 +117,7 @@ public class SocketServerConnection implements ServerConnection{
         }
 
         if(buffer.getPong()) pong = true;
-        else if(buffer.getPing()) asyncSend("<pong/>");
+        else if(buffer.getPing()) send("<pong/>");
         else {
             try {
                 clientController.onReceivedMessage(buffer.get());

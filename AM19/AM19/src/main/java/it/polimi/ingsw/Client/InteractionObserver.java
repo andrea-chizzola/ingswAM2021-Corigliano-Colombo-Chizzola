@@ -31,4 +31,9 @@ public interface InteractionObserver {
      */
     void updatePersonalNickname(String nickname);
 
+    /**
+     * this method is used to close the client
+     */
+    void close();
+
 }

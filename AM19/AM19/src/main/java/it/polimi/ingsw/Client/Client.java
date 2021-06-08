@@ -47,6 +47,14 @@ public class Client implements MessageSender {
         connection.send(message);
     }
 
+    /**
+     * this method is used to close the client
+     */
+    @Override
+    public void close() {
+        System.exit(0);
+    }
+
     private void establishConnectionSolo(){
         SoloConnectionHandler socket = new SoloConnectionHandler();
         connection = new SoloServerConnection(socket,clientController,this);
