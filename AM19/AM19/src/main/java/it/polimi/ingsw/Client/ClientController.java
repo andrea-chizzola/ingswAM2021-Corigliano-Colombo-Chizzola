@@ -373,7 +373,8 @@ public class ClientController implements ClientConnectionListener, InteractionOb
      */
     private void endGameUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<String, Integer> map = message.getEndGamePoints();
-        view.showEndGame(map);
+        String winner = message.getWinner();
+        view.showEndGame(map,winner);
 
         //TODO Here the connection should be closed (client side)
     }

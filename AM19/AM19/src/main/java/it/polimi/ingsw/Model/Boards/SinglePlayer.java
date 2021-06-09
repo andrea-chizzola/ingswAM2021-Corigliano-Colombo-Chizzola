@@ -112,24 +112,19 @@ public class SinglePlayer implements CustomMode{
      * @return returns the message showed to the player when the match is over
      */
     @Override
-    public Map<String,Integer> findWinnerMessage(ArrayList<Board> boards) {
-
-        Map<String,Integer> map = new HashMap<>();
-        map.put(boards.get(0).getNickname(),boards.get(0).getTotalPoints());
+    public String findWinner(ArrayList<Board> boards) {
 
         int cardNumber = 0;
+        String lorenzo = "Lorenzo il Magnifico";
 
         for(Slot slot : boards.get(0).getSlots()){
             cardNumber = cardNumber + slot.getNumberOfCards();
         }
 
-        if(cardNumber >= 7 || boards.get(0).getFaithTrack().isEndTrack()) {
-            map.put("Lorenzo", 0);
-            return map;
-        }
+        if(cardNumber >= 7 || boards.get(0).getFaithTrack().isEndTrack())
+            return boards.get(0).getNickname();
 
-        map.put("Lorenzo", 9999);
-        return map;
+        return lorenzo;
     }
 
 

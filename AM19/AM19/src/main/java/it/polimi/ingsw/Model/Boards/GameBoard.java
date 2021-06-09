@@ -239,18 +239,24 @@ public class GameBoard implements GameBoardHandler {
      * @return returns a map (nickName - totalPoints)
      */
     public Map<String,Integer> getTotalPoints(){
-        /*Map<String,Integer> map = new HashMap<>();
+        Map<String,Integer> map = new HashMap<>();
         for(Board board : players){
             map.put(board.getNickname(),board.getTotalPoints());
         }
         for(Board board : disconnectedPlayers){
             map.put(board.getNickname(),board.getTotalPoints());
         }
-        return map;*/
+        return map;
+    }
+
+    /**
+     * @return the nickname of the winner
+     */
+    private String getWinner(){
         ArrayList<Board> list = new ArrayList<>();
         list.addAll(players);
         list.addAll(disconnectedPlayers);
-        return customMode.findWinnerMessage(list);
+        return customMode.findWinner(list);
     }
 
     /**
@@ -308,7 +314,7 @@ public class GameBoard implements GameBoardHandler {
 
         customMode.endTurnAction(this);
         if(gameEnded)
-            virtualView.showEndGame(getTotalPoints());
+            virtualView.showEndGame(getTotalPoints(),getWinner());
 
         if(players.size() == 1 && disconnectedPlayers.size()==0) {
             virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
@@ -480,7 +486,7 @@ public class GameBoard implements GameBoardHandler {
     public void disconnectPlayer(String nickname) {
 
         if(!isAllInitialized()) {
-            virtualView.showEndGame(getTotalPoints());
+            virtualView.showEndGame(getTotalPoints(), getWinner());
             return;
         }
         if(currentPlayer.getNickname().equals(nickname)){
@@ -506,6 +512,7 @@ public class GameBoard implements GameBoardHandler {
         for(int i=0; i<disconnectedPlayers.size(); i++){
 
             Board board = disconnectedPlayers.get(i);
+            int j = players.size();
 
             if(board.getNickname().equals(nickname)){
                 players.add(board);
@@ -515,6 +522,10 @@ public class GameBoard implements GameBoardHandler {
                 virtualView.showMarketUpdate(marketBoard.showMarket());
                 virtualView.showBoxes(board.getWarehouse().showWarehouse(), board.getStrongBox().showStrongBox(), board.getNickname());
                 virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
+                if(j==0) {
+                    endTurnMove();
+                    showAvailableTurns();
+                }
                 return;
             }
         }

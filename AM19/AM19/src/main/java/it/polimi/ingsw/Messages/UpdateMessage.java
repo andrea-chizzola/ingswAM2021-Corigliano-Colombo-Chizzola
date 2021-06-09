@@ -41,6 +41,15 @@ public class UpdateMessage extends Message {
     }
 
     /**
+     * @return true if Lorenzo is the winner, false otherwise
+     * @throws MalformedMessageException if the message is not correctly formed
+     */
+    public String getWinner() throws MalformedMessageException{
+        MessageUtilities parser = MessageUtilities.instance();
+        return parser.getString(toXML(),"winner");
+    }
+
+    /**
      * @return List of ResQuantity which represents the resources and quantities present the Warehouse
      * @throws MalformedMessageException if the message is not correctly formed
      */

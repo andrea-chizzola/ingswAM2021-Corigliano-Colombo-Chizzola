@@ -4,6 +4,7 @@ package it.polimi.ingsw.Model.Boards;
 import it.polimi.ingsw.Messages.Enumerations.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * public class used to implement the endTurnAction method in case of a multiplayer match
@@ -52,15 +53,14 @@ public class MultiplePlayer implements CustomMode{
      * @return returns the message showed to the players when the match is over
      */
     @Override
-    public Map<String,Integer> findWinnerMessage(ArrayList<Board> boards) {
+    public String findWinner(ArrayList<Board> boards) {
 
-        Map<String,Integer> map = new HashMap<>();
-
-        for(Board board : boards){
-            map.put(board.getNickname(),board.getTotalPoints());
+        Board winner = boards.get(0);
+        for(Board board:boards){
+            if(board.getTotalPoints()>winner.getTotalPoints())
+                winner = board;
         }
-
-        return map;
+        return winner.getNickname();
     }
 
     @Override

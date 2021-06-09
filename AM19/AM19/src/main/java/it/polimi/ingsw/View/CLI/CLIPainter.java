@@ -504,6 +504,7 @@ public class CLIPainter{
         }
     }
 
+    //TODO usare il nuovo parametro winner in cli
     public static void paintEndGameBox(String[][] target, int V_OFFSET, int H_OFFSET, Map<String, Integer> players){
         fill(target, V_OFFSET, H_OFFSET, END_BOX_WIDTH, END_BOX_LENGTH);
         paintRectangle(target, V_OFFSET, H_OFFSET, END_BOX_WIDTH, END_BOX_LENGTH, baseFont);

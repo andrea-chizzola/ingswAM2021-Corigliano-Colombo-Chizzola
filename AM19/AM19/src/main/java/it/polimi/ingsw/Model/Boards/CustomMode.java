@@ -26,7 +26,7 @@ public interface CustomMode {
      * @param boards contains the boards related to each player
      * @return returns a map (nickName - totalPoints)
      */
-    Map<String,Integer> findWinnerMessage(ArrayList<Board> boards);
+    String findWinner(ArrayList<Board> boards);
 
     /**
      * @return Optional Integer which represent, if not empty, the faith points of Lorenzo

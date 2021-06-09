@@ -24,7 +24,7 @@ public class SoloClientConnection implements ClientConnection, Runnable{
      */
     @Override
     public void closeConnection() {
-        //System.exit(0);
+        System.exit(0);
     }
 
 
