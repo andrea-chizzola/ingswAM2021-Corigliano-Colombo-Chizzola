@@ -19,9 +19,9 @@ public class Client implements MessageSender {
     private static final String CLI_ARG = "--cli";
 
     private ServerConnection connection;
-    private String ip;
-    private int port;
-    private boolean useCli;
+    private final String ip;
+    private final int port;
+    private final boolean useCli;
     private ClientController clientController;
 
     public Client(String ip, int port, boolean useCli) {
@@ -153,7 +153,6 @@ public class Client implements MessageSender {
             cli = false;
             System.out.println("[CLIENT] Client will be initialized using GUI settings.");
         }else if (argList.contains(CLI_ARG)) {
-            cli = true;
             System.out.println("[CLIENT] Client will be initialized using CLI settings.");
         }
 

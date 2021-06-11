@@ -8,9 +8,7 @@ import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
-import it.polimi.ingsw.View.SubjectView;
 import it.polimi.ingsw.View.View;
 
 import java.util.*;
@@ -20,17 +18,17 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     /**
      * this attribute represents the reduced model of the Client
      */
-    private ReducedGameBoard model;
+    private final ReducedGameBoard model;
 
     /**
      * this attribute represents the view of the Client
      */
-    private View view;
+    private final View view;
 
     /**
      * this attribute represents a sender of messages
      */
-    private MessageSender messageSender;
+    private final MessageSender messageSender;
 
     /**
      * this attribute is true if the login has been successful
@@ -45,7 +43,7 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     /**
      * this attribute contains all the messages used during the game
      */
-    private LinkedList<String> receivedMessages;
+    private final LinkedList<String> receivedMessages;
 
     /**
      * this attribute is true if a player interaction is available
@@ -118,11 +116,11 @@ public class ClientController implements ClientConnectionListener, InteractionOb
             String message = MessageFactory.buildGameStatus(false,
                     "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
             receivedMessages.add(message);
-
             this.notifyAll();
+
         } catch (MalformedMessageException e) {
             System.out.println("[CLIENT] cannot create the missing pong message");
-            e.printStackTrace();
+            close();
         }
     }
 
@@ -148,8 +146,8 @@ public class ClientController implements ClientConnectionListener, InteractionOb
                 updateHandler(new UpdateMessage(message, type));
             }
         } catch (MalformedMessageException e) {
-            System.out.println("[CLIENT] cannot create the missing pong message");
-            e.printStackTrace();
+            System.out.println("[CLIENT] cannot read the received message. Closing Connection...");
+            close();
         }
     }
 
@@ -233,7 +231,6 @@ public class ClientController implements ClientConnectionListener, InteractionOb
             }
             default:
                 break;
-            //END CONNECTION BECAUSE OF WRONG MESSAGE FROM SERVER
         }
     }
 
@@ -255,7 +252,6 @@ public class ClientController implements ClientConnectionListener, InteractionOb
             }
             default:
                 break;
-            //END CONNECTION BECAUSE OF WRONG MESSAGE FROM SERVER
         }
         model.setModelState(type);
     }
@@ -337,7 +333,6 @@ public class ClientController implements ClientConnectionListener, InteractionOb
                 break;
             }
             default:
-                //END CONNECTION. WRONG SEQUENCE OF MESSAGES OF UNKNOWN MESSAGE
                 break;
         }
     }
@@ -375,8 +370,6 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     private void endGameUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<String, Integer> map = message.getEndGamePoints();
         view.showEndGame(map);
-
-        //TODO Here the connection should be closed (client side)
     }
 
     /**
@@ -428,8 +421,8 @@ public class ClientController implements ClientConnectionListener, InteractionOb
 
         Optional<List<ItemStatus>> lorenzoSections = message.getLorenzoSections();
         Optional<Integer> lorenzoFaith = message.getLorenzoFaith();
-        lorenzoFaith.ifPresent(integer -> model.setLorenzoFaith(integer));
-        lorenzoSections.ifPresent(itemStatuses -> model.setLorenzoSections(itemStatuses));
+        lorenzoFaith.ifPresent(model::setLorenzoFaith);
+        lorenzoSections.ifPresent(model::setLorenzoSections);
 
         Map<String, List<ItemStatus>> sections = new HashMap<>();
         Map<String, Integer> faith = message.getFaithPoints();
