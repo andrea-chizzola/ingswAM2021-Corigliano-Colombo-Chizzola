@@ -186,8 +186,8 @@ public class ClientController implements ClientConnectionListener, InteractionOb
      */
     private void loginHandler(ReplyMessage reply) throws MalformedMessageException {
         if(!loggedIn && !reply.isOk()){
-            //termino il client. Il login non è mai avvenuto
             System.out.println("[Client] Cannot connect you to a game. Closing connection...");
+            close();
         }
         loggedIn = true;
     }

@@ -387,7 +387,7 @@ public class GUI implements View, SubjectView {
      * @param message is the representation of the interaction
      */
     @Override
-    public void notifyInteractionSolo(String message) {
+    public void notifySoloInteraction(String message) {
         interactionObserver.updateInteractionSolo(message);
     }
 

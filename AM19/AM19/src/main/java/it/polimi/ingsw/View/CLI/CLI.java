@@ -529,7 +529,7 @@ public class CLI implements View, SubjectView {
         if(first.equals("true")){
             notifyNickname(player);
             try {
-                notifyInteractionSolo(MessageFactory.buildConnection("Connection request", player, true, 1));
+                notifySoloInteraction(MessageFactory.buildConnection("Connection request", player, true, 1));
             }catch(MalformedMessageException e){
                 //CLOSE CONNECTION
             }
@@ -1094,7 +1094,7 @@ public class CLI implements View, SubjectView {
      * @param message is the representation of the interaction
      */
     @Override
-    public void notifyInteractionSolo(String message) {
+    public void notifySoloInteraction(String message) {
         interactionObserver.updateInteractionSolo(message);
     }
 

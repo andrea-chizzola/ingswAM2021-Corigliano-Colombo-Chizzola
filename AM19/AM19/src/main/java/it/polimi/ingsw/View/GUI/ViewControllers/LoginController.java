@@ -65,7 +65,7 @@ public class LoginController extends ViewController{
             try {
                 String message = MessageFactory.buildConnection("Connection request.", nicknameField.getText(), true, 1);
                 getGUIReference().notifyNickname(nicknameField.getText());
-                getGUIReference().notifyInteractionSolo(message);
+                getGUIReference().notifySoloInteraction(message);
                 LoadingController controller = new LoadingController();
                 GUIHandler.loadRoot(controller, "/FXML/loading.fxml");
             } catch (MalformedMessageException e) {

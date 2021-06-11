@@ -52,6 +52,7 @@ public class Client implements MessageSender {
      */
     @Override
     public void close() {
+        connection.closeConnection();
         System.exit(0);
     }
 
