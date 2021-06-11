@@ -2,7 +2,6 @@
 #### Andrea Chizzola, Davide Corigliano, Marco Colombo
 
 ![alt text](AM19/AM19/src/main/resources/Images/login.png)
-[picture link](AM19/AM19/src/main/resources/Images/login.png) 
 ## Introduction
 The goal of the project is the implementation of the board game 'Masters 
 of Renaissance'.  
@@ -32,13 +31,14 @@ implemented functionalities.
     disconnected player.
     
 ### UML
-The following diagrams contain the initial UML of the model and the
-final version of the model.  
+The following diagrams contain the 
+[initial](deliveries/UML/UML_Model_V2.jpg) UML of the model and the
+[final](deliveries/UML/UML_Model_V3.jpg) version of the model.  
 The model has been modified based on the suggestions received during the
 laboratories, and of the issues found during the implementation of the game
 
 ### Network Protocol
-The following document contains the network protocol designed to manage
+The following document contains the [network protocol](deliveries/UML/UML_Model_V3.jpg) designed to manage
 the communication between the client and the server.
 
 ### JavaDoc
@@ -54,7 +54,7 @@ allows building JARs.
     
 ### Launching the game
 The game can be launched from a terminal. Both the Client and the Server can be
-launched from the same JAR. The JAR is located in the Shade directory.//TODO insert link to JAR
+launched from the same JAR. The [JAR](AM19/AM19/shade/AM19.jar) is located in the Shade directory.
 #### Server
 The Server can be launched using the following command
 ```
