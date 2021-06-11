@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.Boards.GameBoardHandler;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.View.Update;
 import it.polimi.ingsw.View.View;
 
 
@@ -28,14 +29,14 @@ public class MessageHandler {
     /**
      * Virtual view
      */
-    private final View virtualView;
+    private final Update virtualView;
 
     /**
      * constructor
      * @param gameBoard the gameBoardHandler
      * @param virtualView the virtual view
      */
-    public MessageHandler(GameBoardHandler gameBoard, View virtualView) {
+    public MessageHandler(GameBoardHandler gameBoard, Update virtualView) {
 
         this.gameBoard = gameBoard;
         this.virtualView = virtualView;

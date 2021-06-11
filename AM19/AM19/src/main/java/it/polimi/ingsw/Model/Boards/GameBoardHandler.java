@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
+import it.polimi.ingsw.View.Update;
 import it.polimi.ingsw.View.View;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public interface GameBoardHandler {
      * This method attaches the virtualView to the model
      * @param virtualView the virtual view observer of the model
      */
-    void attachView(View virtualView);
+    void attachView(Update virtualView);
 
     /**
      * this method gets the production of the development card present in the indicated slot

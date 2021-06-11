@@ -13,6 +13,7 @@ import it.polimi.ingsw.Model.MarketBoard.MarbleWhite;
 import it.polimi.ingsw.Model.MarketBoard.MarketBoard;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
+import it.polimi.ingsw.View.Update;
 import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
@@ -41,7 +42,7 @@ public class GameBoard implements GameBoardHandler {
     /**
      * the virtual view
      */
-    private View virtualView;
+    private Update virtualView;
 
     /**
      * indicates if the end of the game has been triggered
@@ -329,7 +330,7 @@ public class GameBoard implements GameBoardHandler {
      * @param virtualView the observer of the model
      */
     @Override
-    public void attachView(View virtualView) { this.virtualView = virtualView; }
+    public void attachView(Update virtualView) { this.virtualView = virtualView; }
 
     /**
      * This method distributes the leader cards and updates the view
