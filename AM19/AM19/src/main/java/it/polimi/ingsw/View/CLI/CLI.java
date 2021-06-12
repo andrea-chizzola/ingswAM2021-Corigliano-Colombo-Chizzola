@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.CLI;
 
 import it.polimi.ingsw.Client.InteractionObserver;
+import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Exceptions.IllegalIDException;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
@@ -529,7 +530,7 @@ public class CLI implements View, SubjectView {
         if(first.equals("true")){
             notifyNickname(player);
             try {
-                notifyInteractionSolo(MessageFactory.buildConnection("Connection request", player, true, 1));
+                notifySoloInteraction(MessageFactory.buildConnection("Connection request", player, true, 1));
             }catch(MalformedMessageException e){
                 //CLOSE CONNECTION
             }
@@ -663,9 +664,12 @@ public class CLI implements View, SubjectView {
     public void selectLeaderAction() {
         accumulator = new Accumulator(model);
         builder = new BuildLeaderUpdate();
+        String currentPlayer = model.getCurrentPlayer();
+        ReducedBoard board = model.getBoard(currentPlayer);
+
         String action;
         String[] selections;
-        Map<Integer, String> cards = model.getBoard(model.getCurrentPlayer()).getLeadersID();
+        Map<Integer, String> cards = board.getLeadersID();
         plotView();
         do {
             out.println("\nSelect two of your cards. Command:- position1:position2\n" +
@@ -785,7 +789,9 @@ public class CLI implements View, SubjectView {
         builder = new BuildLeaderAction();
 
         String action, player = model.getCurrentPlayer();
-        Map<Integer,String> leadersID = model.getBoard(player).getLeadersID();
+        ReducedBoard board = model.getBoard(player);
+
+        Map<Integer,String> leadersID = board.getLeadersID();
         String[] sequence;
         int position;
         //try {
@@ -881,7 +887,9 @@ public class CLI implements View, SubjectView {
         if (target.length!=2 || !isIntSequence(target, 1)) return false;
 
         int position = Integer.parseInt(target[0]), selected = Integer.parseInt(target[1]);
-        return model.getDecks().containsKey(position) && selected <= model.getConfiguration().getSlotNumber();
+        Map<Integer, String> decks = model.getDecks();
+        int nSlots = model.getConfiguration().getSlotNumber();
+        return decks.containsKey(position) && selected <= nSlots;
     }
 
     /**
@@ -891,6 +899,8 @@ public class CLI implements View, SubjectView {
     public void doProductionsAction(){
         accumulator = new Accumulator(model);
         builder = new BuildDoProduction();
+        String currentPlayer = model.getCurrentPlayer();
+        ReducedBoard board = model.getBoard(currentPlayer);
 
         String action, leaders = "", developments = "";
 
@@ -904,14 +914,14 @@ public class CLI implements View, SubjectView {
         if(Boolean.parseBoolean(action))
             accumulator.setPersonalProduction();
 
-        if(model.getBoard(model.getCurrentPlayer()).getLeadersID().keySet().size()>=1) {
+        if(board.getLeadersID().keySet().size()>=1) {
             out.println("What about leader cards? Select them. Command:- card1:card2... [positions]");
-            leaders = helpCards(model.getBoard(model.getCurrentPlayer()).getLeadersID());
+            leaders = helpCards(board.getLeadersID());
             accumulator.setLeaderCards(leaders);
         }
-        if(model.getBoard(model.getCurrentPlayer()).getSlots().keySet().size()>=1) {
+        if(board.getSlots().keySet().size()>=1) {
             out.println("Don't forget your development cards! Select them. Command:- card1:card2... [positions]");
-            developments = helpCards(model.getBoard(model.getCurrentPlayer()).getSlots());
+            developments = helpCards(board.getSlots());
             accumulator.setDevelopmentCards(developments);
         }
         out.println("Select your custom materials:");
@@ -1085,7 +1095,7 @@ public class CLI implements View, SubjectView {
      * @param message is the representation of the interaction
      */
     @Override
-    public void notifyInteractionSolo(String message) {
+    public void notifySoloInteraction(String message) {
         interactionObserver.updateInteractionSolo(message);
     }
 

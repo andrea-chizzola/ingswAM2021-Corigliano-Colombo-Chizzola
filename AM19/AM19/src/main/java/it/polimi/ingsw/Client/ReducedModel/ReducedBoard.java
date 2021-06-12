@@ -58,7 +58,7 @@ public class ReducedBoard {
      *
      * @return the amount of faith points owned by the player
      */
-    public int getFaithPoints() {
+    public synchronized int getFaithPoints() {
         return faithPoints;
     }
 
@@ -66,7 +66,7 @@ public class ReducedBoard {
      * this method is used to set the amount of faith point owned by the player
      * @param faith is the amount of faith points
      */
-    public void setFaithPoints(int faith) {
+    public synchronized void setFaithPoints(int faith) {
         this.faithPoints = faith;
     }
 
@@ -74,7 +74,7 @@ public class ReducedBoard {
      * this method is used get the status of the player's vatican sections
      * @return a list containing the status of the player's vatican report sections
      */
-    public List<ItemStatus> getSections() {
+    public synchronized List<ItemStatus> getSections() {
         return new LinkedList<>(sections);
     }
 
@@ -82,7 +82,7 @@ public class ReducedBoard {
      * this method is used to set the status of the player's vatican report sections
      * @param sections is the new status of the player's sections
      */
-    public void setSections(List<ItemStatus> sections) {
+    public synchronized void setSections(List<ItemStatus> sections) {
         this.sections = sections;
     }
 
@@ -90,7 +90,7 @@ public class ReducedBoard {
      * this method is used to retrieve the status of the player's slots
      * @return a map that represents the state of the player's slots
      */
-    public Map<Integer, String> getSlots() {
+    public synchronized Map<Integer, String> getSlots() {
         return new HashMap<>(slots);
     }
 
@@ -98,7 +98,7 @@ public class ReducedBoard {
      * this method is used to set the state of the player's slots
      * @param slots is the state of the player's slots
      */
-    public void setSlots(Map<Integer, String> slots) {
+    public synchronized void setSlots(Map<Integer, String> slots) {
         this.slots = slots;
     }
 
@@ -106,7 +106,7 @@ public class ReducedBoard {
      * this method is used to get the IDs of the player's leader cards
      * @return a map that contains the position and the IDs of the player's leader cards
      */
-    public Map<Integer, String> getLeadersID() {
+    public synchronized Map<Integer, String> getLeadersID() {
         return leadersID;
     }
 
@@ -114,7 +114,7 @@ public class ReducedBoard {
      * this method is used to set the IDs of the player's leader cards
      * @param leadersID is a map that contains the new IDs of the leader cards
      */
-    public void setLeadersID(Map<Integer, String> leadersID) {
+    public synchronized void setLeadersID(Map<Integer, String> leadersID) {
         this.leadersID = leadersID;
     }
 
@@ -122,7 +122,7 @@ public class ReducedBoard {
      * this method is used to get the status of the player's leader cards
      * @return a map that contains the position and the status of the player's leader cards
      */
-    public Map<Integer, ItemStatus> getLeadersStatus() {
+    public synchronized Map<Integer, ItemStatus> getLeadersStatus() {
         return leadersStatus;
     }
 
@@ -130,7 +130,7 @@ public class ReducedBoard {
      * this method is used to set the status of the player's leader cards
      * @param leadersStatus is a map that contains the new status of the leader cards
      */
-    public void setLeadersStatus(Map<Integer, ItemStatus> leadersStatus) {
+    public synchronized void setLeadersStatus(Map<Integer, ItemStatus> leadersStatus) {
         this.leadersStatus = leadersStatus;
     }
 
@@ -138,7 +138,7 @@ public class ReducedBoard {
      * this method is used to get the status of the player's warehouse
      * @return the state of the player's warehouse
      */
-    public List<ResQuantity> getWarehouse() {
+    public synchronized List<ResQuantity> getWarehouse() {
         return warehouse;
     }
 
@@ -146,7 +146,7 @@ public class ReducedBoard {
      * this method is used to set the state of the player's warehouse
      * @param warehouse is a list that contains the new state of the player warehouse
      */
-    public void setWarehouse(List<ResQuantity> warehouse) {
+    public synchronized void setWarehouse(List<ResQuantity> warehouse) {
         this.warehouse = warehouse;
     }
 
@@ -154,7 +154,7 @@ public class ReducedBoard {
      * this method is used to get the state of the player's strongbox
      * @return a list that contains the state of the player's strongbox
      */
-    public List<ResQuantity> getStrongbox() {
+    public synchronized List<ResQuantity> getStrongbox() {
         return strongbox;
     }
 
@@ -162,7 +162,7 @@ public class ReducedBoard {
      * this method is used to set the status of the player's strongbox
      * @param strongbox is a list that represents the new state of the strongbox
      */
-    public void setStrongbox(List<ResQuantity> strongbox) {
+    public synchronized void setStrongbox(List<ResQuantity> strongbox) {
         this.strongbox = strongbox;
     }
 }
