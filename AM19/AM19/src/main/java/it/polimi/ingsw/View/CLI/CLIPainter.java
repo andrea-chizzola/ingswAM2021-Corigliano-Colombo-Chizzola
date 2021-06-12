@@ -516,6 +516,7 @@ public class CLIPainter{
         for(String name : players.keySet()){
             int points = players.get(name);
             content.append("Player: ").append(name).append(" Points: ").append(points).append("\n");
+            //modifico questo if e passo il winner
             if(points>top){
                 winner = name;
                 top = points;

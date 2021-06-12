@@ -507,7 +507,10 @@ public class GameBoard implements GameBoardHandler {
      * @param nickname the nickname of the player reconnected
      */
     @Override
-    public void reconnectPlayer(String nickname) {
+    public void reconnectPlayer(String nickname) throws InvalidActionException{
+
+        if(gameEnded)
+            throw new InvalidActionException("THe game is ended!");
 
         for(int i=0; i<disconnectedPlayers.size(); i++){
 
