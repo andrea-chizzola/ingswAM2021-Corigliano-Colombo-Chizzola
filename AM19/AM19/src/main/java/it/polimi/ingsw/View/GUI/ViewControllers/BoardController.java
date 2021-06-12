@@ -256,7 +256,7 @@ public class BoardController extends ViewController implements HelperWindow{
             try {
                 image = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
             } catch (IllegalIDException e) {
-                //e.printStackTrace();
+                System.out.println("Parsing failure! Card ID: "+cards.get(slot)+" not found!");
             }
             if(status.get(slot) == ItemStatus.ACTIVE){
                 Image card = new Image(getClass().getResourceAsStream(cardPath + image));
@@ -288,7 +288,7 @@ public class BoardController extends ViewController implements HelperWindow{
             try {
                 path = getModelReference().getConfiguration().getDevelopmentCard(slots.get(slot)).getPath();
             } catch (IllegalIDException e) {
-                //e.printStackTrace();
+                System.out.println("Parsing failure! Card ID: "+slots.get(slot)+" not found!");
             }
             Image card = new Image(getClass().getResourceAsStream("/Images/front/" + path));
             developmentCards.get(slot - 1).setImage(card);

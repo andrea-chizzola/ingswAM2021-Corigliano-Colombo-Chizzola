@@ -347,7 +347,7 @@ public class CLI implements View, SubjectView {
             try {
                 card = model.getConfiguration().getDevelopmentCard(decks.get(i));
             } catch (IllegalIDException e) {
-                //e.printStackTrace();
+                System.out.println("Parsing failure! Card ID: "+decks.get(i)+" not found!");
             }
             CLIPainter.devCardPainter(decksStatus, 1 + length*row, BOXES_X + width*column, card.toString());
         }
@@ -411,7 +411,7 @@ public class CLI implements View, SubjectView {
             try {
                 card = model.getConfiguration().getDevelopmentCard(slots.get(i));
             } catch (IllegalIDException e) {
-                //e.printStackTrace();
+                System.out.println("Parsing failure! Card ID: "+slots.get(i)+" not found!");
             }
             CLIPainter.devCardPainter(view, PLAYERS_Y+1, BOXES_X + 30*(i-1)+20, card.toString());
         }
@@ -434,7 +434,7 @@ public class CLI implements View, SubjectView {
                 try {
                     card = model.getConfiguration().getLeaderCard(id);
                 } catch (IllegalIDException e) {
-                    //e.printStackTrace();
+                    System.out.println("Parsing failure! Card ID: "+id+" not found!");
                 }
                 card.setStatus(status.get(i).getBoolValue());
                 CLIPainter.leaderCardPainter(view, PLAYERS_Y + 1 + LEADER_Y, BOXES_X + 28 * (i - 1) + 8, card.toString());
@@ -483,7 +483,7 @@ public class CLI implements View, SubjectView {
         try {
             content = model.getConfiguration().getActionTokenCard(action.get()).toString();
         } catch (IllegalIDException e) {
-            //e.printStackTrace();
+            System.out.println("Parsing failure! TopToken ID: "+action.get()+" not found!");
         }
         CLIPainter.paintToken(viewStatus,TOKEN_Y+RESOURCES_Y+PERSONAL_Y, TOKEN_X, content);
     }
@@ -495,7 +495,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void showEndGame(Map<String, Integer> players, String winner) {
-        CLIPainter.paintEndGameBox(viewStatus, END_Y, END_X, players);
+        CLIPainter.paintEndGameBox(viewStatus, END_Y, END_X, players, winner);
         plotView();
     }
 
