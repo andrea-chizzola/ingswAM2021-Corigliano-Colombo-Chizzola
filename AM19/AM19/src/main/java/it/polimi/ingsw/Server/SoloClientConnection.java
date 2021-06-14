@@ -11,7 +11,7 @@ public class SoloClientConnection implements ClientConnection, Runnable{
     private SoloConnectionHandler socket;
 
     /**
-     * represents the id associated to the local player
+     * represents the id associated to the player
      */
     private final String socketID;
 

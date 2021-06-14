@@ -22,7 +22,7 @@ public class SoloConnectionHandler {
     private final Object lockBufferServer;
 
     /**
-     * lock acquired to add a new message directed to the pretended client
+     * lock acquired to add a new message directed to the client
      */
     private final Object lockBufferClient;
 
