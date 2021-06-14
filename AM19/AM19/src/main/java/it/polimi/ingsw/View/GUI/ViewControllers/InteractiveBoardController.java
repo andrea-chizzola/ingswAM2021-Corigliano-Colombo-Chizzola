@@ -220,7 +220,7 @@ public class InteractiveBoardController extends BoardController {
         try {
             image = getModelReference().getConfiguration().getActionTokenCard(action.get()).getImage();
         } catch (IllegalIDException e) {
-            //e.printStackTrace();
+            System.out.println("Parsing failure! TopToken ID: "+action.get()+" not found!");
         }
         Image token = new Image("/Images/punchboard/" + image);
         actionToken.setImage(token);

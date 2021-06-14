@@ -52,13 +52,15 @@ public class Client implements MessageSender {
      */
     @Override
     public void close() {
+        connection.closeConnection();
         System.exit(0);
     }
 
     private void establishConnectionSolo(){
         SoloConnectionHandler socket = new SoloConnectionHandler();
-        connection = new SoloServerConnection(socket,clientController,this);
-        new Thread(connection).start();
+        SoloServerConnection soloConnection = new SoloServerConnection(socket,clientController,this);
+        connection = soloConnection;
+        new Thread(soloConnection).start();
         socket.attachServerConnection(connection);
         Server server = new Server(socket);
         server.startServerSolo();
@@ -84,8 +86,9 @@ public class Client implements MessageSender {
 
             System.out.println("[CLIENT] Connecting to server...");
             System.out.println("[CLIENT] Connected to server on port " + port);
-            connection = new SocketServerConnection(socket, clientController);
-            new Thread(connection).start();
+            SocketServerConnection serverConnection = new SocketServerConnection(socket, clientController);
+            connection = serverConnection;
+            new Thread(serverConnection).start();
 
         } catch (IOException e) {
 

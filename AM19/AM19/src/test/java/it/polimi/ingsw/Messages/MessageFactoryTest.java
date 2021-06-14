@@ -112,8 +112,8 @@ class MessageFactoryTest {
         map.put("player1", 25);
         map.put("player2", 20);
         try {
-            assertEquals(messageFactory.buildEndGame(map, "Winner message."),
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>END_GAME</messageType><body>Winner message.</body><points>player1:25:player2:20</points></Message>");
+            assertEquals(messageFactory.buildEndGame(map, "pippo","Winner message."),
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><winner>pippo</winner><messageType>END_GAME</messageType><body>Winner message.</body><points>player1:25:player2:20</points></Message>");
         } catch (MalformedMessageException e) {
             fail();
         }
@@ -220,8 +220,8 @@ class MessageFactoryTest {
     void buildEndGameEmptyMap()  {
         Map<String, Integer> map = new HashMap<>();
         try {
-            assertEquals(messageFactory.buildEndGame(map, "Winner message."),
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>END_GAME</messageType><body>Winner message.</body><points/></Message>");
+            assertEquals(messageFactory.buildEndGame(map, "pippo","Winner message."),
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><winner>pippo</winner><messageType>END_GAME</messageType><body>Winner message.</body><points/></Message>");
         } catch (MalformedMessageException e) {
             fail();
         }

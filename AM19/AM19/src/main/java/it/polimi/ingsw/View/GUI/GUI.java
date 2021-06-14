@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.InteractionObserver;
+import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
@@ -149,7 +150,8 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName) {
-        int nSlots = model.getBoard(nickName).getWarehouse().size();
+        ReducedBoard board = model.getBoard(nickName);
+        int nSlots = board.getWarehouse().size();
         String self = model.getPersonalNickname();
         MarbleSelectionController controller = new MarbleSelectionController();
         if(self.equals(nickName)) {
@@ -252,14 +254,15 @@ public class GUI implements View, SubjectView {
     /**
      * this method is used to show the points achieved at the end of the game
      * @param players contains the name of the players and the points obtained
+     * @param winner contains the name of the winner
      */
     @Override
-    public void showEndGame(Map<String, Integer> players) {
+    public void showEndGame(Map<String, Integer> players, String winner) {
 
         EndGameController endGameController = new EndGameController();
         Platform.runLater(() -> {
             GUIHandler.newWindow(endGameController,path + "EndGame.fxml", 600, 400);
-            endGameController.showEndGame(players);
+            endGameController.showEndGame(players,winner);
         });
 
     }
@@ -385,7 +388,7 @@ public class GUI implements View, SubjectView {
      * @param message is the representation of the interaction
      */
     @Override
-    public void notifyInteractionSolo(String message) {
+    public void notifySoloInteraction(String message) {
         interactionObserver.updateInteractionSolo(message);
     }
 

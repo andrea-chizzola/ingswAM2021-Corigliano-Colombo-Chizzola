@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.*;
@@ -185,8 +186,8 @@ public class ClientController implements ClientConnectionListener, InteractionOb
      */
     private void loginHandler(ReplyMessage reply) throws MalformedMessageException {
         if(!loggedIn && !reply.isOk()){
-            //termino il client. Il login non è mai avvenuto
             System.out.println("[Client] Cannot connect you to a game. Closing connection...");
+            close();
         }
         loggedIn = true;
     }
@@ -373,7 +374,8 @@ public class ClientController implements ClientConnectionListener, InteractionOb
      */
     private void endGameUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<String, Integer> map = message.getEndGamePoints();
-        view.showEndGame(map);
+        String winner = message.getWinner();
+        view.showEndGame(map,winner);
 
         //TODO Here the connection should be closed (client side)
     }
@@ -387,9 +389,10 @@ public class ClientController implements ClientConnectionListener, InteractionOb
         String player = message.getPlayer();
         List<ResQuantity> warehouse = message.getWarehouseUpdate();
         List<ResQuantity> strongbox = message.getStrongboxUpdate();
+        ReducedBoard board = model.getBoard(player);
 
-        model.getBoard(player).setWarehouse(warehouse);
-        model.getBoard(player).setStrongbox(strongbox);
+        board.setWarehouse(warehouse);
+        board.setStrongbox(strongbox);
         view.showBoxes(warehouse, strongbox, player);
     }
 
@@ -401,7 +404,8 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     private void slotsUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<Integer, String> slots = message.getSlotsUpdate();
         String player = message.getPlayer();
-        model.getBoard(player).setSlots(slots);
+        ReducedBoard board = model.getBoard(player);
+        board.setSlots(slots);
         view.showSlotsUpdate(slots, player);
     }
 
@@ -432,9 +436,10 @@ public class ClientController implements ClientConnectionListener, InteractionOb
         Map<String, Integer> faith = message.getFaithPoints();
 
         for(String name : faith.keySet()){
+            ReducedBoard board = model.getBoard(name);
             sections.put(name, message.getSections(name));
-            model.getBoard(name).setSections(message.getSections(name));
-            model.getBoard(name).setFaithPoints(faith.get(name));
+            board.setSections(message.getSections(name));
+            board.setFaithPoints(faith.get(name));
         }
         view.showFaithUpdate(faith, sections, lorenzoFaith, lorenzoSections);
     }
@@ -472,8 +477,9 @@ public class ClientController implements ClientConnectionListener, InteractionOb
         Map<Integer, ItemStatus> status = message.getLeaderCardsStatus();
         Map<Integer, String> cards = message.getLeaderCardsUpdate();
         String player = message.getPlayer();
-        model.getBoard(player).setLeadersID(cards);
-        model.getBoard(player).setLeadersStatus(status);
+        ReducedBoard board = model.getBoard(player);
+        board.setLeadersID(cards);
+        board.setLeadersStatus(status);
         view.showLeaderCards(cards, status, player);
     }
 

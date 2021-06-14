@@ -4,6 +4,7 @@ package it.polimi.ingsw.Model.Boards;
 import it.polimi.ingsw.Messages.Enumerations.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * public class used to implement the endTurnAction method in case of a multiplayer match
@@ -52,26 +53,14 @@ public class MultiplePlayer implements CustomMode{
      * @return returns the message showed to the players when the match is over
      */
     @Override
-    public String findWinnerMessage(ArrayList<Board> boards) {
+    public String findWinner(ArrayList<Board> boards) {
 
-        String result = new String("Final Leaderboard: \n");
-
-        Collections.sort(boards, (Board b1, Board b2) -> {
-            if(b1.getTotalPoints() < b2.getTotalPoints()) return -1;
-            else if(b1.getTotalPoints() > b2.getTotalPoints()) return 1;
-            else if(b1.getTotalPoints() == b2.getTotalPoints() && b1.getTotalResources() < b2.getTotalResources()) return -1;
-            else if(b1.getTotalPoints() == b2.getTotalPoints() && b1.getTotalResources() > b2.getTotalResources()) return 1;
-            else return 0;
-        });
-
-        for(int i = boards.size() - 1; i >= 0; i--){
-
-            result = result + (boards.size() - i) + " " + boards.get(i).getNickname() + " " + boards.get(i).getTotalPoints() + "\n";
-
+        Board winner = boards.get(0);
+        for(Board board:boards){
+            if(board.getTotalPoints()>winner.getTotalPoints())
+                winner = board;
         }
-
-        return result;
-
+        return winner.getNickname();
     }
 
     @Override

@@ -185,7 +185,11 @@ class GameBoardTest {
         assertTrue(gameBoard.getPlayers().size()==2);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
-        gameBoard.reconnectPlayer("firstPlayer");
+        try {
+            gameBoard.reconnectPlayer("firstPlayer");
+        } catch (InvalidActionException e) {
+            fail();
+        }
         assertTrue(gameBoard.getPlayers().size()==3);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
@@ -204,9 +208,14 @@ class GameBoardTest {
         assertTrue(gameBoard.getPlayers().size()==1);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
 
-        gameBoard.reconnectPlayer("fourthPlayer");
-        gameBoard.reconnectPlayer("thirdPlayer");
-        gameBoard.reconnectPlayer("firstPlayer");
+        try {
+            gameBoard.reconnectPlayer("fourthPlayer");
+            gameBoard.reconnectPlayer("thirdPlayer");
+            gameBoard.reconnectPlayer("firstPlayer");
+        }catch (InvalidActionException e){
+            fail();
+        }
+
 
         assertTrue(gameBoard.getPlayers().size()==4);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");

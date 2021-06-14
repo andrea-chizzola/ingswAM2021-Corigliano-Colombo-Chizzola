@@ -46,8 +46,9 @@ public interface GameBoardHandler {
     /**
      * This method manages the reconnection of a player
      * @param nickname the nickname of the player reconnected
+     * @throws InvalidActionException if the player can't do this action
      */
-    void reconnectPlayer(String nickname);
+    void reconnectPlayer(String nickname) throws InvalidActionException;
 
     /**
      * This method attaches the virtualView to the model

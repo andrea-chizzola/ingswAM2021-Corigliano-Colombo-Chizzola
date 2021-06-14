@@ -56,7 +56,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
      */
     @Override
     public synchronized void send(String message) {
-
+        System.out.println(message);
         out.println(message);
         out.flush();
 

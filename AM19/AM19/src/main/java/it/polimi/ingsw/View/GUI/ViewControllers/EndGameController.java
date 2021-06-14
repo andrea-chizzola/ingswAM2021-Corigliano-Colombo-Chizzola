@@ -46,6 +46,9 @@ public class EndGameController extends ViewController {
     @FXML
     private Button exitButton;
 
+    @FXML
+    private Label winner;
+
 
     private List<Label> players;
 
@@ -79,7 +82,7 @@ public class EndGameController extends ViewController {
      * manages the end of the game
      * @param map contains the nicknames of the players and the score associated
      */
-    public void showEndGame(Map<String, Integer> map) {
+    public void showEndGame(Map<String, Integer> map, String winner) {
 
         LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
         map.entrySet()
@@ -96,6 +99,9 @@ public class EndGameController extends ViewController {
             points.get(i).setVisible(true);
             i++;
         }
+        String text = winner + "  is the winner!";
+        this.winner.setText(text);
+        this.winner.setVisible(true);
     }
 
     /**

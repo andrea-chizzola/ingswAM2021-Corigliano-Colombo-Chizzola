@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" snapToPixel="false" style="-fx-background-color: brown;">
          <children>
@@ -204,14 +204,14 @@
                   <Font name="Times New Roman" size="12.0" />
                </font>
             </Label>
-            <ImageView fx:id="blackCross" fitHeight="36.0" fitWidth="31.0" layoutX="37.0" layoutY="111.0" opacity="0.5" pickOnBounds="true">
+            <ImageView fx:id="blackCross" fitHeight="36.0" fitWidth="31.0" layoutX="37.0" layoutY="111.0" pickOnBounds="true">
                <image>
                   <Image url="@../Images/punchboard/croce.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="tile" fitHeight="36.0" fitWidth="31.0" layoutX="37.0" layoutY="111.0" opacity="0.5" pickOnBounds="true">
+            <ImageView fx:id="tile" fitHeight="36.0" fitWidth="31.0" layoutX="37.0" layoutY="111.0" pickOnBounds="true">
                <image>
-                  <Image url="@../Images/punchboard/croce.png" />
+                  <Image url="@../Images/punchboard/croceRossa.png" />
                </image>
             </ImageView>
             <ImageView fx:id="actionToken" fitHeight="59.0" fitWidth="66.0" layoutX="248.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />

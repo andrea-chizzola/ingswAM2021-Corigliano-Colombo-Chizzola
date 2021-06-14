@@ -127,7 +127,13 @@ public class MessageHandler {
      * @param nickName nickname of the player
      */
     public void reconnection(String nickName){
-        gameBoard.reconnectPlayer(nickName);
+
+        try {
+            gameBoard.reconnectPlayer(nickName);
+        }
+        catch (InvalidActionException e){
+            virtualView.reply(false,e.getMessage(), nickName);
+        }
     }
 
     /**

@@ -4,7 +4,7 @@ import it.polimi.ingsw.Messages.ClientConnectionListener;
 
 import java.io.IOException;
 
-public class SoloServerConnection implements ServerConnection{
+public class SoloServerConnection implements ServerConnection,Runnable{
 
 
     private ClientConnectionListener clientController;

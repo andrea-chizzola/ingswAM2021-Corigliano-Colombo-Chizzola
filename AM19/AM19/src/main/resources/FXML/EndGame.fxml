@@ -19,44 +19,45 @@
             <Font name="Times New Roman Bold Italic" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="labelPlayers" layoutX="96.0" layoutY="87.0" prefHeight="18.0" prefWidth="98.0" text="PLAYERS">
+      <Label fx:id="labelPlayers" layoutX="95.0" layoutY="145.0" prefHeight="18.0" prefWidth="98.0" text="PLAYERS">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="labelPoints" layoutX="356.0" layoutY="89.0" prefHeight="18.0" prefWidth="50.0" text="POINTS">
+      <Label fx:id="labelPoints" layoutX="355.0" layoutY="147.0" prefHeight="18.0" prefWidth="50.0" text="POINTS">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="labelPlayer1" layoutX="96.0" layoutY="131.0" text="Label">
+      <Label fx:id="labelPlayer1" layoutX="95.0" layoutY="184.0" text="Label">
          <font>
             <Font name="Times New Roman Italic" size="12.0" />
          </font></Label>
-      <Label fx:id="labelPlayer2" layoutX="96.0" layoutY="160.0" text="Label">
+      <Label fx:id="labelPlayer2" layoutX="95.0" layoutY="213.0" text="Label">
          <font>
             <Font name="Times New Roman Italic" size="12.0" />
          </font></Label>
-      <Label fx:id="labelPlayer3" layoutX="96.0" layoutY="191.0" text="Label">
+      <Label fx:id="labelPlayer3" layoutX="95.0" layoutY="244.0" text="Label">
          <font>
             <Font name="Times New Roman Italic" size="12.0" />
          </font></Label>
-      <Label fx:id="labelPlayer4" layoutX="96.0" layoutY="226.0" text="Label">
+      <Label fx:id="labelPlayer4" layoutX="95.0" layoutY="279.0" text="Label">
          <font>
             <Font name="Times New Roman Italic" size="12.0" />
          </font></Label>
-      <Label fx:id="labelPoints1" layoutX="356.0" layoutY="131.0" text="Label" />
-      <Label fx:id="labelPoints2" layoutX="356.0" layoutY="160.0" text="Label" />
-      <Label fx:id="labelPoints3" layoutX="356.0" layoutY="191.0" text="Label" />
-      <Label fx:id="labelPoints4" layoutX="356.0" layoutY="226.0" text="Label" />
+      <Label fx:id="labelPoints1" layoutX="355.0" layoutY="184.0" text="Label" />
+      <Label fx:id="labelPoints2" layoutX="355.0" layoutY="213.0" text="Label" />
+      <Label fx:id="labelPoints3" layoutX="355.0" layoutY="244.0" text="Label" />
+      <Label fx:id="labelPoints4" layoutX="355.0" layoutY="279.0" text="Label" />
       <Label fx:id="labelMessage" layoutX="146.0" layoutY="331.0" prefHeight="18.0" prefWidth="310.0" text="Thanks for playing! Press EXIT to close the game.">
          <font>
             <Font name="Times New Roman Italic" size="14.0" />
          </font></Label>
-      <Label layoutX="468.0" layoutY="131.0" text="WINNER!">
-         <font>
-            <Font name="Times New Roman Bold Italic" size="12.0" />
-         </font></Label>
       <Button fx:id="exitButton" layoutX="276.0" layoutY="358.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="50.0" text="EXIT" />
+      <Label fx:id="winner" layoutX="96.0" layoutY="97.0" prefHeight="20.0" prefWidth="440.0" text="WINNER!">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

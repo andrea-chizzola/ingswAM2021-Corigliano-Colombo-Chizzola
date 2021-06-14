@@ -167,7 +167,6 @@ public class GUIHandler extends Application {
 
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
-            //stage.show();
 
         }
         catch (IOException e) {

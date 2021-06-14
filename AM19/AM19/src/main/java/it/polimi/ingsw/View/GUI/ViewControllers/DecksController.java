@@ -145,7 +145,7 @@ public class DecksController extends ViewController implements HelperWindow{
             try {
                 image = path + config.getDevelopmentCard(id).getPath();
             } catch (IllegalIDException e) {
-                //e.printStackTrace();
+                System.out.println("Parsing failure! Card ID: "+id+" not found!");
             }
             ImageView view = cards.get(i);
             view.setVisible(true);
