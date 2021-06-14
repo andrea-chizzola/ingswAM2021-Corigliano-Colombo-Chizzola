@@ -29,6 +29,11 @@ public class GamesHandler implements ConnectionListener{
     private Map<String, String> inactivePlayers;
 
     /**
+     * represents Lorenzo's nickname
+     */
+    private final String reservedNickname = "Lorenzo";
+
+    /**
      * keeps track of the single player games that have been suspended as the player disconnected
      */
     private List<Game> suspendedGames;
@@ -193,7 +198,7 @@ public class GamesHandler implements ConnectionListener{
      */
     private boolean isNicknameAvailable(String nickname){
 
-        if(inactivePlayers.containsKey(nickname)) return false;
+        if(inactivePlayers.containsKey(nickname) || nickname.equals(reservedNickname)) return false;
 
         for (Game game : waitingConnection) {
             if (game.containsPlayer(nickname)) {
