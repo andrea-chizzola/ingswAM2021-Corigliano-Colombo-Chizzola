@@ -18,10 +18,29 @@ public class Client implements MessageSender {
     private static final String GUI_ARG = "--gui";
     private static final String CLI_ARG = "--cli";
 
+    /**
+     * represents the connection to the server (or pretended server in case of a local match)
+     */
     private ServerConnection connection;
+
+    /**
+     * represents the IP address associated to the server
+     */
     private String ip;
+
+    /**
+     * represents the port number associated to the server
+     */
     private int port;
+
+    /**
+     * true if the client selected to start the game using CLI interface, false otherwise
+     */
     private boolean useCli;
+
+    /**
+     * references the client controller
+     */
     private ClientController clientController;
 
     public Client(String ip, int port, boolean useCli) {
@@ -41,6 +60,10 @@ public class Client implements MessageSender {
     }
 
 
+    /**
+     *  manages the first message exchanged in case of a local match
+     * @param message is the content of the message
+     */
     @Override
     public void firstMessageSolo(String message) {
         establishConnectionSolo();
@@ -56,9 +79,12 @@ public class Client implements MessageSender {
         System.exit(0);
     }
 
+    /**
+     * creates the necessary components to allow the message exchange in case of a local match
+     */
     private void establishConnectionSolo(){
         SoloConnectionHandler socket = new SoloConnectionHandler();
-        SoloServerConnection soloConnection = new SoloServerConnection(socket,clientController,this);
+        SoloServerConnection soloConnection = new SoloServerConnection(socket,clientController);
         connection = soloConnection;
         new Thread(soloConnection).start();
         socket.attachServerConnection(connection);
@@ -128,6 +154,7 @@ public class Client implements MessageSender {
     public static void main(String[] args){
 
         final String DEFAULT_IP = "127.0.0.1";
+        //final String DEFAULT_IP = "25.97.104.102";
         final int DEFAULT_PORT = 1234;
         String ip = DEFAULT_IP;
         int port = DEFAULT_PORT;
