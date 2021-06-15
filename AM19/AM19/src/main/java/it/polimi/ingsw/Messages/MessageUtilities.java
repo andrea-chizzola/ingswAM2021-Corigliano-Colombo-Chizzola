@@ -78,23 +78,6 @@ public class MessageUtilities {
         return messageType;
     }
 
-    /**
-     * @param message the message to be parsed
-     * @param tag the name of the tag of the XML file
-     * @return the turn type correspondent to the value present in the tag
-     * @throws MalformedMessageException if the message is not correctly formed
-     */
-    public TurnType getTurnType(String message, String tag) throws MalformedMessageException{
-        String type = MessageParser.getMessageTag(message,tag);
-        TurnType turnType;
-        try {
-            turnType = TurnType.valueOf(type.toUpperCase());
-        }
-        catch (IllegalArgumentException e){
-            throw new MalformedMessageException();
-        }
-        return turnType;
-    }
 
     /**
      * @param message the message to be parsed
@@ -121,8 +104,8 @@ public class MessageUtilities {
      */
     public String getBody(String message)  throws MalformedMessageException{
         String body = MessageParser.getMessageTag(message,"body");
-        if(body == null)
-             throw new MalformedMessageException();
+        //if(body == null)
+        //     throw new MalformedMessageException();
         return body;
     }
 
@@ -169,6 +152,7 @@ public class MessageUtilities {
         if(warehouse.equals("")){
             return quantity;
         }
+
         if(string.length%2 != 0 || string.length == 0)
             throw new MalformedMessageException();
 
@@ -486,7 +470,6 @@ public class MessageUtilities {
             throw new MalformedMessageException();
 
         for(int i=0; i<string.length/2; i++){
-            table.put(string[i*2], parseInt(string[i*2+1]));
             try {
                 table.put(string[i*2], parseInt(string[i*2+1]));
             }
@@ -555,8 +538,8 @@ public class MessageUtilities {
      */
     public String getString(String message, String tag) throws MalformedMessageException{
         String messageString = MessageParser.getMessageTag(message,tag);
-        if(messageString == null)
-            throw new MalformedMessageException("ParseInt fail!");
+        //if(messageString == null)
+        //    throw new MalformedMessageException("Parsing fail!");
         return messageString;
     }
 

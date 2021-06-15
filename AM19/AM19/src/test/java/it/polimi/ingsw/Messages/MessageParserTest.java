@@ -40,18 +40,15 @@ class MessageParserTest {
     @Test
     void test4 (){
         String file = "<Message><body>Selection of the type of turn.</body><messageType>SELECTED_TURN</messageType><turnType>DO_PRODUCTION</turnType></Message>";
-        String result = null;
 
-
-            Exception exception1;
-            exception1 = assertThrows(MalformedMessageException.class, () -> MessageParser.getMessageTag(file,"vsnso"));
-            assertEquals("Parsing failure!", exception1.getMessage());
+        Exception exception1;
+        exception1 = assertThrows(MalformedMessageException.class, () -> MessageParser.getMessageTag(file,"vsnso"));
+        assertEquals("Parsing failure!", exception1.getMessage());
     }
 
     @Test
     void test5 (){
         String file = null;
-        String result = null;
 
         Exception exception1;
         exception1 = assertThrows(MalformedMessageException.class, () -> MessageParser.getMessageTag(file,"vsnso"));
@@ -61,7 +58,6 @@ class MessageParserTest {
     @Test
     void test6 (){
         String file = "osfnvsfjdvpjnvpwvn";
-        String result = null;
 
         Exception exception1;
         exception1 = assertThrows(MalformedMessageException.class, () -> MessageParser.getMessageTag(file,"vsnso"));
@@ -71,7 +67,6 @@ class MessageParserTest {
     @Test
     void testWrongXMLSyntax (){
         String file = "<Message><body>Selection of the type of turn.</body><messageType>SELECTED_TURN</messageTy>DO_PRODUCTION<urnType></Message>";
-        String result = null;
 
         Exception exception1;
         exception1 = assertThrows(MalformedMessageException.class, () -> MessageParser.getMessageTag(file,"body"));

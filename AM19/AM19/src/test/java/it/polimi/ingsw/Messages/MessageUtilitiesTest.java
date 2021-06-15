@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Messages;
 
-import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.PlayerAction;
@@ -14,8 +13,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.regex.PatternSyntaxException;
+import java.util.Map;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,16 +43,14 @@ class MessageUtilitiesTest {
     void getTypeEmpty()  {
 
         String message = "<Message><messageType></messageType><body>Connection request.</body></Message>";
-        Exception exception1;
-        exception1 = assertThrows(MalformedMessageException.class, () -> instance.getType(message));
+        assertThrows(MalformedMessageException.class, () -> instance.getType(message));
     }
 
     @Test
     void getTypeWrongMessage()  {
 
         String message = "<Messag messageType><body>Connection reques body></Message>";
-        Exception exception1;
-        exception1 = assertThrows(MalformedMessageException.class, () -> instance.getType(message));
+        assertThrows(MalformedMessageException.class, () -> instance.getType(message));
     }
 
     @Test
@@ -67,29 +66,37 @@ class MessageUtilitiesTest {
     void getTrayEmpty()  {
 
         String message = "<Message><messageType></messageType><tray></tray><body>Connection request.</body></Message>";
-        Exception exception1;
-        exception1 = assertThrows(MalformedMessageException.class, () -> instance.getTray(message,"tray"));
+        assertThrows(MalformedMessageException.class, () -> instance.getTray(message,"tray"));
     }
 
     @Test
     void getTrayWrongMessage()  {
 
         String message = "<Messag messageType><body>Connection reques body></Message>";
-        Exception exception1;
-        exception1 = assertThrows(MalformedMessageException.class, () -> instance.getTray(message,"tray"));
+        assertThrows(MalformedMessageException.class, () -> instance.getTray(message,"tray"));
     }
 
     @Test
     void getTrayWrongMessage1()  {
 
         String message = "<Message><messageType></messageType><tray>ciao</tray><body>Connection request.</body></Message>";
-        Exception exception1;
-        exception1 = assertThrows(MalformedMessageException.class, () -> instance.getTray(message,"tray"));
+        assertThrows(MalformedMessageException.class, () -> instance.getTray(message,"tray"));
     }
 
     @Test
-    void getBody() throws MalformedMessageException {
-        assertEquals("Connection request.", instance.getBody("<Message><messageType>CONNECTION</messageType><nickname>nickname</nickname><playersNumber>4</playersNumber><body>Connection request.</body><gameHost>true</gameHost></Message>"));
+    void getBody() {
+        try {
+            String message = "<Message><messageType>CONNECTION</messageType><nickname>nickname</nickname><playersNumber>4</playersNumber><body>Connection request.</body><gameHost>true</gameHost></Message>";
+            assertEquals("Connection request.", instance.getBody(message));
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void getBodyNull()  {
+        String message = "<Message><messageType>CONNECTION</messageType></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getBody(message));
     }
 
     @Test
@@ -105,8 +112,7 @@ class MessageUtilitiesTest {
     void getBodyWrong()  {
 
         String message = "<Message><messageType></messageType><tray></tray><body>Connection request.body></Message>";
-        Exception exception1;
-        exception1 = assertThrows(MalformedMessageException.class, () -> instance.getBody(message));
+        assertThrows(MalformedMessageException.class, () -> instance.getBody(message));
     }
 
     @Test
@@ -133,6 +139,13 @@ class MessageUtilitiesTest {
     }
 
     @Test
+    void getShelvesWrong() {
+        String message = "<Message><warehouse>1:1:2:1:3</warehouse><strongBox>coins:2:servants:3</strongBox></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getShelves(message, "warehouse"));
+
+    }
+
+    @Test
     void getQuantity() {
         List<Integer> list = new ArrayList<>();
         list.add(5);
@@ -153,6 +166,13 @@ class MessageUtilitiesTest {
         } catch (MalformedMessageException e) {
             fail();
         }
+    }
+
+    @Test
+    void getQuantityWrong() {
+        String message = "<Message><warehouse>1:1:2:1:3</warehouse><strongBox>coins:2:servants:3</strongBox></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getQuantity(message, "warehouse"));
+
     }
 
     @Test
@@ -178,6 +198,20 @@ class MessageUtilitiesTest {
     }
 
     @Test
+    void getResQuantityMalformedMessage() {
+        String message = "<Message><warehouse>1:1:2:1:3</warehouse><strongBox>coins:2:servants:3:coins</strongBox></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getResQuantityList(message, "strongBox"));
+
+    }
+
+    @Test
+    void getResQuantityWrongResource() {
+        String message = "<Message><warehouse></warehouse><strongBox>xxx:2:servants:3</strongBox></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getResQuantityList(message, "strongBox"));
+
+    }
+
+    @Test
     void getMarbleFromAction() {
         List<Marble> list = new ArrayList<>();
         list.add(new MarbleBlue());
@@ -193,11 +227,17 @@ class MessageUtilitiesTest {
     }
 
     @Test
-    void getMarbleActionMalformadMessage()  {
+    void getMarbleActionMalformedMessage()  {
 
         String message = "<Message><marblesActions>::::</marblesActions></Message>";
-        Exception exception1;
-        exception1 = assertThrows(MalformedMessageException.class, () -> instance.getMarbleFromAction(message,"marblesActions"));
+        assertThrows(MalformedMessageException.class, () -> instance.getMarbleFromAction(message,"marblesActions"));
+    }
+
+    @Test
+    void getMarbleActionWrongMarbleName()  {
+
+        String message = "<Message><marblesActions>MarbleBBBbBlue:INSERT:2:marblewhite:insert:0</marblesActions></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getMarbleFromAction(message,"marblesActions"));
     }
 
     @Test
@@ -243,6 +283,26 @@ class MessageUtilitiesTest {
     }
 
     @Test
+    void getMarbleListWrongName()  {
+        String message = "<Message><marblesActions>MarbleBlue:marblewWWWhite:maRblerEd</marblesActions></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getMarbleList(message,"marblesActions"));
+    }
+
+    @Test
+    void getMarbleListMalformedMessage()  {
+        String message = "<Message><marblesActions>:</marblesActions></Message>";
+        List<Marble> list = new ArrayList<>();
+
+        try {
+            List<Marble> messageList = instance.getMarbleList(message, "marblesActions");
+            assertEquals(list,messageList);
+
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
     void getActions()  {
         List<PlayerAction> list = new ArrayList<>();
         list.add(PlayerAction.INSERT);
@@ -256,6 +316,36 @@ class MessageUtilitiesTest {
     }
 
     @Test
+    void getActionsWrongNumber()  {
+
+        String message = "<Message><body>Marbles managing.</body><messageType>ACTION</messageType><marblesActions>MarbleBlue:InSERT:2:MarbleYellow</marblesActions></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getActions(message, "marblesActions"));
+    }
+
+    @Test
+    void getActionsWrongAction()  {
+
+        String message = "<Message><body>Marbles managing.</body><messageType>ACTION</messageType><marblesActions>MarbleBlue:XXX:2</marblesActions></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getActions(message, "marblesActions"));
+    }
+
+    @Test
+    void getAction()  {
+        PlayerAction action = PlayerAction.DISCARD;
+        try {
+            assertEquals(action, instance.getAction("<Message><action>DISCARD</action></Message>", "action"));
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void getActionWrong()  {
+        String message = "<Message><action></action></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getAction(message,"action"));
+    }
+
+    @Test
     void getActionsEmpty()  {
         List<PlayerAction> list = new ArrayList<>();
         try {
@@ -264,6 +354,7 @@ class MessageUtilitiesTest {
             fail();
         }
     }
+
 
     @Test
     void getStatusList()  {
@@ -288,6 +379,13 @@ class MessageUtilitiesTest {
     }
 
     @Test
+    void getStatusListWrongName()  {
+
+        String message = "<Message><status>ACTTTTIVE:INACTIVE</status></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getStatusList(message,"status"));
+    }
+
+    @Test
     void getShelvesActions()  {
         List<Integer> list = new ArrayList<>();
         list.add(3);
@@ -307,6 +405,13 @@ class MessageUtilitiesTest {
         } catch (MalformedMessageException e) {
             fail();
         }
+    }
+
+    @Test
+    void getShelvesActionsWrongNumber()  {
+
+        String message = "<Message><shelves>test:test:3:test:test:6:8</shelves></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getShelvesActions(message,"shelves"));
     }
 
     @Test
@@ -339,6 +444,20 @@ class MessageUtilitiesTest {
     }
 
     @Test
+    void getResourcesWrongNumber() {
+
+        String message = "<Message><resources>1:coin:2:faith:2</resources></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getResources(message,"resources"));
+    }
+
+    @Test
+    void getResourcesWrongResource() {
+
+        String message = "<Message><resources>1:coin:2:XX</resources></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getResources(message,"resources"));
+    }
+
+    @Test
     void getCardColor()  {
         CardColor color = new Blue();
         try {
@@ -352,9 +471,7 @@ class MessageUtilitiesTest {
     void getCardColorEmpty()  {
 
         String message ="<Message><body>Buy card managing.</body><messageType>BUY_CARD</messageType><color></color><level>1</level><slot>1</slot><ID>ciao</ID><warehouse>1:1:2:1</warehouse><strongBox>coins:2:servants:3</strongBox></Message>";
-
-        Exception exception1;
-        exception1 = assertThrows(MalformedMessageException.class, () -> instance.getCardColor(message,"color"));
+        assertThrows(MalformedMessageException.class, () -> instance.getCardColor(message,"color"));
     }
 
     @Test
@@ -370,9 +487,7 @@ class MessageUtilitiesTest {
     void getIntegerEmpty()  {
 
         String message = "<Message><body>Connection request.</body><messageType>CONNECTION</messageType><nickname>nickname</nickname><gameHost>true</gameHost><playersNumber></playersNumber></Message>";
-
-        Exception exception1;
-        exception1 = assertThrows(MalformedMessageException.class, () -> instance.getInteger(message,"playersNumber"));
+        assertThrows(MalformedMessageException.class, () -> instance.getInteger(message,"playersNumber"));
     }
 
     @Test
@@ -394,6 +509,14 @@ class MessageUtilitiesTest {
     }
 
     @Test
+    void getStringMalformedMessage() {
+
+        String message ="<Message></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getString(message,"string"));
+
+    }
+
+    @Test
     void getBoolean() {
         try {
             assertTrue(instance.getBoolean("<Message><messageType>CONNECTION</messageType><nickname>nickname</nickname><playersNumber>4</playersNumber><body>Connection request.</body><gameHost>true</gameHost></Message>", "gameHost"));
@@ -408,6 +531,205 @@ class MessageUtilitiesTest {
         } catch (MalformedMessageException e) {
             fail();
         }
+    }
+
+    @Test
+    void getMapIntegerString(){
+        Map<Integer,String> map = new HashMap<>();
+        map.put(1,"ciao");
+        String message = "<Message><map>1:ciao</map></Message>";
+
+        Map<Integer,String> result = new HashMap<>();
+        try {
+             result = instance.getMapIntegerString(message,"map");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+
+        assertEquals(map.size(),result.size());
+
+        for(int i : result.keySet()){
+            assertTrue(map.containsKey(i));
+            assertEquals(map.get(i),result.get(i));
+        }
+    }
+
+    @Test
+    void getMapIntegerStringEmpty(){
+
+        String message = "<Message><map></map></Message>";
+
+        Map<Integer,String> result = new HashMap<>();
+        try {
+            result = instance.getMapIntegerString(message,"map");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+        assertEquals(0,result.size());
+
+    }
+
+    @Test
+    void getMapIntegerStringMalformedMessage(){
+
+        String message = "<Message><map>1:ciao:1</map></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getMapIntegerString(message,"map"));
+
+    }
+
+    @Test
+    void getMapIntegerStringWrongInt(){
+
+        String message = "<Message><map>zzzz:ciao</map></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getMapIntegerString(message,"map"));
+
+    }
+
+
+    @Test
+    void getMapStringInteger(){
+        Map<String,Integer> map = new HashMap<>();
+        map.put("ciao",1);
+        String message = "<Message><map>ciao:1</map></Message>";
+
+        Map<String,Integer> result = new HashMap<>();
+        try {
+            result = instance.getMapStringInteger(message,"map");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+
+        assertEquals(map.size(),result.size());
+
+        for(String i : result.keySet()){
+            assertTrue(map.containsKey(i));
+            assertEquals(map.get(i),result.get(i));
+        }
+    }
+
+    @Test
+    void getMapStringIntegerEmpty(){
+
+        String message = "<Message><map></map></Message>";
+
+        Map<String,Integer> result = new HashMap<>();
+        try {
+            result = instance.getMapStringInteger(message,"map");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+        assertEquals(0,result.size());
+
+    }
+
+    @Test
+    void getMapStringIntegerMalformedMessage(){
+
+        String message = "<Message><map>ciao:1:ciao</map></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getMapStringInteger(message,"map"));
+
+    }
+
+    @Test
+    void getMapStringIntegerWrongInt(){
+
+        String message = "<Message><map>ciao:zzzz</map></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getMapStringInteger(message,"map"));
+
+    }
+
+    @Test
+    void getMapIntegerItemStatus(){
+        Map<Integer,ItemStatus> map = new HashMap<>();
+        map.put(1,ItemStatus.INACTIVE);
+        String message = "<Message><map>1:inactive</map></Message>";
+
+        Map<Integer,ItemStatus> result = new HashMap<>();
+        try {
+            result = instance.getMapIntegerItemStatus(message,"map");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+
+        assertEquals(map.size(),result.size());
+
+        for(int i : result.keySet()){
+            assertTrue(map.containsKey(i));
+            assertEquals(map.get(i),result.get(i));
+        }
+    }
+
+    @Test
+    void getMapIntegerItemStatusEmpty(){
+
+        String message = "<Message><map></map></Message>";
+
+        Map<Integer,ItemStatus> result = new HashMap<>();
+        try {
+            result = instance.getMapIntegerItemStatus(message,"map");
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+        assertEquals(0,result.size());
+
+    }
+
+    @Test
+    void getMapIntegerItemStatusMalformedMessage(){
+
+        String message = "<Message><map>1:inactive:1</map></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getMapIntegerItemStatus(message,"map"));
+
+    }
+
+    @Test
+    void getMapIntegerItemStatusWrongInt(){
+
+        String message = "<Message><map>zzzz:inactive</map></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getMapIntegerItemStatus(message,"map"));
+
+    }
+
+    @Test
+    void getMapIntegerItemStatusWrongItem(){
+
+        String message = "<Message><map>1:zzz</map></Message>";
+        assertThrows(MalformedMessageException.class, () -> instance.getMapIntegerItemStatus(message,"map"));
+
+    }
+
+    @Test
+    void getListString(){
+
+        List<String> list = new ArrayList<>();
+        list.add("pippo");
+        list.add("pluto");
+
+        try {
+            List<String> messageList = instance.getListString("<Message><list>pippo:pluto</list></Message>", "list");
+            for (int i=0; i<list.size(); i++) {
+                assertEquals(list.get(i),messageList.get(i));
+            }
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+
+    }
+
+    @Test
+    void getListStringEmpty(){
+
+        List<String> list = new ArrayList<>();
+
+        try {
+            List<String> messageList = instance.getListString("<Message><list></list></Message>", "list");
+            for (int i=0; i<list.size(); i++) {
+                assertEquals(list.get(i),messageList.get(i));
+            }
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+
     }
 
 

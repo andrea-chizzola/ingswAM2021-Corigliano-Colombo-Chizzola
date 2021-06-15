@@ -14,7 +14,6 @@ import org.w3c.dom.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.List;
 import java.util.Map;
 
 import org.xml.sax.InputSource;
