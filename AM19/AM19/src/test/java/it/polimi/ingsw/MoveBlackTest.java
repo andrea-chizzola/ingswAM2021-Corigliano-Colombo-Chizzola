@@ -1,8 +1,11 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.ActionTokens.Action;
+import it.polimi.ingsw.Model.ActionTokens.Discard;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.ActionTokens.MoveBlack;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
+import it.polimi.ingsw.Model.Cards.Colors.Green;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -94,5 +97,11 @@ class MoveBlackTest {
 
     }
 
+    @Test
+    void actionTest(){
+        Action action = new MoveBlack(2, "2", "test");
+        assertTrue(action.equals(moveBlack));
+        assertEquals(action.hashCode(), moveBlack.hashCode());
+    }
 
 }

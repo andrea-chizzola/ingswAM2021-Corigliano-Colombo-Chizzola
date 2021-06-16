@@ -1,12 +1,10 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.ActionTokens.Action;
 import it.polimi.ingsw.Model.ActionTokens.Discard;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
-import it.polimi.ingsw.Model.Cards.Colors.Blue;
 import it.polimi.ingsw.Model.Cards.Colors.Green;
-import it.polimi.ingsw.Model.Cards.Colors.Purple;
-import it.polimi.ingsw.Model.Cards.Colors.Yellow;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -116,4 +114,10 @@ class DiscardTest {
 
     }
 
+    @Test
+    void actionTest(){
+        Action action = new Discard(new Green(), 2, "2", "test");
+        assertTrue(action.equals(discardGreen));
+        assertEquals(action.hashCode(), discardGreen.hashCode());
+    }
 }
