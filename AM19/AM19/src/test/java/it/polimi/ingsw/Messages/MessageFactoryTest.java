@@ -8,8 +8,6 @@ import it.polimi.ingsw.Model.MarketBoard.*;
 import it.polimi.ingsw.Model.Resources.Coin;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Stone;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -18,25 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MessageFactoryTest {
 
-    private MessageFactory messageFactory;
 
-    @BeforeEach
-    void setUp() {
-        messageFactory = new MessageFactory();
-    }
-
-    @AfterEach
-    void tearDown() {
-        messageFactory = null;
-    }
-/*
-
-    @Test
-    void buildReply() throws MalformedMessageException {
-        assertEquals(messageFactory.buildReply(true, "Reply message."), "<Message><messageType>REPLY</messageType><correct>true</correct><body>Reply message.</body></Message>");
-    }
-
-*/
     @Test
     void buildCurrentPlayerTest(){
         String playerID = "pippo";

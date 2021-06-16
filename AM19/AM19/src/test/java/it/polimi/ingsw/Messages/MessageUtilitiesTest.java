@@ -720,10 +720,11 @@ class MessageUtilitiesTest {
     void getListStringEmpty(){
 
         List<String> list = new ArrayList<>();
+        list.add("");
 
         try {
             List<String> messageList = instance.getListString("<Message><list></list></Message>", "list");
-            for (int i=0; i<list.size(); i++) {
+            for (int i=0; i<messageList.size(); i++) {
                 assertEquals(list.get(i),messageList.get(i));
             }
         } catch (MalformedMessageException e) {
