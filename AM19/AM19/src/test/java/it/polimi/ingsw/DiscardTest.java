@@ -1,12 +1,10 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.ActionTokens.Action;
 import it.polimi.ingsw.Model.ActionTokens.Discard;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
-import it.polimi.ingsw.Model.Cards.Colors.Blue;
 import it.polimi.ingsw.Model.Cards.Colors.Green;
-import it.polimi.ingsw.Model.Cards.Colors.Purple;
-import it.polimi.ingsw.Model.Cards.Colors.Yellow;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,10 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DiscardTest {
 
-    private Discard discardBlue = new Discard(new Blue(), 2, "1", "test1");
-    private Discard discardGreen = new Discard(new Green(), 2, "2", "test2");
-    private Discard discardPurple = new Discard(new Purple(), 2, "3", "test3");
-    private Discard discardYellow = new Discard(new Yellow(), 2, "4", "test4");
+    private Discard discardGreen = new Discard(new Green(), 2, "2", "test");
     private SinglePlayer singlePlayer;
     private GameBoard gameBoard;
     private final String file = "defaultConfiguration.xml";
@@ -48,7 +43,11 @@ class DiscardTest {
 
     @Test
     @DisplayName("Discard green test")
-    void doActionBlue(){
+    void doAction(){
+
+        assertEquals(discardGreen.toString(), "Action Token: \n" + "Discard: \n" + "2 C=GREEN");
+        assertEquals(discardGreen.getId(), "2");
+        assertEquals(discardGreen.getImage(), "test");
 
         assertEquals(6, singlePlayer.getActionTokenDeck().getUnusedActionTokens().size());
         assertEquals(0, singlePlayer.getActionTokenDeck().getUsedActionTokens().size());
@@ -59,6 +58,8 @@ class DiscardTest {
         while(!singlePlayer.getActionTokenDeck().getTop().equals(discardGreen)){
             singlePlayer.getActionTokenDeck().mergeAndShuffle();
         }
+
+        assertEquals(singlePlayer.getActionTokenDeck().getTop().hashCode(), discardGreen.hashCode());
 
         singlePlayer.endTurnAction(gameBoard);
         singlePlayer.endTurnAction(gameBoard);
@@ -113,4 +114,10 @@ class DiscardTest {
 
     }
 
+    @Test
+    void actionTest(){
+        Action action = new Discard(new Green(), 2, "2", "test");
+        assertTrue(action.equals(discardGreen));
+        assertEquals(action.hashCode(), discardGreen.hashCode());
+    }
 }

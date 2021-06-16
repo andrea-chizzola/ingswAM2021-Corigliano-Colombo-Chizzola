@@ -1,8 +1,11 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.ActionTokens.Action;
+import it.polimi.ingsw.Model.ActionTokens.Discard;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.ActionTokens.MoveAndShuffle;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
+import it.polimi.ingsw.Model.Cards.Colors.Green;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,6 +47,10 @@ class MoveAndShuffleTest {
     @DisplayName("Do action test with only MoveAndShuffle tokens")
     void doAction(){
 
+        assertEquals(moveAndShuffle.toString(), "Action Token: \n" + "Move&Shuffle - 1");
+        assertEquals(moveAndShuffle.getId(), "2");
+        assertEquals(moveAndShuffle.getImage(), "test");
+
         assertEquals(0, singlePlayer.getLorenzoTrack().getPosition());
         assertEquals(6, singlePlayer.getActionTokenDeck().getUnusedActionTokens().size());
         assertEquals(0, singlePlayer.getActionTokenDeck().getUsedActionTokens().size());
@@ -53,6 +60,8 @@ class MoveAndShuffleTest {
             while (!singlePlayer.getActionTokenDeck().getTop().equals(moveAndShuffle)) {
                 singlePlayer.getActionTokenDeck().mergeAndShuffle();
             }
+
+            assertEquals(singlePlayer.getActionTokenDeck().getTop().hashCode(), moveAndShuffle.hashCode());
 
             singlePlayer.endTurnAction(gameBoard); //3
 
@@ -88,4 +97,10 @@ class MoveAndShuffleTest {
 
     }
 
+    @Test
+    void actionTest(){
+        Action action = new MoveAndShuffle(1, "2", "test");
+        assertTrue(action.equals(moveAndShuffle));
+        assertEquals(action.hashCode(), moveAndShuffle.hashCode());
+    }
 }

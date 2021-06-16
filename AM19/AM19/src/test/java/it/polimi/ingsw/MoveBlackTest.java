@@ -1,8 +1,11 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.ActionTokens.Action;
+import it.polimi.ingsw.Model.ActionTokens.Discard;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.ActionTokens.MoveBlack;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
+import it.polimi.ingsw.Model.Cards.Colors.Green;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,6 +46,10 @@ class MoveBlackTest {
     @DisplayName("Do action test with only MoveBlack tokens")
     void doAction(){
 
+        assertEquals(moveBlack.toString(), "Action Token: \n" + "Move - 2");
+        assertEquals(moveBlack.getId(), "2");
+        assertEquals(moveBlack.getImage(), "test");
+
         assertEquals(0, singlePlayer.getLorenzoTrack().getPosition());
         assertEquals(6, singlePlayer.getActionTokenDeck().getUnusedActionTokens().size());
         assertEquals(0, singlePlayer.getActionTokenDeck().getUsedActionTokens().size());
@@ -50,6 +57,8 @@ class MoveBlackTest {
         while(!singlePlayer.getActionTokenDeck().getTop().equals(moveBlack)){
             singlePlayer.getActionTokenDeck().mergeAndShuffle();
         }
+
+        assertEquals(singlePlayer.getActionTokenDeck().getTop().hashCode(), moveBlack.hashCode());
 
         singlePlayer.endTurnAction(gameBoard);
         singlePlayer.endTurnAction(gameBoard);//2
@@ -88,5 +97,11 @@ class MoveBlackTest {
 
     }
 
+    @Test
+    void actionTest(){
+        Action action = new MoveBlack(2, "2", "test");
+        assertTrue(action.equals(moveBlack));
+        assertEquals(action.hashCode(), moveBlack.hashCode());
+    }
 
 }
