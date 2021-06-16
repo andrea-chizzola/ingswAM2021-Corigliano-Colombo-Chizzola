@@ -44,6 +44,10 @@ class MoveAndShuffleTest {
     @DisplayName("Do action test with only MoveAndShuffle tokens")
     void doAction(){
 
+        assertEquals(moveAndShuffle.toString(), "Action Token: \n" + "Move&Shuffle - 1");
+        assertEquals(moveAndShuffle.getId(), "2");
+        assertEquals(moveAndShuffle.getImage(), "test");
+
         assertEquals(0, singlePlayer.getLorenzoTrack().getPosition());
         assertEquals(6, singlePlayer.getActionTokenDeck().getUnusedActionTokens().size());
         assertEquals(0, singlePlayer.getActionTokenDeck().getUsedActionTokens().size());
@@ -53,6 +57,8 @@ class MoveAndShuffleTest {
             while (!singlePlayer.getActionTokenDeck().getTop().equals(moveAndShuffle)) {
                 singlePlayer.getActionTokenDeck().mergeAndShuffle();
             }
+
+            assertEquals(singlePlayer.getActionTokenDeck().getTop().hashCode(), moveAndShuffle.hashCode());
 
             singlePlayer.endTurnAction(gameBoard); //3
 

@@ -43,6 +43,10 @@ class MoveBlackTest {
     @DisplayName("Do action test with only MoveBlack tokens")
     void doAction(){
 
+        assertEquals(moveBlack.toString(), "Action Token: \n" + "Move - 2");
+        assertEquals(moveBlack.getId(), "2");
+        assertEquals(moveBlack.getImage(), "test");
+
         assertEquals(0, singlePlayer.getLorenzoTrack().getPosition());
         assertEquals(6, singlePlayer.getActionTokenDeck().getUnusedActionTokens().size());
         assertEquals(0, singlePlayer.getActionTokenDeck().getUsedActionTokens().size());
@@ -50,6 +54,8 @@ class MoveBlackTest {
         while(!singlePlayer.getActionTokenDeck().getTop().equals(moveBlack)){
             singlePlayer.getActionTokenDeck().mergeAndShuffle();
         }
+
+        assertEquals(singlePlayer.getActionTokenDeck().getTop().hashCode(), moveBlack.hashCode());
 
         singlePlayer.endTurnAction(gameBoard);
         singlePlayer.endTurnAction(gameBoard);//2
