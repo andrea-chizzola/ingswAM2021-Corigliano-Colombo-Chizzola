@@ -2,15 +2,12 @@ package it.polimi.ingsw.Messages;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 
-import java.io.Serializable;
 
 public abstract class Message {
     public enum MessageType {
         UPDATE_LEADER_CARDS,  //initialization of leader cards
         RESOURCE, //initialization resources
-        SELECTED_TURN, //select turn type
         EXIT,
-
         BUY_CARD, //buy a development card
         DO_PRODUCTION, //do production (unique message)
         LEADER_ACTION, //manage leader cards
@@ -33,19 +30,17 @@ public abstract class Message {
         TOKEN_UPDATE,
         MARKET_UPDATE,
         START_GAME,
-        SELECTED_MARBLES;
-
     }
 
     /**
      * Contains the body of the message
      */
-    private String XMLString;
+    private final String XMLString;
 
     /**
      * Represents the type of the message
      */
-    private MessageType messageType;
+    private final MessageType messageType;
 
     /**
      * creates a new message
