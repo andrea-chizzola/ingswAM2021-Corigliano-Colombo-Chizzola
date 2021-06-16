@@ -33,8 +33,6 @@ class SinglePlayerTest {
 
     }
 
-    //endTurnAction and getters tested inside the Action Tokens tests
-
     @Test
     @DisplayName("MoveBlackCross and addFaithToOthers test")
     void MoveBlackCrossAndAddFaithToOthers(){
