@@ -507,7 +507,6 @@ public class CLI implements View, SubjectView {
     /**
      * this method is used to add a player to the game
      */
-
     public void launch() {
         String player, first = "", reconnect = "";
         String num;
