@@ -27,7 +27,6 @@ import java.util.*;
  */
 public class CLI implements View, SubjectView {
 
-    //TODO: put all the configuration offsets inside a file
     /**
      * the following attributes represent the constants used to paint the items of the CLI
      */
@@ -165,8 +164,7 @@ public class CLI implements View, SubjectView {
                 }
             } catch (IOException | NullPointerException e) {
                 System.out.println("Cannot open the input stream of CLI");
-                e.printStackTrace();
-                //TODO CLOSE CLIENT AND CONNECTION. CANNOT OPEN INPUT STREAM
+                notifyParsingError();
             }
         }).start();
     }
@@ -418,7 +416,6 @@ public class CLI implements View, SubjectView {
         }
     }
 
-    //TODO devi gestire gli errori di parsing
     /**
      * this method is used to show an update of one's LeaderCards
      * @param cards represent the current state of one's leader cards
@@ -1105,5 +1102,13 @@ public class CLI implements View, SubjectView {
     @Override
     public void notifyNickname(String nickname) {
         interactionObserver.updatePersonalNickname(nickname);
+    }
+
+    /**
+     * this method is used to notify a parsing error to the observer
+     */
+    @Override
+    public void notifyParsingError(){
+        interactionObserver.close();
     }
 }

@@ -400,4 +400,12 @@ public class GUI implements View, SubjectView {
         interactionObserver.updatePersonalNickname(nickname);
     }
 
+    /**
+     * this method is used to notify a parsing error to the observer
+     */
+    @Override
+    public void notifyParsingError(){
+        interactionObserver.close();
+    }
+
 }

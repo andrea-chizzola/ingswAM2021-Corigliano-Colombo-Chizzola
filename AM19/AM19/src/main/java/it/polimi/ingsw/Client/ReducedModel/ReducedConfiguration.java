@@ -87,7 +87,6 @@ public class ReducedConfiguration {
     private final int numLeader;
 
     public ReducedConfiguration(String file){
-        //TODO GESTIRE CODICE DEL SERVER! I PARSER POTREBBERO FALLIRE! Il client in quel caso deve terminare con errore!
         this.configurationFile = file;
         nRows = ConfigurationParser.parseMarketRows(file);
         nColumns = ConfigurationParser.parseMarketColumns(file);

@@ -95,7 +95,7 @@ public class TurnSelectionController extends ViewController implements HelperWin
                 mainPane.getScene().getWindow().hide();
             } catch (MalformedMessageException e) {
                 e.printStackTrace();
-                //TODO exit from client
+                //TODO error message
             }
         });
     }

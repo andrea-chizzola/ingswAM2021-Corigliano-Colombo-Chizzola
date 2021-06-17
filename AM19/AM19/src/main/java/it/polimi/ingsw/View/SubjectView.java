@@ -37,4 +37,9 @@ public interface SubjectView {
      * @param nickname is the name chosen by the players
      */
     void notifyNickname(String nickname);
+
+    /**
+     * this method is used to notify a parsing error to the observer
+     */
+    void notifyParsingError();
 }
