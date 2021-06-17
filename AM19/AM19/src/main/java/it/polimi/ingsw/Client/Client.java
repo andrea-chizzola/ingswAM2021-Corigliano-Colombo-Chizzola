@@ -120,7 +120,7 @@ public class Client implements MessageSender {
         } catch (IOException e) {
 
             System.out.println("[CLIENT] Connection error. Unavailable sever");
-            e.printStackTrace();
+            System.exit(0);
 
         }
     }
