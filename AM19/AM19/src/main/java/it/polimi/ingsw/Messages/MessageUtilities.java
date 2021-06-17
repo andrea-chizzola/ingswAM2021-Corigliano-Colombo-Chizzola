@@ -537,10 +537,7 @@ public class MessageUtilities {
      * @throws MalformedMessageException if the message is not correctly formed
      */
     public String getString(String message, String tag) throws MalformedMessageException{
-        String messageString = MessageParser.getMessageTag(message,tag);
-        //if(messageString == null)
-        //    throw new MalformedMessageException("Parsing fail!");
-        return messageString;
+        return MessageParser.getMessageTag(message,tag);
     }
 
     /**
