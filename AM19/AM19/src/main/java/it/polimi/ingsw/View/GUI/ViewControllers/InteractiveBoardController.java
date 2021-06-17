@@ -9,7 +9,7 @@ import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.View.GUI.GUIHandler;
-import it.polimi.ingsw.View.GUI.Messages.*;
+import it.polimi.ingsw.View.InteractionTranslator.*;
 import it.polimi.ingsw.View.PlayerInteractions.SeeOthersInteraction;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -94,7 +94,7 @@ public class InteractiveBoardController extends BoardController {
     private MarketboardController marketboardController;
     private ChosenResourcesController chosenResourcesController;
     private TurnSelectionController turnSelectionController;
-    private Accumulator accumulator;
+    private InteractionTranslator interactionTranslator;
     private BuildMessage builder;
     private int customResources, customProducts;
     private boolean production;
@@ -164,12 +164,12 @@ public class InteractiveBoardController extends BoardController {
      */
     private void notifyInteraction() {
         if(production && (customResources>0 || customProducts > 0)){
-            chosenResourcesController = new ChosenResourcesController(accumulator, customResources, customProducts);
+            chosenResourcesController = new ChosenResourcesController(interactionTranslator, customResources, customProducts);
             GUIHandler.createNonCloseableWindow(chosenResourcesController,
                     "/FXML/chosenResources.fxml", 565, 535);
             production = false;
         }
-        else getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
+        else getGUIReference().notifyInteraction(builder.buildMessage(interactionTranslator));
         resetTurn();
         actionButton.setDisable(true);
     }
@@ -312,7 +312,7 @@ public class InteractiveBoardController extends BoardController {
             imageView.setOpacity(0.5);
             imageView.setDisable(true);
             imageView.setVisible(true);
-            accumulator.setWarehouse(slot);});
+            interactionTranslator.setWarehouse(slot);});
     }
 
     /**
@@ -365,7 +365,7 @@ public class InteractiveBoardController extends BoardController {
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             if (actionPauseTransition(imageView, label, errorExtraShelf, counter)) return;
-            accumulator.setWarehouse(shelf);});
+            interactionTranslator.setWarehouse(shelf);});
     }
 
     /**
@@ -418,8 +418,8 @@ public class InteractiveBoardController extends BoardController {
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             if (actionPauseTransition(imageView, label, errorStrongbox, counter)) return;
-            accumulator.setStrongbox(resource);
-            accumulator.setStrongbox("1");});
+            interactionTranslator.setStrongbox(resource);
+            interactionTranslator.setStrongbox("1");});
 
     }
 
@@ -476,7 +476,7 @@ public class InteractiveBoardController extends BoardController {
             imageView.setDisable(true);
             imageView.setVisible(true);
             addDevResources(slot);
-            accumulator.setDevelopmentCards(slot.toString());});
+            interactionTranslator.setDevelopmentCards(slot.toString());});
     }
 
     /**
@@ -531,7 +531,7 @@ public class InteractiveBoardController extends BoardController {
         button.setOnAction(action -> {
             button.setOpacity(0.5);
             enableSlotsButtons(false);
-            accumulator.setSlot(slot);});
+            interactionTranslator.setSlot(slot);});
     }
 
     /**
@@ -560,7 +560,7 @@ public class InteractiveBoardController extends BoardController {
      */
     private void helpUseSwap(Button button, int shelf){
         button.setOnAction(action -> {
-            accumulator.setSwap(shelf);
+            interactionTranslator.setSwap(shelf);
             button.setOpacity(0.3);
             button.setDisable(true);});
     }
@@ -597,7 +597,7 @@ public class InteractiveBoardController extends BoardController {
             imageView.setOpacity(0.8);
             imageView.setDisable(true);
             imageView.setVisible(true);
-            accumulator.setLeaderCards(number.toString());
+            interactionTranslator.setLeaderCards(number.toString());
             addLeaderResources(number);});
     }
 
@@ -654,8 +654,8 @@ public class InteractiveBoardController extends BoardController {
      */
     private void helpUseLeaderSelection(MenuButton button, MenuItem item, int position, String action){
         item.setOnAction(event ->{
-            accumulator.setAction(action);
-            accumulator.setLeaderCard(position);
+            interactionTranslator.setAction(action);
+            interactionTranslator.setLeaderCard(position);
             enableLeaderSelections(false);
             button.setOpacity(0.3);});
     }
@@ -677,7 +677,7 @@ public class InteractiveBoardController extends BoardController {
             personalProduction.setOpacity(0.5);
             personalProduction.setDisable(true);
             personalProduction.setVisible(true);
-            accumulator.setPersonalProduction();
+            interactionTranslator.setPersonalProduction();
             addProductionResources();});
     }
 
@@ -736,7 +736,7 @@ public class InteractiveBoardController extends BoardController {
     }
 
     public void initializeLeaders(){
-        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
+        this.interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildLeaderUpdate();
         enableLeaderCards(true);
         actionButton.setDisable(false);
@@ -746,7 +746,7 @@ public class InteractiveBoardController extends BoardController {
      * sets the correct buttons and images to play the turn
      */
     public void setDoProduction(){
-        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
+        this.interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildDoProduction();
         enableWarehouse(true);
         enableStrongbox(true);
@@ -773,9 +773,9 @@ public class InteractiveBoardController extends BoardController {
      * sets the correct buttons and images to play the turn
      */
     public void setBuyCard(){
-        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
+        this.interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildBuyCard();
-        decksController.setAccumulator(accumulator);
+        decksController.setAccumulator(interactionTranslator);
         enableWarehouse(true);
         enableStrongbox(true);
         enableSlotsButtons(true);
@@ -792,7 +792,7 @@ public class InteractiveBoardController extends BoardController {
      * sets the correct buttons and images to play the turn
      */
     public void setManageLeader(){
-        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
+        this.interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildLeaderAction();
         enableLeaderSelections(true);
         if(firstLeaderCard.isVisible())
@@ -809,7 +809,7 @@ public class InteractiveBoardController extends BoardController {
      * sets the correct buttons and images to play the turn
      */
     public void setSwap(){
-        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
+        this.interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildSwap();
         enableWarehouse(true);
         enableSwap(true);

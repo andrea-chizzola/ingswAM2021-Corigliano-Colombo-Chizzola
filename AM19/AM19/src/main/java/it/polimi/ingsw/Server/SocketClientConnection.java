@@ -12,7 +12,7 @@ import java.util.TimerTask;
 /**
  * Handles server side the connection between client and server
  */
-public class SocketClientConnection implements ClientConnection, Runnable {
+public class SocketClientConnection implements ConnectionHandler, Runnable {
 
     private Socket socket;
     private boolean pong;

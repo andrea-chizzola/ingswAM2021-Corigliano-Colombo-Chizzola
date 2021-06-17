@@ -3,7 +3,7 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Client.SoloConnectionHandler;
 
 
-public class SoloClientConnection implements ClientConnection, Runnable{
+public class SoloClientConnection implements ConnectionHandler, Runnable{
 
     /**
      * represents the solo connection handler which manages the messages exchanged in case of a local match

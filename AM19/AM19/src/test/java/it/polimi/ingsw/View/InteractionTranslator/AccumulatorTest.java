@@ -1,10 +1,4 @@
-package it.polimi.ingsw.View.GUI.Messages;
-
-import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+package it.polimi.ingsw.View.InteractionTranslator;
 
 class AccumulatorTest {
 /*

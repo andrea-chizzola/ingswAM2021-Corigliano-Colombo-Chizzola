@@ -1,7 +1,7 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
-import it.polimi.ingsw.Messages.Enumerations.TurnType;
+import it.polimi.ingsw.Model.Boards.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import java.util.List;

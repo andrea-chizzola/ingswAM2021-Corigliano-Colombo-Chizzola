@@ -1,9 +1,9 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.View.GUI.GUIHandler;
-import it.polimi.ingsw.View.GUI.Messages.Accumulator;
-import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
-import it.polimi.ingsw.View.GUI.Messages.BuildSelectedResources;
+import it.polimi.ingsw.View.InteractionTranslator.InteractionTranslator;
+import it.polimi.ingsw.View.InteractionTranslator.BuildMessage;
+import it.polimi.ingsw.View.InteractionTranslator.BuildSelectedResources;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -85,14 +85,14 @@ public class InitializeResController extends ViewController{
     private List<MenuItem> stones;
     private List<TextField> shelves;
 
-    private Accumulator accumulator;
+    private InteractionTranslator interactionTranslator;
     private BuildMessage builder;
 
     /**
      * constructor
      */
     public InitializeResController(){
-        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
+        this.interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildSelectedResources();
     }
 
@@ -140,7 +140,7 @@ public class InitializeResController extends ViewController{
      * notifies the interaction
      */
     private void notifyInteraction() {
-        getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
+        getGUIReference().notifyInteraction(builder.buildMessage(interactionTranslator));
         anchorPane.getScene().getWindow().hide();
     }
 
@@ -152,19 +152,19 @@ public class InitializeResController extends ViewController{
     private void setItemHandlers(List<MenuItem> list, String resource){
 
         list.get(0).setOnAction( event ->{
-            accumulator.setInitResources(resource);
+            interactionTranslator.setInitResources(resource);
             resources.get(0).setDisable(true);});
 
         list.get(1).setOnAction( event ->{
-            accumulator.setInitResources(resource);
+            interactionTranslator.setInitResources(resource);
             resources.get(1).setDisable(true);});
 
         list.get(2).setOnAction(event ->{
-            accumulator.setInitResources(resource);
+            interactionTranslator.setInitResources(resource);
             resources.get(2).setDisable(true);});
 
         list.get(3).setOnAction(event ->{
-            accumulator.setInitResources(resource);
+            interactionTranslator.setInitResources(resource);
             resources.get(3).setDisable(true);});
     }
 
@@ -185,7 +185,7 @@ public class InitializeResController extends ViewController{
      * @param i the number of the button to be set
      */
     private void action(int i){
-        accumulator.setInitResourcesShelf(shelves.get(i).getText());
+        interactionTranslator.setInitResourcesShelf(shelves.get(i).getText());
         buttons.get(i).setDisable(true);
         buttons.get(i).setOpacity(0.5);
         resources.get(i).setDisable(false);

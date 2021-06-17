@@ -2,7 +2,7 @@ package it.polimi.ingsw.Messages;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
-import it.polimi.ingsw.Messages.Enumerations.TurnType;
+import it.polimi.ingsw.Model.Boards.TurnType;
 import it.polimi.ingsw.Model.Cards.Colors.DevColor;
 import it.polimi.ingsw.Model.MarketBoard.*;
 import it.polimi.ingsw.Model.Resources.Coin;

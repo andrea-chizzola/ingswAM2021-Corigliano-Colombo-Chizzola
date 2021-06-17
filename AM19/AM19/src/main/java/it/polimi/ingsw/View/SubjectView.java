@@ -1,6 +1,6 @@
 package it.polimi.ingsw.View;
 
-import it.polimi.ingsw.Client.InteractionObserver;
+import it.polimi.ingsw.Client.ClientController.InteractionObserver;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 
 /**

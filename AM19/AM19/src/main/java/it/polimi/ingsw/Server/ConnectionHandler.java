@@ -1,11 +1,9 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.Messages.Message;
-
 /**
  * interface containing the necessary methods to handle the connection between client and server
  */
-public interface ClientConnection {
+public interface ConnectionHandler {
 
     /**
      * Closes the connection between the server and the client

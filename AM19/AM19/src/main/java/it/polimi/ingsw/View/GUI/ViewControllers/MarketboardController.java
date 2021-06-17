@@ -1,10 +1,9 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.View.GUI.GUIHandler;
-import it.polimi.ingsw.View.GUI.Messages.Accumulator;
-import it.polimi.ingsw.View.GUI.Messages.BuildMarketSelection;
-import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
-import it.polimi.ingsw.View.View;
+import it.polimi.ingsw.View.InteractionTranslator.InteractionTranslator;
+import it.polimi.ingsw.View.InteractionTranslator.BuildMarketSelection;
+import it.polimi.ingsw.View.InteractionTranslator.BuildMessage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -44,7 +43,7 @@ public class MarketboardController extends ViewController implements HelperWindo
 
     List<ImageView> viewTray;
     List<Button> positions;
-    Accumulator accumulator;
+    InteractionTranslator interactionTranslator;
     BuildMessage builder;
     private final String path = "/Images/market/";
 
@@ -71,11 +70,11 @@ public class MarketboardController extends ViewController implements HelperWindo
      * @param position is the selected position
      */
     private void doAction(String tray, int position){
-        accumulator.setMarketTray(tray);
-        accumulator.setMarketNumber(position);
+        interactionTranslator.setMarketTray(tray);
+        interactionTranslator.setMarketNumber(position);
         disableButtons();
         hideWindow();
-        getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
+        getGUIReference().notifyInteraction(builder.buildMessage(interactionTranslator));
 
     }
 
@@ -144,7 +143,7 @@ public class MarketboardController extends ViewController implements HelperWindo
      * this method is used to set the reference to the message builder
      */
     public void setAccumulator(){
-        this.accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
+        this.interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildMarketSelection();
     }
 

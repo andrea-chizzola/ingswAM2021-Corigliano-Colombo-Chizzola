@@ -3,7 +3,6 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Exceptions.EmptyBufferException;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.NetworkBuffer;
-import it.polimi.ingsw.Messages.ClientConnectionListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,12 +19,12 @@ public class SocketServerConnection implements ServerConnection,Runnable{
 
     private Socket socket;
     private boolean pong;
-    private ClientConnectionListener clientController;
+    private ConnectionListener clientController;
     private BufferedReader in;
     private NetworkBuffer buffer;
     private PrintWriter out;
 
-    public SocketServerConnection(Socket socket, ClientConnectionListener clientController){
+    public SocketServerConnection(Socket socket, ConnectionListener clientController){
 
         this.socket = socket;
         this.clientController = clientController;

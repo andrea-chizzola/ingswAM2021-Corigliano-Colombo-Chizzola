@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Client;
+package it.polimi.ingsw.Client.ClientController;
 
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 

@@ -2,7 +2,7 @@ package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.Client.ReducedModel.ReducedConfiguration;
 import it.polimi.ingsw.Exceptions.IllegalIDException;
-import it.polimi.ingsw.View.GUI.Messages.Accumulator;
+import it.polimi.ingsw.View.InteractionTranslator.InteractionTranslator;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,7 +57,7 @@ public class DecksController extends ViewController implements HelperWindow{
     private ImageView card12;
 
     private List<ImageView> cards;
-    private Accumulator accumulator;
+    private InteractionTranslator interactionTranslator;
     private final String path = "/Images/front/";
 
     @FXML
@@ -69,10 +69,10 @@ public class DecksController extends ViewController implements HelperWindow{
 
     /**
      * this method is used to set the current instance of the message builder
-     * @param accumulator is the reference to the message builder
+     * @param interactionTranslator is the reference to the message builder
      */
-    public void setAccumulator(Accumulator accumulator){
-        this.accumulator = accumulator;
+    public void setAccumulator(InteractionTranslator interactionTranslator){
+        this.interactionTranslator = interactionTranslator;
         enableCards(true);
     }
 
@@ -127,7 +127,7 @@ public class DecksController extends ViewController implements HelperWindow{
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseEvent -> {
             enableCards(false);
             imageView.setVisible(true);
-            accumulator.setPosition(position);
+            interactionTranslator.setPosition(position);
             mainPane.getScene().getWindow().hide();});
     }
 

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.View.GUI;
 
-import it.polimi.ingsw.Client.InteractionObserver;
+import it.polimi.ingsw.Client.ClientController.InteractionObserver;
 import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
-import it.polimi.ingsw.Messages.Enumerations.TurnType;
+import it.polimi.ingsw.Model.Boards.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.View.GUI.ViewControllers.*;

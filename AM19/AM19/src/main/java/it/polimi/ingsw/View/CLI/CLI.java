@@ -1,19 +1,19 @@
 package it.polimi.ingsw.View.CLI;
 
-import it.polimi.ingsw.Client.InteractionObserver;
+import it.polimi.ingsw.Client.ClientController.InteractionObserver;
 import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Exceptions.IllegalIDException;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
-import it.polimi.ingsw.Messages.Enumerations.TurnType;
+import it.polimi.ingsw.Model.Boards.TurnType;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 import it.polimi.ingsw.Model.Cards.LeaderCard;
 import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.View.GUI.Messages.*;
+import it.polimi.ingsw.View.InteractionTranslator.*;
 import it.polimi.ingsw.View.PlayerInteractions.*;
 import it.polimi.ingsw.View.SubjectView;
 import it.polimi.ingsw.View.View;
@@ -69,7 +69,7 @@ public class CLI implements View, SubjectView {
     private final int END_Y = 19;
 
     private BuildMessage builder;
-    private Accumulator accumulator;
+    private InteractionTranslator interactionTranslator;
 
     /**
      * this attribute is a reference to the reduced model of the view
@@ -656,7 +656,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void selectLeaderAction() {
-        accumulator = new Accumulator(model);
+        interactionTranslator = new InteractionTranslator(model);
         builder = new BuildLeaderUpdate();
         String currentPlayer = model.getCurrentPlayer();
         ReducedBoard board = model.getBoard(currentPlayer);
@@ -672,8 +672,8 @@ public class CLI implements View, SubjectView {
             selections = action.split(":");
         } while (selections.length != 2 && !isIntSequence(selections, 1) && !containsKeys(cards, selections));
 
-        accumulator.setLeaderCards(action);
-        notifyInteraction(builder.buildMessage(accumulator));
+        interactionTranslator.setLeaderCards(action);
+        notifyInteraction(builder.buildMessage(interactionTranslator));
     }
 
     /**
@@ -706,7 +706,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void selectMarketAction() {
-        accumulator = new Accumulator(model);
+        interactionTranslator = new InteractionTranslator(model);
         builder = new BuildMarketSelection();
         String s;
         out.println("Select your resources from the market. Choose wisely");
@@ -715,10 +715,10 @@ public class CLI implements View, SubjectView {
             s = getInput();
         } while(!isValidMarketSelection(s));
         String[] selection = s.split(":");
-        accumulator.setMarketTray(selection[0]);
-        accumulator.setMarketNumber(Integer.parseInt(selection[1]));
+        interactionTranslator.setMarketTray(selection[0]);
+        interactionTranslator.setMarketNumber(Integer.parseInt(selection[1]));
 
-        notifyInteraction(builder.buildMessage(accumulator));
+        notifyInteraction(builder.buildMessage(interactionTranslator));
     }
 
     /**
@@ -749,7 +749,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName) {
-        accumulator = new Accumulator(model);
+        interactionTranslator = new InteractionTranslator(model);
         builder = new BuildActionMarble();
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -769,9 +769,9 @@ public class CLI implements View, SubjectView {
         out.println("Type your action. Command:- MarbleColor:ACTION:TargetSlot\n " +
                 "eg. MarbleBlue:INSERT:2:MarbleYellow:DISCARD:0");
         String action = getInput();
-        accumulator.setMarblesActions(action);
+        interactionTranslator.setMarblesActions(action);
 
-        notifyInteraction(builder.buildMessage(accumulator));
+        notifyInteraction(builder.buildMessage(interactionTranslator));
     }
 
     /**
@@ -779,7 +779,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void leaderAction() {
-        accumulator = new Accumulator(model);
+        interactionTranslator = new InteractionTranslator(model);
         builder = new BuildLeaderAction();
 
         String action, player = model.getCurrentPlayer();
@@ -788,23 +788,21 @@ public class CLI implements View, SubjectView {
         Map<Integer,String> leadersID = board.getLeadersID();
         String[] sequence;
         int position;
-        //try {
-            do {
-                out.println("It's time to put your leader cards in action. " +
-                        "\nYou can both discard and activate your cards. Command :- number:ACTION" +
-                        "\ne.g: 1:INSERT or 2:DISCARD");
-                action = getInput();
-                sequence = action.split(":");
-            }while(sequence.length!=2 || !isInt(sequence[0]) || !leadersID.containsKey(Integer.parseInt(sequence[0])));
 
-            position = Integer.parseInt(sequence[0]);
-        /*}catch (IndexOutOfBoundsException | NumberFormatException e){
-            // return;
-        }*/
-        accumulator.setLeaderCard(position);
-        accumulator.setAction(sequence[1]);
+        do {
+            out.println("It's time to put your leader cards in action. " +
+                    "\nYou can both discard and activate your cards. Command :- number:ACTION" +
+                    "\ne.g: 1:INSERT or 2:DISCARD");
+            action = getInput();
+            sequence = action.split(":");
+        }while(sequence.length!=2 || !isInt(sequence[0]) || !leadersID.containsKey(Integer.parseInt(sequence[0])));
 
-        notifyInteraction(builder.buildMessage(accumulator));
+        position = Integer.parseInt(sequence[0]);
+
+        interactionTranslator.setLeaderCard(position);
+        interactionTranslator.setAction(sequence[1]);
+
+        notifyInteraction(builder.buildMessage(interactionTranslator));
     }
 
     /**
@@ -812,7 +810,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void buyCardAction(){
-        accumulator = new Accumulator(model);
+        interactionTranslator = new InteractionTranslator(model);
         builder = new BuildBuyCard();
 
         plotDecks();
@@ -827,16 +825,16 @@ public class CLI implements View, SubjectView {
         }while(!isCardOK(selection));
         int position = Integer.parseInt(selection[0]), slot = Integer.parseInt(selection[1]);
 
-        accumulator.setPosition(position);
-        accumulator.setSlot(slot);
+        interactionTranslator.setPosition(position);
+        interactionTranslator.setSlot(slot);
 
         out.println("Now select your resources from the warehouse.");
-        accumulator.setWarehouse(helpWarehouse());
+        interactionTranslator.setWarehouse(helpWarehouse());
 
         out.println("You can also get something from your strongbox.");
-        accumulator.setStrongbox(helpResSequence());
+        interactionTranslator.setStrongbox(helpResSequence());
 
-        notifyInteraction(builder.buildMessage(accumulator));
+        notifyInteraction(builder.buildMessage(interactionTranslator));
     }
 
     /**
@@ -891,7 +889,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void doProductionsAction(){
-        accumulator = new Accumulator(model);
+        interactionTranslator = new InteractionTranslator(model);
         builder = new BuildDoProduction();
         String currentPlayer = model.getCurrentPlayer();
         ReducedBoard board = model.getBoard(currentPlayer);
@@ -906,31 +904,31 @@ public class CLI implements View, SubjectView {
         }while(!action.equals("true") && !action.equals("false"));
 
         if(Boolean.parseBoolean(action))
-            accumulator.setPersonalProduction();
+            interactionTranslator.setPersonalProduction();
 
         if(board.getLeadersID().keySet().size()>=1) {
             out.println("What about leader cards? Select them. Command:- card1:card2... [positions]");
             leaders = helpCards(board.getLeadersID());
-            accumulator.setLeaderCards(leaders);
+            interactionTranslator.setLeaderCards(leaders);
         }
         if(board.getSlots().keySet().size()>=1) {
             out.println("Don't forget your development cards! Select them. Command:- card1:card2... [positions]");
             developments = helpCards(board.getSlots());
-            accumulator.setDevelopmentCards(developments);
+            interactionTranslator.setDevelopmentCards(developments);
         }
         out.println("Select your custom materials:");
-        accumulator.setChosenMaterials(helpResSequence());
+        interactionTranslator.setChosenMaterials(helpResSequence());
 
         out.println("Select your custom products:");
-        accumulator.setChosenProducts(helpResSequence());
+        interactionTranslator.setChosenProducts(helpResSequence());
 
         out.println("What is a production without some waste of resources?");
         out.println("Now select your resources from the warehouse.");
-        accumulator.setWarehouse(helpWarehouse());
+        interactionTranslator.setWarehouse(helpWarehouse());
         out.println("You can also get something from your strongbox.");
-        accumulator.setStrongbox(helpResSequence());
+        interactionTranslator.setStrongbox(helpResSequence());
 
-        notifyInteraction(builder.buildMessage(accumulator));
+        notifyInteraction(builder.buildMessage(interactionTranslator));
     }
 
     /**
@@ -979,7 +977,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void getResourcesAction() {
-        accumulator = new Accumulator(model);
+        interactionTranslator = new InteractionTranslator(model);
         builder = new BuildSelectedResources();
 
         int playerPosition, number, players;
@@ -999,9 +997,9 @@ public class CLI implements View, SubjectView {
                 sequence = selection.split(":");
             } while (sequence.length % 2 != 0 && isIntSequence(sequence, 2));
         }
-        accumulator.setInitResources(selection);
+        interactionTranslator.setInitResources(selection);
 
-        notifyInteraction(builder.buildMessage(accumulator));
+        notifyInteraction(builder.buildMessage(interactionTranslator));
     }
 
 
@@ -1022,7 +1020,7 @@ public class CLI implements View, SubjectView {
      */
     @Override
     public void swapAction() {
-        accumulator = new Accumulator(model);
+        interactionTranslator = new InteractionTranslator(model);
         builder = new BuildSwap();
 
         String decision;
@@ -1035,10 +1033,10 @@ public class CLI implements View, SubjectView {
         }
         while(!isIntSequence(selections,1));
 
-        accumulator.setSwap(Integer.parseInt(selections[0]));
-        accumulator.setSwap(Integer.parseInt(selections[1]));
+        interactionTranslator.setSwap(Integer.parseInt(selections[0]));
+        interactionTranslator.setSwap(Integer.parseInt(selections[1]));
 
-        notifyInteraction(builder.buildMessage(accumulator));
+        notifyInteraction(builder.buildMessage(interactionTranslator));
     }
 
     /**

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Messages.Enumerations;
+package it.polimi.ingsw.Model.Boards;
 
 public enum TurnType {
     INITIALIZATION_LEADERS,

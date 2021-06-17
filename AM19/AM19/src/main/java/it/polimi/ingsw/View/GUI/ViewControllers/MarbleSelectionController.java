@@ -2,7 +2,7 @@ package it.polimi.ingsw.View.GUI.ViewControllers;
 
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.View.GUI.GUIHandler;
-import it.polimi.ingsw.View.GUI.Messages.Accumulator;
+import it.polimi.ingsw.View.InteractionTranslator.InteractionTranslator;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -114,11 +114,11 @@ public class MarbleSelectionController extends ViewController {
     /**
      * this attribute is a reference to an object of type accumulator
      */
-    private Accumulator accumulator;
+    private InteractionTranslator interactionTranslator;
 
 
     public MarbleSelectionController(){
-        accumulator = new Accumulator(GUIHandler.getGUIReference().getModelReference());
+        interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
     }
 
     @FXML
@@ -156,12 +156,12 @@ public class MarbleSelectionController extends ViewController {
                 marble = (action.equals("DISCARD")||nModifications==0)?"MarbleWhite":transformationMenus.get(i).getText();
             else marble = selected.get(i).toString();
 
-            accumulator.setMarblesActions(marble);
-            accumulator.setMarblesActions(action);
-            accumulator.setMarblesActions(slots);
+            interactionTranslator.setMarblesActions(marble);
+            interactionTranslator.setMarblesActions(action);
+            interactionTranslator.setMarblesActions(slots);
         }
 
-        getGUIReference().notifyInteraction(accumulator.buildActionMarble());
+        getGUIReference().notifyInteraction(interactionTranslator.buildActionMarble());
         ((Stage) mainPane.getScene().getWindow()).close();
     }
 

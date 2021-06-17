@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Server.ClientConnection;
+import it.polimi.ingsw.Server.ConnectionHandler;
 
 import java.util.LinkedList;
 
@@ -34,7 +34,7 @@ public class SoloConnectionHandler {
     /**
      * reference to the connection from the pretended server to client
      */
-    private ClientConnection clientConnection;
+    private ConnectionHandler clientConnection;
 
 
     public SoloConnectionHandler() {
@@ -57,7 +57,7 @@ public class SoloConnectionHandler {
      * attaches the selected client connection
      * @param clientConnection represents the connection from the pretended server to client
      */
-    public void attachClientConnection(ClientConnection clientConnection){
+    public void attachClientConnection(ConnectionHandler clientConnection){
         this.clientConnection = clientConnection;
     }
 

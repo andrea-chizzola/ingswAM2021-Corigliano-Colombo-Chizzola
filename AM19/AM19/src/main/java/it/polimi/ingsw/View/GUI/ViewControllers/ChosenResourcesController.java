@@ -1,7 +1,7 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
-import it.polimi.ingsw.View.GUI.Messages.Accumulator;
-import it.polimi.ingsw.View.GUI.Messages.BuildDoProduction;
-import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
+import it.polimi.ingsw.View.InteractionTranslator.InteractionTranslator;
+import it.polimi.ingsw.View.InteractionTranslator.BuildDoProduction;
+import it.polimi.ingsw.View.InteractionTranslator.BuildMessage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -51,7 +51,7 @@ public class ChosenResourcesController extends ViewController{
     @FXML
     private Text products;
 
-    private Accumulator accumulator;
+    private InteractionTranslator interactionTranslator;
     private BuildMessage builder;
     private int customMaterials;
     private int customProducts;
@@ -62,8 +62,8 @@ public class ChosenResourcesController extends ViewController{
         builder = new BuildDoProduction();
     }
 
-    public ChosenResourcesController(Accumulator accumulator, int customMaterials, int customProducts ){
-        this.accumulator = accumulator;
+    public ChosenResourcesController(InteractionTranslator interactionTranslator, int customMaterials, int customProducts ){
+        this.interactionTranslator = interactionTranslator;
         this.customMaterials = customMaterials;
         this.customProducts = customProducts;
     }
@@ -73,7 +73,7 @@ public class ChosenResourcesController extends ViewController{
      */
     private void bindAction(){
         actionButton.setOnAction(actionEvent -> {
-            getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
+            getGUIReference().notifyInteraction(builder.buildMessage(interactionTranslator));
             actionButton.getScene().getWindow().hide();
         });
         addEventMaterials(selectCoins1,coins1,"COIN");
@@ -99,8 +99,8 @@ public class ChosenResourcesController extends ViewController{
      */
     private void addEventMaterials(Button button, TextField text, String resource){
         button.setOnAction(actionEvent -> {
-            accumulator.setChosenMaterials(resource);
-            accumulator.setChosenMaterials(text.getText());
+            interactionTranslator.setChosenMaterials(resource);
+            interactionTranslator.setChosenMaterials(text.getText());
             button.setOpacity(0.3);
             button.setDisable(true);
         });
@@ -115,8 +115,8 @@ public class ChosenResourcesController extends ViewController{
      */
     private void addEventProducts(Button button, TextField text, String resource){
         button.setOnAction(actionEvent -> {
-            accumulator.setChosenProducts(resource);
-            accumulator.setChosenProducts(text.getText());
+            interactionTranslator.setChosenProducts(resource);
+            interactionTranslator.setChosenProducts(text.getText());
             button.setOpacity(0.3);
             button.setDisable(true);
         });
@@ -124,10 +124,10 @@ public class ChosenResourcesController extends ViewController{
 
     /**
      * this method sets the accumulator passed as parameter
-     * @param accumulator the accumulator
+     * @param interactionTranslator the accumulator
      */
-    public void setAccumulator(Accumulator accumulator){
-        this.accumulator = accumulator;
+    public void setAccumulator(InteractionTranslator interactionTranslator){
+        this.interactionTranslator = interactionTranslator;
     }
 
 }

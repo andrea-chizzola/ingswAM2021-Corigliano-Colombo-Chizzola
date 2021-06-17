@@ -14,7 +14,6 @@ import it.polimi.ingsw.Model.MarketBoard.MarketBoard;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.View.Update;
-import it.polimi.ingsw.View.View;
 import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
 import java.util.*;

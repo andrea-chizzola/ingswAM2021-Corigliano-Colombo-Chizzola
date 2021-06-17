@@ -1,4 +1,4 @@
-package it.polimi.ingsw.View.GUI.Messages;
+package it.polimi.ingsw.View.InteractionTranslator;
 
 import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
@@ -7,7 +7,6 @@ import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Cards.Colors.DevColor;
-import it.polimi.ingsw.Model.Cards.Colors.Green;
 import it.polimi.ingsw.Model.Cards.DevelopmentCard;
 
 import java.util.HashMap;
@@ -16,7 +15,7 @@ import java.util.Map;
 /**
  * This class helps to create messages
  */
-public class Accumulator {
+public class InteractionTranslator {
 
     private final String splitter = ":";
 
@@ -127,7 +126,7 @@ public class Accumulator {
      * Constructor
      * @param model the reduced model
      */
-    public Accumulator(ReducedGameBoard model){
+    public InteractionTranslator(ReducedGameBoard model){
         this.model = model;
     }
 

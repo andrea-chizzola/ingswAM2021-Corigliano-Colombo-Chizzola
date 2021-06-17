@@ -1,19 +1,21 @@
-package it.polimi.ingsw.Client;
+package it.polimi.ingsw.Client.ClientController;
 
+import it.polimi.ingsw.Client.MessageSender;
 import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.*;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
-import it.polimi.ingsw.Messages.Enumerations.TurnType;
+import it.polimi.ingsw.Model.Boards.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+import it.polimi.ingsw.Client.ConnectionListener;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 import it.polimi.ingsw.View.View;
 
 import java.util.*;
 
-public class ClientController implements ClientConnectionListener, InteractionObserver {
+public class ClientController implements ConnectionListener, InteractionObserver {
 
     /**
      * this attribute represents the reduced model of the Client

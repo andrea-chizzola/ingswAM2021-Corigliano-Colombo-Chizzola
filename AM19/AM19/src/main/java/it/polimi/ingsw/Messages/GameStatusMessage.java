@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Messages;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
-import it.polimi.ingsw.Messages.Enumerations.TurnType;
+import it.polimi.ingsw.Model.Boards.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 
 import java.util.List;

@@ -1,8 +1,7 @@
 package it.polimi.ingsw.CLITest;
 
-import it.polimi.ingsw.Client.ClientController;
+import it.polimi.ingsw.Client.ClientController.ClientController;
 import it.polimi.ingsw.Client.ReducedModel.ReducedGameBoard;
-import it.polimi.ingsw.Client.MessageSender;
 import it.polimi.ingsw.View.CLI.CLI;
 
 import java.io.*;

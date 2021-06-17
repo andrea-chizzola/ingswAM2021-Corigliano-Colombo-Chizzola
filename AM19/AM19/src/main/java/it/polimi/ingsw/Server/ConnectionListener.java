@@ -17,7 +17,7 @@ public interface ConnectionListener {
      * @param socketId represents the id associated to the connection
      * @param connection represents the client's socket connection
      */
-    void addActiveConnection(String socketId, ClientConnection connection);
+    void addActiveConnection(String socketId, ConnectionHandler connection);
 
     /**
      * Notifies the listener that a player did not answer to the ping message
