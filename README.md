@@ -1,7 +1,7 @@
 # Prova Finale di Ingegneria del Software - A.A. 2020 - 2021
 #### Andrea Chizzola, Davide Corigliano, Marco Colombo
 
-![alt text](AM19/AM19/src/main/resources/Images/login.png)
+![alt text](AM19/AM19/src/main/resources/Images/readmePicture.png)
 ## Introduction
 The goal of the project is the implementation of the board game 'Masters 
 of Renaissance'.  
