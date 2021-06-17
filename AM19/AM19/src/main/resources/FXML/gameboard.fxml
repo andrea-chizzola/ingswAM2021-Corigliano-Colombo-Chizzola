@@ -52,17 +52,17 @@
                   <Image url="@../Images/back/cardBackground.jpg" />
                </image>
             </ImageView>
-            <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="341.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="firstSlot" fitHeight="207.0" fitWidth="146.0" layoutX="344.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </ImageView>
-            <ImageView fx:id="secondSlot" fitHeight="207.0" fitWidth="146.0" layoutX="506.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="secondSlot" fitHeight="207.0" fitWidth="146.0" layoutX="504.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </ImageView>
-            <ImageView fx:id="thirdSlot" fitHeight="207.0" fitWidth="146.0" layoutX="677.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="thirdSlot" fitHeight="207.0" fitWidth="146.0" layoutX="667.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
@@ -214,7 +214,7 @@
                   <Image url="@../Images/punchboard/croceRossa.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="actionToken" fitHeight="59.0" fitWidth="66.0" layoutX="248.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="actionToken" fitHeight="59.0" fitWidth="66.0" layoutX="253.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true" />
             <Button fx:id="personalProduction" layoutX="229.0" layoutY="337.0" mnemonicParsing="false" text="Select Production">
                <font>
                   <Font size="10.0" />

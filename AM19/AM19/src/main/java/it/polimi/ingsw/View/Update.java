@@ -4,25 +4,18 @@ import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * this interface is used to implement a view in a client
- */
-public interface View extends Update{
-
-    /**
-     * this method is used to initialize the state of the view
-     */
-    void initialize();
+public interface Update {
 
     /**
      * this method is used to show a reply of the server
      * @param answer is a boolean that tells if the message is an error
      * @param body is the content of the message
-     * @param nickName is the recipient of the message
+     * @param nickName is the recipinet of the message
      */
     void reply(boolean answer, String body, String nickName);
 
@@ -63,7 +56,7 @@ public interface View extends Update{
     void showDecksUpdate(Map<Integer,String> decks);
 
     /**
-     * this method is used to show an update of one's warehouse and strongbox
+     * this method is used to show an update of one's warehouse and stringbox
      * @param warehouse represent the current state of the warehouse
      * @param strongBox represent the current state of the strongbox
      * @param nickName represents the name of the player affected by the changes
@@ -82,7 +75,7 @@ public interface View extends Update{
      * @param cards represent the current state of one's leader cards
      * @param nickName represents the nickname of involved player
      */
-    void showLeaderCards(Map<Integer,String> cards, Map<Integer,ItemStatus> status,  String nickName);
+    void showLeaderCards(Map<Integer,String> cards, Map<Integer, ItemStatus> status, String nickName);
 
     /**
      * this method is used to show an update of one's FaithTrack
@@ -112,47 +105,4 @@ public interface View extends Update{
      * @param nickname is the name of the disconnected player
      */
     void showDisconnection(String nickname);
-
-    /**
-     * this method is used to catch the LeaderCards selected by a player
-     */
-    void selectLeaderAction();
-
-    /**
-     * this method is used to catch the player's selected row or column of the MarketBoard
-     */
-    void selectMarketAction();
-
-
-    /**
-     * this method is used to catch the action of a player on a LeaderCard
-     */
-    void leaderAction();
-
-    /**
-     * this method is used to catch the action of a player of a shared DevelopmentCard
-     */
-    void buyCardAction();
-
-    /**
-     * this method is used to catch the action of a player on their productions
-     */
-    void doProductionsAction();
-
-    /**
-     * this action is used to catch the resources chosen by a player
-     */
-    void getResourcesAction();
-
-    /**
-     * this method is used to catch a swap in the Warehouse
-     */
-    void swapAction();
-
-    /**
-     * this method is used to show the board of a player (different from the current one)
-     * @param nickname is the nickname of the target player
-     */
-    void showOthers(String nickname);
 }
-

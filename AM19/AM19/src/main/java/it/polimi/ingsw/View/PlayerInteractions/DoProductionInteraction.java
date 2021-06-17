@@ -17,10 +17,4 @@ public class DoProductionInteraction implements PlayerInteraction {
     public void manageInteraction(View view) {
         view.doProductionsAction();
     }
-
-    /*public void sendMessage(InteractionObserver observer, String message){
-        observer.update(message);
-    }
-
-    observer.notifyInteraction(observer.update(message));*/
 }

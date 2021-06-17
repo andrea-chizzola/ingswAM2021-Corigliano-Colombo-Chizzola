@@ -27,7 +27,6 @@ import java.util.*;
  */
 public class CLI implements View, SubjectView {
 
-    //TODO: put all the configuration offsets inside a file
     /**
      * the following attributes represent the constants used to paint the items of the CLI
      */
@@ -165,8 +164,7 @@ public class CLI implements View, SubjectView {
                 }
             } catch (IOException | NullPointerException e) {
                 System.out.println("Cannot open the input stream of CLI");
-                e.printStackTrace();
-                //TODO CLOSE CLIENT AND CONNECTION. CANNOT OPEN INPUT STREAM
+                notifyParsingError();
             }
         }).start();
     }
@@ -208,7 +206,8 @@ public class CLI implements View, SubjectView {
             notifyInteraction(MessageFactory.buildDisconnection(
                     "I want to be disconnected", model.getPersonalNickname()));
         } catch (MalformedMessageException e) {
-            //exit from client
+            System.out.println("Error while building the message...");
+            notifyParsingError();
         }
     }
 
@@ -655,7 +654,6 @@ public class CLI implements View, SubjectView {
     /**
      * this method is used to catch the LeaderCards selected by a player
      */
-    //put the number of default leaders from configuration file
     @Override
     public void selectLeaderAction() {
         accumulator = new Accumulator(model);
@@ -1010,7 +1008,6 @@ public class CLI implements View, SubjectView {
     /**
      * this method show the player's personal production.
      */
-    //add personal production materials and products to parser or ViewModel
     public void showPersonalProduction(String nickname) {
         Production production = model.getConfiguration().getPersonalProduction();
         String[][] view = playersBoard.get(nickname);
@@ -1102,5 +1099,13 @@ public class CLI implements View, SubjectView {
     @Override
     public void notifyNickname(String nickname) {
         interactionObserver.updatePersonalNickname(nickname);
+    }
+
+    /**
+     * this method is used to notify a parsing error to the observer
+     */
+    @Override
+    public void notifyParsingError(){
+        interactionObserver.close();
     }
 }

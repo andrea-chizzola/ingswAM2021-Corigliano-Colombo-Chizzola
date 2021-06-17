@@ -1,8 +1,11 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 import it.polimi.ingsw.View.GUI.Messages.Accumulator;
+import it.polimi.ingsw.View.GUI.Messages.BuildDoProduction;
+import it.polimi.ingsw.View.GUI.Messages.BuildMessage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 /**
  * controller of the selection of the resources during the production
@@ -43,12 +46,26 @@ public class ChosenResourcesController extends ViewController{
     private TextField stones2;
     @FXML
     private Button selectStones2;
+    @FXML
+    private Text materials;
+    @FXML
+    private Text products;
 
     private Accumulator accumulator;
+    private BuildMessage builder;
+    private int customMaterials;
+    private int customProducts;
 
     @FXML
     private void initialize(){
         bindAction();
+        builder = new BuildDoProduction();
+    }
+
+    public ChosenResourcesController(Accumulator accumulator, int customMaterials, int customProducts ){
+        this.accumulator = accumulator;
+        this.customMaterials = customMaterials;
+        this.customProducts = customProducts;
     }
 
     /**
@@ -56,6 +73,7 @@ public class ChosenResourcesController extends ViewController{
      */
     private void bindAction(){
         actionButton.setOnAction(actionEvent -> {
+            getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
             actionButton.getScene().getWindow().hide();
         });
         addEventMaterials(selectCoins1,coins1,"COIN");
@@ -67,6 +85,9 @@ public class ChosenResourcesController extends ViewController{
         addEventProducts(selectShields2,shields2,"SHIELD");
         addEventProducts(selectServants2,servants2,"SERVANT");
         addEventProducts(selectStones2,stones2,"STONE");
+
+        materials.setText("Custom Materials: " + customMaterials);
+        products.setText("Custom Products: " + customProducts);
     }
 
     /**

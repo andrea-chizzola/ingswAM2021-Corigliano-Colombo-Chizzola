@@ -25,33 +25,39 @@ public class Accumulator {
      */
     private ReducedGameBoard model;
 
-
     /**
-     * StringBuilder useful to generate the string which represents the resources selected by the player during the initialization of the game
+     * StringBuilder useful to generate the string which represents
+     * the resources selected by the player during the initialization of the game
      */
+
     private StringBuilder initResources = new StringBuilder();
 
-    //market
     /**
      * It represents the choice of the marketBoard
      */
     private String tray;
+
     /**
      * it represents the number of row/column of the marketBoard
      */
+
     private int trayNumber;
     /**
      * StringBuilder useful to generate the string which represents the marbles selected by the player and the correspondent actions
      */
+
     private StringBuilder marblesActions = new StringBuilder();
     /**
      * the first shelf to swap
      */
+
     private int source;
+
     /**
      * the second shelf to swap
      */
     private int target;
+
     /**
      * true if source has been initialized, false otherwise
      */
@@ -281,7 +287,6 @@ public class Accumulator {
             return MessageFactory.buildSelectedResources(resources,"Selection of resources during initialization");
         } catch (MalformedMessageException e) {
             return "";
-            //exit
         }
     }
 

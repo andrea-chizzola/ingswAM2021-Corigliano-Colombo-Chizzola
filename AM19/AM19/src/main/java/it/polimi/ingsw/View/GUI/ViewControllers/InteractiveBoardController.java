@@ -1,8 +1,12 @@
 package it.polimi.ingsw.View.GUI.ViewControllers;
 
+import it.polimi.ingsw.Client.ReducedModel.ReducedBoard;
 import it.polimi.ingsw.Exceptions.IllegalIDException;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.MessageFactory;
+import it.polimi.ingsw.Model.Cards.DevelopmentCard;
+import it.polimi.ingsw.Model.Cards.LeaderCard;
+import it.polimi.ingsw.Model.Cards.Production;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.GUI.Messages.*;
@@ -92,6 +96,8 @@ public class InteractiveBoardController extends BoardController {
     private TurnSelectionController turnSelectionController;
     private Accumulator accumulator;
     private BuildMessage builder;
+    private int customResources, customProducts;
+    private boolean production;
 
     /**
      * this method is the constructor of the class
@@ -145,13 +151,25 @@ public class InteractiveBoardController extends BoardController {
         useSwap();
         useLeaderSelection();
         resetTurn();
+        customProducts = 0;
+        customResources = 0;
+        production = false;
     }
 
     /**
-     * this helper method is used to notify the action of the player to the controller
+     * this helper method is used to notify the action of the player to the controller.
+     *
+     * If the player has chosen a production with custom resources or products, this method
+     * shows the chose resources window.
      */
     private void notifyInteraction() {
-        getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
+        if(production && (customResources>0 || customProducts > 0)){
+            chosenResourcesController = new ChosenResourcesController(accumulator, customResources, customProducts);
+            GUIHandler.createNonCloseableWindow(chosenResourcesController,
+                    "/FXML/chosenResources.fxml", 565, 535);
+            production = false;
+        }
+        else getGUIReference().notifyInteraction(builder.buildMessage(accumulator));
         resetTurn();
         actionButton.setDisable(true);
     }
@@ -457,9 +475,32 @@ public class InteractiveBoardController extends BoardController {
             imageView.setOpacity(0.5);
             imageView.setDisable(true);
             imageView.setVisible(true);
+            addDevResources(slot);
             accumulator.setDevelopmentCards(slot.toString());});
     }
 
+    /**
+     * this helper method is used to update the sum of custom resources and custom products
+     * when a development card is selected by the player.
+     *
+     * @param slot is the position of the selected development card
+     */
+    private void addDevResources(int slot){
+        String self = getModelReference().getPersonalNickname();
+        ReducedBoard board = getModelReference().getBoard(self);
+        String id = board.getSlots().get(slot);
+        try {
+            DevelopmentCard card = getModelReference().getConfiguration().getDevelopmentCard(id);
+            Production production = card.getSpecialEffect().getProduction();
+            int materials = production.getCustomMaterials();
+            int products = production.getCustomProducts();
+            customResources += materials;
+            customProducts += products;
+        } catch (IllegalIDException e) {
+            e.printStackTrace();
+            //TODO da gestire
+        }
+    }
 
     /**
      * enable or disable the event handlers of the images associated with the slots
@@ -556,7 +597,31 @@ public class InteractiveBoardController extends BoardController {
             imageView.setOpacity(0.8);
             imageView.setDisable(true);
             imageView.setVisible(true);
-            accumulator.setLeaderCards(number.toString());});
+            accumulator.setLeaderCards(number.toString());
+            addLeaderResources(number);});
+    }
+
+    /**
+     * this helper method is used to update the sum of custom resources and custom products
+     * when a leader card is selected by the player.
+     *
+     * @param slot is the position of the selected leader card
+     */
+    private void addLeaderResources(int slot){
+        String self = getModelReference().getPersonalNickname();
+        ReducedBoard board = getModelReference().getBoard(self);
+        String id = board.getLeadersID().get(slot);
+        try {
+            LeaderCard card = getModelReference().getConfiguration().getLeaderCard(id);
+            Production production = card.getSpecialEffect().getProduction();
+            int materials = production.getCustomMaterials();
+            int products = production.getCustomProducts();
+            customResources += materials;
+            customProducts += products;
+        } catch (IllegalIDException e) {
+            e.printStackTrace();
+            //TODO da gestire
+        }
     }
 
     /**
@@ -612,7 +677,20 @@ public class InteractiveBoardController extends BoardController {
             personalProduction.setOpacity(0.5);
             personalProduction.setDisable(true);
             personalProduction.setVisible(true);
-            accumulator.setPersonalProduction();});
+            accumulator.setPersonalProduction();
+            addProductionResources();});
+    }
+
+    /**
+     * this helper method is used to update the sum of custom resources and custom products
+     * when a personal production is selected by the player.
+     */
+    private void addProductionResources(){
+        Production production = getModelReference().getConfiguration().getPersonalProduction();
+        int materials = production.getCustomMaterials();
+        int products = production.getCustomProducts();
+        customResources += materials;
+        customProducts += products;
     }
 
     /**
@@ -648,6 +726,9 @@ public class InteractiveBoardController extends BoardController {
 
         leader1select.setVisible(false);
         leader2select.setVisible(false);
+
+        customResources = 0;
+        customProducts = 0;
     }
 
     private void resetImage(ImageView imageView, double opacity){
@@ -675,11 +756,7 @@ public class InteractiveBoardController extends BoardController {
         personalProduction.setDisable(false);
         personalProduction.setVisible(true);
         actionButton.setDisable(false);
-
-        chosenResourcesController = new ChosenResourcesController();
-        chosenResourcesController.setAccumulator(accumulator);
-        GUIHandler.createNonCloseableWindow(chosenResourcesController,"/FXML/chosenResources.fxml", 565, 535);
-
+        production = true;
     }
 
     /**
@@ -744,7 +821,5 @@ public class InteractiveBoardController extends BoardController {
         swap3.setOpacity(1);
         actionButton.setDisable(false);
     }
-
-    //TODO ovverride showwindow e hide window. Aggiungere l'etichetta del player
 }
 

@@ -7,6 +7,7 @@ import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Boards.GameBoardHandler;
 import it.polimi.ingsw.Controller.MessageHandler;
 import it.polimi.ingsw.Model.Boards.GameBoard;
+import it.polimi.ingsw.View.Update;
 import it.polimi.ingsw.View.View;
 
 import java.util.*;
@@ -247,7 +248,7 @@ public class Game {
 
         GameBoardHandler gameBoard = new GameBoard(names, file);
 
-        View virtualView = new VirtualView(this);
+        Update virtualView = new VirtualView(this);
 
         gameBoard.attachView(virtualView);
         gameBoard.initializeGame(file);

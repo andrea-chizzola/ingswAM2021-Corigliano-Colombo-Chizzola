@@ -6,11 +6,12 @@ import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Server.Game;
+import it.polimi.ingsw.View.Update;
 import it.polimi.ingsw.View.View;
 
 import java.util.*;
 
-public class VirtualView implements View {
+public class VirtualView implements Update {
 
     /**
      * handler of the match
@@ -182,58 +183,5 @@ public class VirtualView implements View {
             String message = MessageFactory.buildCurrentPlayer(player,turns,"current player");
             game.sendAll(message);
         }catch (MalformedMessageException e){ e.printStackTrace();}
-    }
-
-    /**
-     * this method is used to initialize the state of the view
-     */
-    @Override
-    public void initialize() {}
-
-    /**
-     * this method is used to catch the LeaderCards selected by a player
-     */
-    @Override
-    public void selectLeaderAction() {}
-
-    /**
-     * this method is used to catch the player's selected row or column of the MarketBoard
-     */
-    @Override
-    public void selectMarketAction() {}
-
-    /**
-     * this method is used to catch the action of a player on a LeaderCard
-     */
-    @Override
-    public void leaderAction() {}
-
-    /**
-     * this method is used to catch the action of a player of a shared DevelopmentCard
-     */
-    @Override
-    public void buyCardAction() {}
-
-    /**
-     * this method is used to catch the action of a player on their productions
-     */
-    @Override
-    public void doProductionsAction() {}
-
-    /**
-     * this action is used to catch the resources chosen by a player
-     */
-    @Override
-    public void getResourcesAction() {}
-
-    /**
-     * this method is used to catch a swap in the warehouse
-     */
-    @Override
-    public void swapAction() { }
-
-    @Override
-    public void showOthers(String nickname) {
-
     }
 }

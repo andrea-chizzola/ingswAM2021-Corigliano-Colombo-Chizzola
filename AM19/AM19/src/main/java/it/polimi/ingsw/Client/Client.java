@@ -154,7 +154,6 @@ public class Client implements MessageSender {
     public static void main(String[] args){
 
         final String DEFAULT_IP = "127.0.0.1";
-        //final String DEFAULT_IP = "25.97.104.102";
         final int DEFAULT_PORT = 1234;
         String ip = DEFAULT_IP;
         int port = DEFAULT_PORT;
@@ -182,7 +181,6 @@ public class Client implements MessageSender {
             cli = false;
             System.out.println("[CLIENT] Client will be initialized using GUI settings.");
         }else if (argList.contains(CLI_ARG)) {
-            cli = true;
             System.out.println("[CLIENT] Client will be initialized using CLI settings.");
         }
 
