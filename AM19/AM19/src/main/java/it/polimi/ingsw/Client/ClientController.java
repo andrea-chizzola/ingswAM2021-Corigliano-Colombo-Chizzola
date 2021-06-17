@@ -252,6 +252,7 @@ public class ClientController implements ClientConnectionListener, InteractionOb
             }
             default:
                 break;
+            //END CONNECTION BECAUSE OF WRONG MESSAGE FROM SERVER
         }
         model.setModelState(type);
     }
@@ -370,6 +371,8 @@ public class ClientController implements ClientConnectionListener, InteractionOb
     private void endGameUpdate(UpdateMessage message) throws MalformedMessageException {
         Map<String, Integer> map = message.getEndGamePoints();
         view.showEndGame(map);
+        String winner = message.getWinner();
+        view.showEndGame(map,winner);
     }
 
     /**

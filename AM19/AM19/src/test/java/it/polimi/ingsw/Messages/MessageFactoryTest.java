@@ -3,15 +3,11 @@ package it.polimi.ingsw.Messages;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
-import it.polimi.ingsw.Model.Cards.Colors.Blue;
-import it.polimi.ingsw.Model.Cards.Colors.CardColor;
 import it.polimi.ingsw.Model.Cards.Colors.DevColor;
 import it.polimi.ingsw.Model.MarketBoard.*;
 import it.polimi.ingsw.Model.Resources.Coin;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Stone;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -20,25 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MessageFactoryTest {
 
-    private MessageFactory messageFactory;
 
-    @BeforeEach
-    void setUp() {
-        messageFactory = new MessageFactory();
-    }
-
-    @AfterEach
-    void tearDown() {
-        messageFactory = null;
-    }
-/*
-
-    @Test
-    void buildReply() throws MalformedMessageException {
-        assertEquals(messageFactory.buildReply(true, "Reply message."), "<Message><messageType>REPLY</messageType><correct>true</correct><body>Reply message.</body></Message>");
-    }
-
-*/
     @Test
     void buildCurrentPlayerTest(){
         String playerID = "pippo";
@@ -79,7 +57,7 @@ class MessageFactoryTest {
     @Test
     void buildConnection()  {
         try {
-            assertEquals(messageFactory.buildConnection("Connection request.", "nickname", true, 4),
+            assertEquals(MessageFactory.buildConnection("Connection request.", "nickname", true, 4),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>CONNECTION</messageType><playersNumber>4</playersNumber><body>Connection request.</body><gameHost>true</gameHost><player>nickname</player></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -89,7 +67,7 @@ class MessageFactoryTest {
     @Test
     void buildDisconnection()  {
         try {
-            assertEquals(messageFactory.buildDisconnection("Disconnection request.", "nickname"),
+            assertEquals(MessageFactory.buildDisconnection("Disconnection request.", "nickname"),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>DISCONNECTION</messageType><body>Disconnection request.</body><player>nickname</player></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -99,7 +77,7 @@ class MessageFactoryTest {
     @Test
     void buildReconnection()  {
         try {
-            assertEquals(messageFactory.buildReconnection("Reconnection request.", "nickname"),
+            assertEquals(MessageFactory.buildReconnection("Reconnection request.", "nickname"),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>RECONNECTION</messageType><body>Reconnection request.</body><player>nickname</player></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -112,8 +90,8 @@ class MessageFactoryTest {
         map.put("player1", 25);
         map.put("player2", 20);
         try {
-            assertEquals(messageFactory.buildEndGame(map, "Winner message."),
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>END_GAME</messageType><body>Winner message.</body><points>player1:25:player2:20</points></Message>");
+            assertEquals(MessageFactory.buildEndGame(map, "pippo","Winner message."),
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><winner>pippo</winner><messageType>END_GAME</messageType><body>Winner message.</body><points>player1:25:player2:20</points></Message>");
         } catch (MalformedMessageException e) {
             fail();
         }
@@ -122,7 +100,7 @@ class MessageFactoryTest {
     @Test
     void buildExit() {
         try {
-            assertEquals(messageFactory.buildExit("Exit body."), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>EXIT</messageType><body>Exit body.</body></Message>");
+            assertEquals(MessageFactory.buildExit("Exit body."), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>EXIT</messageType><body>Exit body.</body></Message>");
         } catch (MalformedMessageException e) {
             fail();
         }
@@ -130,7 +108,7 @@ class MessageFactoryTest {
 
     @Test
     void buildStartGame(){
-        List list = new ArrayList();
+        List<String> list = new ArrayList<>();
         list.add("player1");
         list.add("player2");
         try {
@@ -142,9 +120,9 @@ class MessageFactoryTest {
 
     @Test
     void buildLeaderUpdate(){
-        Map map1 = new HashMap<Integer, String>();
+        Map<Integer,String> map1 = new HashMap<>();
         map1.put(1, "card");
-        Map map2 = new HashMap<Integer, ItemStatus>();
+        Map<Integer,ItemStatus> map2 = new HashMap<>();
         map2.put(1, ItemStatus.ACTIVE);
         try {
             assertEquals(MessageFactory.buildLeaderUpdate(map1, map2,"player", "update leader cards"),"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><leaderStatus>1:ACTIVE</leaderStatus><messageType>UPDATE_LEADER_CARDS</messageType><body>update leader cards</body><leaderCards>1:card</leaderCards><player>player</player></Message>");
@@ -220,8 +198,8 @@ class MessageFactoryTest {
     void buildEndGameEmptyMap()  {
         Map<String, Integer> map = new HashMap<>();
         try {
-            assertEquals(messageFactory.buildEndGame(map, "Winner message."),
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>END_GAME</messageType><body>Winner message.</body><points/></Message>");
+            assertEquals(MessageFactory.buildEndGame(map, "pippo","Winner message."),
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><winner>pippo</winner><messageType>END_GAME</messageType><body>Winner message.</body><points/></Message>");
         } catch (MalformedMessageException e) {
             fail();
         }
@@ -235,7 +213,7 @@ class MessageFactoryTest {
         list.add(res1);
         list.add(res2);
         try {
-            assertEquals(messageFactory.buildBoxUpdate(list, list, "pippo","Boxes update."),
+            assertEquals(MessageFactory.buildBoxUpdate(list, list, "pippo","Boxes update."),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><strongbox>coin:5:stone:9</strongbox><messageType>BOX_UPDATE</messageType><body>Boxes update.</body><warehouse>coin:5:stone:9</warehouse><player>pippo</player></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -244,12 +222,44 @@ class MessageFactoryTest {
     }
 
     @Test
+    void buildFaithUpdate(){
+        Map<String,Integer> faith = new HashMap<>();
+        Map<String, List<ItemStatus>> sections = new HashMap<>();
+        Optional<Integer> faithLorenzo;
+        Optional<List<ItemStatus>> sectionsLorenzo;
+        String body = "body";
+        faith.put("pippo",5);
+        faith.put("pluto",6);
+        List<ItemStatus> list1 = new ArrayList<>();
+        list1.add(ItemStatus.ACTIVE);
+        list1.add(ItemStatus.DISCARDED);
+        List<ItemStatus> list2 = new ArrayList<>();
+        list2.add(ItemStatus.INACTIVE);
+        sections.put("pippo",list1);
+        sections.put("pluto",list2);
+        sectionsLorenzo = Optional.of(list2);
+        faithLorenzo = Optional.of(3);
+
+        String messageExpected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><pippoSections>ACTIVE:DISCARDED</pippoSections><LorenzoFaith>3</LorenzoFaith><LorenzoSections>INACTIVE</LorenzoSections><messageType>FAITH_UPDATE</messageType><faith>pluto:6:pippo:5</faith><plutoSections>INACTIVE</plutoSections><body>body</body></Message>";
+        String messageActual = "";
+        try {
+            messageActual = MessageFactory.buildFaithUpdate(faith,sections,faithLorenzo,sectionsLorenzo,body);
+        } catch (MalformedMessageException e) {
+            fail();
+        }
+
+        assertEquals(messageExpected,messageActual);
+
+    }
+
+
+    @Test
     void buildBoxUpdateEmpty()  {
 
         List<ResQuantity> list = new ArrayList<>();
 
         try {
-            assertEquals(messageFactory.buildBoxUpdate(list, list, "pippo","Boxes update."),
+            assertEquals(MessageFactory.buildBoxUpdate(list, list, "pippo","Boxes update."),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><strongbox/><messageType>BOX_UPDATE</messageType><body>Boxes update.</body><warehouse/><player>pippo</player></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -263,7 +273,7 @@ class MessageFactoryTest {
         map.put(1, "id1");
         map.put(2, "id2");
         try {
-            assertEquals(messageFactory.buildSlotsUpdate(map, "pippo","Slots update."),
+            assertEquals(MessageFactory.buildSlotsUpdate(map, "pippo","Slots update."),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>SLOTS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body>Slots update.</body><player>pippo</player></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -275,7 +285,7 @@ class MessageFactoryTest {
         Map<Integer, String> map = new HashMap<>();
 
         try {
-            assertEquals(messageFactory.buildSlotsUpdate(map, "pippo","Slots update."),
+            assertEquals(MessageFactory.buildSlotsUpdate(map, "pippo","Slots update."),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>SLOTS_UPDATE</messageType><devCards/><body>Slots update.</body><player>pippo</player></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -288,7 +298,7 @@ class MessageFactoryTest {
         map.put(1, "id1");
         map.put(2, "id2");
         try {
-            assertEquals(messageFactory.buildDecksUpdate(map, "Decks update."),
+            assertEquals(MessageFactory.buildDecksUpdate(map, "Decks update."),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>DECKS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body>Decks update.</body></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -301,7 +311,7 @@ class MessageFactoryTest {
         map.put(1, "id1");
         map.put(2, "id2");
         try {
-            assertEquals(messageFactory.buildDecksUpdate(map, ""),
+            assertEquals(MessageFactory.buildDecksUpdate(map, ""),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>DECKS_UPDATE</messageType><devCards>1:id1:2:id2</devCards><body/></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -313,7 +323,7 @@ class MessageFactoryTest {
         Map<Integer, String> map = new HashMap<>();
 
         try {
-            assertEquals(messageFactory.buildDecksUpdate(map, "Decks update."),
+            assertEquals(MessageFactory.buildDecksUpdate(map, "Decks update."),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>DECKS_UPDATE</messageType><devCards/><body>Decks update.</body></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -342,7 +352,7 @@ class MessageFactoryTest {
     @Test
     void buildUpdateLorenzo()  {
         try {
-            assertEquals(messageFactory.buildUpdateLorenzo("tokenID", "Update top token.")
+            assertEquals(MessageFactory.buildUpdateLorenzo("tokenID", "Update top token.")
                     ,"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>TOKEN_UPDATE</messageType><body>Update top token.</body><token>tokenID</token></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -355,7 +365,7 @@ class MessageFactoryTest {
         list.add(new MarbleBlue());
         list.add(new MarbleGray());
         try {
-            assertEquals(messageFactory.buildUpdateMarket(list, "Update market"),
+            assertEquals(MessageFactory.buildUpdateMarket(list, "Update market"),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><market>MarbleBlue:MarbleGray</market><messageType>MARKET_UPDATE</messageType><body>Update market</body></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -366,7 +376,7 @@ class MessageFactoryTest {
     void buildUpdateMarketEmpty()  {
         List<Marble> list = new ArrayList<>();
         try {
-            assertEquals(messageFactory.buildUpdateMarket(list, "Update market"),
+            assertEquals(MessageFactory.buildUpdateMarket(list, "Update market"),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><market/><messageType>MARKET_UPDATE</messageType><body>Update market</body></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -382,7 +392,7 @@ class MessageFactoryTest {
         list1.add(new MarblePurple());
         list1.add(new MarbleRed());
         try {
-            assertEquals(messageFactory.buildSelectedMarbles(list, list1, "pippo", "Marbles selected by the user."),
+            assertEquals(MessageFactory.buildSelectedMarbles(list, list1, "pippo", "Marbles selected by the user."),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><candidates>MarblePurple:MarbleRed</candidates><messageType>GAME_STATUS</messageType><correct>true</correct><marbles>MarbleBlue:MarbleGray</marbles><state>MANAGE_MARBLE</state><body>Marbles selected by the user.</body><player>pippo</player></Message>");
         } catch (MalformedMessageException e) {
             fail();
@@ -395,7 +405,7 @@ class MessageFactoryTest {
         List<Marble> list1 = new ArrayList<>();
 
         try {
-            assertEquals(messageFactory.buildSelectedMarbles(list, list1, "pippo", "Marbles selected by the user."),
+            assertEquals(MessageFactory.buildSelectedMarbles(list, list1, "pippo", "Marbles selected by the user."),
                     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><candidates/><messageType>GAME_STATUS</messageType><correct>true</correct><marbles/><state>MANAGE_MARBLE</state><body>Marbles selected by the user.</body><player>pippo</player></Message>");
         } catch (MalformedMessageException e) {
             fail();

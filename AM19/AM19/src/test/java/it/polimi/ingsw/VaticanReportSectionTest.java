@@ -46,8 +46,11 @@ class VaticanReportSectionTest {
     void getStart() {
 
         assertEquals(5, vaticanReportSection2.getStart());
+        assertEquals(2, vaticanReportSection2.getPopeFavourValue());
         assertEquals(12, vaticanReportSection3.getStart());
+        assertEquals(3, vaticanReportSection3.getPopeFavourValue());
         assertEquals(19, vaticanReportSection4.getStart());
+        assertEquals(4, vaticanReportSection4.getPopeFavourValue());
 
     }
 
@@ -151,5 +154,10 @@ class VaticanReportSectionTest {
         assertEquals(0, vaticanReportSection3.getPopeFavorVictoryPoints());
         assertEquals(0, vaticanReportSection4.getPopeFavorVictoryPoints());
 
+    }
+
+    @Test
+    void sectionTest(){
+        assertEquals(vaticanReportSection2.hashCode(), new VaticanReportSection(5, 8, 2).hashCode());
     }
 }

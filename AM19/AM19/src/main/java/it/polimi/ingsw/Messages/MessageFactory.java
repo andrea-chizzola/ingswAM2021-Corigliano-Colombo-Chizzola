@@ -6,7 +6,6 @@ import it.polimi.ingsw.Messages.Enumerations.TurnType;
 import it.polimi.ingsw.Model.Cards.Colors.DevColor;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.Model.Resources.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,10 +188,11 @@ public class MessageFactory {
      * Creates a new end game message as an XML string
      * @param points contains the final score associated to ech player
      * @param body represents the body of the message
+     * @param winner is the nickname of the winner
      * @return a new end game message
      * @throws MalformedMessageException if an error occurs during the creation of the message
      */
-    public static String buildEndGame(Map<String, Integer> points, String body) throws MalformedMessageException {
+    public static String buildEndGame(Map<String, Integer> points, String winner, String body) throws MalformedMessageException {
         Map<String, String> map = new HashMap<>();
         StringBuilder content = new StringBuilder();
         for(String s : points.keySet()){
@@ -202,6 +202,7 @@ public class MessageFactory {
         map.put("body", body);
         map.put("messageType", Message.MessageType.END_GAME.toString());
         map.put("points", string);
+        map.put("winner", winner);
         return MessageParser.createMessage(map);
     }
 
@@ -349,7 +350,7 @@ public class MessageFactory {
         map.put("messageType", Message.MessageType.FAITH_UPDATE.toString());
 
         String itemString;
-        //se la mappa è vuota ci può essere qualche errore, anche se non dovrebbe mai capitare
+
         for(String name : sections.keySet()){
             itemString = buildStatusList(sections.get(name));
             map.put(name+"Sections", itemString);
@@ -440,20 +441,6 @@ public class MessageFactory {
         return MessageParser.createMessage(map);
     }
 
-    /**
-     * Creates a new selected turn message as an XML string
-     * @param turn contains the selected turn
-     * @param body represents the body of the message
-     * @return a new selected turn message
-     * @throws MalformedMessageException if an error occurs during the creation of the message
-     */
-    public static String buildSelectedTurn(String turn, String body) throws MalformedMessageException {
-        Map<String, String> map = new HashMap<>();
-        map.put("body", body);
-        map.put("messageType", Message.MessageType.SELECTED_TURN.toString());
-        map.put("turnType", turn);
-        return MessageParser.createMessage(map);
-    }
 
     /**
      * Creates a new buy card message as an XML string
@@ -483,19 +470,6 @@ public class MessageFactory {
 
     }
 
-
-    private static String buildStringIntInt(List<Integer> target1, List<Integer> target2){
-        StringBuilder content = new StringBuilder();
-
-        for(int i=0; i<target1.size(); i++){
-            content.append(target1.get(i))
-                    .append(splitter)
-                    .append(target2)
-                    .append(splitter);
-        }
-        return content.length()==0 ? "" : content.substring(0, content.length()-1);
-
-    }
 
     /**
      * Creates a new do production message as an XML string

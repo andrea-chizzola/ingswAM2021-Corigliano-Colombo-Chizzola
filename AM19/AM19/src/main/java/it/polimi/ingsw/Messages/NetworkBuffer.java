@@ -10,11 +10,11 @@ public class NetworkBuffer {
     /**
      * this attribute represents the content of the buffer
      */
-    private StringBuilder buffer;
+    private final StringBuilder buffer;
     /**
      * this attribute is a list of the XML Strings correctly extracted from the buffer
      */
-    private List<String> extracted;
+    private final List<String> extracted;
 
     private final String messageStart = "<?xml version=";
     //private final String messageStart = "<Message>";
@@ -57,7 +57,7 @@ public class NetworkBuffer {
     /**
      * this method is used to add a String to the buffer
      * @param s is the string to be added
-     * @throws Exception is thrown if the current state of the buffer does not correspond to a
+     * @throws MalformedMessageException is thrown if the current state of the buffer does not correspond to a
      * correct XML String. In that case, the buffer is emptied
      */
     public void append(String s) throws MalformedMessageException {

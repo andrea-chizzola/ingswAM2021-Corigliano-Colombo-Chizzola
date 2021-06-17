@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FaithTrackTest {
 
     private FaithTrack faithTrack;
+    private FaithTrack faithTrack2;
 
     @BeforeEach
     void setUp(){
@@ -44,6 +45,7 @@ class FaithTrackTest {
         sections.add(2, new VaticanReportSection(19, 24, 4));
 
         faithTrack = new FaithTrack(trackPoints, sections);
+        faithTrack2 = new FaithTrack(trackPoints, sections);
 
     }
 
@@ -139,6 +141,24 @@ class FaithTrackTest {
 
         Exception exception;
         exception = assertThrows(IndexOutOfBoundsException.class, () -> {faithTrack.isEndSection(5);});
+        assertEquals(exception.getMessage(), "Nonexistent Vatican Report Section");
+
+    }
+
+    @Test
+    void isAfterSectionException(){
+
+        Exception exception;
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> {faithTrack.isAfterSection(5);});
+        assertEquals(exception.getMessage(), "Nonexistent Vatican Report Section");
+
+    }
+
+    @Test
+    void getSectionException(){
+
+        Exception exception;
+        exception = assertThrows(IndexOutOfBoundsException.class, () -> {faithTrack.getSection(5);});
         assertEquals(exception.getMessage(), "Nonexistent Vatican Report Section");
 
     }
@@ -607,5 +627,9 @@ class FaithTrackTest {
 
     }
 
+    @Test
+    void faithTrackTest(){
+        assertEquals(faithTrack.hashCode(), faithTrack2.hashCode());
+    }
 
 }

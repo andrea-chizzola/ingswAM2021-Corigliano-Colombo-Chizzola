@@ -18,10 +18,29 @@ public class Client implements MessageSender {
     private static final String GUI_ARG = "--gui";
     private static final String CLI_ARG = "--cli";
 
+    /**
+     * represents the connection to the server (or pretended server in case of a local match)
+     */
     private ServerConnection connection;
-    private final String ip;
-    private final int port;
-    private final boolean useCli;
+
+    /**
+     * represents the IP address associated to the server
+     */
+    private String ip;
+
+    /**
+     * represents the port number associated to the server
+     */
+    private int port;
+
+    /**
+     * true if the client selected to start the game using CLI interface, false otherwise
+     */
+    private boolean useCli;
+
+    /**
+     * references the client controller
+     */
     private ClientController clientController;
 
     public Client(String ip, int port, boolean useCli) {
@@ -41,6 +60,10 @@ public class Client implements MessageSender {
     }
 
 
+    /**
+     *  manages the first message exchanged in case of a local match
+     * @param message is the content of the message
+     */
     @Override
     public void firstMessageSolo(String message) {
         establishConnectionSolo();
@@ -56,10 +79,14 @@ public class Client implements MessageSender {
         System.exit(0);
     }
 
+    /**
+     * creates the necessary components to allow the message exchange in case of a local match
+     */
     private void establishConnectionSolo(){
         SoloConnectionHandler socket = new SoloConnectionHandler();
-        connection = new SoloServerConnection(socket,clientController,this);
-        new Thread(connection).start();
+        SoloServerConnection soloConnection = new SoloServerConnection(socket,clientController);
+        connection = soloConnection;
+        new Thread(soloConnection).start();
         socket.attachServerConnection(connection);
         Server server = new Server(socket);
         server.startServerSolo();
@@ -85,8 +112,9 @@ public class Client implements MessageSender {
 
             System.out.println("[CLIENT] Connecting to server...");
             System.out.println("[CLIENT] Connected to server on port " + port);
-            connection = new SocketServerConnection(socket, clientController);
-            new Thread(connection).start();
+            SocketServerConnection serverConnection = new SocketServerConnection(socket, clientController);
+            connection = serverConnection;
+            new Thread(serverConnection).start();
 
         } catch (IOException e) {
 

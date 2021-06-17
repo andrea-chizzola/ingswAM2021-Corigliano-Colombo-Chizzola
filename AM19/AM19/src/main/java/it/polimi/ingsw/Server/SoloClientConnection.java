@@ -5,9 +5,19 @@ import it.polimi.ingsw.Client.SoloConnectionHandler;
 
 public class SoloClientConnection implements ClientConnection, Runnable{
 
-
+    /**
+     * represents the solo connection handler which manages the messages exchanged in case of a local match
+     */
     private SoloConnectionHandler socket;
+
+    /**
+     * represents the id associated to the player
+     */
     private final String socketID;
+
+    /**
+     * represents the client controller
+     */
     private ConnectionListener handler;
 
 
@@ -20,7 +30,7 @@ public class SoloClientConnection implements ClientConnection, Runnable{
 
 
     /**
-     * Closes the connection between the server and the client
+     * Closes the connection between the pretended server and the client
      */
     @Override
     public void closeConnection() {
@@ -38,7 +48,7 @@ public class SoloClientConnection implements ClientConnection, Runnable{
     }
 
     /**
-     * manages server-client connection and communication
+     * manages pretended server-client connection and communication
      */
     @Override
     public void run() {

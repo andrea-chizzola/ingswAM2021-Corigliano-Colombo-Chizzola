@@ -103,8 +103,9 @@ public interface View extends Update{
     /**
      * this method is used to show the points achieved at the end of the game
      * @param players contains the name of the players and the points obtained
+     * @param winner contains the name of the winner
      */
-    void showEndGame(Map<String, Integer> players);
+    void showEndGame(Map<String, Integer> players, String winner);
 
     /**
      * this method is used to show the disconnection of a player

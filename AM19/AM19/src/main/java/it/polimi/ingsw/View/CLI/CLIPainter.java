@@ -504,25 +504,30 @@ public class CLIPainter{
         }
     }
 
-    public static void paintEndGameBox(String[][] target, int V_OFFSET, int H_OFFSET, Map<String, Integer> players){
+    /**
+     *
+     * @param target is the matrix in which the item will be painted
+     * @param V_OFFSET is the vertical position of the item
+     * @param H_OFFSET is the horizontal position of the item
+     * @param players contains the name of the players and the points obtained
+     * @param winner the nickname of the winner
+     */
+    public static void paintEndGameBox(String[][] target, int V_OFFSET, int H_OFFSET, Map<String, Integer> players, String winner){
         fill(target, V_OFFSET, H_OFFSET, END_BOX_WIDTH, END_BOX_LENGTH);
         paintRectangle(target, V_OFFSET, H_OFFSET, END_BOX_WIDTH, END_BOX_LENGTH, baseFont);
 
         StringBuilder content = new StringBuilder();
-        String winner = "";
-        int top = 0;
+        int top = players.get(winner);
 
         for(String name : players.keySet()){
             int points = players.get(name);
             content.append("Player: ").append(name).append(" Points: ").append(points).append("\n");
-            if(points>top){
-                winner = name;
-                top = points;
-            }
         }
+
         content.append("\nWinner: ").append(winner).append(" Points: ").append(top);
         CLIPainter.insertString(target, V_OFFSET + 7, H_OFFSET + 15, content.toString(), baseFont);
     }
+
     /**
      * @return the length of a sphere
      */

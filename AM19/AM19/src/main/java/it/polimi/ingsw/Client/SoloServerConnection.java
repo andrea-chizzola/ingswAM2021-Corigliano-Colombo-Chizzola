@@ -4,14 +4,20 @@ import it.polimi.ingsw.Messages.ClientConnectionListener;
 
 import java.io.IOException;
 
-public class SoloServerConnection implements ServerConnection{
+public class SoloServerConnection implements ServerConnection,Runnable{
 
-
+    /**
+     * represents the client controller
+     */
     private ClientConnectionListener clientController;
+
+    /**
+     * represents the solo connection handler which manages the messages exchanged in case of a local match
+     */
     private SoloConnectionHandler socket;
 
 
-    public SoloServerConnection(SoloConnectionHandler socket, ClientConnectionListener clientController, Client client){
+    public SoloServerConnection(SoloConnectionHandler socket, ClientConnectionListener clientController){
 
         this.socket = socket;
         this.clientController = clientController;
@@ -20,7 +26,7 @@ public class SoloServerConnection implements ServerConnection{
 
 
     /**
-     * Closes the connection between client and server
+     * Closes the connection between client and the pretended server
      */
     @Override
     public void closeConnection() {
@@ -29,7 +35,7 @@ public class SoloServerConnection implements ServerConnection{
     }
 
     /**
-     * sends a new message to the server
+     * sends a new message to the pretended server
      *
      * @param message represents the message sent
      */
@@ -39,7 +45,7 @@ public class SoloServerConnection implements ServerConnection{
     }
 
     /**
-     * manages client-server connection and communication
+     * manages client-pretended server connection and communication
      */
     @Override
     public void run() {

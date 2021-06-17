@@ -235,6 +235,7 @@ public class GameBoard implements GameBoardHandler {
         }
     }
 
+
     /**
      * @return returns a map (nickName - totalPoints)
      */
@@ -247,6 +248,16 @@ public class GameBoard implements GameBoardHandler {
             map.put(board.getNickname(),board.getTotalPoints());
         }
         return map;
+    }
+
+    /**
+     * @return the nickname of the winner
+     */
+    private String getWinner(){
+        ArrayList<Board> list = new ArrayList<>();
+        list.addAll(players);
+        list.addAll(disconnectedPlayers);
+        return customMode.findWinner(list);
     }
 
     /**
@@ -269,6 +280,8 @@ public class GameBoard implements GameBoardHandler {
     private void checkTurn(TurnType turn) throws InvalidActionException{
         if(!isAllInitialized())
             throw new InvalidActionException("Initialization not ended!");
+        if(gameEnded)
+            throw new InvalidActionException("The game is ended!");
         if(!correctTurns.contains(turn))
             throw new InvalidActionException("You can't do this action now!");
     }
@@ -302,7 +315,7 @@ public class GameBoard implements GameBoardHandler {
 
         customMode.endTurnAction(this);
         if(gameEnded)
-            virtualView.showEndGame(getTotalPoints());
+            virtualView.showEndGame(getTotalPoints(),getWinner());
 
         if(players.size() == 1 && disconnectedPlayers.size()==0) {
             virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
@@ -474,7 +487,7 @@ public class GameBoard implements GameBoardHandler {
     public void disconnectPlayer(String nickname) {
 
         if(!isAllInitialized()) {
-            virtualView.showEndGame(getTotalPoints());
+            virtualView.showEndGame(getTotalPoints(), getWinner());
             return;
         }
         if(currentPlayer.getNickname().equals(nickname)){
@@ -495,7 +508,10 @@ public class GameBoard implements GameBoardHandler {
      * @param nickname the nickname of the player reconnected
      */
     @Override
-    public void reconnectPlayer(String nickname) {
+    public void reconnectPlayer(String nickname) throws InvalidActionException{
+
+        if(gameEnded)
+            throw new InvalidActionException("The game is ended!");
 
         for(int i=0; i<disconnectedPlayers.size(); i++){
 
@@ -510,7 +526,7 @@ public class GameBoard implements GameBoardHandler {
                 virtualView.showMarketUpdate(marketBoard.showMarket());
                 virtualView.showBoxes(board.getWarehouse().showWarehouse(), board.getStrongBox().showStrongBox(), board.getNickname());
                 virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
-                if(j == 0) {
+                if(j==0) {
                     endTurnMove();
                     showAvailableTurns();
                 }

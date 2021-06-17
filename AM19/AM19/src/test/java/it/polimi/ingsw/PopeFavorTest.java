@@ -77,4 +77,11 @@ class PopeFavorTest {
 
     }
 
+    @Test
+    void favorTest(){
+
+        assertEquals(popeFavor2.hashCode(), new PopeFavor(2).hashCode());
+
+    }
+
 }

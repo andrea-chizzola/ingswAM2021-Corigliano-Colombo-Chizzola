@@ -2,12 +2,8 @@ package it.polimi.ingsw.Messages;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.Enumerations.TurnType;
-import it.polimi.ingsw.Messages.Message;
-import it.polimi.ingsw.Messages.MessageParser;
-import it.polimi.ingsw.Messages.MessageUtilities;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class GameStatusMessage extends Message {

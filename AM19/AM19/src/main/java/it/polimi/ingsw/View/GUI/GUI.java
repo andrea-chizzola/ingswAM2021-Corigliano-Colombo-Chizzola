@@ -254,14 +254,15 @@ public class GUI implements View, SubjectView {
     /**
      * this method is used to show the points achieved at the end of the game
      * @param players contains the name of the players and the points obtained
+     * @param winner contains the name of the winner
      */
     @Override
-    public void showEndGame(Map<String, Integer> players) {
+    public void showEndGame(Map<String, Integer> players, String winner) {
 
         EndGameController endGameController = new EndGameController();
         Platform.runLater(() -> {
             GUIHandler.newWindow(endGameController,path + "EndGame.fxml", 600, 400);
-            endGameController.showEndGame(players);
+            endGameController.showEndGame(players,winner);
         });
 
     }

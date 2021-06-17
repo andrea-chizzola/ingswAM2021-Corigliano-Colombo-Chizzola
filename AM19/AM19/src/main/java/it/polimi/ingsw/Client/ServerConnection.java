@@ -1,11 +1,10 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Messages.ClientConnectionListener;
 
 /**
  * interface containing the necessary methods to handle the connection between client and server
  */
-public interface ServerConnection extends Runnable{
+public interface ServerConnection{
 
     /**
      * Closes the connection between client and server

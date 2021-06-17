@@ -141,15 +141,14 @@ public class DecksController extends ViewController implements HelperWindow{
 
         for(int i : decks.keySet()){
             String id = decks.get(i);
-            String image = null;
             try {
-                image = path + config.getDevelopmentCard(id).getPath();
+                String image = path + config.getDevelopmentCard(id).getPath();
+                ImageView view = cards.get(i);
+                view.setVisible(true);
+                view.setImage(new Image(image));
             } catch (IllegalIDException e) {
-                //e.printStackTrace();
+                System.out.println("Parsing failure! Card ID: "+id+" not found!");
             }
-            ImageView view = cards.get(i);
-            view.setVisible(true);
-            view.setImage(new Image(image));
         }
     }
 

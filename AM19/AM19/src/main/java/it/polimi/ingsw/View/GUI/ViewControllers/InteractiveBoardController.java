@@ -234,15 +234,14 @@ public class InteractiveBoardController extends BoardController {
         if(action.isEmpty())
             return;
 
-        String image = null;
         try {
-            image = getModelReference().getConfiguration().getActionTokenCard(action.get()).getImage();
+            String image = getModelReference().getConfiguration().getActionTokenCard(action.get()).getImage();
+            Image token = new Image("/Images/punchboard/" + image);
+            actionToken.setImage(token);
+            actionToken.setVisible(true);
         } catch (IllegalIDException e) {
-            //e.printStackTrace();
+            System.out.println("Parsing failure! TopToken ID: "+action.get()+" not found!");
         }
-        Image token = new Image("/Images/punchboard/" + image);
-        actionToken.setImage(token);
-        actionToken.setVisible(true);
     }
 
     /**

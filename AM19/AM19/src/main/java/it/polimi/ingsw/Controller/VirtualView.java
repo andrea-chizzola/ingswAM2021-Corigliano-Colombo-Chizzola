@@ -148,13 +148,13 @@ public class VirtualView implements Update {
 
     /**
      * this method is used to show the points achieved at the end of the game
-     *
      * @param players contains the name of the players and the points obtained
+     * @param winner contains the name of the winner
      */
     @Override
-    public void showEndGame(Map<String, Integer> players) {
+    public void showEndGame(Map<String, Integer> players, String winner) {
         try {
-            String message = MessageFactory.buildEndGame(players,"game ended");
+            String message = MessageFactory.buildEndGame(players, winner, "game ended");
             game.sendAll(message);
         }catch (MalformedMessageException e){e.printStackTrace();}
     }
