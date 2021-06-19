@@ -15,16 +15,44 @@ import java.util.TimerTask;
 /**
  * Handles client side the connection between client and server
  */
-public class SocketServerConnection implements ServerConnection,Runnable{
+public class SocketServerConnectionHandler implements ServerConnectionHandler,Runnable{
 
+    /**
+     * represents the client's socket used to communicate to the server
+     */
     private Socket socket;
+
+    /**
+     * true if a pong was received from the server
+     */
     private boolean pong;
-    private ConnectionListener clientController;
+
+    /**
+     * references the client controller
+     */
+    private ServerConnectionListener clientController;
+
+    /**
+     * represents the input stream
+     */
     private BufferedReader in;
+
+    /**
+     * represents a buffer where a new received message is stored
+     */
     private NetworkBuffer buffer;
+
+    /**
+     * represents the output stream
+     */
     private PrintWriter out;
 
-    public SocketServerConnection(Socket socket, ConnectionListener clientController){
+    /**
+     * creates a new socket connection
+     * @param socket represents the client's socket
+     * @param clientController references the client controller
+     */
+    public SocketServerConnectionHandler(Socket socket, ServerConnectionListener clientController){
 
         this.socket = socket;
         this.clientController = clientController;

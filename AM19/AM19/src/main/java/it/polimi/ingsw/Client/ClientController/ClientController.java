@@ -9,13 +9,13 @@ import it.polimi.ingsw.Messages.Enumerations.ItemStatus;
 import it.polimi.ingsw.Model.Boards.TurnType;
 import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.Client.ConnectionListener;
+import it.polimi.ingsw.Client.ServerConnectionListener;
 import it.polimi.ingsw.View.PlayerInteractions.PlayerInteraction;
 import it.polimi.ingsw.View.View;
 
 import java.util.*;
 
-public class ClientController implements ConnectionListener, InteractionObserver {
+public class ClientController implements ServerConnectionListener, InteractionObserver {
 
     /**
      * this attribute represents the reduced model of the Client

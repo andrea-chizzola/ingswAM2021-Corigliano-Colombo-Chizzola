@@ -3,7 +3,7 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Client.SoloConnectionHandler;
 
 
-public class SoloClientConnection implements ConnectionHandler, Runnable{
+public class SoloClientClientConnection implements ClientConnectionHandler, Runnable{
 
     /**
      * represents the solo connection handler which manages the messages exchanged in case of a local match
@@ -18,10 +18,10 @@ public class SoloClientConnection implements ConnectionHandler, Runnable{
     /**
      * represents the client controller
      */
-    private ConnectionListener handler;
+    private ClientConnectionListener handler;
 
 
-    public SoloClientConnection(SoloConnectionHandler socket, String socketID, ConnectionListener handler) {
+    public SoloClientClientConnection(SoloConnectionHandler socket, String socketID, ClientConnectionListener handler) {
 
         this.socket = socket;
         this.socketID = socketID;

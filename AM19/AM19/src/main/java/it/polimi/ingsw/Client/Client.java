@@ -12,6 +12,9 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * handles the game setup client side
+ */
 public class Client implements MessageSender {
 
     private static final String IP_ARG = "-ip";
@@ -22,7 +25,7 @@ public class Client implements MessageSender {
     /**
      * represents the connection to the server (or pretended server in case of a local match)
      */
-    private ServerConnection connection;
+    private ServerConnectionHandler connection;
 
     /**
      * represents the IP address associated to the server
@@ -44,6 +47,12 @@ public class Client implements MessageSender {
      */
     private ClientController clientController;
 
+    /**
+     * creates a new client given the selected parameters
+     * @param ip represents the server's ip
+     * @param port represents the server's port
+     * @param useCli true if the player wants to play using the CLI interface, false to play using GUI
+     */
     public Client(String ip, int port, boolean useCli) {
         this.ip = ip;
         this.port = port;
@@ -85,7 +94,7 @@ public class Client implements MessageSender {
      */
     private void establishConnectionSolo(){
         SoloConnectionHandler socket = new SoloConnectionHandler();
-        SoloServerConnection soloConnection = new SoloServerConnection(socket,clientController);
+        SoloServerConnectionHandler soloConnection = new SoloServerConnectionHandler(socket,clientController);
         connection = soloConnection;
         new Thread(soloConnection).start();
         socket.attachServerConnection(connection);
@@ -113,7 +122,7 @@ public class Client implements MessageSender {
 
             System.out.println("[CLIENT] Connecting to server...");
             System.out.println("[CLIENT] Connected to server on port " + port);
-            SocketServerConnection serverConnection = new SocketServerConnection(socket, clientController);
+            SocketServerConnectionHandler serverConnection = new SocketServerConnectionHandler(socket, clientController);
             connection = serverConnection;
             new Thread(serverConnection).start();
 

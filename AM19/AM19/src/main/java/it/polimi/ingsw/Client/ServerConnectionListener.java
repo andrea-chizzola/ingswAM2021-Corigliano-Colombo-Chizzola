@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Client;
 
 /**
- * This interface is used to observe the connection
+ * interface containing the necessary methods to notify the observers of the connection between client and server
  */
-public interface ConnectionListener {
+public interface ServerConnectionListener {
 
     /**
      * this method is used to notify the controller about the new messages
