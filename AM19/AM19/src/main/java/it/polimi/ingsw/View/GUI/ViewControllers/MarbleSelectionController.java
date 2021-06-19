@@ -118,7 +118,7 @@ public class MarbleSelectionController extends ViewController {
 
 
     public MarbleSelectionController(){
-        interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
+        interactionTranslator = new InteractionTranslator(getModelReference());
     }
 
     @FXML
@@ -199,6 +199,7 @@ public class MarbleSelectionController extends ViewController {
             Image image = new Image(MarbleSelectionController.class.getResourceAsStream(path + imageName));
             marbles.get(i).setImage(image);
             keepCheckBoxes.get(i).setVisible(true);
+            targetMenus.get(i).setVisible(true);
             if(marblesTray.get(i).isWhite() && whiteModifications.size()>0)
                 showWhiteTransformations(whiteModifications, transformationMenus.get(i), keepCheckBoxes.get(i));
 
@@ -217,6 +218,7 @@ public class MarbleSelectionController extends ViewController {
                 menu.getItems().add(item);
                 item.setOnAction(e -> menu.setText(item.getText()));
             }
+            menu.setVisible(false);
         }
     }
 
