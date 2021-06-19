@@ -55,7 +55,7 @@ public class CardQuantity {
     @Override
     public String toString(){
         return  cardColor.toString() + " " +
-                "L=" + level;
+                "L=" + level + " Q=" + quantity;
     }
 
     @Override
