@@ -1,11 +1,11 @@
 package it.polimi.ingsw.Client;
 
-public class SoloServerConnection implements ServerConnection,Runnable{
+public class SoloServerConnectionHandler implements ServerConnectionHandler,Runnable{
 
     /**
      * represents the client controller
      */
-    private ConnectionListener clientController;
+    private ServerConnectionListener clientController;
 
     /**
      * represents the solo connection handler which manages the messages exchanged in case of a local match
@@ -13,7 +13,7 @@ public class SoloServerConnection implements ServerConnection,Runnable{
     private SoloConnectionHandler socket;
 
 
-    public SoloServerConnection(SoloConnectionHandler socket, ConnectionListener clientController){
+    public SoloServerConnectionHandler(SoloConnectionHandler socket, ServerConnectionListener clientController){
 
         this.socket = socket;
         this.clientController = clientController;

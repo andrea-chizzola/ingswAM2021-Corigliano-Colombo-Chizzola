@@ -37,7 +37,7 @@ public class Server {
     /**
      * represents the GamesHandler
      */
-    private ConnectionListener handler;
+    private ClientConnectionListener handler;
 
     /**
      * contains a thread pool to manage all the clients connecting to the server
@@ -82,7 +82,7 @@ public class Server {
      * Initializes and starts the server (solo game)
      */
     public void startServerSolo(){
-        SoloClientConnection connection = new SoloClientConnection(socket,createId(),handler);
+        SoloClientClientConnection connection = new SoloClientClientConnection(socket,createId(),handler);
         new Thread(connection).start();
         socket.attachClientConnection(connection);
     }
@@ -122,7 +122,7 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 String id = createId();
                 System.out.println("[SERVER] Accepted new connection (ID = "+ id + ")");
-                executor.submit(new SocketClientConnection(socket, id, handler));
+                executor.submit(new SocketClientClientConnection(socket, id, handler));
 
             } catch (IOException e) {
 

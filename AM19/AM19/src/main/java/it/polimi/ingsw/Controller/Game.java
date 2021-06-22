@@ -4,7 +4,7 @@ import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Boards.GameBoardHandler;
 import it.polimi.ingsw.Model.Boards.GameBoard;
-import it.polimi.ingsw.Server.ConnectionHandler;
+import it.polimi.ingsw.Server.ClientConnectionHandler;
 import it.polimi.ingsw.View.Update;
 
 import java.util.*;
@@ -38,7 +38,7 @@ public class Game {
     /**
      * keeps track of the connections associated to each player currently in the game
      */
-    private Map<String, ConnectionHandler> connections;
+    private Map<String, ClientConnectionHandler> connections;
 
     /**
      * represents a unique id associated to the match
@@ -55,7 +55,7 @@ public class Game {
      */
     private boolean start;
 
-    public Game(GamesHandler gamesHandler, String nickname, String socketId, ConnectionHandler connection, int playersNumber, String id){
+    public Game(GamesHandler gamesHandler, String nickname, String socketId, ClientConnectionHandler connection, int playersNumber, String id){
 
         this.gamesHandler = gamesHandler;
         players = new HashMap<>();
@@ -119,7 +119,7 @@ public class Game {
      * @param socketId represents the player's socket id
      * @param connection represents the player's socket connection
      */
-    public void addPlayer(String nickname, String socketId, ConnectionHandler connection){
+    public void addPlayer(String nickname, String socketId, ClientConnectionHandler connection){
 
         players.put(socketId, nickname);
         connections.put(nickname, connection);

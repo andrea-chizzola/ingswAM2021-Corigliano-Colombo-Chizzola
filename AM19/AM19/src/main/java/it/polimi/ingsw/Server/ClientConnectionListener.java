@@ -3,7 +3,7 @@ package it.polimi.ingsw.Server;
 /**
  * interface containing the necessary methods to notify the observers of the connection between server and client
  */
-public interface ConnectionListener {
+public interface ClientConnectionListener {
 
     /**
      * Notifies the listener that a new message was received
@@ -17,7 +17,7 @@ public interface ConnectionListener {
      * @param socketId represents the id associated to the connection
      * @param connection represents the client's socket connection
      */
-    void addActiveConnection(String socketId, ConnectionHandler connection);
+    void addActiveConnection(String socketId, ClientConnectionHandler connection);
 
     /**
      * Notifies the listener that a player did not answer to the ping message

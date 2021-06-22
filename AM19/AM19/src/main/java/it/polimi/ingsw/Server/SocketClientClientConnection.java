@@ -12,17 +12,50 @@ import java.util.TimerTask;
 /**
  * Handles server side the connection between client and server
  */
-public class SocketClientConnection implements ConnectionHandler, Runnable {
+public class SocketClientClientConnection implements ClientConnectionHandler, Runnable {
 
+    /**
+     * represents the server's socket used to communicate to the client
+     */
     private Socket socket;
+
+    /**
+     * true if a pong was received from the client
+     */
     private boolean pong;
+
+    /**
+     * represents a unique id associated to the socket
+     */
     private final String socketID;
-    private ConnectionListener handler;
+
+    /**
+     * references the games handler
+     */
+    private ClientConnectionListener handler;
+
+    /**
+     * represents the input stream
+     */
     private BufferedReader in;
+
+    /**
+     * represents a buffer where a new received message is stored
+     */
     private NetworkBuffer buffer;
+
+    /**
+     * represents the output stream
+     */
     private PrintWriter out;
 
-    public SocketClientConnection(Socket socket, String socketID, ConnectionListener handler) {
+    /**
+     * creates a new socket connection
+     * @param socket represents the server's socket
+     * @param socketID represents the socket id
+     * @param handler references the game handler
+     */
+    public SocketClientClientConnection(Socket socket, String socketID, ClientConnectionListener handler) {
 
         this.socket = socket;
         this.socketID = socketID;
