@@ -38,12 +38,12 @@ public interface Requirements {
     boolean checkReq(Board board, ArrayList<Integer> shelves, ArrayList<Integer> quantity, ArrayList<ResQuantity> strongbox) throws InvalidActionException;
 
     /**
-     * @return HasMap<Resource,Integer> with all the resources present in the requirements
+     * @return HasMap(Resource,Integer) with all the resources present in the requirements
      */
     HashMap<Resource,Integer> getRequirements();
 
     /**
-     * @return LinkedList<CardQuantity> with all the cards present in the requirements
+     * @return LinkedList of CardQuantity with all the cards present in the requirements
      */
     LinkedList<CardQuantity> getCardRequirements();
 }

@@ -16,7 +16,6 @@ public interface Marble {
      *This method allow to add a resource.
      * @param board is the board of the player
      * @param shelf is the shelf in which we want to insert the marble
-     * @throws InvalidActionException if the resource is inserted in the wrong shelf.
      */
     void addResource(Board board, int shelf);
 

@@ -371,7 +371,7 @@ public class Board {
 
     /**
      * This method returns a Map which contains information about all the resources present in strongbox and warehouse.
-     * @return Map<Resource,Integer>, Integer represents the amount of the resource (the key)
+     * @return Map(Resource,Integer) Integer represents the amount of the resource (the key)
      */
     public Map<Resource,Integer> getResourceStatus(){
 

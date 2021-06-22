@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.LinkedList;
 
 /**
- * this class is used to test the generic class Container<T>
+ * this class is used to test the generic class Container
  */
 public class ContainerTest {
     private Container<String> container;
