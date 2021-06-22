@@ -497,8 +497,7 @@ public class InteractiveBoardController extends BoardController {
             customResources += materials;
             customProducts += products;
         } catch (IllegalIDException e) {
-            e.printStackTrace();
-            //TODO da gestire
+            System.out.println("Parsing failure! Card ID: " + id + " not found!");
         }
     }
 
@@ -619,8 +618,7 @@ public class InteractiveBoardController extends BoardController {
             customResources += materials;
             customProducts += products;
         } catch (IllegalIDException e) {
-            e.printStackTrace();
-            //TODO da gestire
+            System.out.println("Parsing failure! Card ID: " + id + " not found!");
         }
     }
 

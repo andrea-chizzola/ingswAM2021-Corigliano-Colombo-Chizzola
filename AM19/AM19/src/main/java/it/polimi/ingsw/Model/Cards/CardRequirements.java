@@ -51,7 +51,7 @@ public class CardRequirements implements Requirements{
     }
 
     /**
-     * @return HasMap<Resource,Integer> with all the resources present in the requirements
+     * @return HasMap(Resource,Integer) with all the resources present in the requirements
      */
     @Override
     public HashMap<Resource, Integer> getRequirements() {
@@ -60,7 +60,7 @@ public class CardRequirements implements Requirements{
     }
 
     /**
-     * @return LinkedList<CardQuantity> with all the cards present in the requirements
+     * @return LinkedList of CardQuantity with all the cards present in the requirements
      */
     public LinkedList<CardQuantity> getCardRequirements(){
         LinkedList<CardQuantity> list = new LinkedList<>();

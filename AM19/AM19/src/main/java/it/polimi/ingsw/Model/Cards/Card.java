@@ -99,7 +99,7 @@ public abstract class Card{
 
 
     /**
-     * @return HasMap<Resource,Integer> with all the resources present in the requirements
+     * @return HasMap(Resource,Integer) with all the resources present in the requirements
      */
      public HashMap<Resource,Integer> getRequirements(){
         HashMap<Resource,Integer> map = requirements.getRequirements();
@@ -107,7 +107,7 @@ public abstract class Card{
      }
 
     /**
-     * @return LinkedList<CardQuantity> with all the cards present in the requirements
+     * @return LinkedList of CardQuantity with all the cards present in the requirements
      */
     public LinkedList<CardQuantity> getCardRequirements(){
          LinkedList<CardQuantity> list = requirements.getCardRequirements();

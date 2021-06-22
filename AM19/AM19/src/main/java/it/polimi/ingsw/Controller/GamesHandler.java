@@ -2,18 +2,18 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.*;
-import it.polimi.ingsw.Server.ConnectionHandler;
-import it.polimi.ingsw.Server.ConnectionListener;
+import it.polimi.ingsw.Server.ClientConnectionHandler;
+import it.polimi.ingsw.Server.ClientConnectionListener;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class GamesHandler implements ConnectionListener {
+public class GamesHandler implements ClientConnectionListener {
 
     /**
      * keeps track of the active connections associating them to a unique ID
      */
-    private Map<String, ConnectionHandler> activeConnections;
+    private Map<String, ClientConnectionHandler> activeConnections;
 
     /**
      * keeps track of the games waiting for other players to start
@@ -188,7 +188,7 @@ public class GamesHandler implements ConnectionListener {
      * @param socketId represents the id related to the socket connection
      * @return returns the connection associated to the selected id
      */
-    private ConnectionHandler getConnection(String socketId){
+    private ClientConnectionHandler getConnection(String socketId){
         return activeConnections.get(socketId);
     }
 
@@ -317,7 +317,7 @@ public class GamesHandler implements ConnectionListener {
      * @param connection represents the client's socket connection
      */
     @Override
-    public synchronized void addActiveConnection(String socketId, ConnectionHandler connection){
+    public synchronized void addActiveConnection(String socketId, ClientConnectionHandler connection){
         activeConnections.put(socketId, connection);
     }
 
