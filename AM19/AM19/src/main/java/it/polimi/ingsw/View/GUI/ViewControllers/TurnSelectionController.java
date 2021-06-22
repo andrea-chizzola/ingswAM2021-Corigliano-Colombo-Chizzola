@@ -2,15 +2,12 @@ package it.polimi.ingsw.View.GUI.ViewControllers;
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.View.GUI.GUI;
-import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.PlayerInteractions.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -94,8 +91,8 @@ public class TurnSelectionController extends ViewController implements HelperWin
                 gui.notifyInteraction(MessageFactory.buildExit("End of turn selection"));
                 mainPane.getScene().getWindow().hide();
             } catch (MalformedMessageException e) {
-                e.printStackTrace();
-                //TODO error message
+                System.out.println("Cannot use DOM library to build the message...\nClosing client...");
+                getGUIReference().notifyParsingError();
             }
         });
     }

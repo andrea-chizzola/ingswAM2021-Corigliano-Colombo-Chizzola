@@ -199,10 +199,12 @@ public class ClientController implements ConnectionListener, InteractionObserver
      */
     private void gameStatusHandler(GameStatusMessage message) throws MalformedMessageException {
         String self = model.getPersonalNickname();
+        String body = message.getBody();
         model.setCurrentPlayer(message.getPlayer());
 
         if (model.getCurrentPlayer().equals(self)){
             model.setModelState(message.getStatus());
+            view.showGameStatus(true, body, self, message.getStatus());
             selectionHandler(message.getStatus(), message);
             actionHandler(message.getStatus());
         }

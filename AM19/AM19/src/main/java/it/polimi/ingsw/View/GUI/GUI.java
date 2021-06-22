@@ -114,7 +114,7 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void showGameStatus(boolean answer, String body, String nickName, TurnType state) {
-        //inizializzazione game, ma mai negativa
+        System.out.println(body);
         //TODO togliere il booleano
     }
 

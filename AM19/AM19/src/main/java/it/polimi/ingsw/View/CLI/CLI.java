@@ -206,7 +206,7 @@ public class CLI implements View, SubjectView {
             notifyInteraction(MessageFactory.buildDisconnection(
                     "I want to be disconnected", model.getPersonalNickname()));
         } catch (MalformedMessageException e) {
-            System.out.println("Error while building the message...");
+            System.out.println("Parsing error... closing the connection");
             notifyParsingError();
         }
     }
@@ -526,7 +526,8 @@ public class CLI implements View, SubjectView {
             try {
                 notifySoloInteraction(MessageFactory.buildConnection("Connection request", player, true, 1));
             }catch(MalformedMessageException e){
-                //CLOSE CONNECTION
+                System.out.println("Parsing error... closing the connection");
+                notifyParsingError();
             }
             return;
         }
@@ -560,7 +561,8 @@ public class CLI implements View, SubjectView {
             else
                 notifyInteraction(MessageFactory.buildConnection("Connection request", player, Boolean.parseBoolean(first), Integer.parseInt(num)));
         }catch(MalformedMessageException e){
-            //CLOSE CONNECTION
+            System.out.println("Parsing error... closing the connection");
+            notifyParsingError();
         }
 
     }
@@ -643,7 +645,8 @@ public class CLI implements View, SubjectView {
                 try {
                     notifyInteraction(MessageFactory.buildExit("End of turn selection"));
                 } catch (MalformedMessageException e) {
-                    //exit from client
+                    System.out.println("Parsing error... closing the connection");
+                    notifyParsingError();
                 }
                 break;
             }
@@ -966,7 +969,6 @@ public class CLI implements View, SubjectView {
         }catch (NumberFormatException | NullPointerException e){
             return false;
         }
-
         return true;
     }
 
