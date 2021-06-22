@@ -38,7 +38,7 @@ The model has been modified based on the suggestions received during the
 laboratories, and of the issues found during the implementation of the game
 
 ### Network Protocol
-The following document contains the [network protocol](deliveries/UML/UML_Model_V3.jpg) designed to manage
+The following document contains the [network protocol](deliveries/NETWORK_PROTOCOL.pdf) designed to manage
 the communication between the client and the server.
 
 ### JavaDoc
