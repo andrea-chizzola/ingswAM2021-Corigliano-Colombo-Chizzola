@@ -127,7 +127,7 @@ public class Game {
             try {
                 send(MessageFactory.buildStartGame("Game is starting", new ArrayList<>(players.values())),nickname);
             } catch (MalformedMessageException e) {
-                //TERMINA IL GAME
+                closeGame();
             }
             messageHandler.reconnection(nickname);
         }
@@ -206,29 +206,6 @@ public class Game {
     public boolean canStart(){ return getActualPlayers() == playersNumber; }
 
     /**
-     * checks if after the timer at least one player has been reconnected to the game
-     */
-    public void startSuspensionTimer(){
-
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                if(getActualPlayers() == 0){
-                    System.out.println("[SERVER] No player reconnected. The game will now be closed.");
-                    gamesHandler.removeGame(getId(), new ArrayList<>(players.keySet()));
-                    System.out.println("[SERVER] Suspended game removed.");
-                }else{
-                    System.out.println("[SERVER] A player was reconnected to his game. The game will not be closed.");
-                }
-                timer.cancel();
-            }
-        };
-        timer.schedule(task, 30000);
-
-    }
-
-    /**
      * sets up the game creating all the necessary components
      */
     public void setUpGame(){
@@ -239,7 +216,7 @@ public class Game {
         try {
             sendAll(MessageFactory.buildStartGame("Game is starting", names));
         } catch (MalformedMessageException e) {
-            //TERMINA IL GAME
+            closeGame();
         }
 
         GameBoardHandler gameBoard = new GameBoard(names, file);
@@ -252,6 +229,18 @@ public class Game {
         this.messageHandler = new MessageHandler(gameBoard, virtualView);
 
         System.out.println("[SERVER] Game is ready to start");
+
+    }
+
+    /**
+     * closes the game
+     */
+    private void closeGame(){
+
+        for(String player : connections.keySet()){
+            connections.get(player).closeConnection();
+        }
+        gamesHandler.removeGame(getId(), new ArrayList<>(players.keySet()));
 
     }
 

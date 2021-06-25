@@ -15,7 +15,7 @@ import java.util.TimerTask;
 /**
  * Handles client side the connection between client and server
  */
-public class SocketServerConnectionHandler implements ServerConnectionHandler,Runnable{
+public class SocketServerConnection implements ServerConnectionHandler,Runnable{
 
     /**
      * represents the client's socket used to communicate to the server
@@ -52,7 +52,7 @@ public class SocketServerConnectionHandler implements ServerConnectionHandler,Ru
      * @param socket represents the client's socket
      * @param clientController references the client controller
      */
-    public SocketServerConnectionHandler(Socket socket, ServerConnectionListener clientController){
+    public SocketServerConnection(Socket socket, ServerConnectionListener clientController){
 
         this.socket = socket;
         this.clientController = clientController;
@@ -175,7 +175,7 @@ public class SocketServerConnectionHandler implements ServerConnectionHandler,Ru
 
         }catch (IOException e){
 
-            System.out.println(e.getMessage());
+            System.out.println("[CLIENT] " + e.getMessage());
             System.out.println("[CLIENT] Connection closed.");
 
         }

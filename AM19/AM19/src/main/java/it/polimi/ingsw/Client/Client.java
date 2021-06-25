@@ -122,7 +122,7 @@ public class Client implements MessageSender {
 
             System.out.println("[CLIENT] Connecting to server...");
             System.out.println("[CLIENT] Connected to server on port " + port);
-            SocketServerConnectionHandler serverConnection = new SocketServerConnectionHandler(socket, clientController);
+            SocketServerConnection serverConnection = new SocketServerConnection(socket, clientController);
             connection = serverConnection;
             new Thread(serverConnection).start();
 

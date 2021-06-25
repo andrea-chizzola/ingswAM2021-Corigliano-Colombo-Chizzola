@@ -82,7 +82,7 @@ public class Server {
      * Initializes and starts the server (solo game)
      */
     public void startServerSolo(){
-        SoloClientClientConnection connection = new SoloClientClientConnection(socket,createId(),handler);
+        SoloClientConnection connection = new SoloClientConnection(socket,createId(),handler);
         new Thread(connection).start();
         socket.attachClientConnection(connection);
     }
@@ -122,7 +122,7 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 String id = createId();
                 System.out.println("[SERVER] Accepted new connection (ID = "+ id + ")");
-                executor.submit(new SocketClientClientConnection(socket, id, handler));
+                executor.submit(new SocketClientConnection(socket, id, handler));
 
             } catch (IOException e) {
 
