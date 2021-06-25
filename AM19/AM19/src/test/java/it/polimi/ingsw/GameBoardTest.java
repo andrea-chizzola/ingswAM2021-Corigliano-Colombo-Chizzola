@@ -1,16 +1,12 @@
-package it.polimi.ingsw.Model.Boards;
+package it.polimi.ingsw;
 
-import it.polimi.ingsw.Controller.ViewForTest;
+import it.polimi.ingsw.Model.Boards.Board;
+import it.polimi.ingsw.Model.Boards.GameBoard;
+import it.polimi.ingsw.ViewForTest;
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
-import it.polimi.ingsw.Exceptions.IllegalSlotException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Model.Cards.*;
-import it.polimi.ingsw.Model.Cards.Colors.Green;
-import it.polimi.ingsw.Model.Cards.Colors.Purple;
-import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.*;
 import it.polimi.ingsw.View.View;
-import it.polimi.ingsw.xmlParser.ConfigurationParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -112,7 +108,7 @@ class GameBoardTest {
     void insertResources1(){
 
         assertTrue(gameBoard.isCurrentPlayer(gameBoard.getPlayers().get(0).getNickname()));
-        assertTrue(gameBoard.getCurrentPlayer().getNumberResourcesInitialization() == 0);
+        assertEquals(gameBoard.getCurrentPlayer().getNumberResourcesInitialization(), 0);
         List<Resource> resources = new LinkedList<>();
         List<Integer> shelves = new LinkedList<>();
 
@@ -155,7 +151,7 @@ class GameBoardTest {
             board.setLeadersInitialized();
         }
         gameBoard.disconnectPlayer("firstPlayer");
-        assertTrue(gameBoard.getPlayers().size()==3);
+        assertEquals(gameBoard.getPlayers().size(), 3);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"thirdPlayer");
         assertEquals(gameBoard.getPlayers().get(2).getNickname(),"fourthPlayer");
@@ -169,7 +165,7 @@ class GameBoardTest {
         }
         gameBoard.disconnectPlayer("firstPlayer");
         gameBoard.disconnectPlayer("thirdPlayer");
-        assertTrue(gameBoard.getPlayers().size()==2);
+        assertEquals(gameBoard.getPlayers().size(), 2);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
     }
@@ -182,7 +178,7 @@ class GameBoardTest {
         }
         gameBoard.disconnectPlayer("thirdPlayer");
         gameBoard.disconnectPlayer("firstPlayer");
-        assertTrue(gameBoard.getPlayers().size()==2);
+        assertEquals(gameBoard.getPlayers().size(), 2);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
         try {
@@ -190,7 +186,7 @@ class GameBoardTest {
         } catch (InvalidActionException e) {
             fail();
         }
-        assertTrue(gameBoard.getPlayers().size()==3);
+        assertEquals(gameBoard.getPlayers().size(), 3);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
         assertEquals(gameBoard.getPlayers().get(2).getNickname(),"firstPlayer");
@@ -205,7 +201,7 @@ class GameBoardTest {
         gameBoard.disconnectPlayer("thirdPlayer");
         gameBoard.disconnectPlayer("firstPlayer");
         gameBoard.disconnectPlayer("fourthPlayer");
-        assertTrue(gameBoard.getPlayers().size()==1);
+        assertEquals(gameBoard.getPlayers().size(), 1);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
 
         try {
@@ -217,7 +213,7 @@ class GameBoardTest {
         }
 
 
-        assertTrue(gameBoard.getPlayers().size()==4);
+        assertEquals(gameBoard.getPlayers().size(), 4);
         assertEquals(gameBoard.getPlayers().get(0).getNickname(),"secondPlayer");
         assertEquals(gameBoard.getPlayers().get(1).getNickname(),"fourthPlayer");
         assertEquals(gameBoard.getPlayers().get(2).getNickname(),"thirdPlayer");
