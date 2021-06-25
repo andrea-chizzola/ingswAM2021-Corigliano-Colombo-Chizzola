@@ -108,14 +108,20 @@ public class GUI implements View, SubjectView {
 
     /**
      * this method is used to show a message
-     * @param answer represents the type of message
      * @param body is the content of the message
      * @param nickName represents the nickname of involved player
      */
     @Override
-    public void showGameStatus(boolean answer, String body, String nickName, TurnType state) {
-        System.out.println(body);
-        //TODO togliere il booleano
+    public void showGameStatus(String body, String nickName, TurnType state) {
+        int nPlayers = model.getNicknames().size();
+        int nRes = getInitializationResources();
+
+        //these IF are used to improve user experience.
+        if(state == TurnType.TURN_SELECTION && nPlayers == 1) return;
+        if(state == TurnType.INITIALIZATION_RESOURCE && nRes == 0) return;
+
+        Platform.runLater(() ->
+                interactiveBoardController.showGameStatus(body));
     }
 
     /**
@@ -325,15 +331,26 @@ public class GUI implements View, SubjectView {
     @Override
     public void getResourcesAction() {
 
-        int playerPosition, number;
-        String self = model.getPersonalNickname();
-        playerPosition = model.getNicknames().indexOf(self);
-        number = model.getConfiguration().getInitialResources().get(playerPosition);
+        int number = getInitializationResources();
 
         InitializeResController controller = new InitializeResController();
         Platform.runLater(() -> {
                 GUIHandler.createNonCloseableWindow(controller, path + "initializeResources.fxml", 600, 400);
                 controller.initResources(number); });
+    }
+
+    /**
+     * this helper method is used to retrieve the number of initialization
+     * resources of the player
+     *
+     * @return the number of initialization resources
+     */
+    private int getInitializationResources(){
+        int playerPosition, number;
+        String self = model.getPersonalNickname();
+        playerPosition = model.getNicknames().indexOf(self);
+        number = model.getConfiguration().getInitialResources().get(playerPosition);
+        return number;
     }
 
     /**

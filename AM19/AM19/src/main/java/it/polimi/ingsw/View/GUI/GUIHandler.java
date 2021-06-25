@@ -34,6 +34,8 @@ public class GUIHandler extends Application {
      */
     private static Stage currentStage;
 
+    private static final String windowName = "Masters of Renaissance";
+
     @Override
     public void start(Stage stage) throws Exception {
         currentStage = stage;
@@ -43,6 +45,8 @@ public class GUIHandler extends Application {
         stage.setScene(scene);
 
         stage.setResizable(false);
+        stage.setTitle(windowName);
+        
         stage.show();
     }
 
@@ -135,7 +139,7 @@ public class GUIHandler extends Application {
         try {
             root = fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setTitle("My New Stage Title");
+            stage.setTitle(windowName);
             stage.setScene(new Scene(root, width, length));
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
@@ -166,6 +170,7 @@ public class GUIHandler extends Application {
             Stage stage = new Stage();
             stage.setScene(new Scene(root, width, length));
             stage.setOnCloseRequest(event -> stage.hide());
+            stage.setTitle(windowName);
 
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
@@ -200,6 +205,7 @@ public class GUIHandler extends Application {
                 event.consume();
             } );
 
+            stage.setTitle(windowName);
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
             stage.show();

@@ -27,14 +27,6 @@ public interface View extends Update{
     void reply(boolean answer, String body, String nickName);
 
     /**
-     * this method is used to show a message
-     * @param answer represents the type of message
-     * @param body is the content of the message
-     * @param nickName represents the nickname of involved player
-     */
-    void showGameStatus(boolean answer, String body, String nickName, TurnType state);
-
-    /**
      * this method is used to catch the player's selected turn
      * @param turns is the list of available turns
      * @param player is the nickname of the current player

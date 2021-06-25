@@ -87,6 +87,7 @@ public class TurnSelectionController extends ViewController implements HelperWin
                 mainPane.getScene().getWindow().hide();});
 
         ExitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            disableButtons();
             try {
                 gui.notifyInteraction(MessageFactory.buildExit("End of turn selection"));
                 mainPane.getScene().getWindow().hide();

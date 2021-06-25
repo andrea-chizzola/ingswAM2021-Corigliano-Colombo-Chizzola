@@ -80,18 +80,16 @@ public class MessageFactory {
 
     /**
      * Creates a new game status message as an XML string
-     * @param type indicates if the message is a confirm or an error
      * @param body represents the body of the message
      * @param nickName represents the player's nickname
      * @param state represents the turn type
      * @return a new game status message
      * @throws MalformedMessageException if an error occurs during the creation of the message
      */
-    public static String buildGameStatus(Boolean type, String body, String nickName, TurnType state) throws MalformedMessageException {
+    public static String buildGameStatus(String body, String nickName, TurnType state) throws MalformedMessageException {
         Map<String, String> map = new HashMap<>();
         map.put("body", body);
         map.put("messageType", Message.MessageType.GAME_STATUS.toString());
-        map.put("correct", type.toString());
         map.put("player", nickName);
         map.put("state", state.name());
         return MessageParser.createMessage(map);

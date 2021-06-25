@@ -27,12 +27,11 @@ public class ViewForTest implements View {
     /**
      * this method is used to show a message
      *
-     * @param answer   represents the type of message
      * @param body     is the content of the message
      * @param nickName represents the nickname of involved player
      */
     @Override
-    public void showGameStatus(boolean answer, String body, String nickName, TurnType status) {
+    public void showGameStatus(String body, String nickName, TurnType status) {
 
     }
 
@@ -95,7 +94,7 @@ public class ViewForTest implements View {
      * this method is used to show an update of one's LeaderCards
      *
      * @param cards    represent the current state of one's leader cards
-     * @param status
+     * @param status   represents the status of one's leader cards
      * @param nickName represents the nickname of involved player
      */
     @Override

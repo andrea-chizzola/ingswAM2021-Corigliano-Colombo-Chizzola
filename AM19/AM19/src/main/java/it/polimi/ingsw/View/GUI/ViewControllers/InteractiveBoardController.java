@@ -11,7 +11,10 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.InteractionTranslator.*;
 import it.polimi.ingsw.View.PlayerInteractions.SeeOthersInteraction;
+import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -89,6 +92,8 @@ public class InteractiveBoardController extends BoardController {
     private Label counterExtra1;
     @FXML
     private Label counterExtra2;
+    @FXML
+    private Label status;
 
     private DecksController decksController;
     private MarketboardController marketboardController;
@@ -98,6 +103,7 @@ public class InteractiveBoardController extends BoardController {
     private BuildMessage builder;
     private int customResources, customProducts;
     private boolean production;
+    SequentialTransition statusTransition;
 
     /**
      * this method is the constructor of the class
@@ -140,6 +146,20 @@ public class InteractiveBoardController extends BoardController {
         turnSelectionController.hideWindow();
 
         otherPlayersMenu.setVisible(false);
+
+        status.setOpacity(0.0);
+        FadeTransition fadein = new FadeTransition(Duration.millis(1500), status);
+        fadein.setFromValue(0.0);
+        fadein.setToValue(1.0);
+        FadeTransition fadeout = new FadeTransition(Duration.millis(1500), status);
+        fadeout.setFromValue(1.0);
+        fadeout.setToValue(0.0);
+        statusTransition = new SequentialTransition(
+                status,
+                fadein,
+                fadeout
+        );
+
 
         useWarehouse();
         useExtraShelves();
@@ -284,7 +304,6 @@ public class InteractiveBoardController extends BoardController {
      */
     public void setAvailableTurns(List<String> turns){
         turnSelectionController.setAvailableActions(turns);
-        turnSelectionController.showWindow();
     }
 
 
@@ -307,7 +326,7 @@ public class InteractiveBoardController extends BoardController {
      * @param slot the slot associated with the imageView
      */
     private void helpUseWarehouse(ImageView imageView,Integer slot){
-        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             imageView.setOpacity(0.5);
             imageView.setDisable(true);
@@ -362,7 +381,7 @@ public class InteractiveBoardController extends BoardController {
      */
     private void helpUseExtraShelf(ImageView imageView, Label label, Label counter, int shelf){
 
-        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             if (actionPauseTransition(imageView, label, errorExtraShelf, counter)) return;
             interactionTranslator.setWarehouse(shelf);});
@@ -415,7 +434,7 @@ public class InteractiveBoardController extends BoardController {
      */
     private void helpUseStrongbox(ImageView imageView, Label label, Label counter,String resource){
 
-        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             if (actionPauseTransition(imageView, label, errorStrongbox, counter)) return;
             interactionTranslator.setStrongbox(resource);
@@ -470,7 +489,7 @@ public class InteractiveBoardController extends BoardController {
      */
     private void helpUseSlots(ImageView imageView, Integer slot){
 
-        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             imageView.setOpacity(0.5);
             imageView.setDisable(true);
@@ -591,7 +610,7 @@ public class InteractiveBoardController extends BoardController {
      */
     private void helpUseLeaders(ImageView imageView, Integer number){
 
-        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             imageView.setOpacity(0.8);
             imageView.setDisable(true);
@@ -818,6 +837,11 @@ public class InteractiveBoardController extends BoardController {
         swap3.setVisible(true);
         swap3.setOpacity(1);
         actionButton.setDisable(false);
+    }
+
+    public void showGameStatus(String body){
+        status.setText(body);
+        statusTransition.play();
     }
 }
 

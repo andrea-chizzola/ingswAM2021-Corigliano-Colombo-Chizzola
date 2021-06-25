@@ -21,11 +21,10 @@ public interface Update {
 
     /**
      * this method is used to show a message
-     * @param answer represents the type of message
      * @param body is the content of the message
      * @param nickName represents the nickname of involved player
      */
-    void showGameStatus(boolean answer, String body, String nickName, TurnType state);
+    void showGameStatus(String body, String nickName, TurnType state);
 
     /**
      * this method is used to catch the player's selected turn

@@ -158,7 +158,7 @@ public class CLI implements View, SubjectView {
         {
             try {
                 BufferedReader in = new BufferedReader(new InputStreamReader(input));
-                String s = "";
+                String s;
                 while ((s = in.readLine()) != null) {
                     manageInput(s);
                 }
@@ -306,16 +306,11 @@ public class CLI implements View, SubjectView {
 
     /**
      * this method is used to show a message
-     * @param answer represents the type of message
      * @param body is the content of the message
      */
     @Override
-    public void showGameStatus(boolean answer, String body, String nickname, TurnType state) {
-        if(!answer){
-            out.println("Error during: " + state + "\nYou've done something wrong, let's try again");
-            return;
-        }
-        out.println("Action successfully performed. Let's proceed further.");
+    public void showGameStatus(String body, String nickname, TurnType state) {
+        out.println(body);
     }
 
     /**
@@ -508,7 +503,7 @@ public class CLI implements View, SubjectView {
      * this method is used to add a player to the game
      */
     public void launch() {
-        String player, first = "", reconnect = "";
+        String player, first, reconnect = "";
         String num;
         do {
             out.println("Welcome to Masters of Renaissance, before starting playing, you should give me some information:" +
@@ -603,12 +598,13 @@ public class CLI implements View, SubjectView {
         StringBuilder available = new StringBuilder();
         for(String string : turns) available.append(string).append(", ");
         available.append("SHOW_DECKS;");
-        String s = "";
+        String s;
         do{
             out.println("\nSelect your turn type; available turns: " + available);
             s = getInput();
             if(!turns.contains(s))
-                showGameStatus(false, "Not existent turn type.", "name", model.getModelState());
+                showGameStatus("Not existent turn type.", "name", model.getModelState());
+
             if(s.equals("SHOW_DECKS")) plotDecks();
         }
         while(!turns.contains(s));
@@ -896,7 +892,7 @@ public class CLI implements View, SubjectView {
         String currentPlayer = model.getCurrentPlayer();
         ReducedBoard board = model.getBoard(currentPlayer);
 
-        String action, leaders = "", developments = "";
+        String action, leaders, developments;
 
         out.println("So you want to produce some resources... good choice. Let's start");
 
