@@ -253,17 +253,15 @@ public class BoardController extends ViewController implements HelperWindow{
             try {
                 String image = getModelReference().getConfiguration().getLeaderCard(cards.get(slot)).getPath();
 
+                Image card = new Image(getClass().getResourceAsStream(cardPath + image));
+                leaderCards.get(slot - 1).setImage(card);
+                leaderCards.get(slot - 1).setVisible(true);
+                backs.get(slot-1).setVisible(true);
+                backs.get(slot-1).setVisible(true);
                 if(status.get(slot) == ItemStatus.ACTIVE){
-                    Image card = new Image(getClass().getResourceAsStream(cardPath + image));
-                    leaderCards.get(slot - 1).setImage(card);
-                    leaderCards.get(slot - 1).setVisible(true);
-                    backs.get(slot-1).setVisible(true);
+                    leaderCards.get(slot - 1).setOpacity(1);
                 }else{
-                    Image card = new Image(getClass().getResourceAsStream(cardPath + image));
-                    leaderCards.get(slot - 1).setImage(card);
-                    leaderCards.get(slot - 1).setVisible(true);
                     leaderCards.get(slot - 1).setOpacity(0.5);
-                    backs.get(slot-1).setVisible(true);
                 }
             } catch (IllegalIDException e) {
                 System.out.println("Parsing failure! Card ID: "+cards.get(slot)+" not found!");

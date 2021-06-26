@@ -358,7 +358,8 @@ public class GameBoard implements GameBoardHandler {
         for(Board board : players)
             virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
 
-        virtualView.showGameStatus(true,"get resources",currentPlayer.getNickname(),TurnType.INITIALIZATION_LEADERS);
+        String name = currentPlayer.getNickname();
+        virtualView.showGameStatus(name + " initializes his/her leader cards", name,TurnType.INITIALIZATION_LEADERS);
     }
 
     /**
@@ -439,7 +440,8 @@ public class GameBoard implements GameBoardHandler {
             throw new InvalidActionException("Wrong choice of leader cards!");
 
         virtualView.showLeaderCards(currentPlayer.showLeaderPosition(), currentPlayer.showLeaderStatus(), currentPlayer.getNickname());
-        virtualView.showGameStatus(true,"get resources",currentPlayer.getNickname(),TurnType.INITIALIZATION_RESOURCE);
+        String name = currentPlayer.getNickname();
+        virtualView.showGameStatus(name + " initializes his/her boxes", name,TurnType.INITIALIZATION_RESOURCE);
     }
 
     /**
@@ -476,7 +478,8 @@ public class GameBoard implements GameBoardHandler {
         endTurnMove();
 
         if(!isAllInitialized()) {
-            virtualView.showGameStatus(true,"Initialize leader cards",currentPlayer.getNickname(),TurnType.INITIALIZATION_LEADERS);
+            String name = currentPlayer.getNickname();
+            virtualView.showGameStatus(name + " ended the initialization of his/her board", name,TurnType.INITIALIZATION_LEADERS);
             return;
         }
         showAvailableTurns();
@@ -520,7 +523,6 @@ public class GameBoard implements GameBoardHandler {
         for(int i=0; i<disconnectedPlayers.size(); i++){
 
             Board board = disconnectedPlayers.get(i);
-            int j = players.size();
 
             if(board.getNickname().equals(nickname)){
                 players.add(board);
@@ -530,10 +532,6 @@ public class GameBoard implements GameBoardHandler {
                 virtualView.showMarketUpdate(marketBoard.showMarket());
                 virtualView.showBoxes(board.getWarehouse().showWarehouse(), board.getStrongBox().showStrongBox(), board.getNickname());
                 virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
-                if(j==0) {
-                    endTurnMove();
-                    showAvailableTurns();
-                }
                 return;
             }
         }

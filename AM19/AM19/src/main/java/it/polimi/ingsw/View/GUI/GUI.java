@@ -48,7 +48,7 @@ public class GUI implements View, SubjectView {
     /**
      * this attribute contains reference to the view controllers of the board of other players
      */
-    private Map<String, BoardController> playerBoards;
+    private final Map<String, BoardController> playerBoards;
 
     /**
      * this method is the constructor of the class
@@ -108,14 +108,22 @@ public class GUI implements View, SubjectView {
 
     /**
      * this method is used to show a message
-     * @param answer represents the type of message
      * @param body is the content of the message
      * @param nickName represents the nickname of involved player
      */
     @Override
-    public void showGameStatus(boolean answer, String body, String nickName, TurnType state) {
-        System.out.println(body);
-        //TODO togliere il booleano
+    public void showGameStatus(String body, String nickName, TurnType state) {
+        int nPlayers = model.getNicknames().size();
+        int nRes = getInitializationResources();
+        String message;
+
+        //these IF are used to improve user experience.
+        if(state == TurnType.INITIALIZATION_RESOURCE && nRes == 0) return;
+        if(state == TurnType.TURN_SELECTION && nPlayers == 1) message = "Perform your action";
+        else message = body;
+
+        Platform.runLater(() ->
+                interactiveBoardController.showGameStatus(message));
     }
 
     /**
@@ -325,15 +333,31 @@ public class GUI implements View, SubjectView {
     @Override
     public void getResourcesAction() {
 
+        int number = getInitializationResources();
+        InitializeResController controller = new InitializeResController();
+        if(number>0) {
+            Platform.runLater(() -> {
+                GUIHandler.createNonCloseableWindow(controller, path + "initializeResources.fxml", 600, 400);
+                controller.initResources(number);
+            });
+        }
+        else{
+            controller.noInitializationResources();
+        }
+    }
+
+    /**
+     * this helper method is used to retrieve the number of initialization
+     * resources of the player
+     *
+     * @return the number of initialization resources
+     */
+    private int getInitializationResources(){
         int playerPosition, number;
         String self = model.getPersonalNickname();
         playerPosition = model.getNicknames().indexOf(self);
         number = model.getConfiguration().getInitialResources().get(playerPosition);
-
-        InitializeResController controller = new InitializeResController();
-        Platform.runLater(() -> {
-                GUIHandler.createNonCloseableWindow(controller, path + "initializeResources.fxml", 600, 400);
-                controller.initResources(number); });
+        return number;
     }
 
     /**

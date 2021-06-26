@@ -4,6 +4,9 @@ import it.polimi.ingsw.Server.ClientConnectionHandler;
 
 import java.util.LinkedList;
 
+/**
+ * handles the communication between client and pretended server
+ */
 public class SoloConnectionHandler {
 
     /**
@@ -36,7 +39,9 @@ public class SoloConnectionHandler {
      */
     private ClientConnectionHandler clientConnection;
 
-
+    /**
+     * creates a new solo connection handler
+     */
     public SoloConnectionHandler() {
         lockBufferClient = new Object();
         lockBufferServer = new Object();

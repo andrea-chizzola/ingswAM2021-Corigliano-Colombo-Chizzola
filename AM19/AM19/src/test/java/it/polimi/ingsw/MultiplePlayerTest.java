@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 
-import it.polimi.ingsw.Controller.ViewForTest;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
