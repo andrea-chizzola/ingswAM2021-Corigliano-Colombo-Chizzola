@@ -356,7 +356,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="status" alignment="CENTER" layoutY="220.0" opacity="0.8" prefHeight="90.0" prefWidth="1080.0" style="-fx-background-color: brown; -fx-border-color: black;" text="Message" textFill="WHITE">
+            <Label fx:id="status" alignment="CENTER" layoutY="70.0" opacity="0.8" prefHeight="90.0" prefWidth="1080.0" style="-fx-background-color: brown; -fx-border-color: black;" text="Message" textFill="WHITE">
                <font>
                   <Font name="Times New Roman" size="45.0" />
                </font>

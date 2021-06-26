@@ -115,13 +115,15 @@ public class GUI implements View, SubjectView {
     public void showGameStatus(String body, String nickName, TurnType state) {
         int nPlayers = model.getNicknames().size();
         int nRes = getInitializationResources();
+        String message;
 
         //these IF are used to improve user experience.
-        if(state == TurnType.TURN_SELECTION && nPlayers == 1) return;
         if(state == TurnType.INITIALIZATION_RESOURCE && nRes == 0) return;
+        if(state == TurnType.TURN_SELECTION && nPlayers == 1) message = "Perform your action";
+        else message = body;
 
         Platform.runLater(() ->
-                interactiveBoardController.showGameStatus(body));
+                interactiveBoardController.showGameStatus(message));
     }
 
     /**
@@ -332,11 +334,16 @@ public class GUI implements View, SubjectView {
     public void getResourcesAction() {
 
         int number = getInitializationResources();
-
         InitializeResController controller = new InitializeResController();
-        Platform.runLater(() -> {
+        if(number>0) {
+            Platform.runLater(() -> {
                 GUIHandler.createNonCloseableWindow(controller, path + "initializeResources.fxml", 600, 400);
-                controller.initResources(number); });
+                controller.initResources(number);
+            });
+        }
+        else{
+            controller.noInitializationResources();
+        }
     }
 
     /**
