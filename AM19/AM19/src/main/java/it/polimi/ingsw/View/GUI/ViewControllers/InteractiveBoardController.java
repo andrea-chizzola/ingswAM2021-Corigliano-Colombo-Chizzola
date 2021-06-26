@@ -148,12 +148,14 @@ public class InteractiveBoardController extends BoardController {
         otherPlayersMenu.setVisible(false);
 
         status.setOpacity(0.0);
+        status.setVisible(false);
         FadeTransition fadein = new FadeTransition(Duration.millis(1500), status);
         fadein.setFromValue(0.0);
         fadein.setToValue(1.0);
         FadeTransition fadeout = new FadeTransition(Duration.millis(1500), status);
         fadeout.setFromValue(1.0);
         fadeout.setToValue(0.0);
+        fadeout.setOnFinished(event -> status.setVisible(false));
         statusTransition = new SequentialTransition(
                 status,
                 fadein,
@@ -841,6 +843,7 @@ public class InteractiveBoardController extends BoardController {
 
     public void showGameStatus(String body){
         status.setText(body);
+        status.setVisible(true);
         statusTransition.play();
     }
 }
