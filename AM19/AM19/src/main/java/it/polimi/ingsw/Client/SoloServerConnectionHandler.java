@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Client;
 
+/**
+ * handles the communication to the pretended server
+ */
 public class SoloServerConnectionHandler implements ServerConnectionHandler,Runnable{
 
     /**
@@ -12,7 +15,11 @@ public class SoloServerConnectionHandler implements ServerConnectionHandler,Runn
      */
     private SoloConnectionHandler socket;
 
-
+    /**
+     * creates a new "connection" to the pretended server
+     * @param socket represents the solo connection handler
+     * @param clientController represents the client controller
+     */
     public SoloServerConnectionHandler(SoloConnectionHandler socket, ServerConnectionListener clientController){
 
         this.socket = socket;
@@ -20,13 +27,12 @@ public class SoloServerConnectionHandler implements ServerConnectionHandler,Runn
 
     }
 
-
     /**
      * Closes the connection between client and the pretended server
      */
     @Override
     public void closeConnection() {
-        System.out.println("[CONNECTION] Closing socket connection...");
+        System.out.println("[CLIENT] Closing socket connection...");
         System.exit(0);
     }
 

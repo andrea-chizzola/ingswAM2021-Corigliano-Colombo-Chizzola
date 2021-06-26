@@ -518,7 +518,6 @@ public class GameBoard implements GameBoardHandler {
         for(int i=0; i<disconnectedPlayers.size(); i++){
 
             Board board = disconnectedPlayers.get(i);
-            int j = players.size();
 
             if(board.getNickname().equals(nickname)){
                 players.add(board);
@@ -528,10 +527,6 @@ public class GameBoard implements GameBoardHandler {
                 virtualView.showMarketUpdate(marketBoard.showMarket());
                 virtualView.showBoxes(board.getWarehouse().showWarehouse(), board.getStrongBox().showStrongBox(), board.getNickname());
                 virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
-                if(j==0) {
-                    endTurnMove();
-                    showAvailableTurns();
-                }
                 return;
             }
         }

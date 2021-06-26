@@ -18,7 +18,7 @@ public class GamesHandler implements ClientConnectionListener {
     /**
      * keeps track of the games waiting for other players to start
      */
-    private List<Game> waitingConnection;
+    private List<Game> waitingGames;
 
     /**
      * keeps track of the active games
@@ -36,11 +36,6 @@ public class GamesHandler implements ClientConnectionListener {
     private final String reservedNickname = "Lorenzo";
 
     /**
-     * keeps track of the single player games that have been suspended as the player disconnected
-     */
-    private List<Game> suspendedGames;
-
-    /**
      * represents a progressive number associated to a game
      */
     private AtomicLong idCounter;
@@ -51,10 +46,9 @@ public class GamesHandler implements ClientConnectionListener {
     public GamesHandler() {
 
         activeConnections = new HashMap<>();
-        waitingConnection = new ArrayList<>();
+        waitingGames = new ArrayList<>();
         activeGames = new ArrayList<>();
         inactivePlayers = new HashMap<>();
-        suspendedGames = new ArrayList<>();
         idCounter = new AtomicLong();
 
     }
@@ -74,17 +68,12 @@ public class GamesHandler implements ClientConnectionListener {
      */
     private Game getGameById(String gameId){
 
-        for(Game game : waitingConnection){
+        for(Game game : waitingGames){
             if(game.getId().equals(gameId)){
                 return game;
             }
         }
         for(Game game : activeGames){
-            if(game.getId().equals(gameId)){
-                return game;
-            }
-        }
-        for(Game game : suspendedGames){
             if(game.getId().equals(gameId)){
                 return game;
             }
@@ -101,7 +90,7 @@ public class GamesHandler implements ClientConnectionListener {
     private Game getGameBySocketID(String socketID){
 
 
-        for(Game game : waitingConnection){
+        for(Game game : waitingGames){
             if(game.containsID(socketID)){
                 return game;
             }
@@ -144,27 +133,11 @@ public class GamesHandler implements ClientConnectionListener {
     }
 
     /**
-     * adds a game to the suspended ones
-     * @param game represents the game to suspend
-     */
-    private void addSuspendedGame(Game game){
-        suspendedGames.add(game);
-    }
-
-    /**
-     * removes a game from the suspended ones
-     * @param game represents the game to remove
-     */
-    private void removeSuspendedGame(Game game){
-        suspendedGames.remove(game);
-    }
-
-    /**
      * adds a new game to the ones waiting for other players to start
      * @param game represents the new game added
      */
     private void addWaitingGame(Game game){
-        waitingConnection.add(game);
+        waitingGames.add(game);
     }
 
     /**
@@ -202,7 +175,7 @@ public class GamesHandler implements ClientConnectionListener {
 
         if(inactivePlayers.containsKey(nickname) || nickname.equals(reservedNickname)) return false;
 
-        for (Game game : waitingConnection) {
+        for (Game game : waitingGames) {
             if (game.containsPlayer(nickname)) {
                 return false;
             }
@@ -258,7 +231,7 @@ public class GamesHandler implements ClientConnectionListener {
      */
     private boolean isWaiting(String socketId){
 
-        for(Game game : waitingConnection) {
+        for(Game game : waitingGames) {
             if (game.containsID(socketId)) return true;
         }
 
@@ -266,7 +239,7 @@ public class GamesHandler implements ClientConnectionListener {
     }
 
     /**
-     * removes the game when over
+     * removes the game when an error occurred in the setup phase
      * @param gameId represents the id of the game to remove
      * @param playersId contains the id of the players in the selected game
      */
@@ -281,19 +254,17 @@ public class GamesHandler implements ClientConnectionListener {
         }
 
         List<Game> removed = new ArrayList<>();
+        for(Game game : waitingGames){
+            if(game.getId().equals(gameId)){
+                removed.add(game);
+            }
+        }
         for(Game game : activeGames){
             if(game.getId().equals(gameId)){
                 removed.add(game);
             }
         }
         activeGames.removeAll(removed);
-
-        for(Game game : suspendedGames){
-            if(game.getId().equals(gameId)){
-                removed.add(game);
-            }
-        }
-        suspendedGames.removeAll(removed);
 
         System.out.println("[SERVER] Game " + gameId + " closed correctly");
 
@@ -462,7 +433,7 @@ public class GamesHandler implements ClientConnectionListener {
      */
     private void joinGame(String nickname, String socketID){
 
-        waitingConnection.get(0).addPlayer(nickname, socketID, getConnection(socketID));
+        waitingGames.get(0).addPlayer(nickname, socketID, getConnection(socketID));
 
         try{
             String message = "Joined a game. Please wait for the game to start.";
@@ -481,30 +452,42 @@ public class GamesHandler implements ClientConnectionListener {
     private void startGames(){
 
         List<Game> started = new ArrayList<>();
-        for(Game game : waitingConnection){
+        for(Game game : waitingGames){
             if(game.canStart()){
                 game.setUpGame();
                 addActiveGame(game);
                 started.add(game);
             }
         }
-        waitingConnection.removeAll(started);
+        waitingGames.removeAll(started);
 
     }
 
     /**
-     * closes a game currently in the waiting list
+     * closes a game when no more players are connected
      * @param game represents the game to close
      * @param socketId represents the id related to the socket connection of the remaining player
      */
-    private void closeWaitingGame(Game game, String socketId){
+    private void closeGame(Game game, String socketId){
 
         System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be removed from the waiting list.");
         game.removePlayer(socketId);
         getConnection(socketId).closeConnection();
         removeActiveConnection(socketId);
-        //disconnected.add(game);
         System.out.println("[SERVER] Game removed correctly.");
+
+    }
+
+    /**
+     * removes the player from his game and closes his connection removing it from the active ones
+     * @param game represents the player's game
+     * @param socketId represents the id related to the socket connection
+     */
+    private void disconnectPlayer(Game game, String socketId){
+
+        game.removePlayer(socketId);
+        getConnection(socketId).closeConnection();
+        removeActiveConnection(socketId);
 
     }
 
@@ -517,47 +500,8 @@ public class GamesHandler implements ClientConnectionListener {
     private void removeWaitingPlayer(Game game, String nickname, String socketId){
 
         System.out.println("[SERVER] " + nickname + " will now be removed from the game.");
-        getConnection(socketId).closeConnection();
-        removeActiveConnection(socketId);
-        game.removePlayer(socketId);
+        disconnectPlayer(game, socketId);
         System.out.println("[SERVER] " + nickname + " correctly removed from the game.");
-
-    }
-
-    /**
-     * adds the game to the suspended ones
-     * @param game represents the game to suspend
-     * @param nickname represents the player's nickname
-     * @param socketId represents the id related to the socket connection
-     */
-    private void suspendGame(Game game, String nickname, String socketId){
-
-        System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be suspended.");
-        game.removePlayer(socketId);
-        game.startSuspensionTimer();
-        getConnection(socketId).closeConnection();
-        removeActiveConnection(socketId);
-        addInactivePlayer(nickname, game.getId());
-        addSuspendedGame(game);
-        //disconnected.add(game);
-        System.out.println("[SERVER] Game suspended correctly.");
-
-    }
-
-    /**
-     * closes an active game
-     * @param game represents the game to close
-     * @param socketId represents the id related to the socket connection of the remaining player
-     */
-    private void closeActiveGame(Game game, String socketId){
-
-        System.out.println("[SERVER] No players left in game " + game.getId() + ". The game will now be removed from the active ones.");
-        clearInactivePlayers(game.getId());
-        game.removePlayer(socketId);
-        getConnection(socketId).closeConnection();
-        removeActiveConnection(socketId);
-        //disconnected.add(game);
-        System.out.println("[SERVER] Game removed correctly.");
 
     }
 
@@ -570,9 +514,7 @@ public class GamesHandler implements ClientConnectionListener {
     private void removeActivePlayer(Game game, String nickname, String socketId){
 
         System.out.println("[SERVER] " + nickname + " will now be removed from the game.");
-        game.removePlayer(socketId);
-        getConnection(socketId).closeConnection();
-        removeActiveConnection(socketId);
+        disconnectPlayer(game, socketId);
         System.out.println("Players: " + game.getPlayers());
         System.out.println("Game size: " + game.getActualPlayers());
         addInactivePlayer(nickname, game.getId());
@@ -597,10 +539,7 @@ public class GamesHandler implements ClientConnectionListener {
         Game game = getGameById(inactivePlayers.get(nickname));
         game.addPlayer(nickname, socketID, getConnection(socketID));
         inactivePlayers.remove(nickname);
-        if(suspendedGames.contains(game)) {
-            removeSuspendedGame(game);
-            addActiveGame(game);
-        }
+
         System.out.println("[SERVER] " + nickname + " was reconnected to his game.");
 
         try {
@@ -639,9 +578,8 @@ public class GamesHandler implements ClientConnectionListener {
      */
     private void printStatus(){
 
-        System.out.println("[SERVER] Waiting list: " + waitingConnection.size());
+        System.out.println("[SERVER] Waiting list: " + waitingGames.size());
         System.out.println("[SERVER] Active games: " + activeGames.size());
-        System.out.println("[SERVER] Suspended games: " + suspendedGames.size());
 
     }
 
@@ -663,7 +601,7 @@ public class GamesHandler implements ClientConnectionListener {
             notAvailableNickname(nickname, socketID);
             return;
         }
-        if(!gameHost && waitingConnection.size() == 0){
+        if(!gameHost && waitingGames.size() == 0){
             System.out.println("[SERVER] Can't find an existing game to join.");
             noExistingGames(nickname, socketID);
             return;
@@ -701,10 +639,10 @@ public class GamesHandler implements ClientConnectionListener {
         }
 
         List<Game> disconnected = new ArrayList<>();
-        for(Game game : waitingConnection){
+        for(Game game : waitingGames){
             if(game.containsPlayer(nickname) && game.isCorresponding(socketId, nickname)){
                 if(game.getActualPlayers() == 1){
-                    closeWaitingGame(game, socketId);
+                    closeGame(game, socketId);
                     disconnected.add(game);
                 }else{
                     removeWaitingPlayer(game, nickname, socketId);
@@ -713,15 +651,13 @@ public class GamesHandler implements ClientConnectionListener {
                 break;
             }
         }
-        waitingConnection.removeAll(disconnected);
+        waitingGames.removeAll(disconnected);
 
         for(Game game : activeGames){
             if(game.containsPlayer(nickname) && game.isCorresponding(socketId, nickname)){
-                if(game.getPlayersNumber() == 1) {
-                    suspendGame(game, nickname, socketId);
-                    disconnected.add(game);
-                } else if (game.getPlayersNumber() > 1 && game.getActualPlayers() == 1) {
-                    closeActiveGame(game, socketId);
+                if (game.getActualPlayers() == 1) {
+                    clearInactivePlayers(game.getId());
+                    closeGame(game, socketId);
                     disconnected.add(game);
                 } else {
                     removeActivePlayer(game, nickname, socketId);

@@ -12,7 +12,7 @@ import java.util.TimerTask;
 /**
  * Handles server side the connection between client and server
  */
-public class SocketClientClientConnection implements ClientConnectionHandler, Runnable {
+public class SocketClientConnection implements ClientConnectionHandler, Runnable {
 
     /**
      * represents the server's socket used to communicate to the client
@@ -55,7 +55,7 @@ public class SocketClientClientConnection implements ClientConnectionHandler, Ru
      * @param socketID represents the socket id
      * @param handler references the game handler
      */
-    public SocketClientClientConnection(Socket socket, String socketID, ClientConnectionListener handler) {
+    public SocketClientConnection(Socket socket, String socketID, ClientConnectionListener handler) {
 
         this.socket = socket;
         this.socketID = socketID;
@@ -133,10 +133,9 @@ public class SocketClientClientConnection implements ClientConnectionHandler, Ru
                     send("<ping/>");
                     pong = false;
                 } else {
-                    System.out.println("[SERVER] No pong received. Client will now be disconnected.");
                     handler.onMissingPong(socketID);
-                    //closeConnection();
                     timer.cancel();
+                    System.out.println("[SERVER] Client disconnected.");
                 }
 
             }
@@ -182,7 +181,7 @@ public class SocketClientClientConnection implements ClientConnectionHandler, Ru
 
         } catch (IOException e) {
 
-            System.out.println(e.getMessage());
+            System.out.println("[SERVER] " + e.getMessage());
             System.out.println("[SERVER] Connection closed.");
 
         }
