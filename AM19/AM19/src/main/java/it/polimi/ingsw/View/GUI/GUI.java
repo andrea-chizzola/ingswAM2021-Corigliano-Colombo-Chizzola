@@ -48,7 +48,7 @@ public class GUI implements View, SubjectView {
     /**
      * this attribute contains reference to the view controllers of the board of other players
      */
-    private Map<String, BoardController> playerBoards;
+    private final Map<String, BoardController> playerBoards;
 
     /**
      * this method is the constructor of the class
