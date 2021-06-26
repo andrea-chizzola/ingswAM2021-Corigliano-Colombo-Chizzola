@@ -149,6 +149,7 @@ public class InteractiveBoardController extends BoardController {
 
         status.setOpacity(0.0);
         status.setVisible(false);
+
         FadeTransition fadein = new FadeTransition(Duration.millis(1500), status);
         fadein.setFromValue(0.0);
         fadein.setToValue(1.0);

@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.*;
 
@@ -46,7 +47,7 @@ public class GUIHandler extends Application {
 
         stage.setResizable(false);
         stage.setTitle(windowName);
-        
+        stage.getIcons().add(new Image("Images/icon.png"));
         stage.show();
     }
 
@@ -144,6 +145,7 @@ public class GUIHandler extends Application {
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(false);
+            stage.getIcons().add(new Image("Images/icon.png"));
             stage.show();
         }
         catch (IOException e) {
@@ -171,7 +173,7 @@ public class GUIHandler extends Application {
             stage.setScene(new Scene(root, width, length));
             stage.setOnCloseRequest(event -> stage.hide());
             stage.setTitle(windowName);
-
+            stage.getIcons().add(new Image("Images/icon.png"));
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
 
@@ -208,6 +210,7 @@ public class GUIHandler extends Application {
             stage.setTitle(windowName);
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
+            stage.getIcons().add(new Image("Images/icon.png"));
             stage.show();
 
         }
