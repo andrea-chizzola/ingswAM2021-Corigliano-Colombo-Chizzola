@@ -112,6 +112,7 @@ public class SocketClientConnection implements ClientConnectionHandler, Runnable
         else {
             try {
                 String string = buffer.get();
+                System.out.println("[SERVER] Received: " + string + " from: "+socketID);
                 handler.onReceivedMessage(string, socketID);
             } catch (EmptyBufferException e){
                 System.out.println("[SERVER] The buffer is empty!");

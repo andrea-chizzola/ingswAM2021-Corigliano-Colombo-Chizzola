@@ -432,6 +432,8 @@ public class GameBoard implements GameBoardHandler {
     @Override
     public void initializeLeaderCard(Map<Integer,Boolean> leaderStatus) throws InvalidActionException{
 
+        if(gameEnded)
+            throw new InvalidActionException("The game is ended!");
         if(currentPlayer.isLeadersInitialized())
             throw new InvalidActionException("You have already initialized your cards!");
         if(!currentPlayer.discardLeaderCard(leaderStatus))
@@ -449,6 +451,8 @@ public class GameBoard implements GameBoardHandler {
      */
     @Override
     public void insertResources(List<Resource> resources, List<Integer> shelves) throws InvalidActionException{
+        if(gameEnded)
+            throw new InvalidActionException("The game is ended!");
 
         if(!(currentPlayer.isLeadersInitialized() && !currentPlayer.isResourcesInitialized()))
             throw new InvalidActionException("You can't initialize your resources now!");
@@ -489,6 +493,7 @@ public class GameBoard implements GameBoardHandler {
     public void disconnectPlayer(String nickname) {
 
         if(!isAllInitialized()) {
+            gameEnded = true;
             virtualView.showEndGame(getTotalPoints(), getWinner());
             return;
         }
