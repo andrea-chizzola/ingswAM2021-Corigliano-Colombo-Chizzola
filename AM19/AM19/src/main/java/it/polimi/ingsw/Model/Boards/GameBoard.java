@@ -316,12 +316,16 @@ public class GameBoard implements GameBoardHandler {
         if(gameEnded)
             virtualView.showEndGame(getTotalPoints(),getWinner());
 
-        if(players.size() == 1 && disconnectedPlayers.size()==0) {
-            virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
-            virtualView.showTopToken(customMode.showTopToken());
-            virtualView.showDecksUpdate(developmentDeck.showDeck());
-        }
         setStartTurns();
+    }
+
+    /**
+     * This method sends to the view the updates useful at the end of the turn in case of single player match.
+     */
+    public void showSinglePlayer(){
+        virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
+        virtualView.showTopToken(customMode.showTopToken());
+        virtualView.showDecksUpdate(developmentDeck.showDeck());
     }
 
     /**
@@ -527,13 +531,27 @@ public class GameBoard implements GameBoardHandler {
             if(board.getNickname().equals(nickname)){
                 players.add(board);
                 disconnectedPlayers.remove(i);
-                virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
-                virtualView.showDecksUpdate(developmentDeck.showDeck());
-                virtualView.showMarketUpdate(marketBoard.showMarket());
-                virtualView.showBoxes(board.getWarehouse().showWarehouse(), board.getStrongBox().showStrongBox(), board.getNickname());
-                virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
+                updateAll();
                 return;
             }
+        }
+    }
+
+    /**
+     * This method sends to the view the updates of all the status of the players.
+     * It is useful when a player reconnects himself and needs all the information
+     */
+    private void updateAll(){
+        virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
+        virtualView.showDecksUpdate(developmentDeck.showDeck());
+        virtualView.showMarketUpdate(marketBoard.showMarket());
+        ArrayList<Board> allPlayers = new ArrayList<>(players);
+        allPlayers.addAll(disconnectedPlayers);
+
+        for(Board board : allPlayers) {
+            virtualView.showBoxes(board.getWarehouse().showWarehouse(), board.getStrongBox().showStrongBox(), board.getNickname());
+            virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
+            virtualView.showSlotsUpdate(board.showSlot(), board.getNickname());
         }
     }
 
