@@ -5,6 +5,10 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.MarketBoard.MarbleWhite;
 import it.polimi.ingsw.View.CLI.CLIColors;
 
+/**
+ * This class extends Resource
+ * It represents the empty resource
+ */
 public class White extends Resource{
 
     /**
