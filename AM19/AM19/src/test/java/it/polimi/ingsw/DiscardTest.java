@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.ActionTokens.Discard;
 import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
 import it.polimi.ingsw.Model.Cards.Colors.Green;
+import it.polimi.ingsw.View.View;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,9 @@ class DiscardTest {
         gameBoard = new GameBoard(names, file);
 
         singlePlayer = new SinglePlayer(gameBoard, file);
+
+        View view = new ViewForTest();
+        gameBoard.attachView(view);
 
     }
 

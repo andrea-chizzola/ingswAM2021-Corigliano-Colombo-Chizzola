@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Boards.GameBoard;
 import it.polimi.ingsw.Model.ActionTokens.MoveAndShuffle;
 import it.polimi.ingsw.Model.Boards.SinglePlayer;
 import it.polimi.ingsw.Model.Cards.Colors.Green;
+import it.polimi.ingsw.View.View;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +30,9 @@ class MoveAndShuffleTest {
         names.add("firstPlayer");
 
         gameBoard = new GameBoard(names, file);
+
+        View view = new ViewForTest();
+        gameBoard.attachView(view);
 
         singlePlayer = new SinglePlayer(gameBoard, file);
         singlePlayer.endTurnAction(gameBoard);
