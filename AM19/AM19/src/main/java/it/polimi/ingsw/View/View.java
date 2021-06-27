@@ -146,5 +146,10 @@ public interface View extends Update{
      * @param nickname is the nickname of the target player
      */
     void showOthers(String nickname);
+
+    /**
+     * this method is used to undo the player's action
+     */
+    void undoAction();
 }
 

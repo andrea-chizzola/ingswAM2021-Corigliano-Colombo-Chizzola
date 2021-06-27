@@ -3,7 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.IllegalSlotException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.ResourcesExpectedException;
+import it.polimi.ingsw.Exceptions.MissingResourcesException;
 import it.polimi.ingsw.Model.Boards.*;
 import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Cards.Colors.Blue;
@@ -158,7 +158,7 @@ class ManageLeaderTest {
         catch (InvalidActionException e){
             check = false;
         }
-        catch (ResourcesExpectedException e){
+        catch (MissingResourcesException e){
             fail();
         }
 

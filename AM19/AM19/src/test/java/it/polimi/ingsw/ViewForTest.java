@@ -212,8 +212,22 @@ public class ViewForTest implements View {
     public void swapAction() {
     }
 
+    /**
+     * this method is used to show the board of a player (different from the current one)
+     * @param nickname is the nickname of the target player
+     */
     @Override
     public void showOthers(String nickname) {
 
     }
+
+    /**
+     * this method is used to undo the player's action
+     */
+    @Override
+    public void undoAction() {
+
+    }
+
+
 }

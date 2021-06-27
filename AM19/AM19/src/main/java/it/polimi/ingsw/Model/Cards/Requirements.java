@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.ResourcesExpectedException;
+import it.polimi.ingsw.Exceptions.MissingResourcesException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
@@ -9,7 +9,6 @@ import it.polimi.ingsw.Model.Resources.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * interface containing the necessary methods for managing the methods to buy a card
@@ -21,9 +20,9 @@ public interface Requirements {
      * @param board is the board on which we are checking the requisites
      * @return true if the player's board meets the requirements of the card
      * @throws InvalidActionException if the requirements are not met
-     * @throws ResourcesExpectedException if the card needs more information to check the requirement.
+     * @throws MissingResourcesException if the card needs more information to check the requirement.
      */
-    boolean checkReq(Board board) throws InvalidActionException, ResourcesExpectedException;
+    boolean checkReq(Board board) throws InvalidActionException, MissingResourcesException;
 
     /**
      * This method checks if the requirements of the card are met, otherwise an InvalidActionException is thrown.

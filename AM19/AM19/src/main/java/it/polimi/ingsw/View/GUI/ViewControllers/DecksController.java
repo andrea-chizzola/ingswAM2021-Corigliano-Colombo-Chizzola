@@ -101,7 +101,7 @@ public class DecksController extends ViewController implements HelperWindow{
      * @param status represents the status of the cards.
      * It is true if the cards should be made clickable
      */
-    private void enableCards(boolean status){
+    public void enableCards(boolean status){
         card1.setDisable(!status);
         card2.setDisable(!status);
         card3.setDisable(!status);

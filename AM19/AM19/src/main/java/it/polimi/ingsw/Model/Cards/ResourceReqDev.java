@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.ResourcesExpectedException;
+import it.polimi.ingsw.Exceptions.MissingResourcesException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
@@ -31,13 +31,13 @@ public class ResourceReqDev implements Requirements {
      *
      * @param board is the board on which we are checking the requisites
      * @throws InvalidActionException if the requirements of the card are not satisfied by the player's board
-     * @throws ResourcesExpectedException if the card need more information to check the requirements. In this case,
+     * @throws MissingResourcesException if the card need more information to check the requirements. In this case,
      * ResourceReqDev will throw this exception because it needs the current state of the player's StrongBox and
      * Warehouse
      */
     @Override
-    public boolean checkReq(Board board) throws InvalidActionException, ResourcesExpectedException{
-        throw new ResourcesExpectedException("The card needs the status of the StrongBox and the Warehouse!");
+    public boolean checkReq(Board board) throws InvalidActionException, MissingResourcesException {
+        throw new MissingResourcesException("The card needs the status of the StrongBox and the Warehouse!");
     }
 
     /**

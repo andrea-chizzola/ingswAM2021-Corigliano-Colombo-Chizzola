@@ -1,14 +1,16 @@
 package it.polimi.ingsw.Exceptions;
 
 /**
- * This class extends Exception and represents the exceptions of the Market
+ * This class extends Exception.
+ * It represents an exception that is thrown by the market
+ * when resources are missing
  */
-public class ResourcesExpectedException extends Exception {
+public class MissingResourcesException extends Exception {
 
     /**
      * constructor without parameters
      */
-    public ResourcesExpectedException() {
+    public MissingResourcesException() {
         super("The card has to check the status of the StrongBox and the Warehouse!");
     }
 
@@ -16,7 +18,7 @@ public class ResourcesExpectedException extends Exception {
      * constructor
      * @param message
      */
-    public ResourcesExpectedException(String message) {
+    public MissingResourcesException(String message) {
         super(message);
     }
 }

@@ -74,7 +74,7 @@ public class CLI implements View, SubjectView {
     /**
      * this attribute is a reference to the reduced model of the view
      */
-    private ReducedGameBoard model;
+    private final ReducedGameBoard model;
 
     /**
      * this attribute is a matrix that contains the current state of the CLI
@@ -84,12 +84,12 @@ public class CLI implements View, SubjectView {
     /**
      * this attribute is a matrix that contains the current state of the players board
      */
-    private Map<String, String[][]> playersBoard;
+    private final Map<String, String[][]> playersBoard;
 
     /**
      * this attribute represents a matrix that contains all the cards in common decks
      */
-    private String[][] decksStatus;
+    private final String[][] decksStatus;
 
     /**
      * this attribute represents the input stream
@@ -163,7 +163,7 @@ public class CLI implements View, SubjectView {
                     manageInput(s);
                 }
             } catch (IOException | NullPointerException e) {
-                System.out.println("Cannot open the input stream of CLI");
+                System.out.println("\nCannot open the input stream of CLI");
                 notifyParsingError();
             }
         }).start();
@@ -178,12 +178,25 @@ public class CLI implements View, SubjectView {
             notifyDisconnection();
             return;
         }
-
         if(s.length() >=5 && s.startsWith("SEE")){
             showOthers(s.substring(4));
             return;
         }
+        if(s.length() >= 4 && s.startsWith("UNDO") && isUndoPossible()){
+            notifyInteraction(new UndoInteraction());
+        }
         addInput(s);
+    }
+
+    /**
+     * this helper method is used to check if an UNDO may be performed
+     * @return true if the UNDO can be performed
+     */
+    private boolean isUndoPossible(){
+        TurnType state = model.getModelState();
+        return (state != TurnType.INITIALIZATION_LEADERS) &&
+                (state != TurnType.INITIALIZATION_RESOURCE) &&
+                (state != TurnType.MANAGE_MARBLE);
     }
 
     /**
@@ -206,7 +219,7 @@ public class CLI implements View, SubjectView {
             notifyInteraction(MessageFactory.buildDisconnection(
                     "I want to be disconnected", model.getPersonalNickname()));
         } catch (MalformedMessageException e) {
-            System.out.println("Parsing error... closing the connection");
+            System.out.println("\nParsing error... closing the connection");
             notifyParsingError();
         }
     }
@@ -264,6 +277,7 @@ public class CLI implements View, SubjectView {
                 System.out.print(target[i][j]);
             }
         }
+        System.out.println("\n");
     }
 
     /**
@@ -297,7 +311,7 @@ public class CLI implements View, SubjectView {
     @Override
     public void reply(boolean answer, String body, String nickName) {
         if(!answer) {
-            out.println("Error:" + body + "\nSomething seems wrong... What about trying again?");
+            out.println("Error:" + body + "Something seems wrong... What about trying again?");
             return;
         }
         out.println("Action successfully performed. Let's wait for the game to start...");
@@ -321,11 +335,6 @@ public class CLI implements View, SubjectView {
     public void showMarketUpdate(List<Marble> tray) {
         int nRows = model.getConfiguration().getnRows(), nColumns = model.getConfiguration().getnColumns();
         CLIPainter.paintMarketBoard(viewStatus, MARKET_Y, MARKET_X, tray, nRows, nColumns);
-        StringBuilder market = new StringBuilder();
-        for(int i = 0; i<tray.size(); i++){
-            market.append(tray.get(i).toString()).append(",");
-        }
-        out.println("The new status of the market (ordered by rows) is:\n" + market );
     }
 
     /**
@@ -342,13 +351,13 @@ public class CLI implements View, SubjectView {
                 DevelopmentCard card = model.getConfiguration().getDevelopmentCard(decks.get(i));
                 CLIPainter.devCardPainter(decksStatus, 1 + length*row, BOXES_X + width*column, card.toString());
             } catch (IllegalIDException e) {
-                System.out.println("Parsing failure! Card ID: "+decks.get(i)+" not found!");
+                System.out.println("Parsing failure! Card ID: " + decks.get(i) + " not found!");
             }
         }
     }
 
     /**
-     * this method is used to show an update of one's warehouse and stringbox
+     * this method is used to show an update of one's warehouse and strongbox
      * @param warehouse represent the current state of the warehouse
      * @param strongBox represent the current state of the strongbox
      */
@@ -359,20 +368,13 @@ public class CLI implements View, SubjectView {
         List<ResQuantity> resources = new LinkedList<>();
         List<ResQuantity> extra = new LinkedList<>();
         int defaultSlots = model.getConfiguration().getSlotNumber();
-        StringBuilder warehouseString = new StringBuilder();
-        StringBuilder extraBoxString = new StringBuilder();
-        StringBuilder strongboxString = new StringBuilder();
 
         for(int i=0; i<warehouse.size(); i++){
             ResQuantity r = warehouse.get(i);
             if(i<=defaultSlots) {
                 resources.add(r);
-                if(r.getQuantity()>0) warehouseString.append(r.toString());
-                else warehouseString.append("EMPTY");
-                warehouseString.append(" | ");
             }
             else {
-                extraBoxString.append(r.toString()).append(" | ");
                 extra.add(r);
             }
         }
@@ -380,17 +382,7 @@ public class CLI implements View, SubjectView {
         extra.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
         CLIPainter.paintWarehouse(view, WAREHOUSE_Y+PLAYERS_Y, WAREHOUSE_X, model.getConfiguration().getShelves(), resources);
         CLIPainter.paintExtraSlots(view, EXTRA_Y+PLAYERS_Y, EXTRA_X, extra);
-
-        strongBox.sort(Comparator.comparing((ResQuantity re) -> re.getResource().toString()));
-        for(ResQuantity r : strongBox){
-            strongboxString.append(r.toString()).append(" / ");
-        }
         CLIPainter.paintStrongbox(view, STRONGBOX_Y+PLAYERS_Y, STRONGBOX_X, strongBox);
-
-
-        out.println("The new status of your boxes is:\nWarehouse: " + warehouseString);
-        if(extra.size()>0) out.println("Extra shelves: " + extraBoxString);
-        if(strongboxString.length()>0) out.println("StrongBox: " + strongboxString);
     }
 
     /**
@@ -600,12 +592,12 @@ public class CLI implements View, SubjectView {
         available.append("SHOW_DECKS;");
         String s;
         do{
-            out.println("\nSelect your turn type; available turns: " + available);
+            out.println("Select your turn type; available turns: " + available);
             s = getInput();
-            if(!turns.contains(s))
-                showGameStatus("Not existent turn type.", "name", model.getModelState());
+            if(isCancelledAction(s)) return;
 
             if(s.equals("SHOW_DECKS")) plotDecks();
+            else if(!turns.contains(s)) out.println("Not existent turn type.");
         }
         while(!turns.contains(s));
         actionMapper(s);
@@ -664,7 +656,7 @@ public class CLI implements View, SubjectView {
         Map<Integer, String> cards = board.getLeadersID();
         plotView();
         do {
-            out.println("\nSelect two of your cards. Command:- position1:position2\n" +
+            out.println("Select two of your cards. Command:- position1:position2\n" +
                     "eg. type 1:2 to select cards one and two");
             action = getInput();
             selections = action.split(":");
@@ -711,6 +703,7 @@ public class CLI implements View, SubjectView {
         do {
             out.println("Select a row or a column.\nCommand Type:- row:number or column:number");
             s = getInput();
+            if(isCancelledAction(s)) return;
         } while(!isValidMarketSelection(s));
         String[] selection = s.split(":");
         interactionTranslator.setMarketTray(selection[0]);
@@ -767,8 +760,8 @@ public class CLI implements View, SubjectView {
         out.println("Type your action. Command:- MarbleColor:ACTION:TargetSlot\n " +
                 "eg. MarbleBlue:INSERT:2:MarbleYellow:DISCARD:0");
         String action = getInput();
-        interactionTranslator.setMarblesActions(action);
 
+        interactionTranslator.setMarblesActions(action);
         notifyInteraction(builder.buildMessage(interactionTranslator));
     }
 
@@ -792,6 +785,7 @@ public class CLI implements View, SubjectView {
                     "\nYou can both discard and activate your cards. Command :- number:ACTION" +
                     "\ne.g: 1:INSERT or 2:DISCARD");
             action = getInput();
+            if(isCancelledAction(action)) return;
             sequence = action.split(":");
         }while(sequence.length!=2 || !isInt(sequence[0]) || !leadersID.containsKey(Integer.parseInt(sequence[0])));
 
@@ -815,10 +809,11 @@ public class CLI implements View, SubjectView {
         String[] selection;
         String action;
 
-        out.println("\nWhat about buying a new card? The decks are ordered from the left to the right.");
+        out.println("What about buying a new card? The decks are ordered from the left to the right.");
         do{
             out.println("Give me the card position and the target slot. Command :- position:slot");
             action = getInput();
+            if(isCancelledAction(action)) return;
             selection = action.split(":");
         }while(!isCardOK(selection));
         int position = Integer.parseInt(selection[0]), slot = Integer.parseInt(selection[1]);
@@ -827,10 +822,14 @@ public class CLI implements View, SubjectView {
         interactionTranslator.setSlot(slot);
 
         out.println("Now select your resources from the warehouse.");
-        interactionTranslator.setWarehouse(helpWarehouse());
+        String warehouse = helpWarehouse();
+        if(isCancelledAction(warehouse)) return;
+        interactionTranslator.setWarehouse(warehouse);
 
         out.println("You can also get something from your strongbox.");
-        interactionTranslator.setStrongbox(helpResSequence());
+        String strongbox = helpResSequence();
+        if(isCancelledAction(strongbox)) return;
+        interactionTranslator.setStrongbox(strongbox);
 
         notifyInteraction(builder.buildMessage(interactionTranslator));
     }
@@ -838,6 +837,7 @@ public class CLI implements View, SubjectView {
     /**
      * this helper method is used to build a selection in the warehouse
      * @return a String that represents the selection
+     * or a String that represents the cancellation of the action
      */
     private String helpWarehouse(){
 
@@ -846,6 +846,7 @@ public class CLI implements View, SubjectView {
         do{
             out.println("Give me the resources and quantities. Command :- shelf:quantity or press ENTER to skip");
             action = getInput();
+            if(isCancelledAction(action)) return "UNDO";
             selection = action.split(":");
         }while(!action.isEmpty() && (selection.length%2!=0 && !isIntSequence(selection, 1)));
 
@@ -855,6 +856,7 @@ public class CLI implements View, SubjectView {
     /**
      * this helper method is used to build a selection in the strongbox
      * @return a String that represents the selection
+     * or a String that represents the cancellation of the action
      */
     private String helpResSequence(){
         String action;
@@ -862,8 +864,9 @@ public class CLI implements View, SubjectView {
         do{
             out.println("Give me the resources and quantities. Command :- resource:quantity  or press ENTER to skip");
             action = getInput();
+            if(isCancelledAction(action)) return "UNDO";
             selection = action.split(":");
-        }while(!action.isEmpty() && (selection.length%2!=0 /*|| !isIntSequence(selection, 2)*/));
+        }while(!action.isEmpty() && (selection.length%2!=0));
 
         return action;
     }
@@ -889,7 +892,7 @@ public class CLI implements View, SubjectView {
     public void doProductionsAction(){
         interactionTranslator = new InteractionTranslator(model);
         builder = new BuildDoProduction();
-        String currentPlayer = model.getCurrentPlayer();
+        String currentPlayer = model.getCurrentPlayer(), selection;
         ReducedBoard board = model.getBoard(currentPlayer);
 
         String action, leaders, developments;
@@ -898,7 +901,9 @@ public class CLI implements View, SubjectView {
 
         do{
             out.println("Do you want to use your personal production? [YES/NO]");
-            action = getAssertion(getInput());
+            selection = getInput();
+            if(isCancelledAction(selection)) return;
+            action = getAssertion(selection);
         }while(!action.equals("true") && !action.equals("false"));
 
         if(Boolean.parseBoolean(action))
@@ -907,24 +912,36 @@ public class CLI implements View, SubjectView {
         if(board.getLeadersID().keySet().size()>=1) {
             out.println("What about leader cards? Select them. Command:- card1:card2... [positions]");
             leaders = helpCards(board.getLeadersID());
+            if(isCancelledAction(leaders)) return;
             interactionTranslator.setLeaderCards(leaders);
         }
         if(board.getSlots().keySet().size()>=1) {
             out.println("Don't forget your development cards! Select them. Command:- card1:card2... [positions]");
             developments = helpCards(board.getSlots());
+            if(isCancelledAction(developments)) return;
             interactionTranslator.setDevelopmentCards(developments);
         }
+
         out.println("Select your custom materials:");
-        interactionTranslator.setChosenMaterials(helpResSequence());
+        selection = helpResSequence();
+        if(isCancelledAction(selection)) return;
+        interactionTranslator.setChosenMaterials(selection);
 
         out.println("Select your custom products:");
-        interactionTranslator.setChosenProducts(helpResSequence());
+        selection = helpResSequence();
+        if(isCancelledAction(selection)) return;
+        interactionTranslator.setChosenProducts(selection);
 
         out.println("What is a production without some waste of resources?");
         out.println("Now select your resources from the warehouse.");
-        interactionTranslator.setWarehouse(helpWarehouse());
+        selection = helpWarehouse();
+        if(isCancelledAction(selection)) return;
+        interactionTranslator.setWarehouse(selection);
+
         out.println("You can also get something from your strongbox.");
-        interactionTranslator.setStrongbox(helpResSequence());
+        selection = helpResSequence();
+        if(isCancelledAction(selection)) return;
+        interactionTranslator.setStrongbox(selection);
 
         notifyInteraction(builder.buildMessage(interactionTranslator));
     }
@@ -932,7 +949,7 @@ public class CLI implements View, SubjectView {
     /**
      * this helper method is used to select a list of cards. The cards must be contained in the map cards
      * @param cards is a map of positions and cards IDs
-     * @return a Strin that represents the selected cards
+     * @return a String that represents the selected cards
      */
     private String helpCards(Map<Integer, String> cards){
         String action;
@@ -941,6 +958,7 @@ public class CLI implements View, SubjectView {
         do{
             out.println("Select your cards. Command:- position1:position2:... or ENTER to skip");
             action = getInput();
+            if(isCancelledAction(action)) return "UNDO";
             selection = action.split(":");
         }while(!action.isEmpty()  && (!isIntSequence(selection,1) || !containsCard(selection, cards)));
 
@@ -988,7 +1006,7 @@ public class CLI implements View, SubjectView {
         if(number>0) {
             String[] sequence;
             do {
-                out.println("\nLet's get some starting resources:" +
+                out.println("Let's get some starting resources:" +
                         "\nYou can select" + number + "resources. Command:- targetSlot:resource");
                 selection = getInput();
                 sequence = selection.split(":");
@@ -1026,6 +1044,7 @@ public class CLI implements View, SubjectView {
         do{
             out.println("Select the source and the target slots for swapping. Command:- source:target");
             decision = getInput();
+            if(isCancelledAction(decision)) return;
             selections = decision.split(":");
         }
         while(!isIntSequence(selections,1));
@@ -1048,6 +1067,25 @@ public class CLI implements View, SubjectView {
         }
         plotOthers(nickname);
         out.println("\n");
+    }
+
+    /**
+     * this method is used to undo the player's action
+     */
+    @Override
+    public void undoAction(){
+        String self = model.getPersonalNickname();
+        List<String> turns = model.getAvailableTurns();
+        showAvailableTurns(turns, self);
+    }
+
+    /**
+     * this helper method is used to check if an action has been cancelled
+     * @param target is a String representing the action.
+     * @return true if the action has been canceled
+     */
+    private boolean isCancelledAction(String target){
+        return target.startsWith("UNDO");
     }
 
     /**
