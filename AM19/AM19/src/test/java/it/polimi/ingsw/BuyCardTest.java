@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.Controller.ViewForTest;
 import it.polimi.ingsw.Exceptions.IllegalShelfException;
 import it.polimi.ingsw.Exceptions.IllegalSlotException;
 import it.polimi.ingsw.Exceptions.InvalidActionException;
@@ -60,7 +59,7 @@ class BuyCardTest {
         warehouse.addShelf(new ResQuantity(new Coin(), 2));
 
         //StrongBox: Quantity:Resource
-        //10:coin, 1:Servant, 5:Shield, 3:Stone
+        //20:coin, 20:Servant, 20:Shield, 20:Stone
         StrongBox strongBox = board.getStrongBox();
         strongBox.addResource(new Coin(), 20);
         strongBox.addResource(new Servant(), 20);

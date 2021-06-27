@@ -1,5 +1,8 @@
 package it.polimi.ingsw.View.InteractionTranslator;
 
+/**
+ * This class implements BuildMessage and provides the method to build a SelectedResources message
+ */
 public class BuildSelectedResources implements BuildMessage{
 
     /**

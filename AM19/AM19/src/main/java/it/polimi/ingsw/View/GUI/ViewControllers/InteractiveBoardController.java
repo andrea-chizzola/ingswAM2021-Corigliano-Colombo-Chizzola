@@ -11,7 +11,11 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.View.GUI.GUIHandler;
 import it.polimi.ingsw.View.InteractionTranslator.*;
 import it.polimi.ingsw.View.PlayerInteractions.SeeOthersInteraction;
+import it.polimi.ingsw.View.PlayerInteractions.UndoInteraction;
+import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -50,6 +54,8 @@ public class InteractiveBoardController extends BoardController {
     private Button personalProduction;
     @FXML
     private Button actionButton;
+    @FXML
+    private Button undoButton;
     @FXML
     private Button swap1;
     @FXML
@@ -92,6 +98,8 @@ public class InteractiveBoardController extends BoardController {
     private Label counterExtra1;
     @FXML
     private Label counterExtra2;
+    @FXML
+    private Label status;
 
     private DecksController decksController;
     private MarketboardController marketboardController;
@@ -101,6 +109,7 @@ public class InteractiveBoardController extends BoardController {
     private BuildMessage builder;
     private int customResources, customProducts;
     private boolean production;
+    SequentialTransition statusTransition;
 
     /**
      * this method is the constructor of the class
@@ -122,8 +131,10 @@ public class InteractiveBoardController extends BoardController {
         quitButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> onQuitClicked());
         decksButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> onDecksClicked());
         actionButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> notifyInteraction());
+        undoButton.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> undoInteraction());
 
         actionButton.setDisable(true);
+        undoButton.setDisable(true);
         errorStrongbox.setVisible(false);
         errorExtraShelf.setVisible(false);
 
@@ -143,6 +154,23 @@ public class InteractiveBoardController extends BoardController {
         turnSelectionController.hideWindow();
 
         otherPlayersMenu.setVisible(false);
+
+        status.setOpacity(0.0);
+        status.setVisible(false);
+
+        FadeTransition fadein = new FadeTransition(Duration.millis(1500), status);
+        fadein.setFromValue(0.0);
+        fadein.setToValue(1.0);
+        FadeTransition fadeout = new FadeTransition(Duration.millis(1500), status);
+        fadeout.setFromValue(1.0);
+        fadeout.setToValue(0.0);
+        fadeout.setOnFinished(event -> status.setVisible(false));
+        statusTransition = new SequentialTransition(
+                status,
+                fadein,
+                fadeout
+        );
+
 
         useWarehouse();
         useExtraShelves();
@@ -175,6 +203,16 @@ public class InteractiveBoardController extends BoardController {
         else getGUIReference().notifyInteraction(builder.buildMessage(interactionTranslator));
         resetTurn();
         actionButton.setDisable(true);
+        undoButton.setDisable(true);
+    }
+
+    /**
+     * this method is used to notify the GUI about the
+     * willingness of the player to reset the current action
+     */
+    private void undoInteraction(){
+        getGUIReference().notifyInteraction(new UndoInteraction());
+        resetTurn();
     }
 
     /**
@@ -199,7 +237,7 @@ public class InteractiveBoardController extends BoardController {
 
     /**
      * this method is used to add the name of a player to the otherPlayersMenu
-     * @param nickname
+     * @param nickname the nickname of the player to be shown
      */
     public void addPlayer(String nickname){
         MenuItem item = new MenuItem(nickname);
@@ -287,7 +325,6 @@ public class InteractiveBoardController extends BoardController {
      */
     public void setAvailableTurns(List<String> turns){
         turnSelectionController.setAvailableActions(turns);
-        turnSelectionController.showWindow();
     }
 
 
@@ -310,7 +347,7 @@ public class InteractiveBoardController extends BoardController {
      * @param slot the slot associated with the imageView
      */
     private void helpUseWarehouse(ImageView imageView,Integer slot){
-        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             imageView.setOpacity(0.5);
             imageView.setDisable(true);
@@ -365,10 +402,19 @@ public class InteractiveBoardController extends BoardController {
      */
     private void helpUseExtraShelf(ImageView imageView, Label label, Label counter, int shelf){
 
-        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             if (actionPauseTransition(imageView, label, errorExtraShelf, counter)) return;
             interactionTranslator.setWarehouse(shelf);});
+    }
+
+    /**
+     * enable or disable the event handlers of the images associated with the extra shelves
+     * @param b if b=true the events handlers are set as active, otherwise they are set as inactive
+     */
+    private void enableExtraShelf(Boolean b){
+        extraShelf1.setDisable(!b);
+        extraShelf2.setDisable(!b);
     }
 
     /**
@@ -418,7 +464,7 @@ public class InteractiveBoardController extends BoardController {
      */
     private void helpUseStrongbox(ImageView imageView, Label label, Label counter,String resource){
 
-        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             if (actionPauseTransition(imageView, label, errorStrongbox, counter)) return;
             interactionTranslator.setStrongbox(resource);
@@ -473,7 +519,7 @@ public class InteractiveBoardController extends BoardController {
      */
     private void helpUseSlots(ImageView imageView, Integer slot){
 
-        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             imageView.setOpacity(0.5);
             imageView.setDisable(true);
@@ -594,7 +640,7 @@ public class InteractiveBoardController extends BoardController {
      */
     private void helpUseLeaders(ImageView imageView, Integer number){
 
-        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> {imageView.setVisible(false);});
+        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             imageView.setOpacity(0.8);
             imageView.setDisable(true);
@@ -699,8 +745,10 @@ public class InteractiveBoardController extends BoardController {
      */
     public void resetTurn(){
         actionButton.setDisable(true);
+        undoButton.setDisable(true);
         enableWarehouse(false);
         enableStrongbox(false);
+        enableExtraShelf(false);
         enableLeaderCards(false);
         enableSlots(false);
         personalProduction.setDisable(true);
@@ -710,10 +758,10 @@ public class InteractiveBoardController extends BoardController {
         resetImage(secondSlot,1);
         resetImage(thirdSlot,1);
 
-        resetImage(firstLeaderCard,0.5);
+        /*resetImage(firstLeaderCard,0.5);
         resetImage(secondLeaderCard,0.5);
         resetImage(thirdLeaderCard,0.5);
-        resetImage(fourthLeaderCard,0.5);
+        resetImage(fourthLeaderCard,0.5);*/
 
         resetCounters();
 
@@ -730,6 +778,8 @@ public class InteractiveBoardController extends BoardController {
 
         customResources = 0;
         customProducts = 0;
+        marketboardController.disableButtons();
+        decksController.enableCards(false);
     }
 
     private void resetImage(ImageView imageView, double opacity){
@@ -750,6 +800,7 @@ public class InteractiveBoardController extends BoardController {
         this.interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildDoProduction();
         enableWarehouse(true);
+        enableExtraShelf(true);
         enableStrongbox(true);
         enableLeaderCards(true);
         enableSlots(true);
@@ -757,6 +808,7 @@ public class InteractiveBoardController extends BoardController {
         personalProduction.setDisable(false);
         personalProduction.setVisible(true);
         actionButton.setDisable(false);
+        undoButton.setDisable(false);
         production = true;
     }
 
@@ -768,6 +820,7 @@ public class InteractiveBoardController extends BoardController {
         marketboardController.setAccumulator();
         marketboardController.activateButtons();
         marketboardController.showWindow();
+        undoButton.setDisable(false);
     }
 
     /**
@@ -779,6 +832,7 @@ public class InteractiveBoardController extends BoardController {
         decksController.setAccumulator(interactionTranslator);
         enableWarehouse(true);
         enableStrongbox(true);
+        enableExtraShelf(true);
         enableSlotsButtons(true);
         slotButton1.setVisible(true);
         slotButton2.setVisible(true);
@@ -787,6 +841,7 @@ public class InteractiveBoardController extends BoardController {
         slotButton2.setOpacity(1);
         slotButton3.setOpacity(1);
         actionButton.setDisable(false);
+        undoButton.setDisable(false);
     }
 
     /**
@@ -803,6 +858,7 @@ public class InteractiveBoardController extends BoardController {
         leader1select.setOpacity(1);
         leader2select.setOpacity(1);
         actionButton.setDisable(false);
+        undoButton.setDisable(false);
     }
 
 
@@ -821,6 +877,13 @@ public class InteractiveBoardController extends BoardController {
         swap3.setVisible(true);
         swap3.setOpacity(1);
         actionButton.setDisable(false);
+        undoButton.setDisable(false);
+    }
+
+    public void showGameStatus(String body){
+        status.setText(body);
+        status.setVisible(true);
+        statusTransition.play();
     }
 }
 

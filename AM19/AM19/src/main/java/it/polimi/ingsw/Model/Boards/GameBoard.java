@@ -316,12 +316,16 @@ public class GameBoard implements GameBoardHandler {
         if(gameEnded)
             virtualView.showEndGame(getTotalPoints(),getWinner());
 
-        if(players.size() == 1 && disconnectedPlayers.size()==0) {
-            virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
-            virtualView.showTopToken(customMode.showTopToken());
-            virtualView.showDecksUpdate(developmentDeck.showDeck());
-        }
         setStartTurns();
+    }
+
+    /**
+     * This method sends to the view the updates useful at the end of the turn in case of single player match.
+     */
+    public void showSinglePlayer(){
+        virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
+        virtualView.showTopToken(customMode.showTopToken());
+        virtualView.showDecksUpdate(developmentDeck.showDeck());
     }
 
     /**
@@ -358,7 +362,8 @@ public class GameBoard implements GameBoardHandler {
         for(Board board : players)
             virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
 
-        virtualView.showGameStatus(true,"get resources",currentPlayer.getNickname(),TurnType.INITIALIZATION_LEADERS);
+        String name = currentPlayer.getNickname();
+        virtualView.showGameStatus(name + " initializes his/her leader cards", name,TurnType.INITIALIZATION_LEADERS);
     }
 
     /**
@@ -431,13 +436,16 @@ public class GameBoard implements GameBoardHandler {
     @Override
     public void initializeLeaderCard(Map<Integer,Boolean> leaderStatus) throws InvalidActionException{
 
+        if(gameEnded)
+            throw new InvalidActionException("The game is ended!");
         if(currentPlayer.isLeadersInitialized())
             throw new InvalidActionException("You have already initialized your cards!");
         if(!currentPlayer.discardLeaderCard(leaderStatus))
             throw new InvalidActionException("Wrong choice of leader cards!");
 
         virtualView.showLeaderCards(currentPlayer.showLeaderPosition(), currentPlayer.showLeaderStatus(), currentPlayer.getNickname());
-        virtualView.showGameStatus(true,"get resources",currentPlayer.getNickname(),TurnType.INITIALIZATION_RESOURCE);
+        String name = currentPlayer.getNickname();
+        virtualView.showGameStatus(name + " initializes his/her boxes", name,TurnType.INITIALIZATION_RESOURCE);
     }
 
     /**
@@ -447,6 +455,8 @@ public class GameBoard implements GameBoardHandler {
      */
     @Override
     public void insertResources(List<Resource> resources, List<Integer> shelves) throws InvalidActionException{
+        if(gameEnded)
+            throw new InvalidActionException("The game is ended!");
 
         if(!(currentPlayer.isLeadersInitialized() && !currentPlayer.isResourcesInitialized()))
             throw new InvalidActionException("You can't initialize your resources now!");
@@ -472,7 +482,8 @@ public class GameBoard implements GameBoardHandler {
         endTurnMove();
 
         if(!isAllInitialized()) {
-            virtualView.showGameStatus(true,"Initialize leader cards",currentPlayer.getNickname(),TurnType.INITIALIZATION_LEADERS);
+            String name = currentPlayer.getNickname();
+            virtualView.showGameStatus(name + " initializes his/her leader cards", name,TurnType.INITIALIZATION_LEADERS);
             return;
         }
         showAvailableTurns();
@@ -486,6 +497,7 @@ public class GameBoard implements GameBoardHandler {
     public void disconnectPlayer(String nickname) {
 
         if(!isAllInitialized()) {
+            gameEnded = true;
             virtualView.showEndGame(getTotalPoints(), getWinner());
             return;
         }
@@ -519,13 +531,27 @@ public class GameBoard implements GameBoardHandler {
             if(board.getNickname().equals(nickname)){
                 players.add(board);
                 disconnectedPlayers.remove(i);
-                virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
-                virtualView.showDecksUpdate(developmentDeck.showDeck());
-                virtualView.showMarketUpdate(marketBoard.showMarket());
-                virtualView.showBoxes(board.getWarehouse().showWarehouse(), board.getStrongBox().showStrongBox(), board.getNickname());
-                virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
+                updateAll();
                 return;
             }
+        }
+    }
+
+    /**
+     * This method sends to the view the updates of all the status of the players.
+     * It is useful when a player reconnects himself and needs all the information
+     */
+    private void updateAll(){
+        virtualView.showFaithUpdate(showFaith(),showSections(),customMode.showFaithLorenzo(),customMode.showSectionsLorenzo());
+        virtualView.showDecksUpdate(developmentDeck.showDeck());
+        virtualView.showMarketUpdate(marketBoard.showMarket());
+        ArrayList<Board> allPlayers = new ArrayList<>(players);
+        allPlayers.addAll(disconnectedPlayers);
+
+        for(Board board : allPlayers) {
+            virtualView.showBoxes(board.getWarehouse().showWarehouse(), board.getStrongBox().showStrongBox(), board.getNickname());
+            virtualView.showLeaderCards(board.showLeaderPosition(), board.showLeaderStatus(), board.getNickname());
+            virtualView.showSlotsUpdate(board.showSlot(), board.getNickname());
         }
     }
 
@@ -749,7 +775,7 @@ public class GameBoard implements GameBoardHandler {
             try {
                 card.checkReq(board);
             }
-            catch (InvalidActionException | ResourcesExpectedException e){throw new InvalidActionException(e.getMessage());}
+            catch (InvalidActionException | MissingResourcesException e){throw new InvalidActionException(e.getMessage());}
 
             card.getSpecialEffect().applyEffect(board);
             card.setStatus(true);

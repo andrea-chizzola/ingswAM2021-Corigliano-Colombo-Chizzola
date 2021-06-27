@@ -115,8 +115,8 @@ public class ClientController implements ServerConnectionListener, InteractionOb
     @Override
     public synchronized void onMissingPong() {
         try {
-            String message = MessageFactory.buildGameStatus(false,
-                    "ERROR: Missed pong", model.getPersonalNickname(), TurnType.WRONG_STATE);
+            String message = MessageFactory.buildReply(
+                    false, "ERROR: Missed pong", model.getPersonalNickname());
             receivedMessages.add(message);
             this.notifyAll();
 
@@ -201,10 +201,10 @@ public class ClientController implements ServerConnectionListener, InteractionOb
         String self = model.getPersonalNickname();
         String body = message.getBody();
         model.setCurrentPlayer(message.getPlayer());
+        view.showGameStatus(body, self, message.getStatus());
 
         if (model.getCurrentPlayer().equals(self)){
             model.setModelState(message.getStatus());
-            view.showGameStatus(true, body, self, message.getStatus());
             selectionHandler(message.getStatus(), message);
             actionHandler(message.getStatus());
         }

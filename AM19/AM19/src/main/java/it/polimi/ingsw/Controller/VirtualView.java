@@ -38,14 +38,14 @@ public class VirtualView implements Update {
 
     /**
      * this method is used to show a message
-     * @param answer represents the type of message
      * @param body is the content of the message
      * @param nickName represents the nickname of involved player
      * @param state represents the current state of the game
      */
-    public void showGameStatus(boolean answer, String body, String nickName, TurnType state){
+    @Override
+    public void showGameStatus(String body, String nickName, TurnType state){
         try {
-            String message = MessageFactory.buildGameStatus(answer,body,nickName,state);
+            String message = MessageFactory.buildGameStatus(body,nickName,state);
             game.send(message,nickName);
         }catch (MalformedMessageException e){ e.printStackTrace();}
     }
@@ -179,7 +179,8 @@ public class VirtualView implements Update {
     @Override
     public void showAvailableTurns(List<String> turns, String player) {
        try {
-            String message = MessageFactory.buildCurrentPlayer(player,turns,"current player");
+            String message = MessageFactory.buildCurrentPlayer(player,turns,
+                    "The current player is: " + player);
             game.sendAll(message);
         }catch (MalformedMessageException e){ e.printStackTrace();}
     }

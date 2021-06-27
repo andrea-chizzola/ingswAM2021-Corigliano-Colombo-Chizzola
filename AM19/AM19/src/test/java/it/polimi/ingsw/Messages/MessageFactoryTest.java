@@ -333,7 +333,7 @@ class MessageFactoryTest {
     @Test
     void buildGameStatus(){
         try {
-            assertEquals(MessageFactory.buildGameStatus(false, "ERROR: Missed pong", "player", TurnType.WRONG_STATE), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>GAME_STATUS</messageType><correct>false</correct><state>WRONG_STATE</state><body>ERROR: Missed pong</body><player>player</player></Message>");
+            assertEquals(MessageFactory.buildGameStatus("ERROR: Missed pong", "player", TurnType.WRONG_STATE), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Message><messageType>GAME_STATUS</messageType><state>WRONG_STATE</state><body>ERROR: Missed pong</body><player>player</player></Message>");
         } catch (MalformedMessageException e) {
             fail();
         }

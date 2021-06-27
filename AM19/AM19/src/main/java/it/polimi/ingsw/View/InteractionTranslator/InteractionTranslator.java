@@ -22,14 +22,14 @@ public class InteractionTranslator {
     /**
      * the reduced model of the client
      */
-    private ReducedGameBoard model;
+    private final ReducedGameBoard model;
 
     /**
      * StringBuilder useful to generate the string which represents
      * the resources selected by the player during the initialization of the game
      */
 
-    private StringBuilder initResources = new StringBuilder();
+    private final StringBuilder initResources = new StringBuilder();
 
     /**
      * It represents the choice of the marketBoard
@@ -45,7 +45,7 @@ public class InteractionTranslator {
      * StringBuilder useful to generate the string which represents the marbles selected by the player and the correspondent actions
      */
 
-    private StringBuilder marblesActions = new StringBuilder();
+    private final StringBuilder marblesActions = new StringBuilder();
     /**
      * the first shelf to swap
      */
@@ -66,17 +66,17 @@ public class InteractionTranslator {
     /**
      * Map useful to generate the string which represents  the resources selected by the player from the warehouse
      */
-    private Map<Integer,Integer> warehouse = new HashMap<>();
+    private final Map<Integer,Integer> warehouse = new HashMap<>();
 
     /**
      * StringBuilder useful to generate the string which represents the resources selected by the player from the warehouse
      */
-    private StringBuilder warehouseString = new StringBuilder();
+    private final StringBuilder warehouseString = new StringBuilder();
 
     /**
      * StringBuilder useful to generate the string which represents the resources selected by the player from the strongBox
      */
-    private StringBuilder strongbox = new StringBuilder();
+    private final StringBuilder strongbox = new StringBuilder();
 
     //buy_card
     /**
@@ -92,19 +92,19 @@ public class InteractionTranslator {
     /**
      * StringBuilder useful to generate the string which represents the development cards selected by the player to perform the production
      */
-    private StringBuilder developmentCards = new StringBuilder();
+    private final StringBuilder developmentCards = new StringBuilder();
     /**
      * StringBuilder useful to generate the string which represents the leader cards selected by the player to perform the production
      */
-    private StringBuilder leaderCards = new StringBuilder();
+    private final StringBuilder leaderCards = new StringBuilder();
     /**
      * StringBuilder useful to generate the string which represents the chosen materials selected by the player to perform the production
      */
-    private StringBuilder chosenProducts = new StringBuilder();
+    private final StringBuilder chosenProducts = new StringBuilder();
     /**
      * StringBuilder useful to generate the string which represents the chosen products selected by the player to perform the production
      */
-    private StringBuilder chosenMaterials = new StringBuilder();
+    private final StringBuilder chosenMaterials = new StringBuilder();
     /**
      * It represents the choice of the player about the personal production
      */
@@ -120,8 +120,6 @@ public class InteractionTranslator {
      */
     private String action;
 
-
-
     /**
      * Constructor
      * @param model the reduced model
@@ -129,8 +127,6 @@ public class InteractionTranslator {
     public InteractionTranslator(ReducedGameBoard model){
         this.model = model;
     }
-
-
 
     /**
      * Adds the resource passed as parameter to the initialization resources
@@ -150,7 +146,7 @@ public class InteractionTranslator {
 
     /**
      * sets the choice of the marketBoard
-     * @param tray
+     * @param tray is a representation of the selected column or row
      */
     public void setMarketTray(String tray){ this.tray = tray;}
 
@@ -164,7 +160,7 @@ public class InteractionTranslator {
 
     /**
      * Appends to the StringBuilder associated with the marbles actions the String passed as parameter
-     * @param string
+     * @param string is a string that represents the action on the marbles
      */
     public void setMarblesActions(String string){
         marblesActions.append(string).append(splitter);
@@ -210,13 +206,13 @@ public class InteractionTranslator {
 
     /**
      * Appends to the StringBuilder associated with the warehouse the String passed as parameter
-     * @param warehouse
+     * @param warehouse is a String that represents a selection in the warehouse
      */
     public void setWarehouse(String warehouse){warehouseString.append(warehouse).append(splitter);}
 
     /**
      * Appends to the StringBuilder associated with the strongBox the String passed as parameter
-     * @param strongbox
+     * @param strongbox is a string that represents a selection in the strongbox
      */
     public void setStrongbox(String strongbox){
         this.strongbox.append(strongbox).append(splitter);
@@ -247,7 +243,7 @@ public class InteractionTranslator {
 
     /**
      * Appends to the StringBuilder associated with the chosen products the String passed as parameter
-     * @param string
+     * @param string is a string that represents the chosen products
      */
     public void setChosenProducts(String string){
         chosenProducts.append(string).append(splitter);
@@ -255,7 +251,7 @@ public class InteractionTranslator {
 
     /**
      * Appends to the StringBuilder associated with the chosen materials the String passed as parameter
-     * @param string
+     * @param string is a string that represents the chosen materials
      */
     public void setChosenMaterials(String string){
         chosenMaterials.append(string).append(splitter);
@@ -318,14 +314,14 @@ public class InteractionTranslator {
         for(int i : cards.keySet()) map.put(i, ItemStatus.DISCARDED);
         try {
             for (String selection : selections) map.put(Integer.parseInt(selection), ItemStatus.ACTIVE);
-        }catch (NumberFormatException e){}
-
+        }catch (NumberFormatException e){
+            return "error";
+        }
         try{
             return MessageFactory.buildLeaderUpdate(cards, map,
                     "Leader cards initialization managing.", currentPlayer);
         }catch(MalformedMessageException e){
-            //exit from client
-            return "";
+            return "error";
         }
     }
 
@@ -337,8 +333,7 @@ public class InteractionTranslator {
         try {
             return MessageFactory.buildMarketSelection(tray,trayNumber,"Selection of a row or a column from the market.");
         } catch (MalformedMessageException e) {
-            //exit
-            return "";
+            return "error";
         }
     }
 
@@ -351,8 +346,7 @@ public class InteractionTranslator {
         try {
             return MessageFactory.buildActionMarble(marbles, "Marbles managing");
         } catch (MalformedMessageException e) {
-            //exit
-            return "";
+            return "error";
         }
     }
 
@@ -363,8 +357,7 @@ public class InteractionTranslator {
         try {
             return MessageFactory.buildSwap(source, target, "Swapping two shelves of the warehouse");
         } catch (MalformedMessageException e) {
-            //exit
-            return "";
+            return "error";
         }
     }
 
@@ -392,10 +385,8 @@ public class InteractionTranslator {
 
         try {
            return MessageFactory.buildBuyCard(color, level, slot, id, "Buy card", warehouse, strongbox);
-
         }catch(MalformedMessageException e){
-            //exit from client
-            return "";
+            return "error";
         }
     }
 
@@ -421,16 +412,15 @@ public class InteractionTranslator {
         try {
             return MessageFactory.BuildDoProduction(personalProduction,devMessage,leaderMessage,chosenMaterials,chosenProducts,warehouse,strongbox,"Do production");
         } catch (MalformedMessageException e) {
-            //exit
-            return "";
+            return "error";
         }
 
     }
 
     /**
      * This method associates the ID to the correspondent card
-     * @param cards map(position-id)
-     * @param action
+     * @param cards is a map of cards selected by the player
+     * @param action is the action performed by the player
      * @return a String which represents the correct content for the message
      */
     private String helpCards(Map<Integer, String> cards, String action){
@@ -446,7 +436,7 @@ public class InteractionTranslator {
             int position = Integer.parseInt(s);
             sequence.append(position).append(":").append(cards.get(position)).append(":");
         }
-        return sequence.equals("")? "":sequence.substring(0, sequence.length()-1);
+        return sequence.toString().equals("")? "":sequence.substring(0, sequence.length()-1);
     }
 
     /**
@@ -461,8 +451,7 @@ public class InteractionTranslator {
         try {
             return MessageFactory.buildLeaderAction(leadersID.get(this.leaderCard), this.leaderCard, action, "Action on leader");
         } catch (MalformedMessageException e) {
-            //exit
-            return "";
+           return "error";
         }
     }
 }

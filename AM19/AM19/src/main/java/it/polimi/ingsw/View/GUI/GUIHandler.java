@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.*;
 
@@ -34,6 +35,8 @@ public class GUIHandler extends Application {
      */
     private static Stage currentStage;
 
+    private static final String windowName = "Masters of Renaissance";
+
     @Override
     public void start(Stage stage) throws Exception {
         currentStage = stage;
@@ -43,6 +46,8 @@ public class GUIHandler extends Application {
         stage.setScene(scene);
 
         stage.setResizable(false);
+        stage.setTitle(windowName);
+        stage.getIcons().add(new Image("Images/icon.png"));
         stage.show();
     }
 
@@ -135,11 +140,12 @@ public class GUIHandler extends Application {
         try {
             root = fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setTitle("My New Stage Title");
+            stage.setTitle(windowName);
             stage.setScene(new Scene(root, width, length));
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(false);
+            stage.getIcons().add(new Image("Images/icon.png"));
             stage.show();
         }
         catch (IOException e) {
@@ -166,7 +172,8 @@ public class GUIHandler extends Application {
             Stage stage = new Stage();
             stage.setScene(new Scene(root, width, length));
             stage.setOnCloseRequest(event -> stage.hide());
-
+            stage.setTitle(windowName);
+            stage.getIcons().add(new Image("Images/icon.png"));
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
 
@@ -200,8 +207,10 @@ public class GUIHandler extends Application {
                 event.consume();
             } );
 
+            stage.setTitle(windowName);
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
+            stage.getIcons().add(new Image("Images/icon.png"));
             stage.show();
 
         }

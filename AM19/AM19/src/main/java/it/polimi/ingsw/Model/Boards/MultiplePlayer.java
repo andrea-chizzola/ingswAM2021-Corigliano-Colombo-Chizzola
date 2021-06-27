@@ -63,16 +63,25 @@ public class MultiplePlayer implements CustomMode{
         return winner.getNickname();
     }
 
+    /**
+     * @return Optional Integer which represent, if not empty, the faith points of Lorenzo
+     */
     @Override
     public Optional<Integer> showFaithLorenzo() {
         return Optional.empty();
     }
 
+    /**
+     * @return Optional List of ItemStatus which represents, if not empty, the status of the pope sections of Lorenzo
+     */
     @Override
     public Optional<List<ItemStatus>> showSectionsLorenzo() {
         return Optional.empty();
     }
 
+    /**
+     * @return Optional String which represents, if not empty, the ID of the top token
+     */
     @Override
     public Optional<String> showTopToken() {
         return Optional.empty();

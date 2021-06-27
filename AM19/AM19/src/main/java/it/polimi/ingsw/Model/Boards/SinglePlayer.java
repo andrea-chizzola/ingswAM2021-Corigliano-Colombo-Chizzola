@@ -93,6 +93,8 @@ public class SinglePlayer implements CustomMode{
         initialization = false;
         if(gameBoard.isEndGameStarted())
            gameBoard.setGameEnded();
+
+        gameBoard.showSinglePlayer();
     }
 
     /**
@@ -128,16 +130,25 @@ public class SinglePlayer implements CustomMode{
     }
 
 
+    /**
+     * @return Optional Integer which represent, if not empty, the faith points of Lorenzo
+     */
     @Override
     public Optional<Integer> showFaithLorenzo() {
         return Optional.of(lorenzoTrack.getPosition());
     }
 
+    /**
+     * @return Optional List of ItemStatus which represents, if not empty, the status of the pope sections of Lorenzo
+     */
     @Override
     public Optional<List<ItemStatus>> showSectionsLorenzo() {
         return Optional.of(gameBoard.createListItems(lorenzoTrack.getSections()));
     }
 
+    /**
+     * @return Optional String which represents, if not empty, the ID of the top token
+     */
     @Override
     public Optional<String> showTopToken() {
         return Optional.of(actionTokenDeck.getTop().getId());

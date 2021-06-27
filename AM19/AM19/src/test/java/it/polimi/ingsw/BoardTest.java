@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.Controller.ViewForTest;
 import it.polimi.ingsw.Exceptions.*;
 import it.polimi.ingsw.Model.Boards.*;
 import it.polimi.ingsw.Model.Cards.*;

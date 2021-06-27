@@ -1,7 +1,9 @@
 package it.polimi.ingsw.View.InteractionTranslator;
 
+/**
+ * This class implements BuildMessage and provides the method to build a LeaderUpdate message
+ */
 public class BuildLeaderUpdate implements BuildMessage{
-
 
     /**
      * This methods builds a LeaderUpdate message

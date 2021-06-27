@@ -1,11 +1,10 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.ResourcesExpectedException;
+import it.polimi.ingsw.Exceptions.MissingResourcesException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
-import it.polimi.ingsw.xmlParser.ConfigurationParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,9 +71,9 @@ public abstract class Card{
      * @param board
      * @return
      * @throws InvalidActionException
-     * @throws ResourcesExpectedException
+     * @throws MissingResourcesException
      */
-    public boolean checkReq(Board board) throws InvalidActionException, ResourcesExpectedException{
+    public boolean checkReq(Board board) throws InvalidActionException, MissingResourcesException {
 
         requirements.checkReq(board);
         return true;

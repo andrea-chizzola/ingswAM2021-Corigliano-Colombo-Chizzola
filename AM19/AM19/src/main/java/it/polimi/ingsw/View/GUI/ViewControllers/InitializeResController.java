@@ -145,6 +145,14 @@ public class InitializeResController extends ViewController{
     }
 
     /**
+     * this method is used to notify the end of resources selection
+     * when no initialization resource is available
+     */
+    public void noInitializationResources(){
+        getGUIReference().notifyInteraction(builder.buildMessage(interactionTranslator));
+    }
+
+    /**
      * sets the handlers of all the MenuItems passed in the List
      * @param list List of MenuItem
      * @param resource the resource associated with the item
@@ -208,4 +216,5 @@ public class InitializeResController extends ViewController{
             shelves.get(i).setVisible(true);
         }
     }
+
 }
