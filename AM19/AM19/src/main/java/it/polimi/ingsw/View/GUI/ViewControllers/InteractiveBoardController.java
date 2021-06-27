@@ -219,7 +219,7 @@ public class InteractiveBoardController extends BoardController {
 
     /**
      * this method is used to add the name of a player to the otherPlayersMenu
-     * @param nickname
+     * @param nickname the nickname of the player to be shown
      */
     public void addPlayer(String nickname){
         MenuItem item = new MenuItem(nickname);
@@ -388,6 +388,15 @@ public class InteractiveBoardController extends BoardController {
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
             if (actionPauseTransition(imageView, label, errorExtraShelf, counter)) return;
             interactionTranslator.setWarehouse(shelf);});
+    }
+
+    /**
+     * enable or disable the event handlers of the images associated with the extra shelves
+     * @param b if b=true the events handlers are set as active, otherwise they are set as inactive
+     */
+    private void enableExtraShelf(Boolean b){
+        extraShelf1.setDisable(!b);
+        extraShelf2.setDisable(!b);
     }
 
     /**
@@ -720,6 +729,7 @@ public class InteractiveBoardController extends BoardController {
         actionButton.setDisable(true);
         enableWarehouse(false);
         enableStrongbox(false);
+        enableExtraShelf(false);
         enableLeaderCards(false);
         enableSlots(false);
         personalProduction.setDisable(true);
@@ -769,6 +779,7 @@ public class InteractiveBoardController extends BoardController {
         this.interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildDoProduction();
         enableWarehouse(true);
+        enableExtraShelf(true);
         enableStrongbox(true);
         enableLeaderCards(true);
         enableSlots(true);
@@ -798,6 +809,7 @@ public class InteractiveBoardController extends BoardController {
         decksController.setAccumulator(interactionTranslator);
         enableWarehouse(true);
         enableStrongbox(true);
+        enableExtraShelf(true);
         enableSlotsButtons(true);
         slotButton1.setVisible(true);
         slotButton2.setVisible(true);
