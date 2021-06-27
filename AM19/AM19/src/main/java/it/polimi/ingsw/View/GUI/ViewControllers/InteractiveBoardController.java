@@ -21,6 +21,9 @@ import javafx.util.Duration;
 
 import java.util.*;
 
+/**
+ * represents the controller associated to the interactive board's scene
+ */
 public class InteractiveBoardController extends BoardController {
 
     @FXML

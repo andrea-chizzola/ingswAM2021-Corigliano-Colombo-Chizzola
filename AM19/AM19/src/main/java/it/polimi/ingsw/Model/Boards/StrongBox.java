@@ -17,7 +17,7 @@ public class StrongBox {
     private HashMap<Resource, Integer> resources;
 
     /**
-     * creates a new  empty StrongBox
+     * creates a new empty StrongBox
      */
     public StrongBox(){
         

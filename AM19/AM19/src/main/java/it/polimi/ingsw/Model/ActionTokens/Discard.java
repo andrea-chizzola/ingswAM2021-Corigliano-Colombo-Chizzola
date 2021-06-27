@@ -21,6 +21,13 @@ public class Discard extends Action {
      */
     private int quantity;
 
+    /**
+     * created a new discard token
+     * @param cardColor represents the color of the card that will be discarded
+     * @param quantity indicated how many cards will be discarded
+     * @param id represents the token's id
+     * @param image represents the token's image
+     */
     public Discard(CardColor cardColor, int quantity, String id, String image) {
         super(id, image);
         this.cardColor = cardColor;

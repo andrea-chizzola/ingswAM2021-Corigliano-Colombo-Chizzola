@@ -12,7 +12,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-
+/**
+ * represents the controller associated to the login scene
+ */
 public class LoginController extends ViewController{
 
     @FXML

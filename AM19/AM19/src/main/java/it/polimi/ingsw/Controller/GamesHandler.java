@@ -8,6 +8,9 @@ import it.polimi.ingsw.Server.ClientConnectionListener;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * handles the currently active games and connection related aspects of a game
+ */
 public class GamesHandler implements ClientConnectionListener {
 
     /**
@@ -41,7 +44,7 @@ public class GamesHandler implements ClientConnectionListener {
     private AtomicLong idCounter;
 
     /**
-     * creates a new server accepting clients to the port selected
+     * creates a new games handler
      */
     public GamesHandler() {
 
@@ -54,15 +57,14 @@ public class GamesHandler implements ClientConnectionListener {
     }
 
     /**
-     *
-     * @return returns a new Id associated to the client's connection
+     * creates a new id associated to game
+     * @return the new game's id
      */
     private String createId(){
         return String.valueOf(idCounter.getAndIncrement());
     }
 
     /**
-     *
      * @param gameId represents the game id
      * @return returns the game related to the selected id
      */
@@ -83,7 +85,6 @@ public class GamesHandler implements ClientConnectionListener {
     }
 
     /**
-     *
      * @param socketID represents the id associated to the connection
      * @return returns the game containing the player associated to the selected connection id
      */
@@ -157,7 +158,6 @@ public class GamesHandler implements ClientConnectionListener {
     }
 
     /**
-     *
      * @param socketId represents the id related to the socket connection
      * @return returns the connection associated to the selected id
      */
@@ -167,7 +167,6 @@ public class GamesHandler implements ClientConnectionListener {
 
 
     /**
-     *
      * @param nickname represents the selected nickname
      * @return returns true if the selected nickname is currently available
      */
@@ -211,7 +210,6 @@ public class GamesHandler implements ClientConnectionListener {
     }
 
     /**
-     *
      * @param socketId represents the socket's id
      * @return returns true if the player associated to the selected id is currently in a started game
      */

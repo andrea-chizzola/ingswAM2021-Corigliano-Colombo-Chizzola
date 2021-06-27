@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents the controller associated to the board's scene
+ */
 public class BoardController extends ViewController implements HelperWindow{
 
     /**
