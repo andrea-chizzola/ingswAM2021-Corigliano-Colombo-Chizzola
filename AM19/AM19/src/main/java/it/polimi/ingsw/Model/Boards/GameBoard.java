@@ -483,7 +483,7 @@ public class GameBoard implements GameBoardHandler {
 
         if(!isAllInitialized()) {
             String name = currentPlayer.getNickname();
-            virtualView.showGameStatus(name + " ended the initialization of his/her board", name,TurnType.INITIALIZATION_LEADERS);
+            virtualView.showGameStatus(name + " initializes his/her leader cards", name,TurnType.INITIALIZATION_LEADERS);
             return;
         }
         showAvailableTurns();
@@ -775,7 +775,7 @@ public class GameBoard implements GameBoardHandler {
             try {
                 card.checkReq(board);
             }
-            catch (InvalidActionException | ResourcesExpectedException e){throw new InvalidActionException(e.getMessage());}
+            catch (InvalidActionException | MissingResourcesException e){throw new InvalidActionException(e.getMessage());}
 
             card.getSpecialEffect().applyEffect(board);
             card.setStatus(true);

@@ -36,7 +36,7 @@ public class MarbleTest {
             assertEquals(board.getWarehouse().getResource(1), new Shield());
             assertEquals(board.getWarehouse().getQuantity(1), 1);
         }
-        catch(/*InvalidActionException |*/ IllegalShelfException e){
+        catch(IllegalShelfException e){
             fail();
         }
     }

@@ -164,6 +164,7 @@ public class GUI implements View, SubjectView {
         MarbleSelectionController controller = new MarbleSelectionController();
         if(self.equals(nickName)) {
             Platform.runLater(() -> {
+                interactiveBoardController.resetTurn();
                 GUIHandler.createNonCloseableWindow(controller, path + "marbleSelection.fxml", 445, 275);
                 controller.showMarblesUpdate(marblesTray, whiteModifications, nSlots);
             });
@@ -281,7 +282,7 @@ public class GUI implements View, SubjectView {
      */
     @Override
     public void showDisconnection(String nickname) {
-        String message = nickname + "has been disconnected from the server";
+        String message = nickname + " has been disconnected from the server";
         NotificationController controller = new NotificationController(true, message);
         Platform.runLater(() ->
                 GUIHandler.newWindow(controller,path + "notification.fxml", 400, 250));
@@ -377,6 +378,16 @@ public class GUI implements View, SubjectView {
         if(!playerBoards.containsKey(nickname)) return;
         BoardController controller = playerBoards.get(nickname);
         Platform.runLater(controller::showWindow);
+    }
+
+    /**
+     * this method is used to undo the player's action
+     */
+    @Override
+    public void undoAction(){
+        String self = model.getPersonalNickname();
+        List<String> turns = model.getAvailableTurns();
+        showAvailableTurns(turns, self);
     }
 
     /**

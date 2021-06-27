@@ -201,10 +201,10 @@ public class ClientController implements ServerConnectionListener, InteractionOb
         String self = model.getPersonalNickname();
         String body = message.getBody();
         model.setCurrentPlayer(message.getPlayer());
+        view.showGameStatus(body, self, message.getStatus());
 
         if (model.getCurrentPlayer().equals(self)){
             model.setModelState(message.getStatus());
-            view.showGameStatus(body, self, message.getStatus());
             selectionHandler(message.getStatus(), message);
             actionHandler(message.getStatus());
         }

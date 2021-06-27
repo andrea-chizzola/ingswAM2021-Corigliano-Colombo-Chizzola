@@ -1,6 +1,5 @@
 package it.polimi.ingsw.xmlParser;
 
-import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,7 +16,6 @@ import org.w3c.dom.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.xml.sax.SAXException;
 
@@ -397,48 +395,6 @@ public class ConfigurationParser{
             e.printStackTrace();
         }
         return p;
-    }
-
-    /**
-     * this method returns a LeaderCard of a given ID
-     * @param file is the source XML file
-     * @param id is the ID of the card
-     * @return is the card with the given ID
-     */
-    public static LeaderCard getLeaderById(String file, String id){
-        List<LeaderCard> card = ConfigurationParser
-                .parseLeaderCard(file).stream()
-                .filter(c -> c.getId().equalsIgnoreCase(id))
-                .collect(Collectors.toList());
-        return card.get(0);
-    }
-
-    /**
-     * this method returns a DevelopmentCard of a given ID
-     * @param file is the source XML file
-     * @param id is the ID of the card
-     * @return is the card with the given ID
-     */
-    public static DevelopmentCard getDevelopmentById(String file, String id){
-        List<DevelopmentCard> card = ConfigurationParser
-                .parseDevelopmentCard(file).stream()
-                .filter(c -> c.getId().equalsIgnoreCase(id))
-                .collect(Collectors.toList());
-        return card.get(0);
-    }
-
-    /**
-     * this method returns a DevelopmentCard of a given ID
-     * @param file is the source XML file
-     * @param id is the ID of the card
-     * @return is the card with the given ID
-     */
-    public static Action getActionTokenById(String file, String id){
-        List<Action> card = ConfigurationParser
-                .parseActionTokens(file).stream()
-                .filter(c -> c.getId().equalsIgnoreCase(id))
-                .collect(Collectors.toList());
-        return card.get(0);
     }
 
 }

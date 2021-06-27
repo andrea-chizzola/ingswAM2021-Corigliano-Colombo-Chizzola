@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Exceptions.InvalidActionException;
-import it.polimi.ingsw.Exceptions.ResourcesExpectedException;
 import it.polimi.ingsw.Model.Boards.Board;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
