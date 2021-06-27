@@ -745,10 +745,10 @@ public class InteractiveBoardController extends BoardController {
         resetImage(secondSlot,1);
         resetImage(thirdSlot,1);
 
-        resetImage(firstLeaderCard,0.5);
+        /*resetImage(firstLeaderCard,0.5);
         resetImage(secondLeaderCard,0.5);
         resetImage(thirdLeaderCard,0.5);
-        resetImage(fourthLeaderCard,0.5);
+        resetImage(fourthLeaderCard,0.5);*/
 
         resetCounters();
 
