@@ -166,4 +166,10 @@ public interface GameBoardHandler {
      */
     void removeCard(int position) throws InvalidActionException;
 
+    /**
+     * method used for testing purpose and demo
+     * this method adds 100 resources of each type to the StrongBox
+     */
+    void cheatStrongbox();
+
 }

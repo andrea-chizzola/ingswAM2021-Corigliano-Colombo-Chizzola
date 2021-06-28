@@ -803,6 +803,17 @@ public class GameBoard implements GameBoardHandler {
         catch (IndexOutOfBoundsException e){throw new InvalidActionException(e.getMessage());}
     }
 
+    /**
+     * method used for testing purpose and demo
+     * this method adds 100 resources of each type to the StrongBox
+     */
+    @Override
+    public void cheatStrongbox(){
+        for(Board board : players){
+            board.getStrongBox().cheat();
+        }
+    }
+
     //end of overridden methods
 
     /**

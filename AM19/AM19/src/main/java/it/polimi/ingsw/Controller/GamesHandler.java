@@ -16,22 +16,22 @@ public class GamesHandler implements ClientConnectionListener {
     /**
      * keeps track of the active connections associating them to a unique ID
      */
-    private Map<String, ClientConnectionHandler> activeConnections;
+    private final Map<String, ClientConnectionHandler> activeConnections;
 
     /**
      * keeps track of the games waiting for other players to start
      */
-    private List<Game> waitingGames;
+    private final List<Game> waitingGames;
 
     /**
      * keeps track of the active games
      */
-    private List<Game> activeGames;
+    private final List<Game> activeGames;
 
     /**
      * contains the nicknames of disconnected players and the related game id (nickname - gameId)
      */
-    private Map<String, String> inactivePlayers;
+    private final Map<String, String> inactivePlayers;
 
     /**
      * represents Lorenzo's nickname
@@ -41,7 +41,10 @@ public class GamesHandler implements ClientConnectionListener {
     /**
      * represents a progressive number associated to a game
      */
-    private AtomicLong idCounter;
+    private final AtomicLong idCounter;
+
+
+    private Boolean cheat;
 
     /**
      * creates a new games handler
@@ -53,7 +56,12 @@ public class GamesHandler implements ClientConnectionListener {
         activeGames = new ArrayList<>();
         inactivePlayers = new HashMap<>();
         idCounter = new AtomicLong();
+        cheat = false;
 
+    }
+
+    public void setCheat() {
+        this.cheat = true;
     }
 
     /**
@@ -450,7 +458,7 @@ public class GamesHandler implements ClientConnectionListener {
         List<Game> started = new ArrayList<>();
         for(Game game : waitingGames){
             if(game.canStart()){
-                game.setUpGame();
+                game.setUpGame(cheat);
                 addActiveGame(game);
                 started.add(game);
             }
