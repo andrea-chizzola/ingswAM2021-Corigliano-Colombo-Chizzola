@@ -33,12 +33,12 @@ public class Game {
     /**
      * keeps track of the players part of the match (ID - nickname)
      */
-    private Map<String, String> players;
+    private final Map<String, String> players;
 
     /**
      * keeps track of the connections associated to each player currently in the game
      */
-    private Map<String, ClientConnectionHandler> connections;
+    private final Map<String, ClientConnectionHandler> connections;
 
     /**
      * represents a unique id associated to the match
@@ -217,7 +217,7 @@ public class Game {
     /**
      * sets up the game creating all the necessary components
      */
-    public void setUpGame(){
+    public void setUpGame(Boolean cheat){
 
         System.out.println("[SERVER] Creating a new game...");
 
@@ -234,6 +234,8 @@ public class Game {
 
         gameBoard.attachView(virtualView);
         gameBoard.initializeGame(file);
+
+        if(cheat) gameBoard.cheatStrongbox();
 
         this.messageHandler = new MessageHandler(gameBoard, virtualView);
 

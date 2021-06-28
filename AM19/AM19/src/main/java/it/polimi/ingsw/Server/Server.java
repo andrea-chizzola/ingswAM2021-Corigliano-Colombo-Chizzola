@@ -24,6 +24,8 @@ public class Server {
      */
     private static final String PORT_ARG = "-port";
 
+    private static final String CHEAT_ARG = "-cheat";
+
     /**
      * represents the port opened by the server to accept new connections
      */
@@ -59,11 +61,12 @@ public class Server {
      * creates a new server accepting clients to the port selected
      * @param port represents the port opened by the server to accept new connections
      */
-    public Server(int port) {
+    public Server(int port, boolean cheat) {
         this.port = port;
         idCounter = new AtomicLong();
-        this.handler = new GamesHandler();
-
+        GamesHandler game = new GamesHandler();
+        if(cheat) game.setCheat();
+        this.handler = game;
     }
 
     /**
@@ -145,6 +148,7 @@ public class Server {
 
         final int DEFAULT_PORT = 1234;
         int port = DEFAULT_PORT;
+        boolean cheat;
 
         System.out.println("[SERVER] Masters of Renaissance server. Welcome!");
 
@@ -162,9 +166,11 @@ public class Server {
 
         }
 
+        cheat = argList.contains(CHEAT_ARG);
+
         System.out.println("[SERVER] Initializing server...");
 
-        Server server = new Server(port);
+        Server server = new Server(port,cheat);
         server.startServer();
 
     }

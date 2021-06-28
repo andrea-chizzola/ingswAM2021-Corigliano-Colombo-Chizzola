@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Boards;
-import it.polimi.ingsw.Model.Resources.ResQuantity;
-import it.polimi.ingsw.Model.Resources.Resource;
+import it.polimi.ingsw.Model.Resources.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,6 +78,9 @@ public class StrongBox {
 
     }
 
+    /**
+     * @return List of ResQuantity which represents the status of the StrongBox
+     */
     public List<ResQuantity> showStrongBox(){
         List<ResQuantity> list = new ArrayList<>();
 
@@ -86,6 +88,17 @@ public class StrongBox {
             list.add(new ResQuantity(resource,resources.get(resource)));
         }
         return list;
+    }
+
+    /**
+     * method used for testing purpose and demo
+     * this method adds 100 resources of each type to the StrongBox
+     */
+    public void cheat(){
+        addResource(new Coin(),100);
+        addResource(new Stone(),100);
+        addResource(new Servant(),100);
+        addResource(new Shield(),100);
     }
 
 }
