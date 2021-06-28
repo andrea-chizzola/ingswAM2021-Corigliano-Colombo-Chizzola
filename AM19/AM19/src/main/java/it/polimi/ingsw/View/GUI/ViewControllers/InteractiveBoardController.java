@@ -325,6 +325,7 @@ public class InteractiveBoardController extends BoardController {
      */
     public void setAvailableTurns(List<String> turns){
         turnSelectionController.setAvailableActions(turns);
+        turnSelectionController.showWindow();
     }
 
 

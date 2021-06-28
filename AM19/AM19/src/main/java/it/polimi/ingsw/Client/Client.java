@@ -6,6 +6,7 @@ import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.View.CLI.CLI;
 import it.polimi.ingsw.View.GUI.GUI;
 import it.polimi.ingsw.View.GUI.GUIHandler;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.net.Socket;
