@@ -8,7 +8,6 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.Resources.ResQuantity;
 import it.polimi.ingsw.Model.Resources.Resource;
 import it.polimi.ingsw.View.Update;
-import it.polimi.ingsw.View.View;
 
 import java.util.ArrayList;
 import java.util.List;

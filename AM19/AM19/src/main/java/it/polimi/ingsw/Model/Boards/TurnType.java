@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model.Boards;
 
+/**
+ * This class is an enumeration and represents all the types of turn
+ */
 public enum TurnType {
     INITIALIZATION_LEADERS,
     INITIALIZATION_RESOURCE,
@@ -11,5 +14,5 @@ public enum TurnType {
     DO_PRODUCTION,
     TURN_SELECTION,
     EXIT,
-    WRONG_STATE;
+    WRONG_STATE
 }

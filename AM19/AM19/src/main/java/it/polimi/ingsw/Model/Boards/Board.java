@@ -28,7 +28,7 @@ public class Board {
     /**
      * represents the game board, where all the personal boards are placed
      */
-    private GameBoard gameBoard;
+    private final GameBoard gameBoard;
 
     /**
      * indicates if the leader cards have been initialized
@@ -48,32 +48,32 @@ public class Board {
     /**
      * represents the Faith Track associated to the player
      */
-    private FaithTrack faithTrack;
+    private final FaithTrack faithTrack;
 
     /**
      * contains the development cards owned by the player
      */
-    private ArrayList<Slot> slots;
+    private final ArrayList<Slot> slots;
 
     /**
      * represents the strongbox associated to the player
      */
-    private StrongBox strongBox;
+    private final StrongBox strongBox;
 
     /**
      * represents the warehouse associated to the player
      */
-    private Warehouse warehouse;
+    private final Warehouse warehouse;
 
     /**
      * represents the active discounts and possible transformations of the white marble.
      */
-    private Modifications modification;
+    private final Modifications modification;
 
     /**
      * this attribute represents the personal production of the player
      */
-    private Production personalProduction;
+    private final Production personalProduction;
 
     /**
      * the number of resources that the player can choose during initialization
@@ -161,7 +161,7 @@ public class Board {
 
     /**
      * This method sets the number of resources that the player can choose during initialization
-     * @param numberResourcesInitialization
+     * @param numberResourcesInitialization the number of resources required during initialization
      */
     public void setNumberResourcesInitialization(int numberResourcesInitialization) {
         this.numberResourcesInitialization = numberResourcesInitialization;
@@ -186,7 +186,7 @@ public class Board {
      * This method gets the slot with number 'slot'
      * @param slot the number of the slot
      * @return the slot with number slot
-     * @throws IllegalSlotException
+     * @throws IllegalSlotException if the number of the slot does not exist
      */
     public Slot getSlot(int slot) throws IllegalSlotException{
         if(slot > 0 && slot <= slots.size()) {
@@ -262,21 +262,18 @@ public class Board {
      */
     public boolean discardLeaderCard(Map<Integer,Boolean> leaderStatus) {
 
-        List<Integer> list = new ArrayList<>();
-
         if(leaderStatus.values().size() != leaders.size())
             return false;
         if(leaderStatus.keySet().stream().anyMatch(integer -> (integer < 1 || integer > leaders.size())))
             return false;
-        if(leaderStatus.values().stream().filter(aBoolean -> aBoolean == true).count() != 2)
+        if(leaderStatus.values().stream().filter(aBoolean -> aBoolean).count() != 2)
             return false;
 
-        list = leaderStatus.keySet().stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
+        List<Integer> list = leaderStatus.keySet().stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
 
-        for(int i : list){
-            if(!leaderStatus.get(i))
-                leaders.remove(i - 1);
-        }
+        for(int i : list)
+            if (!leaderStatus.get(i)) leaders.remove(i - 1);
+
         leadersInitialized = true;
         return true;
     }
@@ -409,6 +406,10 @@ public class Board {
        return true;
     }
 
+    /**
+     * Shows the status of the slots
+     * @return Map(Integer,String) which represents the number of slot and the ID of the card present in the slot itself
+     */
     public Map<Integer,String> showSlot(){
         Map<Integer,String> map = new HashMap<>();
         String ID;
@@ -419,11 +420,16 @@ public class Board {
                 map.put(i+1, ID);
             }
             catch (IllegalSlotException e){
+                System.out.println("Error during parsing of the card in showSlot");
             }
         }
         return map;
     }
 
+    /**
+     * Shows the leader cards
+     * @return Map(Integer,String) which represents the number of position and the ID of the card present in the position itself
+     */
     public Map<Integer,String> showLeaderPosition() {
         Map<Integer, String > map = new HashMap<>();
         String ID;
@@ -434,9 +440,12 @@ public class Board {
         return map;
     }
 
+    /**
+     * Shows the status of the leader cards
+     * @return Map(Integer,ItemStatus) which represents the number of position and the status of the card present in the position itself
+     */
     public Map<Integer,ItemStatus> showLeaderStatus(){
         Map<Integer, ItemStatus> map = new HashMap<>();
-        String ID;
         for(int i=0; i<leaders.size(); i++){
             ItemStatus itemStatus = leaders.get(i).getStatus() ? ItemStatus.ACTIVE : ItemStatus.INACTIVE;
             map.put(i+1,itemStatus);

@@ -14,7 +14,7 @@ public class StrongBox {
     /**
      * resources associates a resource, identified with its color, to the related quantity
      */
-    private HashMap<Resource, Integer> resources;
+    private final HashMap<Resource, Integer> resources;
 
     /**
      * creates a new  empty StrongBox

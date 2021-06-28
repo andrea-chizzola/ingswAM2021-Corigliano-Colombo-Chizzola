@@ -184,7 +184,7 @@ public class Warehouse {
 
         if(!checkInsertMultipleRes(resources, shelves))
             throw new IllegalShelfException("Wrong selected resources!");
-        if (resources.stream().anyMatch(resource -> resource.isEmpty()))
+        if (resources.stream().anyMatch(Resource::isEmpty))
             throw new IllegalShelfException("Wrong selected resources!");
 
         for (int i = 0; i < resources.size(); i++) {
