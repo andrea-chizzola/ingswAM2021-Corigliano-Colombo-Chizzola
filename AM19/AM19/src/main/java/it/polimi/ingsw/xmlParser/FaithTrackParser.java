@@ -41,7 +41,7 @@ public class FaithTrackParser{
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            ConfigurationParser.notifyParsingError();
         }
         return result;
     }
@@ -65,7 +65,7 @@ public class FaithTrackParser{
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            ConfigurationParser.notifyParsingError();
         }
         return result;
     }
@@ -91,7 +91,7 @@ public class FaithTrackParser{
                     .getRoot(file)
                     .getAttribute("length"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            ConfigurationParser.notifyParsingError();
         }
         return length;
     }

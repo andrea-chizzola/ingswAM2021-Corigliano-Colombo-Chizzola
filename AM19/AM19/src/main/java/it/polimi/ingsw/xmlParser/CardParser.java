@@ -88,7 +88,7 @@ public class CardParser{
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            ConfigurationParser.notifyParsingError();
         }
         return newCards;
     }
@@ -224,7 +224,7 @@ public class CardParser{
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            ConfigurationParser.notifyParsingError();
         }
         return newCards;
     }
@@ -350,28 +350,4 @@ public class CardParser{
     private ResourceReqLeader buildRequirementRes(Element resources){
         return new ResourceReqLeader(createResourceList(resources));
     }
-
-    /*
-    protected LeaderCard getLeaderById(String file, String id){
-        LeaderCard target = null;
-        try{
-            Element card = ConfigurationParser.getID(file, id);
-            target = buildLeaderCard(card);
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        }
-        return target;
-    }
-
-
-    protected DevelopmentCard getDevelopmentById(String file, String id){
-        DevelopmentCard target = null;
-        try{
-            Element card = ConfigurationParser.getID(file, id);
-            target = buildDevelopmentCard(card);
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        }
-        return target;
-    }*/
 }

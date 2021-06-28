@@ -125,7 +125,7 @@ public class ActionTokenParser{
             result.addAll(buildMoveAndShuffle(root.getElementsByTagName("moveAndShuffle").item(0).getChildNodes()));
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            ConfigurationParser.notifyParsingError();
         }
        return result;
     }

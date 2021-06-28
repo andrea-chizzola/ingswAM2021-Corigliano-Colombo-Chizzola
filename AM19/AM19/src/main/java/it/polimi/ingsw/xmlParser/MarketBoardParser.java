@@ -32,7 +32,7 @@ public class MarketBoardParser{
     /**
      * this attribute is a map of the available Marbles
      */
-    private Map<String, Supplier<Marble>> marbleMap;
+    private final Map<String, Supplier<Marble>> marbleMap;
     /**
      * this attribute is the instance of the Singleton pattern
      */
@@ -77,7 +77,7 @@ public class MarketBoardParser{
                     .getRoot(file)
                     .getAttribute(d));
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            ConfigurationParser.notifyParsingError();
         }
         return nrows;
     }
@@ -128,7 +128,7 @@ public class MarketBoardParser{
             }
         if(tray.size()!=getMarketRows(file)*getMarketColumns(file)+1) throw new IOException("Incoherent MarketBoard");
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            ConfigurationParser.notifyParsingError();
         }
         return tray;
 

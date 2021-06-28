@@ -103,7 +103,7 @@ public class ConfigurationParser{
             Element name = (Element) getRoot(file).getElementsByTagName(argument).item(0);
             fullPath = fullPath + name.getAttribute("file");
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            notifyParsingError();
         }
         return fullPath;
     }
@@ -164,7 +164,7 @@ public class ConfigurationParser{
             Element max = (Element) getRoot(path + file).getElementsByTagName("cardsLevel").item(0);
             num = parseInt(max.getAttribute("max"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            notifyParsingError();
         }
         return num;
     }
@@ -180,7 +180,7 @@ public class ConfigurationParser{
             Element max = (Element) getRoot(path + file).getElementsByTagName("leader").item(0);
             num = parseInt(max.getAttribute("num"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            notifyParsingError();
         }
         return num;
     }
@@ -196,7 +196,7 @@ public class ConfigurationParser{
             Element max = (Element) getRoot(path + file).getElementsByTagName("slot").item(0);
             num = parseInt(max.getAttribute("num"));
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            notifyParsingError();
         }
         return num;
     }
@@ -221,7 +221,7 @@ public class ConfigurationParser{
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            notifyParsingError();
         }
         return result;
     }
@@ -245,7 +245,7 @@ public class ConfigurationParser{
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            notifyParsingError();
         }
         return result;
     }
@@ -269,7 +269,7 @@ public class ConfigurationParser{
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            notifyParsingError();
         }
         return result;
     }
@@ -392,9 +392,17 @@ public class ConfigurationParser{
             Element production = (Element) getRoot(file).getElementsByTagName("production").item(0);
             p = parser.buildProduction(production);
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            notifyParsingError();
         }
         return p;
+    }
+
+    /**
+     * this helper method is used to notify a parsing error and close the server.
+     */
+    protected static void notifyParsingError(){
+        System.out.println("Cannot load the configurations of the game");
+        System.exit(1);
     }
 
 }
