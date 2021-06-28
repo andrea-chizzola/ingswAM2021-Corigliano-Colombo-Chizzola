@@ -30,6 +30,7 @@ public abstract class Message {
         TOKEN_UPDATE,
         MARKET_UPDATE,
         START_GAME,
+        ERROR
     }
 
     /**

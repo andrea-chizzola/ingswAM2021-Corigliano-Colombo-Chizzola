@@ -65,7 +65,7 @@ public class VirtualView implements Update {
     @Override
     public void showMarblesUpdate(List<Marble> marblesTray, List<Marble> whiteModifications, String nickName) {
         try {
-            String message = MessageFactory.buildSelectedMarbles(marblesTray,whiteModifications,nickName,"update selected marbles");
+            String message = MessageFactory.buildSelectedMarbles(marblesTray,whiteModifications,nickName,"Insert the selected marbles");
             game.send(message,nickName);
         }catch (MalformedMessageException e){e.printStackTrace();}
     }

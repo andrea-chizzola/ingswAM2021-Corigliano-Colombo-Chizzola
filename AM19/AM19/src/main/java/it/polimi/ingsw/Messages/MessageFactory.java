@@ -569,4 +569,13 @@ public class MessageFactory {
         return MessageParser.createMessage(map);
     }
 
+    /**
+     * this method is used to create an error message
+     * @return the created error message
+     */
+    public static String buildErrorMessage(){
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
+                "<Message><messageType>ERROR</messageType></Message>";
+    }
+
 }

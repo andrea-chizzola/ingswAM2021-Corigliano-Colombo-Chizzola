@@ -281,7 +281,7 @@ public class InteractionTranslator {
         try {
             return MessageFactory.buildSelectedResources(resources,"Selection of resources during initialization");
         } catch (MalformedMessageException e) {
-            return "";
+            return MessageFactory.buildErrorMessage();
         }
     }
 
@@ -315,13 +315,13 @@ public class InteractionTranslator {
         try {
             for (String selection : selections) map.put(Integer.parseInt(selection), ItemStatus.ACTIVE);
         }catch (NumberFormatException e){
-            return "error";
+            return MessageFactory.buildErrorMessage();
         }
         try{
             return MessageFactory.buildLeaderUpdate(cards, map,
                     "Leader cards initialization managing.", currentPlayer);
         }catch(MalformedMessageException e){
-            return "error";
+            return MessageFactory.buildErrorMessage();
         }
     }
 
@@ -333,7 +333,7 @@ public class InteractionTranslator {
         try {
             return MessageFactory.buildMarketSelection(tray,trayNumber,"Selection of a row or a column from the market.");
         } catch (MalformedMessageException e) {
-            return "error";
+            return MessageFactory.buildErrorMessage();
         }
     }
 
@@ -346,7 +346,7 @@ public class InteractionTranslator {
         try {
             return MessageFactory.buildActionMarble(marbles, "Marbles managing");
         } catch (MalformedMessageException e) {
-            return "error";
+            return MessageFactory.buildErrorMessage();
         }
     }
 
@@ -357,7 +357,7 @@ public class InteractionTranslator {
         try {
             return MessageFactory.buildSwap(source, target, "Swapping two shelves of the warehouse");
         } catch (MalformedMessageException e) {
-            return "error";
+            return MessageFactory.buildErrorMessage();
         }
     }
 
@@ -386,7 +386,7 @@ public class InteractionTranslator {
         try {
            return MessageFactory.buildBuyCard(color, level, slot, id, "Buy card", warehouse, strongbox);
         }catch(MalformedMessageException e){
-            return "error";
+            return MessageFactory.buildErrorMessage();
         }
     }
 
@@ -412,7 +412,7 @@ public class InteractionTranslator {
         try {
             return MessageFactory.BuildDoProduction(personalProduction,devMessage,leaderMessage,chosenMaterials,chosenProducts,warehouse,strongbox,"Do production");
         } catch (MalformedMessageException e) {
-            return "error";
+            return MessageFactory.buildErrorMessage();
         }
 
     }
@@ -451,7 +451,7 @@ public class InteractionTranslator {
         try {
             return MessageFactory.buildLeaderAction(leadersID.get(this.leaderCard), this.leaderCard, action, "Action on leader");
         } catch (MalformedMessageException e) {
-           return "error";
+            return MessageFactory.buildErrorMessage();
         }
     }
 }

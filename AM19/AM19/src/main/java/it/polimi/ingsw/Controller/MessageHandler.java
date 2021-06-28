@@ -106,12 +106,12 @@ public class MessageHandler {
                     break;
 
                 default:
-                    virtualView.reply(false,"Wrong message", nickname);
+                    virtualView.reply(false,"Wrong interaction", nickname);
                     break;
             }
         }
         catch (MalformedMessageException e){
-            virtualView.reply(false,"Wrong message", nickname);
+            virtualView.reply(false,"Wrong interaction", nickname);
         }
     }
 
