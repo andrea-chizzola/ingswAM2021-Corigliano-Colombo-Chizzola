@@ -17,7 +17,6 @@ public class NetworkBuffer {
     private final List<String> extracted;
 
     private final String messageStart = "<?xml version=";
-    //private final String messageStart = "<Message>";
     private final String messageEnd = "</Message>";
     private final String ping = "<ping/>";
     private final String pong = "<pong/>";
@@ -69,7 +68,6 @@ public class NetworkBuffer {
         extract();
     }
 
-    //aggiungere estrazione di tutte le stringhe
     /**
      * @return the oldest XML message or ping element in the buffer
      * @throws EmptyBufferException if there are no available Strings
