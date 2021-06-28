@@ -6,8 +6,8 @@
 The goal of the project is the implementation of the board game 'Masters 
 of Renaissance'.  
 The game has been implemented according to the Model
-View Controller and allows to play using a CLI or a GUI. The project is
-based on a distributed system, which can manage multiple and multiple
+View Controller pattern and allows to play using a CLI or a GUI. The project is
+based on a distributed system, which can manage multiple matches and multiple
 clients. Each player decide what kind of interface to use (CLI or GUI)
 at the beginning of the game. The network relies on the use of sockets.
 

@@ -372,11 +372,9 @@ public class GamesHandler implements ClientConnectionListener {
             getConnection(socketID).send(MessageFactory.buildReply(false, messageError, nickname));
             getConnection(socketID).closeConnection();
             removeActiveConnection(socketID);
-            return;
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a negative reply message");
             e.printStackTrace();
-            return;
         }
 
     }
