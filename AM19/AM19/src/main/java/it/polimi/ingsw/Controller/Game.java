@@ -55,6 +55,15 @@ public class Game {
      */
     private boolean start;
 
+    /**
+     * creates a new game
+     * @param gamesHandler represents the games handler
+     * @param nickname represents the nickname of the player who created the game
+     * @param socketId represents the id related to the socket connection of the player who created the game
+     * @param connection represents the connection to the client who created the game
+     * @param playersNumber indicates the number of player associated to the game
+     * @param id represents the game's id
+     */
     public Game(GamesHandler gamesHandler, String nickname, String socketId, ClientConnectionHandler connection, int playersNumber, String id){
 
         this.gamesHandler = gamesHandler;

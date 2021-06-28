@@ -7,7 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-
+/**
+ * represents the controller associated to the loading scene
+ */
 public class LoadingController extends ViewController{
 
     @FXML

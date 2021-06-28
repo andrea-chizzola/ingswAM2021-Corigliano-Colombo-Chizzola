@@ -6,6 +6,9 @@ import it.polimi.ingsw.Server.Server;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * launches either a new server or a new client according to the selected parameters
+ */
 public class Launcher {
 
     private static final String SERVER_ARG = "-server";
