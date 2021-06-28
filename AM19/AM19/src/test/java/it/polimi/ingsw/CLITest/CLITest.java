@@ -93,8 +93,6 @@ public class CLITest {
         cli.showMarketUpdate(marbles);
 
         List<DevelopmentCard> cardsD = ConfigurationParser.parseDevelopmentCard("defaultConfiguration.xml");
-        List<LeaderCard> cardsL = ConfigurationParser.parseLeaderCard("defaultConfiguration.xml");
-        List<Action> tokens = ConfigurationParser.parseActionTokens("defaultConfiguration.xml");
 
         Map<Integer, String> slots = new HashMap<>();
         slots.put(1, cardsD.get(5).getId());
