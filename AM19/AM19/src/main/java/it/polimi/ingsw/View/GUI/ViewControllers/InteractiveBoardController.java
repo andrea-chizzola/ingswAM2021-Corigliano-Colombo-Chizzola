@@ -777,15 +777,27 @@ public class InteractiveBoardController extends BoardController {
         decksController.enableCards(false);
     }
 
+    /**
+     * this helper method is used to set the opacity of an ImageView
+     * @param imageView is the target ImageView
+     * @param opacity is the new opacity value
+     */
     private void resetImage(ImageView imageView, double opacity){
         imageView.setOpacity(opacity);
     }
 
+    /**
+     * sets the boards so that the leader cards can be selected
+     */
     public void initializeLeaders(){
         this.interactionTranslator = new InteractionTranslator(GUIHandler.getGUIReference().getModelReference());
         this.builder = new BuildLeaderUpdate();
         enableLeaderCards(true);
         actionButton.setDisable(false);
+        firstLeaderCard.setOpacity(0.5);
+        secondLeaderCard.setOpacity(0.5);
+        thirdLeaderCard.setOpacity(0.5);
+        fourthLeaderCard.setOpacity(0.5);
     }
 
     /**
