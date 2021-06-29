@@ -141,7 +141,7 @@ public class SocketClientConnection implements ClientConnectionHandler, Runnable
 
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 15000);
+        timer.scheduleAtFixedRate(task, 0, 10000);
 
     }
 
