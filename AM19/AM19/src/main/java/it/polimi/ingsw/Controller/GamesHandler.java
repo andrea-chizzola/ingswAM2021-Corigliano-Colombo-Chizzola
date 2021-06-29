@@ -43,7 +43,9 @@ public class GamesHandler implements ClientConnectionListener {
      */
     private final AtomicLong idCounter;
 
-
+    /**
+     * indicates if a cheated version of the games has to be created
+     */
     private Boolean cheat;
 
     /**
@@ -76,19 +78,22 @@ public class GamesHandler implements ClientConnectionListener {
      * @param gameId represents the game id
      * @return returns the game related to the selected id
      */
-    private Game getGameById(String gameId){
+    private Optional<Game> getGameById(String gameId){
+
+        Optional<Game> opt = Optional.empty();
 
         for(Game game : waitingGames){
             if(game.getId().equals(gameId)){
-                return game;
+                opt = Optional.of(game);
             }
         }
         for(Game game : activeGames){
             if(game.getId().equals(gameId)){
-                return game;
+                opt = Optional.of(game);
             }
         }
-        return null;
+
+        return opt;
 
     }
 
@@ -96,23 +101,39 @@ public class GamesHandler implements ClientConnectionListener {
      * @param socketID represents the id associated to the connection
      * @return returns the game containing the player associated to the selected connection id
      */
-    private Game getGameBySocketID(String socketID){
+    private Optional<Game> getGameBySocketID(String socketID){
 
+        Optional<Game> opt = Optional.empty();
 
         for(Game game : waitingGames){
             if(game.containsID(socketID)){
-                return game;
+                opt = Optional.of(game);
             }
         }
         for(Game game : activeGames){
             if(game.containsID(socketID)){
-                return game;
+                opt = Optional.of(game);
             }
         }
-        return null;
+        return opt;
 
     }
 
+    /**
+     * @param gameId represents the id associated to the game
+     * @return a list containing the inactive players associated to the selected game
+     */
+    public List<String> getInactivePlayers(String gameId){
+
+        List<String> players = new ArrayList<>();
+
+        for(String nickname : inactivePlayers.keySet()){
+            if(inactivePlayers.get(nickname).equals(gameId))
+                players.add(nickname);
+        }
+
+        return players;
+    }
 
     /**
      * adds the player to the disconnected ones
@@ -308,8 +329,8 @@ public class GamesHandler implements ClientConnectionListener {
 
         if(isPlaying(socketId) || isWaiting(socketId)) {
 
-            Game game = getGameBySocketID(socketId);
-            manageDisconnection(game.getNickname(socketId), socketId);
+            Optional<Game> game = getGameBySocketID(socketId);
+            game.ifPresent(s -> manageDisconnection(s.getNickname(socketId), socketId));
 
         }else{
 
@@ -357,9 +378,9 @@ public class GamesHandler implements ClientConnectionListener {
                     return;
                 default:
                     if(isPlaying(socketID)) {
-                        getGameBySocketID(socketID).onReceivedMessage(message, socketID);
+                        Optional<Game> game = getGameBySocketID(socketID);
+                        game.ifPresent(s -> s.onReceivedMessage(message, socketID));
                     }
-                    return;
 
             }
         }catch (MalformedMessageException e){
@@ -399,11 +420,9 @@ public class GamesHandler implements ClientConnectionListener {
             getConnection(socketID).send(MessageFactory.buildReply(false, messageError, nickname));
             getConnection(socketID).closeConnection();
             removeActiveConnection(socketID);
-            return;
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a negative reply message");
             e.printStackTrace();
-            return;
         }
 
     }
@@ -425,7 +444,6 @@ public class GamesHandler implements ClientConnectionListener {
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a positive reply message");
             e.printStackTrace();
-            return;
         }
 
     }
@@ -445,7 +463,6 @@ public class GamesHandler implements ClientConnectionListener {
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a positive reply message");
             e.printStackTrace();
-            return;
         }
 
     }
@@ -540,8 +557,8 @@ public class GamesHandler implements ClientConnectionListener {
      */
     private void reconnectPlayer(String nickname, String socketID){
 
-        Game game = getGameById(inactivePlayers.get(nickname));
-        game.addPlayer(nickname, socketID, getConnection(socketID));
+        Optional<Game> game = getGameById(inactivePlayers.get(nickname));
+        game.ifPresent(s -> s.addPlayer(nickname, socketID, getConnection(socketID)));
         inactivePlayers.remove(nickname);
 
         System.out.println("[SERVER] " + nickname + " was reconnected to his game.");
