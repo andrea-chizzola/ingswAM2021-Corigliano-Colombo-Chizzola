@@ -180,7 +180,13 @@ public class Client implements MessageSender {
             ip = argList.get(ipIndex);
 
             int portIndex = argList.indexOf(PORT_ARG) + 1;
-            port = Integer.parseInt(argList.get(portIndex));
+
+            try {
+                port = Integer.parseInt(argList.get(portIndex));
+            } catch (NumberFormatException e){
+                System.out.println("[CLIENT] Invalid port format. The client will be initialized with default settings.");
+                port = DEFAULT_PORT;
+            }
 
             if(port < 1024 || port > 49151){
                 port = DEFAULT_PORT;

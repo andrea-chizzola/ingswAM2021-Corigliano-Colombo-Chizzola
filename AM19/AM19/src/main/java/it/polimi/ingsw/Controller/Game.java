@@ -23,7 +23,7 @@ public class Game {
     /**
      * represents the game handler
      */
-    private GamesHandler gamesHandler;
+    private final GamesHandler gamesHandler;
 
     /**
      * It manages the game
@@ -134,7 +134,11 @@ public class Game {
         connections.put(nickname, connection);
         if(start) {
             try {
-                send(MessageFactory.buildStartGame("Game is starting", new ArrayList<>(players.values())),nickname);
+                //Collection<String> inactive = gamesHandler.getInactivePlayers(getId());
+                //Collection<String> playing = players.values();
+                //playing.addAll(inactive);
+
+                send(MessageFactory.buildStartGame("Game is starting", new ArrayList<>(players.values())), nickname);
             } catch (MalformedMessageException e) {
                 closeGame();
             }

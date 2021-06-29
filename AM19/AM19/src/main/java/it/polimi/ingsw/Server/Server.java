@@ -24,6 +24,9 @@ public class Server {
      */
     private static final String PORT_ARG = "-port";
 
+    /**
+     * represents the parameter used to create a cheated version of the server
+     */
     private static final String CHEAT_ARG = "-cheat";
 
     /**
@@ -56,10 +59,10 @@ public class Server {
      */
     private SoloConnectionHandler socket;
 
-
     /**
      * creates a new server accepting clients to the port selected
      * @param port represents the port opened by the server to accept new connections
+     * @param cheat indicates if a cheated version of the server has to be created
      */
     public Server(int port, boolean cheat) {
         this.port = port;
@@ -79,7 +82,6 @@ public class Server {
         this.handler = new GamesHandler();
         this.socket = socket;
     }
-
 
     /**
      * Initializes and starts the server (solo game)
@@ -157,7 +159,13 @@ public class Server {
         if(argList.contains(PORT_ARG)) {
 
             int portIndex = argList.indexOf(PORT_ARG) + 1;
-            port = Integer.parseInt(argList.get(portIndex));
+
+            try {
+                port = Integer.parseInt(argList.get(portIndex));
+            } catch (NumberFormatException e){
+                System.out.println("[SERVER] Invalid port format. The server will be initialized with default settings.");
+                port = DEFAULT_PORT;
+            }
 
             if(port < 1024 || port > 49151){
                 port = DEFAULT_PORT;
