@@ -362,7 +362,6 @@ public class ClientController implements ServerConnectionListener, InteractionOb
         String disconnected = message.getPlayer();
         if(model.getNicknames().contains(disconnected)) {
             view.showDisconnection(disconnected);
-            model.removeNickname(disconnected);
         }
 
     }

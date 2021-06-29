@@ -331,7 +331,6 @@ public class GamesHandler implements ClientConnectionListener {
 
             Optional<Game> game = getGameBySocketID(socketId);
             game.ifPresent(s -> manageDisconnection(s.getNickname(socketId), socketId));
-            //manageDisconnection(game.getNickname(socketId), socketId);
 
         }else{
 
@@ -381,7 +380,6 @@ public class GamesHandler implements ClientConnectionListener {
                     if(isPlaying(socketID)) {
                         Optional<Game> game = getGameBySocketID(socketID);
                         game.ifPresent(s -> s.onReceivedMessage(message, socketID));
-                        //getGameBySocketID(socketID).onReceivedMessage(message, socketID);
                     }
 
             }
@@ -558,9 +556,6 @@ public class GamesHandler implements ClientConnectionListener {
      * @param socketID represents the id related to the socket connection
      */
     private void reconnectPlayer(String nickname, String socketID){
-
-        //Game game = getGameById(inactivePlayers.get(nickname));
-        //game.addPlayer(nickname,socketID, getConnection(socketID));
 
         Optional<Game> game = getGameById(inactivePlayers.get(nickname));
         game.ifPresent(s -> s.addPlayer(nickname, socketID, getConnection(socketID)));

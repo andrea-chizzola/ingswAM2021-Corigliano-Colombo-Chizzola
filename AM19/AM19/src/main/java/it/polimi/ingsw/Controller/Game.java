@@ -33,12 +33,17 @@ public class Game {
     /**
      * keeps track of the players part of the match (ID - nickname)
      */
-    private final Map<String, String> players;
+    private final Map<String, String> activePlayers;
 
     /**
      * keeps track of the connections associated to each player currently in the game
      */
     private final Map<String, ClientConnectionHandler> connections;
+
+    /**
+     * contains all the players associated to the game
+     */
+    private final ArrayList<String> nicknames;
 
     /**
      * represents a unique id associated to the match
@@ -67,10 +72,11 @@ public class Game {
     public Game(GamesHandler gamesHandler, String nickname, String socketId, ClientConnectionHandler connection, int playersNumber, String id){
 
         this.gamesHandler = gamesHandler;
-        players = new HashMap<>();
+        activePlayers = new HashMap<>();
         connections = new HashMap<>();
-        players.put(socketId, nickname);
+        activePlayers.put(socketId, nickname);
         connections.put(nickname, connection);
+        nicknames = new ArrayList<>();
         this.id = id;
         this.playersNumber = playersNumber;
         start = (playersNumber == 1);
@@ -82,7 +88,7 @@ public class Game {
      * @return a map containing the players currently in the game and their related ID
      */
     public Map<String, String> getPlayers() {
-        return new HashMap<>(players);
+        return new HashMap<>(activePlayers);
     }
 
     /**
@@ -91,7 +97,7 @@ public class Game {
      * @return returns the nickname associated to the socket id
      */
     public String getNickname(String socketId){
-        return players.get(socketId);
+        return activePlayers.get(socketId);
     }
 
     /**
@@ -130,21 +136,17 @@ public class Game {
      */
     public void addPlayer(String nickname, String socketId, ClientConnectionHandler connection){
 
-        players.put(socketId, nickname);
+        activePlayers.put(socketId, nickname);
         connections.put(nickname, connection);
         if(start) {
             try {
-                //Collection<String> inactive = gamesHandler.getInactivePlayers(getId());
-                //Collection<String> playing = players.values();
-                //playing.addAll(inactive);
-
-                send(MessageFactory.buildStartGame("Game is starting", new ArrayList<>(players.values())), nickname);
+                send(MessageFactory.buildStartGame("Game is starting", nicknames), nickname);
             } catch (MalformedMessageException e) {
                 closeGame();
             }
             messageHandler.reconnection(nickname);
         }
-        if(playersNumber == players.size()) start = true;
+        if(playersNumber == activePlayers.size()) start = true;
 
     }
 
@@ -154,10 +156,10 @@ public class Game {
      */
     public void removePlayer(String socketId){
 
-        String nickname = players.get(socketId);
+        String nickname = activePlayers.get(socketId);
 
         connections.remove(nickname);
-        players.remove(socketId);
+        activePlayers.remove(socketId);
 
         if(start){
             messageHandler.disconnection(nickname);
@@ -188,7 +190,7 @@ public class Game {
      * @param socketId represents the socket's id
      * @return returns true if the player associated to the selected id is part of the match
      */
-    public boolean containsID(String socketId){ return players.containsKey(socketId); }
+    public boolean containsID(String socketId){ return activePlayers.containsKey(socketId); }
 
     /**
      *
@@ -210,7 +212,7 @@ public class Game {
      *
      * @return returns the number of players currently connected
      */
-    public int getActualPlayers(){ return players.size(); }
+    public int getActualPlayers(){ return activePlayers.size(); }
 
     /**
      *
@@ -225,14 +227,14 @@ public class Game {
 
         System.out.println("[SERVER] Creating a new game...");
 
-        ArrayList<String> names = new ArrayList<>(players.values());
+        nicknames.addAll(activePlayers.values());
         try {
-            sendAll(MessageFactory.buildStartGame("Game is starting", names));
+            sendAll(MessageFactory.buildStartGame("Game is starting", nicknames));
         } catch (MalformedMessageException e) {
             closeGame();
         }
 
-        GameBoardHandler gameBoard = new GameBoard(names, file);
+        GameBoardHandler gameBoard = new GameBoard(nicknames, file);
 
         Update virtualView = new VirtualView(this);
 
@@ -255,7 +257,7 @@ public class Game {
         for(String player : connections.keySet()){
             connections.get(player).closeConnection();
         }
-        gamesHandler.removeGame(getId(), new ArrayList<>(players.keySet()));
+        gamesHandler.removeGame(getId(), new ArrayList<>(activePlayers.keySet()));
 
     }
 
