@@ -140,10 +140,10 @@ public class ClientController implements ServerConnectionListener, InteractionOb
 
         try {
             Message.MessageType type = parser.getType(message);
-            if (type == Message.MessageType.GAME_STATUS)
-                gameStatusHandler(new GameStatusMessage(message));
-            else if (type == Message.MessageType.REPLY) {
+            if (type == Message.MessageType.REPLY) {
                 replyHandler(new ReplyMessage(message));
+            } else if (type == Message.MessageType.GAME_STATUS) {
+                gameStatusHandler(new GameStatusMessage(message));
             } else {
                 updateHandler(new UpdateMessage(message, type));
             }
@@ -174,8 +174,8 @@ public class ClientController implements ServerConnectionListener, InteractionOb
     public void replyHandler(ReplyMessage message) throws MalformedMessageException {
 
         loginHandler(message);
-        if(!message.isOk()) actionHandler(model.getModelState());
         view.reply(message.isOk(), message.getBody(), message.getPlayer());
+        if(!message.isOk()) actionHandler(model.getModelState());
 
     }
 
@@ -256,7 +256,6 @@ public class ClientController implements ServerConnectionListener, InteractionOb
             }
             default:
                 break;
-            //END CONNECTION BECAUSE OF WRONG MESSAGE FROM SERVER
         }
         model.setModelState(type);
     }

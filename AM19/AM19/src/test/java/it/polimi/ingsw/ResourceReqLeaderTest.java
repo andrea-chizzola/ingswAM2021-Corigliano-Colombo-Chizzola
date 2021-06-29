@@ -15,7 +15,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -167,6 +169,19 @@ class ResourceReqLeaderTest {
         catch (InvalidActionException e){fail();}
     }
 
+    @Test
+    public void getCardsRequirementTest(){
+        assertTrue(card.getCardRequirements().isEmpty());
+    }
+
+    @Test
+    public void getRequirementTest(){
+        Map<Resource, Integer> requirements = new HashMap<>();
+        requirements.put(new Coin(), 2);
+        requirements.put(new Servant(), 2);
+        requirements.put(new Shield(), 3);
+        assertEquals(requirements, card.getRequirements());
+    }
 
 
 }

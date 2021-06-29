@@ -410,7 +410,12 @@ class MessageFactoryTest {
         } catch (MalformedMessageException e) {
             fail();
         }
+    }
 
+    @Test
+    void buildErrorMessageTest(){
 
+        assertEquals(MessageFactory.buildErrorMessage(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
+                "<Message><messageType>ERROR</messageType></Message>");
     }
 }

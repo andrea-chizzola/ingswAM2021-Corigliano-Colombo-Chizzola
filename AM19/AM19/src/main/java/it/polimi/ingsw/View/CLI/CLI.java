@@ -311,10 +311,11 @@ public class CLI implements View, SubjectView {
     @Override
     public void reply(boolean answer, String body, String nickName) {
         if(!answer) {
-            out.println("Error:" + body + "Something seems wrong... What about trying again?");
+            out.println("Error:" + body + " Something seems wrong... What about trying again?");
             return;
         }
-        out.println("Action successfully performed. Let's wait for the game to start...");
+        out.println("Action successfully performed..." +
+                "You can always see your board writing SEE + your nickname");
 
     }
 
@@ -686,7 +687,7 @@ public class CLI implements View, SubjectView {
      * @return true if the map contains all the Strings, false otherwise
      */
     private boolean containsKeys(Map<Integer,String> map, String[] sequence){
-        for (String s : sequence) {
+         for (String s : sequence) {
             if (!map.containsKey(s)) return false;
         }
         return true;

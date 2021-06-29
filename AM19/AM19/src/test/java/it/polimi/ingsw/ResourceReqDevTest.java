@@ -195,5 +195,9 @@ class ResourceReqDevTest {
 
     }
 
+    @Test
+    public void getCardsRequirementTest(){
+        assertTrue(card.getCardRequirements().isEmpty());
+    }
 
 }
