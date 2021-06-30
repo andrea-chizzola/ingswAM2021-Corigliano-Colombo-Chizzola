@@ -33,7 +33,8 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildReply(answer,body,nickName);
             game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in VirtualView");}
     }
 
     /**
@@ -47,7 +48,8 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildGameStatus(body,nickName,state);
             game.send(message,nickName);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");}
     }
 
     /**
@@ -59,7 +61,8 @@ public class VirtualView implements Update {
         try{
             String message = MessageFactory.buildUpdateMarket(tray,"update market");
             game.sendAll(message);
-        }catch (MalformedMessageException e){e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");}
     }
 
     @Override
@@ -67,7 +70,8 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildSelectedMarbles(marblesTray,whiteModifications,nickName,"Insert the selected marbles");
             game.send(message,nickName);
-        }catch (MalformedMessageException e){e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");}
     }
 
     /**
@@ -79,7 +83,8 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildDecksUpdate(decks,"update decks");
             game.sendAll(message);
-        }catch (MalformedMessageException e){e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");}
     }
 
 
@@ -88,7 +93,8 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildBoxUpdate(warehouse,strongBox,nickName,"update boxes");
             game.sendAll(message);
-        }catch (MalformedMessageException e){e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");}
     }
 
     /**
@@ -100,7 +106,8 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildSlotsUpdate(slots,nickName,"update slots");
             game.sendAll(message);
-        }catch (MalformedMessageException e){e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");}
     }
 
 
@@ -114,7 +121,8 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildLeaderUpdate(cards,status,nickName, "update leader cards");
             game.sendAll(message);
-        }catch (MalformedMessageException e){e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");}
     }
 
 
@@ -130,7 +138,9 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildFaithUpdate(faith,sections,faithLorenzo,sectionsLorenzo,"update faith");
             game.sendAll(message);
-        }catch (MalformedMessageException e){e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");
+        }
     }
 
     /**
@@ -142,7 +152,9 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildUpdateLorenzo(action.orElse(""),"token");
             game.sendAll(message);
-        }catch (MalformedMessageException e){e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");
+        }
     }
 
     /**
@@ -155,7 +167,9 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildEndGame(players, winner, "game ended");
             game.sendAll(message);
-        }catch (MalformedMessageException e){e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");
+        }
     }
 
     /**
@@ -167,7 +181,9 @@ public class VirtualView implements Update {
         try {
             String message = MessageFactory.buildDisconnection("disconnection", nickname);
             game.sendAll(message);
-        }catch (MalformedMessageException e){e.printStackTrace();}
+        }catch (MalformedMessageException e){
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");
+        }
     }
 
 
@@ -182,6 +198,8 @@ public class VirtualView implements Update {
             String message = MessageFactory.buildCurrentPlayer(player,turns,
                     "The current player is: " + player);
             game.sendAll(message);
-        }catch (MalformedMessageException e){ e.printStackTrace();}
+        }catch (MalformedMessageException e){
+           System.out.println("[SERVER]: Cannot create the XML message using DOM library in virtual View");
+       }
     }
 }

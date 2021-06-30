@@ -127,7 +127,7 @@ public class SocketServerConnection implements ServerConnectionHandler,Runnable{
 
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 15000);
+        timer.scheduleAtFixedRate(task, 0, 20000);
 
     }
 
@@ -143,13 +143,15 @@ public class SocketServerConnection implements ServerConnectionHandler,Runnable{
             System.out.println("[CLIENT] The message received is not in XML format.");
         }
 
-        if(buffer.getPong()) pong = true;
-        else if(buffer.getPing()) send("<pong/>");
-        else {
-            try {
-                clientController.onReceivedMessage(buffer.get());
-            } catch (EmptyBufferException e){
-                System.out.println("[CLIENT] The buffer is empty!");
+        while(!buffer.isEmpty()) {
+            if (buffer.getPong()) pong = true;
+            else if (buffer.getPing()) send("<pong/>");
+            else {
+                try {
+                    clientController.onReceivedMessage(buffer.get());
+                } catch (EmptyBufferException e) {
+                    System.out.println("[CLIENT] The buffer is empty!");
+                }
             }
         }
 

@@ -25,4 +25,10 @@ public interface ClientConnectionListener {
      */
     void onMissingPong(String socketId);
 
+    /**
+     * Notifies a parsing error of a received message
+     * @@param socketId represents the id associated to the connection
+     */
+    void notifyParsingError(String socketId);
+
 }

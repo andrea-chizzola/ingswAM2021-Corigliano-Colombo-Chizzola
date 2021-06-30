@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Exceptions.MalformedMessageException;
+import it.polimi.ingsw.Messages.Message;
 import it.polimi.ingsw.Messages.MessageFactory;
 import it.polimi.ingsw.Model.Boards.GameBoardHandler;
 import it.polimi.ingsw.Model.Boards.GameBoard;
@@ -142,6 +143,7 @@ public class Game {
             try {
                 send(MessageFactory.buildStartGame("Game is starting", nicknames), nickname);
             } catch (MalformedMessageException e) {
+                System.out.println("[SERVER]: Cannot create the XML message using DOM library");
                 closeGame();
             }
             messageHandler.reconnection(nickname);
@@ -231,6 +233,7 @@ public class Game {
         try {
             sendAll(MessageFactory.buildStartGame("Game is starting", nicknames));
         } catch (MalformedMessageException e) {
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library");
             closeGame();
         }
 
@@ -259,6 +262,20 @@ public class Game {
         }
         gamesHandler.removeGame(getId(), new ArrayList<>(activePlayers.keySet()));
 
+    }
+
+    /**
+     * Notifies a parsing error of a received message
+     * @param socketId represents the id associated to the connection
+     */
+    public void notifyParsingError(String socketId){
+        String name = activePlayers.get(socketId);
+        try {
+            send(MessageFactory.buildReply(false, "You've sent a malformed XML message", name), name);
+        } catch (MalformedMessageException e) {
+            System.out.println("[SERVER]: Cannot create the XML message using DOM library");
+            closeGame();
+        }
     }
 
 }

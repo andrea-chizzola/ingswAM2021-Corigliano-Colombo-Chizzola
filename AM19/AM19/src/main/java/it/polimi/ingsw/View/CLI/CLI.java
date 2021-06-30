@@ -687,7 +687,7 @@ public class CLI implements View, SubjectView {
      * @return true if the map contains all the Strings, false otherwise
      */
     private boolean containsKeys(Map<Integer,String> map, String[] sequence){
-         for (String s : sequence) {
+        for (String s : sequence) {
             if (!map.containsKey(s)) return false;
         }
         return true;

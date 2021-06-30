@@ -45,7 +45,6 @@ public class GUIHandler extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 450, 600);
         stage.setScene(scene);
 
-        stage.setResizable(false);
         stage.setTitle(windowName);
         stage.getIcons().add(new Image("Images/icon.png"));
         stage.show();
