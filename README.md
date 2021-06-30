@@ -86,6 +86,17 @@ Note: if `-port` and `-ip` are omitted, the client the port is 1234 and IP is 12
 if the type of interface is omitted, the interface is launched using CLI settings.
 If a player disconnects himself during the initialization phase,
 the game is over and all the players are disconnected.
+
+### Functionalities added to simplify the presentation of the project
+In order to facilitate the presentation of the project, we decided to introduce a "cheat",
+which allows the player to start with an increased amount of resource.
+The cheat can be activated using the following command.
+```
+java -jar AM19.jar -server -port portNumber -cheat
+```
+Moreover, our GUI and CLI shows the leader cards of each player, and the top action token,
+allowing to check the correctness of the graphic updates and of the Lorenzo's action.
+
 ### Members of the group:
 - Andrea Chizzola - andrea.chizzola@mail.polimi.it
 - Davide Corigliano - davide.corigliano@mail.polimi.it
