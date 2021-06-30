@@ -27,7 +27,7 @@ public interface ClientConnectionListener {
 
     /**
      * Notifies a parsing error of a received message
-     * @@param socketId represents the id associated to the connection
+     * @param socketId represents the id associated to the connection
      */
     void notifyParsingError(String socketId);
 
