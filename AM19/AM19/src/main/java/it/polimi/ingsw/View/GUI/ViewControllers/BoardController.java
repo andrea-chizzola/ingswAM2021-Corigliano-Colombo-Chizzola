@@ -301,26 +301,25 @@ public class BoardController extends ViewController implements HelperWindow{
      */
     public void manageSections(List<ItemStatus> sections){
 
-        for(ItemStatus status : sections){
-            int section = sections.indexOf(status);
+        for(int i=0; i<sections.size(); i++){
+            ItemStatus status = sections.get(i);
             if(status == ItemStatus.ACTIVE){
-                switch (section){
+                switch (i){
                     case 0:
                         Image image = new Image(getClass().getResourceAsStream(boardPath + "quadratogialloattivo.png"));
-                        popeFavors.get(section).setImage(image);
+                        popeFavors.get(i).setImage(image);
                         break;
                     case 1:
                         Image image1 = new Image(getClass().getResourceAsStream(boardPath + "quadratoarancioattivo.png"));
-                        popeFavors.get(section).setImage(image1);
+                        popeFavors.get(i).setImage(image1);
                         break;
                     case 2:
                         Image image2 = new Image(getClass().getResourceAsStream(boardPath + "quadratorossoattivo.png"));
-                        popeFavors.get(section).setImage(image2);
+                        popeFavors.get(i).setImage(image2);
                         break;
                 }
-
             }else if(status == ItemStatus.DISCARDED){
-                popeFavors.get(section).setVisible(false);
+                popeFavors.get(i).setVisible(false);
             }
         }
 
