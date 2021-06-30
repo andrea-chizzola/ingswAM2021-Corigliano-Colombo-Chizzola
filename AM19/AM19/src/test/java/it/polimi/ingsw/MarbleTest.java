@@ -149,7 +149,8 @@ public class MarbleTest {
                 .stream()
                 .map(Marble::getResourceAssociated)
                 .collect(Collectors.toList());
-        assertEquals(transformations, result);
+        assertTrue(transformations.containsAll(result));
+        assertTrue(result.containsAll(transformations));
 
     }
 
