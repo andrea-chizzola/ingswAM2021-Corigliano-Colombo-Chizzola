@@ -138,7 +138,7 @@ public class SocketClientConnection implements ClientConnectionHandler, Runnable
                 } else {
                     handler.onMissingPong(socketID);
                     timer.cancel();
-                    System.out.println("[SERVER] No pong received. Client's connection was already closed or it will now be disconnected");
+                    System.out.println("[SERVER] No pong received. Client's connection was already closed or it will now be disconnected.");
                 }
 
             }
@@ -179,7 +179,6 @@ public class SocketClientConnection implements ClientConnectionHandler, Runnable
                 messageHandler(read);
 
             }
-            //handler.onMissingPong(socketID);
             closeConnection();
 
         } catch (IOException e) {
