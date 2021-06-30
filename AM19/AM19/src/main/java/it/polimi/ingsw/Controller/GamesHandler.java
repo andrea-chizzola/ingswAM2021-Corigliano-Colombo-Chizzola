@@ -120,22 +120,6 @@ public class GamesHandler implements ClientConnectionListener {
     }
 
     /**
-     * @param gameId represents the id associated to the game
-     * @return a list containing the inactive players associated to the selected game
-     */
-    public List<String> getInactivePlayers(String gameId){
-
-        List<String> players = new ArrayList<>();
-
-        for(String nickname : inactivePlayers.keySet()){
-            if(inactivePlayers.get(nickname).equals(gameId))
-                players.add(nickname);
-        }
-
-        return players;
-    }
-
-    /**
      * adds the player to the disconnected ones
      * @param nickname represents the player's nickname
      * @param gameId represents the game id

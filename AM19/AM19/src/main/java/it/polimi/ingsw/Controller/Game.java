@@ -143,7 +143,7 @@ public class Game {
             try {
                 send(MessageFactory.buildStartGame("Game is starting", nicknames), nickname);
             } catch (MalformedMessageException e) {
-                System.out.println("[SERVER]: Cannot create the XML message using DOM library");
+                System.out.println("[SERVER] Cannot create the XML message using DOM library");
                 closeGame();
             }
             messageHandler.reconnection(nickname);
@@ -233,7 +233,7 @@ public class Game {
         try {
             sendAll(MessageFactory.buildStartGame("Game is starting", nicknames));
         } catch (MalformedMessageException e) {
-            System.out.println("[SERVER]: Cannot create the XML message using DOM library");
+            System.out.println("[SERVER] Cannot create the XML message using DOM library");
             closeGame();
         }
 
@@ -273,7 +273,7 @@ public class Game {
         try {
             send(MessageFactory.buildReply(false, "You've sent a malformed XML message", name), name);
         } catch (MalformedMessageException e) {
-            System.out.println("[SERVER]: Cannot create the XML message using DOM library");
+            System.out.println("[SERVER] Cannot create the XML message using DOM library");
             closeGame();
         }
     }
