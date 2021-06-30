@@ -18,9 +18,11 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.*;
@@ -643,6 +645,10 @@ public class InteractiveBoardController extends BoardController {
 
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
+            DropShadow dropShadow = new DropShadow();
+            dropShadow.setColor(Color.RED);
+            dropShadow.setRadius(20);
+            imageView.setEffect(dropShadow);
             imageView.setDisable(true);
             imageView.setVisible(true);
             interactionTranslator.setLeaderCards(number.toString());
@@ -753,6 +759,11 @@ public class InteractiveBoardController extends BoardController {
         enableSlots(false);
         personalProduction.setDisable(true);
         personalProduction.setVisible(false);
+
+        firstLeaderCard.setEffect(null);
+        secondLeaderCard.setEffect(null);
+        thirdLeaderCard.setEffect(null);
+        fourthLeaderCard.setEffect(null);
 
         resetImage(firstSlot,1);
         resetImage(secondSlot,1);
