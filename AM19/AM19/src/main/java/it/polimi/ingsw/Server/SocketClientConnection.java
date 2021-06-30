@@ -105,17 +105,19 @@ public class SocketClientConnection implements ClientConnectionHandler, Runnable
             buffer.append(read);
         }catch (MalformedMessageException e){
             System.out.println("[SERVER] The message received is not in XML format.");
+            handler.notifyParsingError(socketID);
         }
-
-        if(buffer.getPong()) pong = true;
-        else if(buffer.getPing()) send("<pong/>");
-        else {
-            try {
-                String string = buffer.get();
-                System.out.println("[SERVER] Received: " + string + " from: "+socketID);
-                handler.onReceivedMessage(string, socketID);
-            } catch (EmptyBufferException e){
-                System.out.println("[SERVER] The buffer is empty!");
+        while(!buffer.isEmpty()) {
+            if (buffer.getPong()) pong = true;
+            else if (buffer.getPing()) send("<pong/>");
+            else {
+                try {
+                    String string = buffer.get();
+                    System.out.println("[SERVER] Received: " + string + " from: " + socketID);
+                    handler.onReceivedMessage(string, socketID);
+                } catch (EmptyBufferException e) {
+                    System.out.println("[SERVER] The buffer is empty!");
+                }
             }
         }
     }

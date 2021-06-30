@@ -5,6 +5,8 @@ import it.polimi.ingsw.Model.MarketBoard.Marble;
 import it.polimi.ingsw.Model.MarketBoard.MarbleWhite;
 import it.polimi.ingsw.View.CLI.CLIColors;
 
+import java.util.Objects;
+
 /**
  * This class extends Resource
  * It represents the empty resource
@@ -69,7 +71,7 @@ public class White extends Resource{
      */
     @Override
     public String getSymbol() {
-        return null;
+        return "EMPTY";
     }
 
     /**
@@ -77,7 +79,7 @@ public class White extends Resource{
      */
     @Override
     public CLIColors toColor() {
-        return null;
+        return CLIColors.F_WHITE;
     }
 
     /**
@@ -86,5 +88,18 @@ public class White extends Resource{
     @Override
     public String getImage() {
         return "white_circle.png";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        White white = (White) o;
+        return color == white.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color);
     }
 }

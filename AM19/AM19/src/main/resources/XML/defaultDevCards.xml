@@ -381,11 +381,11 @@
 
         <production customMaterials = "0" customProducts = "0">
             <materials>
-                <resquantity resource="COINS" amount="2"/>
+                <resquantity resource="COINS" amount="1"/>
             </materials>
             <products>
                 <resquantity resource="STONES" amount="1"/>
-                <resquantity resource="FAITH" amount="1"/>
+                <resquantity resource="FAITH" amount="3"/>
             </products>
         </production>
     </card>

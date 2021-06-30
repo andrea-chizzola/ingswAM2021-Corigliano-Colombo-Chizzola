@@ -716,4 +716,13 @@ public class GamesHandler implements ClientConnectionListener {
 
     }
 
+    /**
+     * Notifies a parsing error of a received message
+     * @param socketId represents the id associated to the connection
+     */
+    @Override
+    public void notifyParsingError(String socketId) {
+        Optional<Game> game = getGameBySocketID(socketId);
+        game.ifPresent(x -> x.notifyParsingError(socketId));
+    }
 }

@@ -51,4 +51,18 @@ public class NetworkBufferTest {
     public void getException(){
         assertThrows(EmptyBufferException.class, () -> buffer.get());
     }
+
+    @Test
+    public void getPingTest() throws MalformedMessageException {
+        assertFalse(buffer.getPing());
+        buffer.append("<ping/>");
+        assertTrue(buffer.getPing());
+    }
+
+    @Test
+    public void getPongTest() throws MalformedMessageException {
+        assertFalse(buffer.getPong());
+        buffer.append("<pong/>");
+        assertTrue(buffer.getPong());
+    }
 }
