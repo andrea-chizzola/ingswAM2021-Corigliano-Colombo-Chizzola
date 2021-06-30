@@ -420,7 +420,7 @@ public class Board {
                 map.put(i+1, ID);
             }
             catch (IllegalSlotException e){
-                System.out.println("Error during parsing of the card in showSlot");
+                System.out.println("Empty slot");
             }
         }
         return map;

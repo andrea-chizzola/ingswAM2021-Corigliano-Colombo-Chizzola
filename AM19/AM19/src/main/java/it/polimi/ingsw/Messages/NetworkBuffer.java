@@ -89,14 +89,6 @@ public class NetworkBuffer {
      * this helper method is used to extract a ping element from the buffer
      */
     private void extractPing(){
-        /*if(buffer.toString().startsWith(ping)) {
-            extracted.add(ping);
-            buffer.delete(0, ping.length());
-        }
-        else if(buffer.toString().startsWith(pong)) {
-            extracted.add(pong);
-            buffer.delete(0, pong.length());
-        }*/
         int lastPingOccurrence = 0, lastPongOccurrence = 0;
         while(lastPingOccurrence!=-1){
                 lastPingOccurrence = buffer.toString().lastIndexOf(ping);

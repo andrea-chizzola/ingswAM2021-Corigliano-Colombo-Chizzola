@@ -643,7 +643,6 @@ public class InteractiveBoardController extends BoardController {
 
         imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, action -> imageView.setVisible(false));
         imageView.addEventHandler(MouseEvent.MOUSE_RELEASED, action -> {
-            imageView.setOpacity(0.8);
             imageView.setDisable(true);
             imageView.setVisible(true);
             interactionTranslator.setLeaderCards(number.toString());
