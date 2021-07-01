@@ -119,7 +119,7 @@ public class GUIHandler extends Application {
         loadRoot(controller, fxmlPath);
         currentStage.setWidth(1100);
         currentStage.setHeight(765);
-        currentStage.setResizable(false);
+        currentStage.setResizable(true);
         currentStage.centerOnScreen();
         currentStage.setFullScreenExitHint("");
 

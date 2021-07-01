@@ -97,7 +97,7 @@
                 <resquantity resource="SERVANTS" amount="1"/>
             </materials>
             <products>
-                <resquantity resource="SHIELDS" amount="3"/>
+                <resquantity resource="STONES" amount="3"/>
             </products>
         </production>
     </card>
@@ -177,7 +177,7 @@
 
         <production customMaterials = "0" customProducts = "0">
             <materials>
-                <resquantity resource="SERVANTS" amount="2"/>
+                <resquantity resource="SERVANTS" amount="1"/>
             </materials>
             <products>
                 <resquantity resource="COINS" amount="1"/>
@@ -401,8 +401,8 @@
                 <resquantity resource="COINS" amount="1"/>
             </materials>
             <products>
-                <resquantity resource="STONES" amount="1"/>
-                <resquantity resource="SERVANTS" amount="3"/>
+                <resquantity resource="STONES" amount="3"/>
+                <resquantity resource="SERVANTS" amount="1"/>
             </products>
         </production>
     </card>
@@ -585,11 +585,11 @@
 
         <production customMaterials = "0" customProducts = "0">
             <materials>
-                <resquantity resource="STONES" amount="2"/>
+                <resquantity resource="STONES" amount="1"/>
             </materials>
             <products>
                 <resquantity resource="SHIELDS" amount="1"/>
-                <resquantity resource="FAITH" amount="1"/>
+                <resquantity resource="FAITH" amount="3"/>
             </products>
         </production>
     </card>
@@ -789,11 +789,11 @@
 
         <production customMaterials = "0" customProducts = "0">
             <materials>
-                <resquantity resource="SHIELDS" amount="2"/>
+                <resquantity resource="SHIELDS" amount="1"/>
             </materials>
             <products>
                 <resquantity resource="SERVANTS" amount="1"/>
-                <resquantity resource="FAITH" amount="1"/>
+                <resquantity resource="FAITH" amount="3"/>
             </products>
         </production>
     </card>
