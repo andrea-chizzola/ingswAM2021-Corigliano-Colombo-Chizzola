@@ -15,7 +15,6 @@ import it.polimi.ingsw.View.PlayerInteractions.UndoInteraction;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
@@ -224,6 +223,7 @@ public class InteractiveBoardController extends BoardController {
         try {
             String message = MessageFactory.buildDisconnection("Disconnection request.", getModelReference().getPersonalNickname());
             getGUIReference().notifyInteraction(message);
+            getGUIReference().notifyClose();
         } catch (MalformedMessageException e){
             e.printStackTrace();
         }

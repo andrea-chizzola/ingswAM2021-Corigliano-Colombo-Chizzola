@@ -270,7 +270,7 @@ public class GUI implements View, SubjectView {
 
         EndGameController endGameController = new EndGameController();
         Platform.runLater(() -> {
-            GUIHandler.newWindow(endGameController,path + "EndGame.fxml", 600, 400);
+            GUIHandler.createNonCloseableWindow(endGameController,path + "EndGame.fxml", 600, 400);
             endGameController.showEndGame(players,winner);
         });
 
@@ -440,7 +440,7 @@ public class GUI implements View, SubjectView {
      * this method is used to notify a parsing error to the observer
      */
     @Override
-    public void notifyParsingError(){
+    public void notifyClose(){
         interactionObserver.close();
     }
 

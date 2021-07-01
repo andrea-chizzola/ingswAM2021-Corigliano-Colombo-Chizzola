@@ -93,7 +93,7 @@ public class TurnSelectionController extends ViewController implements HelperWin
                 mainPane.getScene().getWindow().hide();
             } catch (MalformedMessageException e) {
                 System.out.println("Cannot use DOM library to build the message...\nClosing client...");
-                getGUIReference().notifyParsingError();
+                getGUIReference().notifyClose();
             }
         });
     }

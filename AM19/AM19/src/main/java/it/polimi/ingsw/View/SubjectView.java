@@ -41,5 +41,5 @@ public interface SubjectView {
     /**
      * this method is used to notify a parsing error to the observer
      */
-    void notifyParsingError();
+    void notifyClose();
 }

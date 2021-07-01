@@ -164,7 +164,7 @@ public class CLI implements View, SubjectView {
                 }
             } catch (IOException | NullPointerException e) {
                 System.out.println("\nCannot open the input stream of CLI");
-                notifyParsingError();
+                notifyClose();
             }
         }).start();
     }
@@ -218,9 +218,10 @@ public class CLI implements View, SubjectView {
         try {
             notifyInteraction(MessageFactory.buildDisconnection(
                     "I want to be disconnected", model.getPersonalNickname()));
+            notifyClose();
         } catch (MalformedMessageException e) {
             System.out.println("\nParsing error... closing the connection");
-            notifyParsingError();
+            notifyClose();
         }
     }
 
@@ -503,8 +504,6 @@ public class CLI implements View, SubjectView {
                     "\nTell me who you are: ");
             player = getInput();
         }while(player.length()<=0);
-
-
         do{
             out.println("Tell me if you want to start a solo game [YES/NO]: ");
             first = getAssertion(getInput());
@@ -515,12 +514,10 @@ public class CLI implements View, SubjectView {
                 notifySoloInteraction(MessageFactory.buildConnection("Connection request", player, true, 1));
             }catch(MalformedMessageException e){
                 System.out.println("Parsing error... closing the connection");
-                notifyParsingError();
+                notifyClose();
             }
             return;
         }
-
-
         do{
             out.println("Tell me if you want to start a new game [YES/NO]: ");
             first = getAssertion(getInput());
@@ -540,7 +537,6 @@ public class CLI implements View, SubjectView {
                 reconnect = getAssertion(getInput());
             }while(!reconnect.equals("true") && !reconnect.equals("false"));
         }
-
         notifyNickname(player);
 
         try {
@@ -550,7 +546,7 @@ public class CLI implements View, SubjectView {
                 notifyInteraction(MessageFactory.buildConnection("Connection request", player, Boolean.parseBoolean(first), Integer.parseInt(num)));
         }catch(MalformedMessageException e){
             System.out.println("Parsing error... closing the connection");
-            notifyParsingError();
+            notifyClose();
         }
 
     }
@@ -635,7 +631,7 @@ public class CLI implements View, SubjectView {
                     notifyInteraction(MessageFactory.buildExit("End of turn selection"));
                 } catch (MalformedMessageException e) {
                     System.out.println("Parsing error... closing the connection");
-                    notifyParsingError();
+                    notifyClose();
                 }
                 break;
             }
@@ -1139,7 +1135,7 @@ public class CLI implements View, SubjectView {
      * this method is used to notify a parsing error to the observer
      */
     @Override
-    public void notifyParsingError(){
+    public void notifyClose(){
         interactionObserver.close();
     }
 }

@@ -106,7 +106,7 @@ public class GUIHandler extends Application {
             currentStage.getScene().setRoot(parent);
         } catch (IOException e) {
             System.out.println("Cannot open a new window. Closing the game...");
-            gui.notifyParsingError();
+            gui.notifyClose();
         }
     }
 
@@ -149,7 +149,7 @@ public class GUIHandler extends Application {
         }
         catch (IOException e) {
             System.out.println("Cannot open a new window. Closing the game...");
-            gui.notifyParsingError();
+            gui.notifyClose();
         }
     }
 
@@ -179,7 +179,7 @@ public class GUIHandler extends Application {
         }
         catch (IOException e) {
             System.out.println("Cannot open a new window. Closing the game...");
-            gui.notifyParsingError();
+            gui.notifyClose();
         }
     }
 
@@ -215,7 +215,7 @@ public class GUIHandler extends Application {
         }
         catch (IOException e) {
             System.out.println("Cannot open a new window. Closing the game...");
-            gui.notifyParsingError();
+            gui.notifyClose();
         }
     }
 }
