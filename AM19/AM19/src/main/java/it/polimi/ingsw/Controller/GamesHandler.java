@@ -667,9 +667,9 @@ public class GamesHandler implements ClientConnectionListener {
                 } else {
                     removeActivePlayer(game, nickname, socketId);
                 }
+                System.out.println("[SERVER] Disconnection request completed.");
+                break;
             }
-            System.out.println("[SERVER] Disconnection request completed.");
-            break;
         }
         activeGames.removeAll(disconnected);
 
