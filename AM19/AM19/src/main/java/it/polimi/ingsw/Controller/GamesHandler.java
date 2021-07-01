@@ -369,7 +369,7 @@ public class GamesHandler implements ClientConnectionListener {
             }
         }catch (MalformedMessageException e){
             System.out.println("[SERVER] Received a malformed message!");
-            System.out.println(e.getMessage());
+            System.out.println("[SERVER] " + e.getMessage());
         }
     }
 
@@ -387,7 +387,7 @@ public class GamesHandler implements ClientConnectionListener {
             removeActiveConnection(socketID);
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a negative reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -406,7 +406,7 @@ public class GamesHandler implements ClientConnectionListener {
             removeActiveConnection(socketID);
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a negative reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -427,7 +427,7 @@ public class GamesHandler implements ClientConnectionListener {
             getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a positive reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -446,7 +446,7 @@ public class GamesHandler implements ClientConnectionListener {
             getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a positive reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -529,7 +529,7 @@ public class GamesHandler implements ClientConnectionListener {
             game.sendAll(MessageFactory.buildDisconnection(message, nickname));
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a disconnection message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -552,7 +552,7 @@ public class GamesHandler implements ClientConnectionListener {
             getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a positive reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -573,7 +573,7 @@ public class GamesHandler implements ClientConnectionListener {
             removeActiveConnection(socketID);
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a negative reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
