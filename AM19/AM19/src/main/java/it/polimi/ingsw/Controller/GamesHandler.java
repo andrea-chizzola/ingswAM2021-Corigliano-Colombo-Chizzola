@@ -120,22 +120,6 @@ public class GamesHandler implements ClientConnectionListener {
     }
 
     /**
-     * @param gameId represents the id associated to the game
-     * @return a list containing the inactive players associated to the selected game
-     */
-    public List<String> getInactivePlayers(String gameId){
-
-        List<String> players = new ArrayList<>();
-
-        for(String nickname : inactivePlayers.keySet()){
-            if(inactivePlayers.get(nickname).equals(gameId))
-                players.add(nickname);
-        }
-
-        return players;
-    }
-
-    /**
      * adds the player to the disconnected ones
      * @param nickname represents the player's nickname
      * @param gameId represents the game id
@@ -385,7 +369,7 @@ public class GamesHandler implements ClientConnectionListener {
             }
         }catch (MalformedMessageException e){
             System.out.println("[SERVER] Received a malformed message!");
-            System.out.println(e.getMessage());
+            System.out.println("[SERVER] " + e.getMessage());
         }
     }
 
@@ -403,7 +387,7 @@ public class GamesHandler implements ClientConnectionListener {
             removeActiveConnection(socketID);
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a negative reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -422,7 +406,7 @@ public class GamesHandler implements ClientConnectionListener {
             removeActiveConnection(socketID);
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a negative reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -443,7 +427,7 @@ public class GamesHandler implements ClientConnectionListener {
             getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a positive reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -462,7 +446,7 @@ public class GamesHandler implements ClientConnectionListener {
             getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a positive reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -545,7 +529,7 @@ public class GamesHandler implements ClientConnectionListener {
             game.sendAll(MessageFactory.buildDisconnection(message, nickname));
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a disconnection message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -568,7 +552,7 @@ public class GamesHandler implements ClientConnectionListener {
             getConnection(socketID).send(MessageFactory.buildReply(true, message, nickname));
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a positive reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -589,7 +573,7 @@ public class GamesHandler implements ClientConnectionListener {
             removeActiveConnection(socketID);
         } catch (MalformedMessageException e){
             System.out.println("[SERVER] Error occurred while creating a negative reply message");
-            e.printStackTrace();
+            System.out.println("[SERVER] " + e.getMessage());
         }
 
     }
@@ -683,9 +667,9 @@ public class GamesHandler implements ClientConnectionListener {
                 } else {
                     removeActivePlayer(game, nickname, socketId);
                 }
+                System.out.println("[SERVER] Disconnection request completed.");
+                break;
             }
-            System.out.println("[SERVER] Disconnection request completed.");
-            break;
         }
         activeGames.removeAll(disconnected);
 
