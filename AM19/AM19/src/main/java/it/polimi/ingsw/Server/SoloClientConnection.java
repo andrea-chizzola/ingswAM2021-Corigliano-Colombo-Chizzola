@@ -2,7 +2,9 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Client.SoloConnectionHandler;
 
-
+/**
+ * handles the communication to the client
+ */
 public class SoloClientConnection implements ClientConnectionHandler, Runnable{
 
     /**
@@ -16,11 +18,16 @@ public class SoloClientConnection implements ClientConnectionHandler, Runnable{
     private final String socketID;
 
     /**
-     * represents the client controller
+     * represents the games handler
      */
     private ClientConnectionListener handler;
 
-
+    /**
+     * creates a new "connection" to the client
+     * @param socket creates a new "connection" to the pretended server
+     * @param socketID represents the id associated to the connection
+     * @param handler represents the games handler
+     */
     public SoloClientConnection(SoloConnectionHandler socket, String socketID, ClientConnectionListener handler) {
 
         this.socket = socket;

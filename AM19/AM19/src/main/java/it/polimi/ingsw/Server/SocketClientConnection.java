@@ -68,7 +68,7 @@ public class SocketClientConnection implements ClientConnectionHandler, Runnable
      * Closes the connection between the server and the client
      */
     @Override
-    public synchronized void closeConnection() {
+    public void closeConnection() {
 
         System.out.println("[SERVER] Closing socket connection...");
         try {
@@ -88,7 +88,7 @@ public class SocketClientConnection implements ClientConnectionHandler, Runnable
      * @param message represents the message to send
      */
     @Override
-    public synchronized void send(String message) {
+    public void send(String message) {
         System.out.println(message);
         out.println(message);
         out.flush();
